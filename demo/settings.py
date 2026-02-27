@@ -75,14 +75,21 @@ WSGI_APPLICATION = 'demo.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'demo_db',
+#         'USER': 'postgres',
+#         'PASSWORD': '1234',  # jo aapne set kiya
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'demo_db',
-        'USER': 'postgres',
-        'PASSWORD': '1234',  # jo aapne set kiya
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
@@ -122,10 +129,11 @@ USE_TZ = True
 
 # STATIC_URL = '/static/'
 # STATIC_ROOT = BASE_DIR / "staticfiles"
+
+
 STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 STATICFILES_DIRS = [
-    BASE_DIR / "static",   # 👈 agar tumhara static folder root me hai
+    BASE_DIR / "static",
 ]
-
-STATIC_ROOT = BASE_DIR / "staticfiles"
