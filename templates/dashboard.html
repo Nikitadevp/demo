@@ -1,12 +1,13 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>HelpDesk Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- ✅ Correct Professional Static Path -->
-    <link rel="stylesheet" href="{% static 'dashboard/css/dashboard.css' %}">
+
+    <!-- Correct CSS Link -->
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
 </head>
 <body>
 
@@ -81,7 +82,7 @@
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="6" style="text-align:center;">No tickets found</td>
+                    <td colspan="6">No tickets available</td>
                 </tr>
                 {% endfor %}
             </tbody>
