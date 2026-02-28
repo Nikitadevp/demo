@@ -15,4 +15,4 @@ def home(request):
         "tickets": tickets
     }
 
-    return render(request, "dashboard.html", context)
+    return render(request, "dashboard/dashboard.html")
