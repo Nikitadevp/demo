@@ -63,6 +63,7 @@ def calculate_tat_deadline(priority):
     return current_datetime
 
 
+
 # 🔹 Raise Ticket View
 def raise_ticket(request):
     if request.method == "POST":
@@ -74,8 +75,10 @@ def raise_ticket(request):
         issue_type = request.POST.get("issue_type")
         priority = request.POST.get("priority")
 
+        # 🔹 Calculate TAT Deadline
         tat_deadline = calculate_tat_deadline(priority)
 
+        # 🔹 Save Ticket
         ticket = Ticket.objects.create(
             name=name,
             email=email,
@@ -86,10 +89,12 @@ def raise_ticket(request):
             tat_deadline=tat_deadline,
         )
 
-        # resolve_url = request.build_absolute_uri(
-        #     f"/resolve-ticket/{ticket.ticket_no}/"
-        # )
+        # 🔹 Resolve URL (Safe way)
+        resolve_url = request.build_absolute_uri(
+            reverse("resolve_ticket", args=[ticket.ticket_no])
+        )
 
+        # 🔹 Department Email Mapping
         department_emails = {
             "Accounts and Finance": "alok.agrawal@rajat-group.com",
             "Construction": "bagga.rbpl@rajat-group.com",
@@ -118,7 +123,7 @@ def raise_ticket(request):
         message = f"""
 Dear Team,
 
-A new Help Desk ticket has been successfully created and assigned to your department.
+A new Help Desk ticket has been created.
 
 Ticket ID   : {ticket.ticket_no}
 Department  : {department}
@@ -127,7 +132,8 @@ Issue Type  : {issue_type}
 
 Resolution Time: {tat_deadline.strftime('%d-%m-%Y %I:%M %p')}
 
-
+Resolve Link:
+{resolve_url}
 
 -- Help Desk System
 """
@@ -139,15 +145,15 @@ Resolution Time: {tat_deadline.strftime('%d-%m-%Y %I:%M %p')}
                     message,
                     settings.EMAIL_HOST_USER,
                     [dept_email],
-                    fail_silently=True,  # ✅ Prevent 500 error in deploy
+                    fail_silently=True,  # avoid 500 error in deploy
                 )
             except Exception:
                 pass
 
-        return redirect("/raise-ticket/?success=1")
+        return redirect(f"{reverse('raise_ticket')}?success=1")
 
     success = request.GET.get("success")
-    return render(request, "forms/ticket_form.html", {"success": success})
+    return render(request, "ticket_form.html", {"success": success})
 
 #dashboard    
 
