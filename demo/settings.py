@@ -29,7 +29,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = False
 
 # ALLOWED_HOSTS = ['*']
-ALLOWED_HOSTS = ['.onrender.com']
+ALLOWED_HOSTS = ['dashboard.onrender.com']
 
 
 # Application definition
