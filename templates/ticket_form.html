@@ -4,7 +4,7 @@
 <head>
   <title>Help Desk - Raise Ticket</title>
 
-  <!-- ✅ Correct CSS Path -->
+  <!-- Correct CSS Path -->
   <link rel="stylesheet" href="{% static 'css/ticket_form.css' %}">
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,14 +13,14 @@
     
 <div class="page-wrapper">
 
-  <!-- 🔹 LEFT SIDE IMAGE -->
+  <!-- LEFT SIDE IMAGE -->
   <div class="left-image-box">
     <img src="{% static 'images/image1.JPG' %}" alt="Image">
   </div>
 
 <div class="container">
 
-  <!-- 🔹 LOGO INSIDE WHITE BOX -->
+  <!--  LOGO INSIDE WHITE BOX -->
   <div class="form-logo-box">
     <img src="{% static 'images/ticket_logo.JPG' %}" alt="Help Desk Logo">
   </div>
@@ -56,7 +56,7 @@
 
     <input type="text" name="issue_type" placeholder="What type of issue?" required>
 
-    <!-- 🔹 PRIORITY -->
+    <!--  PRIORITY -->
     <div class="priority-box">
       <span class="priority-title">Select Priority</span>
 
@@ -77,11 +77,11 @@
   </form>
 </div>
 
-<!-- 🔹 SUCCESS POPUP -->
+<!-- SUCCESS POPUP -->
 {% if success %}
 <div class="popup-overlay" id="successPopup">
   <div class="popup-box">
-    <h3>🎉 Ticket Raised Successfully!</h3>
+    <h3> Ticket Raised Successfully!</h3>
     <p>
       Thank you for contacting the Help Desk.<br><br>
       Your ticket has been created successfully.<br>
