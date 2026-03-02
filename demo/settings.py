@@ -29,9 +29,9 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = False
 
 # ALLOWED_HOSTS = ['*']
-# ALLOWED_HOSTS = ['.onrender.com']
+ALLOWED_HOSTS = ['.onrender.com']
 
-ALLOWED_HOSTS = ['demo-project-gkaa.onrender.com']
+# ALLOWED_HOSTS = ['demo-project-gkaa.onrender.com']
 
 CSRF_TRUSTED_ORIGINS = [
     'https://demo-project-gkaa.onrender.com'
