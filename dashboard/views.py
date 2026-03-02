@@ -229,6 +229,28 @@ Help Desk Team
         "success": request.GET.get("success")
     })
 
+
+DEPARTMENTS = [
+    "Accounts and Finance",
+    "Construction",
+    "CRM HO",
+    "DME",
+    "Electrical and Plumbing",
+    "Engineering Highpark",
+    "Engineering Sampoorna",
+    "Finishing Sampoorna",
+    "HR",
+    "IT and Admin",
+    "Maintenance Highpark",
+    "Maintenance Sampoorna",
+    "Project Planning",
+    "Purchase and Security",
+    "Sales and Marketing",
+    "CRM Sampoorna",
+    "CRM Highpark",
+    "JNRDME",
+]    
+
     
 
 #dashboard    
