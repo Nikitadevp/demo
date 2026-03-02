@@ -153,7 +153,7 @@ Resolve Link:
         return redirect(f"{reverse('raise_ticket')}?success=1")
 
     success = request.GET.get("success")
-    return render(request, "ticket_form.html", {"success": success})
+    return render(request, "ticket_form.html", {"success": True})
 
 #dashboard    
 
