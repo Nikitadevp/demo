@@ -11,7 +11,7 @@ body {
 .container {
   max-width: 500px;
   margin: 40px auto;
-  margin-left: 70%;   /* 👈 right side shift */
+  margin-left: 70%;   /*  right side shift */
   transform: translateX(-40%);
   background: white;
   padding: 20px;
