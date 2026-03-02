@@ -11,4 +11,6 @@ urlpatterns = [
     #path("", views.dashboard, name="home"),
     path("", views.dashboard, name="home"),   # homepage
     path("raise-ticket/", views.raise_ticket, name="raise_ticket"),
+    path("resolve-ticket/<str:ticket_no>/", views.resolve_ticket, name="resolve_ticket"),
+    
 ]

@@ -7,12 +7,12 @@ from .models import Ticket
 
 
 
-# 🔹 Office Time Settings
+#  Office Time Settings
 OFFICE_START = time(9, 30)
 OFFICE_END = time(18, 30)
 
 
-# 🔹 TAT Calculation (Office Hours Based)
+#  TAT Calculation (Office Hours Based)
 def calculate_tat_deadline(priority):
     now = timezone.localtime(timezone.now())
 
@@ -64,7 +64,7 @@ def calculate_tat_deadline(priority):
 
 
 
-# 🔹 Raise Ticket View
+#  Raise Ticket View
 def raise_ticket(request):
     if request.method == "POST":
 
@@ -75,10 +75,10 @@ def raise_ticket(request):
         issue_type = request.POST.get("issue_type")
         priority = request.POST.get("priority")
 
-        # 🔹 Calculate TAT Deadline
+        #  Calculate TAT Deadline
         tat_deadline = calculate_tat_deadline(priority)
 
-        # 🔹 Save Ticket
+        # Save Ticket
         ticket = Ticket.objects.create(
             name=name,
             email=email,
@@ -89,12 +89,12 @@ def raise_ticket(request):
             tat_deadline=tat_deadline,
         )
 
-        # 🔹 Resolve URL (Safe way)
+        # Resolve URL (Safe way)
         resolve_url = request.build_absolute_uri(
             reverse("resolve_ticket", args=[ticket.ticket_no])
         )
 
-        # 🔹 Department Email Mapping
+        # Department Email Mapping
         department_emails = {
             "Accounts and Finance": "alok.agrawal@rajat-group.com",
             "Construction": "bagga.rbpl@rajat-group.com",
@@ -154,6 +154,82 @@ Resolve Link:
 
     success = request.GET.get("success")
     return render(request, "ticket_form.html", {"success": True})
+
+
+#resolve_ticket    
+
+
+def resolve_ticket(request, ticket_no):
+    ticket = get_object_or_404(Ticket, ticket_no=ticket_no)
+
+    # Prevent re-resolving already closed tickets
+    if ticket.status == "Closed":
+        return render(request, "forms/resolve_ticket.html", {
+            "ticket": ticket,
+            "success": request.GET.get("success")
+        })
+
+    if request.method == "POST":
+
+        problem_solver = request.POST.get("problem_solver")
+        solution_provided = request.POST.get("solution_provided")
+
+        if problem_solver and solution_provided:
+
+            #  Update Ticket
+            ticket.status = "Closed"
+            ticket.problem_solver = problem_solver
+            ticket.solution_provided = solution_provided
+            ticket.resolved_at = timezone.now()
+            ticket.save()
+
+            #  Email Subject
+            subject = f"Your Help Desk Ticket {ticket.ticket_no} Has Been Resolved"
+
+            #  Email Message
+            message = f"""
+Dear {ticket.name},
+
+We are pleased to inform you that your Help Desk ticket has been successfully resolved.
+
+---------------------------------------
+Ticket Details
+---------------------------------------
+Ticket ID     : {ticket.ticket_no}
+Department    : {ticket.department}
+Issue Type    : {ticket.issue_type}
+Priority      : {ticket.priority}
+
+Resolved On   : {ticket.resolved_at.strftime('%d-%m-%Y %I:%M %p')}
+
+---------------------------------------
+
+Solution Provided:
+{ticket.solution_provided}
+
+If you have any further issues, please feel free to raise a new ticket.
+
+Regards,
+Help Desk Team
+"""
+
+            #  Send Email
+            send_mail(
+                subject,
+                message,
+                settings.EMAIL_HOST_USER,
+                [ticket.email],
+                fail_silently=False,
+            )
+
+            return redirect(f"/resolve-ticket/{ticket.ticket_no}/?success=1")
+
+    return render(request, "forms/resolve_ticket.html", {
+        "ticket": ticket,
+        "success": request.GET.get("success")
+    })
+
+    
 
 #dashboard    
 
