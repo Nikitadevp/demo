@@ -22,7 +22,7 @@ h2 {
   text-align: center;
 }
 
-/* 🔹 sab inputs same size */
+/*  sab inputs same size */
 input, select, textarea {
   width: 100%;
   padding: 12px;
@@ -53,7 +53,7 @@ button:hover {
   background: #0056b3;
 }
 
-/* 🔹 POPUP CSS */
+/*  POPUP CSS */
 .popup-overlay {
   display: none;
   position: fixed;
@@ -107,13 +107,13 @@ button:hover {
 .priority-options {
   display: flex;
   align-items: center;
-  gap: 50px;   /* 🔹 Urgent aur Normal ke beech proper space */
+  gap: 50px;   /*  Urgent aur Normal ke beech proper space */
 }
 
 .radio-item {
   display: flex;
   align-items: center;
-  gap: 10px;   /* 🔹 radio button aur text ke beech gap */
+  gap: 10px;   /* radio button aur text ke beech gap */
   font-size: 15px;
 }
 
