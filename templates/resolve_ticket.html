@@ -1,0 +1,80 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Resolve Ticket</title>
+
+    <!-- Correct CSS Path -->
+    <link rel="stylesheet" href="{% static 'css/resolve_ticket.css' %}">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<div class="container">
+
+    <h2>Resolve Help Desk Ticket</h2>
+
+    {% if success %}
+        <p style="color: green; text-align:center;">
+            Ticket successfully resolved.
+        </p>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+
+        <!-- Readonly Ticket Details -->
+
+        <label>Ticket No</label>
+        <input type="text" value="{{ ticket.ticket_no }}" readonly>
+
+        <label>Name</label>
+        <input type="text" value="{{ ticket.name }}" readonly>
+
+        <label>Email</label>
+        <input type="text" value="{{ ticket.email }}" readonly>
+
+        <label>Phone</label>
+        <input type="text" value="{{ ticket.phone }}" readonly>
+
+        <label>Department</label>
+        <input type="text" value="{{ ticket.department }}" readonly>
+
+        <label>Priority</label>
+        <input type="text" value="{{ ticket.priority }}" readonly>
+
+        <label>Status</label>
+        <input type="text" value="{{ ticket.status }}" readonly>
+
+        <label>TAT Deadline</label>
+        <input type="text" value="{{ ticket.tat_deadline }}" readonly>
+
+        <hr>
+
+        {% if ticket.status == "Open" %}
+
+            <label>Problem Solver Name</label>
+            <input type="text" name="problem_solver" required>
+
+            <label>Solution Provided</label>
+            <textarea name="solution_provided" rows="5" required></textarea>
+
+            <button type="submit">Mark as Resolved</button>
+
+        {% else %}
+
+            <h3>Resolution Details</h3>
+
+            <p><b>Problem Solver:</b> {{ ticket.problem_solver }}</p>
+            <p><b>Solution:</b> {{ ticket.solution_provided }}</p>
+            <p><b>Resolved At:</b> {{ ticket.resolved_at }}</p>
+
+        {% endif %}
+
+    </form>
+
+</div>
+
+</body>
+</html>
