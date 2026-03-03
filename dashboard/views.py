@@ -255,26 +255,44 @@ DEPARTMENTS = [
 
 #dashboard    
 
+
 def dashboard(request):
+    department = request.GET.get('department')
+    priority = request.GET.get('priority')
+    status = request.GET.get('status')
+
+    tickets = Ticket.objects.all()
+
+    if department:
+        tickets = tickets.filter(department=department)
+
+    if priority:
+        tickets = tickets.filter(priority=priority)
+
+    if status:
+        tickets = tickets.filter(status=status)
+
+    # -------- COUNTS --------
+    open_count = tickets.filter(status="Open").count()
+    closed_count = tickets.filter(status="Closed").count()
+    urgent_count = tickets.filter(priority="Urgent").count()
+    normal_count = tickets.filter(priority="Normal").count()
 
     context = {
-        "total": 20,
-        "open": 5,
-        "closed": 10,
-        "urgent": 2,
-        "tickets": [
-            {
-                "no": 1,
-                "name": "Printer Issue",
-                "department": "IT",
-                "priority": "High",
-                "status": "Open",
-                "date": "2026-02-28"
-            }
-        ]
+        'departments': DEPARTMENTS,
+        'department': department,
+        'priority': priority,
+        'status': status,
+        'total_tickets': tickets.count(),
+        'open_tickets': open_count,
+        'closed_tickets': closed_count,
+        'urgent_tickets': urgent_count,
+        'normal_tickets': normal_count,
+        'recent_tickets': tickets.order_by('-created_at')[:10],
     }
 
-    return render(request, "dashboard.html", context)
+    #  Correct according to your structure
+    return render(request, 'dashboard.html', context)
 
 
 
