@@ -164,7 +164,7 @@ def resolve_ticket(request, ticket_no):
 
     # Prevent re-resolving already closed tickets
     if ticket.status == "Closed":
-        return render(request, "forms/resolve_ticket.html", {
+        return render(request, "dashboard/resolve_ticket.html", {
             "ticket": ticket,
             "success": request.GET.get("success")
         })
@@ -176,17 +176,17 @@ def resolve_ticket(request, ticket_no):
 
         if problem_solver and solution_provided:
 
-            #  Update Ticket
+            # Update Ticket
             ticket.status = "Closed"
             ticket.problem_solver = problem_solver
             ticket.solution_provided = solution_provided
             ticket.resolved_at = timezone.now()
             ticket.save()
 
-            #  Email Subject
+            # Email Subject
             subject = f"Your Help Desk Ticket {ticket.ticket_no} Has Been Resolved"
 
-            #  Email Message
+            # Email Message
             message = f"""
 Dear {ticket.name},
 
@@ -213,7 +213,7 @@ Regards,
 Help Desk Team
 """
 
-            #  Send Email
+            # Send Email
             send_mail(
                 subject,
                 message,
@@ -224,11 +224,10 @@ Help Desk Team
 
             return redirect(f"/resolve-ticket/{ticket.ticket_no}/?success=1")
 
-    return render(request, "forms/resolve_ticket.html", {
+    return render(request, "dashboard/resolve_ticket.html", {
         "ticket": ticket,
         "success": request.GET.get("success")
     })
-
 
 DEPARTMENTS = [
     "Accounts and Finance",
