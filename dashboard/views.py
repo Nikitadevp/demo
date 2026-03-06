@@ -65,8 +65,98 @@ def calculate_tat_deadline(priority):
 
 
 
-#  Raise Ticket View
+# #  Raise Ticket View
+# def raise_ticket(request):
+#     if request.method == "POST":
+
+#         name = request.POST.get("name")
+#         email = request.POST.get("email")
+#         phone = request.POST.get("phone")
+#         department = request.POST.get("department")
+#         issue_type = request.POST.get("issue_type")
+#         priority = request.POST.get("priority")
+
+#         #  Calculate TAT Deadline
+#         tat_deadline = calculate_tat_deadline(priority)
+
+#         # Save Ticket
+#         ticket = Ticket.objects.create(
+#             name=name,
+#             email=email,
+#             phone=phone,
+#             department=department,
+#             issue_type=issue_type,
+#             priority=priority,
+#             tat_deadline=tat_deadline,
+#         )
+
+#         # Resolve URL (Safe way)
+#         resolve_url = request.build_absolute_uri(
+#             reverse("resolve_ticket", args=[ticket.ticket_no])
+#         )
+
+#         # Department Email Mapping
+#         department_emails = {
+#             "Accounts and Finance": "alok.agrawal@rajat-group.com",
+#             "Construction": "bagga.rbpl@rajat-group.com",
+#             "CRM HO": "crm.rbpl@rajat-group.com",
+#             "DME": "dme.rbpl@rajat-group.com",
+#             "Electrical and Plumbing": "saurav.rbpl@gmail.com",
+#             "Engineering Highpark": "highpark@rajat-group.com",
+#             "Engineering Sampoorna": "dipesh.chaudhary@rajat-group.com",
+#             "Finishing Sampoorna": "narendra04081994@gmail.com",
+#             "HR": "ea.rbpl@rajat-group.com",
+#             "IT and Admin": "it.rbpl@rajat-group.com",
+#             "Maintenance Highpark": "mainteam.hp@gmail.com",
+#             "Maintenance Sampoorna": "mainteam.sh@gmail.com",
+#             "Project Planning": "planning.rbpl@rajat-group.com",
+#             "Purchase and Security": "ravi.jain@rajat-group.com",
+#             "Sales and Marketing": "vinod.mishra@rajat-group.com",
+#             "CRM Sampoorna": "crm3.rbpl@gmail.com",
+#             "CRM Highpark": "crm2.rbpl@gmail.com",
+#             "JNRDME": "jrdme.rbpl@rajat-group.com",
+#         }
+
+#         dept_email = department_emails.get(department)
+
+#         subject = f"New Help Desk Ticket - {ticket.ticket_no}"
+
+#         message = f"""
+# Dear Team,
+
+# A new Help Desk ticket has been created.
+
+# Ticket ID   : {ticket.ticket_no}
+# Department  : {department}
+# Priority    : {priority}
+# Issue Type  : {issue_type}
+
+# Resolution Time: {tat_deadline.strftime('%d-%m-%Y %I:%M %p')}
+
+# Resolve Link:
+# {resolve_url}
+
+# -- Help Desk System
+# """
+
+#         if dept_email:
+#             try:
+#                 send_mail(
+#                     subject,
+#                     message,
+#                     settings.EMAIL_HOST_USER,
+#                     [dept_email],
+#                     fail_silently=True,  # avoid 500 error in deploy
+#                 )
+#             except Exception:
+#                 pass
+
+#         return redirect(f"{reverse('raise_ticket')}?success=1")
+
+#     success = request.GET.get("success")
+#     return render(request, "ticket_form.html", {"success": success})  
 def raise_ticket(request):
+
     if request.method == "POST":
 
         name = request.POST.get("name")
@@ -76,10 +166,8 @@ def raise_ticket(request):
         issue_type = request.POST.get("issue_type")
         priority = request.POST.get("priority")
 
-        #  Calculate TAT Deadline
         tat_deadline = calculate_tat_deadline(priority)
 
-        # Save Ticket
         ticket = Ticket.objects.create(
             name=name,
             email=email,
@@ -90,12 +178,10 @@ def raise_ticket(request):
             tat_deadline=tat_deadline,
         )
 
-        # Resolve URL (Safe way)
         resolve_url = request.build_absolute_uri(
             reverse("resolve_ticket", args=[ticket.ticket_no])
         )
 
-        # Department Email Mapping
         department_emails = {
             "Accounts and Finance": "alok.agrawal@rajat-group.com",
             "Construction": "bagga.rbpl@rajat-group.com",
@@ -122,39 +208,30 @@ def raise_ticket(request):
         subject = f"New Help Desk Ticket - {ticket.ticket_no}"
 
         message = f"""
-Dear Team,
-
 A new Help Desk ticket has been created.
 
-Ticket ID   : {ticket.ticket_no}
-Department  : {department}
-Priority    : {priority}
-Issue Type  : {issue_type}
-
-Resolution Time: {tat_deadline.strftime('%d-%m-%Y %I:%M %p')}
+Ticket ID: {ticket.ticket_no}
+Department: {department}
+Priority: {priority}
+Issue: {issue_type}
 
 Resolve Link:
 {resolve_url}
-
--- Help Desk System
 """
 
         if dept_email:
-            try:
-                send_mail(
-                    subject,
-                    message,
-                    settings.EMAIL_HOST_USER,
-                    [dept_email],
-                    fail_silently=True,  # avoid 500 error in deploy
-                )
-            except Exception:
-                pass
+            send_mail(
+                subject,
+                message,
+                settings.EMAIL_HOST_USER,
+                [dept_email],
+                fail_silently=True
+            )
 
         return redirect(f"{reverse('raise_ticket')}?success=1")
 
     success = request.GET.get("success")
-    return render(request, "ticket_form.html", {"success": True})
+    return render(request, "ticket_form.html", {"success": success})
 
 
 #resolve_ticket    
