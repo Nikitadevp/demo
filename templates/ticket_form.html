@@ -90,6 +90,14 @@
   </div>
 </div>
 {% endif %}
+<script>
+  window.onload = function() {
+    const params = new URLSearchParams(window.location.search);
+    if(params.get("success")){
+        document.getElementById("successPopup").style.display = "flex";
+    }
+  }
+  </script>
 
 
 
