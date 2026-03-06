@@ -78,7 +78,7 @@
 </div>
 
 <!-- SUCCESS POPUP -->
-{% if request.GET.success %}
+{% if success %}
 <div class="popup-overlay">
   <div class="popup-box">
     <h3>Ticket Raised Successfully!</h3>
@@ -90,6 +90,11 @@
   </div>
 </div>
 {% endif %}
+<script>
+  setTimeout(function(){
+    window.location.href="/raise-ticket/";
+  },3000);
+</script>
 
 
 
