@@ -147,7 +147,7 @@
                             {% endif %}
                         </td>
 
-                        <td>{{ t.created_at|date:"d M Y H:i" }}</td>
+                        <td>{{ t.created_at|localtime|date:"d M Y H:i" }}</td>
                     </tr>
                 {% empty %}
                     <tr>
