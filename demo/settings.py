@@ -188,4 +188,4 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
 EMAIL_HOST_USER = "reply.rbpl@gmail.com"
-EMAIL_HOST_PASSWORD = "rytb gccs tuyc kgnm"
+EMAIL_HOST_PASSWORD = "qbyh jktz mgsf zlsx"
