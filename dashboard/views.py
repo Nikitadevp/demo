@@ -249,7 +249,7 @@ def resolve_ticket(request, ticket_no):
 
     # Prevent re-resolving already closed tickets
     if ticket.status == "Closed":
-        return render(request, "dashboard/resolve_ticket.html", {
+        return render(request, "templates/resolve_ticket.html", {
             "ticket": ticket,
             "success": request.GET.get("success")
         })
@@ -309,7 +309,7 @@ Help Desk Team
 
             return redirect(f"/resolve-ticket/{ticket.ticket_no}/?success=1")
 
-    return render(request, "dashboard/resolve_ticket.html", {
+    return render(request, "templates/resolve_ticket.html", {
         "ticket": ticket,
         "success": request.GET.get("success")
     })
