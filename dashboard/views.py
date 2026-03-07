@@ -309,10 +309,10 @@ Help Desk Team
 
             return redirect(f"/resolve-ticket/{ticket.ticket_no}/?success=1")
 
-    return render(request, "templates/resolve_ticket.html", {
-        "ticket": ticket,
-        "success": request.GET.get("success")
-    })
+    return render(request, "resolve_ticket.html", {
+    "ticket": ticket,
+    "success": request.GET.get("success")
+})
 
 DEPARTMENTS = [
     "Accounts and Finance",
