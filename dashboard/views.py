@@ -266,26 +266,23 @@ def resolve_ticket(request, ticket_no):
 
             # Email Message
             message = f"""
-Dear {ticket.name},
+Dear Team,
 
-We are pleased to inform you that your Help Desk ticket has been successfully resolved.
+A new Help Desk ticket has been successfully created and assigned to your department.
 
----------------------------------------
-Ticket Details
----------------------------------------
-Ticket ID     : {ticket.ticket_no}
-Department    : {ticket.department}
-Issue Type    : {ticket.issue_type}
-Priority      : {ticket.priority}
 
-Resolved On   : {ticket.resolved_at.strftime('%d-%m-%Y %I:%M %p')}
+Ticket ID   : {ticket.ticket_no}
+Department  : {department}
+Priority    : {priority}
+Issue Type  : {issue_type}
 
----------------------------------------
+Resolution Time: {tat_deadline.strftime('%d-%m-%Y %I:%M %p')}
 
-Solution Provided:
-{ticket.solution_provided}
+To resolve this ticket, please click the link below:
+{resolve_url}
 
-If you have any further issues, please feel free to raise a new ticket.
+We kindly request you to review the above ticket and proceed with the required action at the earliest possible.
+
 
 Regards,
 Help Desk Team
