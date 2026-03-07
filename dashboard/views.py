@@ -208,15 +208,22 @@ def raise_ticket(request):
         subject = f"New Help Desk Ticket - {ticket.ticket_no}"
 
         message = f"""
-A new Help Desk ticket has been created.
+Dear Team,
 
-Ticket ID: {ticket.ticket_no}
-Department: {department}
-Priority: {priority}
-Issue: {issue_type}
+A new Help Desk ticket has been successfully created and assigned to your department.
 
-Resolve Link:
+
+Ticket ID   : {ticket.ticket_no}
+Department  : {department}
+Priority    : {priority}
+Issue Type  : {issue_type}
+
+Resolution Time: {tat_deadline.strftime('%d-%m-%Y %I:%M %p')}
+
+To resolve this ticket, please click the link below:
 {resolve_url}
+
+We kindly request you to review the above ticket and proceed with the required action at the earliest possible.
 """
 
         if dept_email:
@@ -266,23 +273,26 @@ def resolve_ticket(request, ticket_no):
 
             # Email Message
             message = f"""
-Dear Team,
+Dear {ticket.name},
 
-A new Help Desk ticket has been successfully created and assigned to your department.
+We are pleased to inform you that your Help Desk ticket has been successfully resolved.
 
+---------------------------------------
+Ticket Details
+---------------------------------------
+Ticket ID     : {ticket.ticket_no}
+Department    : {ticket.department}
+Issue Type    : {ticket.issue_type}
+Priority      : {ticket.priority}
 
-Ticket ID   : {ticket.ticket_no}
-Department  : {department}
-Priority    : {priority}
-Issue Type  : {issue_type}
+Resolved On   : {ticket.resolved_at.strftime('%d-%m-%Y %I:%M %p')}
 
-Resolution Time: {tat_deadline.strftime('%d-%m-%Y %I:%M %p')}
+---------------------------------------
 
-To resolve this ticket, please click the link below:
-{resolve_url}
+Solution Provided:
+{ticket.solution_provided}
 
-We kindly request you to review the above ticket and proceed with the required action at the earliest possible.
-
+If you have any further issues, please feel free to raise a new ticket.
 
 Regards,
 Help Desk Team
