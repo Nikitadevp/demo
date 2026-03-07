@@ -189,3 +189,6 @@ EMAIL_USE_TLS = True
 
 EMAIL_HOST_USER = "reply.rbpl@gmail.com"
 EMAIL_HOST_PASSWORD = "qbyh jktz mgsf zlsx"
+
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
