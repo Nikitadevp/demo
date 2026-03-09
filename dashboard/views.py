@@ -286,8 +286,10 @@ Resolved On   : {ticket.resolved_at.strftime('%d-%m-%Y %I:%M %p')}
 
 ---------------------------------------
 
-Solution Provided:
+Solution Provided by:
 {ticket.solution_provided}
+
+
 
 If you have any further issues, please feel free to raise a new ticket.
 
