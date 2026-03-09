@@ -282,7 +282,7 @@ Department    : {ticket.department}
 Issue Type    : {ticket.issue_type}
 Priority      : {ticket.priority}
 
-Resolved On   : {ticket.resolved_at.strftime('%d-%m-%Y %I:%M %p')}
+Resolved On   : {timezone.localtime(ticket.resolved_at).strftime('%d-%m-%Y %I:%M %p')}
 
 ---------------------------------------
 
