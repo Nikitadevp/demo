@@ -237,7 +237,7 @@ We kindly request you to review the above ticket and proceed with the required a
 
         return redirect(f"{reverse('raise_ticket')}?success=1")
 
-    success = request.GET.get("success")
+    success = request.GET.get("success") == "1"
     return render(request, "ticket_form.html", {"success": success})
 
 
