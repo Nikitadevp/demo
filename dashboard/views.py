@@ -218,7 +218,7 @@ Department  : {department}
 Priority    : {priority}
 Issue Type  : {issue_type}
 
-Resolved On : {timezone.localtime(ticket.resolved_at).strftime('%d-%m-%Y %I:%M %p')}
+Resolution Time: {tat_deadline.strftime('%d-%m-%Y %I:%M %p')}
 
 To resolve this ticket, please click the link below:
 {resolve_url}
