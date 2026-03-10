@@ -127,12 +127,12 @@ WSGI_APPLICATION = 'demo.wsgi.application'
 
 # if "DATABASE_URL" in os.environ:
 
-DATABASES = {
-    'default': dj_database_url.config(
-        conn_max_age=600,
-        ssl_require=True
-    )
-}
+#     DATABASES = {
+#         "default": dj_database_url.config(
+#             conn_max_age=600,
+#             ssl_require=True
+#         )
+#     }
 
 # else:
 
@@ -142,6 +142,19 @@ DATABASES = {
 #             "NAME": BASE_DIR / "db.sqlite3",
 #         }
 #     }
+
+DATABASES = {
+    'default': dj_database_url.parse(
+        "postgresql://demo_db_zfo0_user:oscZumsLVu9aMq3GrzFmJnIBcgfBUbKI@dpg-d6jan41r0fns73bkesc0-a.singapore-postgres.render.com/demo_db_zfo0"
+    )
+}
+
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         conn_max_age=600,
+#         ssl_require=True
+#     )
+# }
 
 
 
