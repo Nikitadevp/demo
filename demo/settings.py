@@ -105,13 +105,13 @@ WSGI_APPLICATION = 'demo.wsgi.application'
 # } 
 
 
-DATABASES = {
-    'default': dj_database_url.config(
-        default="sqlite:///db.sqlite3",
-        conn_max_age=600,
-        ssl_require=False
-    )
-}
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         default="sqlite:///db.sqlite3",
+#         conn_max_age=600,
+#         ssl_require=False
+#     )
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
@@ -127,12 +127,12 @@ DATABASES = {
 
 # if "DATABASE_URL" in os.environ:
 
-#     DATABASES = {
-#         "default": dj_database_url.config(
-#             conn_max_age=600,
-#             ssl_require=True
-#         )
-#     }
+DATABASES = {
+    'default': dj_database_url.config(
+        conn_max_age=600,
+        ssl_require=True
+    )
+}
 
 # else:
 
