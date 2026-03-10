@@ -29,7 +29,7 @@
     <img src="{% static 'images/ticket_logo.JPG' %}" alt="Help Desk Logo">
   </div>
 
-  <form method="post" action="{% url 'raise_ticket' %}">
+  <form method="POST" action="{% url 'raise_ticket' %}">
     {% csrf_token %}
 
     <input type="text" name="name" placeholder="Full Name" required>
