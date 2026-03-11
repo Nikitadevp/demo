@@ -16,6 +16,7 @@ body {
   background: white;
   padding: 20px;
   border-radius: 10px;
+  width:100%;
 }
 
 h2 {
@@ -155,7 +156,6 @@ button:hover {
 }
 
 /* MOBILE RESPONSIVE */
-
 @media (max-width:768px){
 
   body{
@@ -185,4 +185,4 @@ button:hover {
     padding:20px;
   }
   
-  }
+}
