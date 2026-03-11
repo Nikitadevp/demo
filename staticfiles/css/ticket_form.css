@@ -10,7 +10,8 @@ body {
 
 .container {
   max-width: 500px;
-  margin: 40px 0;
+  margin: 40px auto;
+
   background: white;
   padding: 20px;
   border-radius: 10px;
@@ -130,7 +131,9 @@ button:hover {
   justify-content: flex-end;
   padding: 40px 60px;
   gap: 60px;
+  background: transparent;
 }
+
 /* LEFT IMAGE */
 .left-image-box {
   display: none;
@@ -157,7 +160,6 @@ button:hover {
   body{
     background-size:cover;
     background-position:center;
-    background-repeat:no-repeat;
   }
 
   .page-wrapper{
@@ -168,9 +170,19 @@ button:hover {
   }
 
   .container{
-    margin:20px auto;
+    margin:20px auto !important;
+    margin-left:0 !important;
+    transform:none !important;
     width:95%;
     max-width:420px;
+  }
+
+  .priority-options{
+    gap:25px;
+  }
+
+  .form-logo-box img{
+    max-width:220px;
   }
 
 }
