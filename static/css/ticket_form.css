@@ -154,22 +154,35 @@ button:hover {
   to   { transform: scale(1); opacity: 1; }
 }
 
+/* MOBILE RESPONSIVE */
+
 @media (max-width:768px){
 
-  .container{
-  margin:20px auto;
-  margin-left:auto;
-  transform:none;
-  width:95%;
+  body{
+    background-size:cover;
+    background-position:center;
   }
   
-  body{
-  background-size:cover;
-  background-position:center;
+  .container{
+    margin:20px auto;
+    margin-left:auto;
+    transform:none;
+    width:95%;
+    max-width:95%;
+    padding:18px;
+  }
+  
+  .priority-options{
+    gap:25px;
   }
   
   .form-logo-box img{
-  max-width:220px;
+    max-width:220px;
+  }
+  
+  .page-wrapper{
+    justify-content:center;
+    padding:20px;
   }
   
   }
