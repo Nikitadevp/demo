@@ -6,14 +6,13 @@ body {
   background-repeat: no-repeat;
   background-position: left center;
   background-size: 59%;
-  background-attachment: scroll;
 }
 
 .container {
   max-width: 500px;
   margin: 40px auto;
-  margin-left: 60%;   /*  right side shift */
-  transform: translateX(-20%);
+  margin-left: 70%;   /*  right side shift */
+  transform: translateX(-40%);
   background: white;
   padding: 20px;
   border-radius: 10px;
@@ -29,7 +28,7 @@ input, select, textarea {
   width: 100%;
   padding: 12px;
   margin: 10px 0;
-  font-size: 16px;
+  font-size: 14px;
   border: 1px solid #ccc;
   border-radius: 6px;
   box-sizing: border-box;
