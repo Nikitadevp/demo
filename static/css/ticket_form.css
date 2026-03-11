@@ -153,3 +153,23 @@ button:hover {
   from { transform: scale(0.8); opacity: 0; }
   to   { transform: scale(1); opacity: 1; }
 }
+
+@media (max-width:768px){
+
+  .container{
+  margin:20px auto;
+  margin-left:auto;
+  transform:none;
+  width:95%;
+  }
+  
+  body{
+  background-size:cover;
+  background-position:center;
+  }
+  
+  .form-logo-box img{
+  max-width:220px;
+  }
+  
+  }
