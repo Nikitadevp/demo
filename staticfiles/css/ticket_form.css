@@ -160,7 +160,7 @@ button:hover {
 @media (max-width:768px){
 
   body{
-    background-size:cover;
+    background-size:none;
     background-position:center;
   }
 
