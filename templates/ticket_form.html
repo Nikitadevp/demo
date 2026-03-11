@@ -1,18 +1,19 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
 <head>
-  <meta charset="UTF-8">
-
-  <!-- Mobile Responsive -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>Help Desk - Raise Ticket</title>
 
-  <!-- CSS -->
+  <!-- Correct CSS Path -->
   <link rel="stylesheet" href="{% static 'css/ticket_form.css' %}">
 
-  {% if success %}
-  <meta http-equiv="refresh" content="4;url=/raise-ticket/">
-  {% endif %}
+{% if success %}
+<meta http-equiv="refresh" content="4;url=/raise-ticket/">
+{% endif %}
+
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
+<body>
     
 <div class="page-wrapper">
 
