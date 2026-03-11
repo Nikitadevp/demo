@@ -184,7 +184,8 @@ button:hover {
   }
 
   .form-logo-box img{
-    max-width:220px;
+    max-width:320px;   /* logo bada */
+    width:100%;
   }
 
 }  
