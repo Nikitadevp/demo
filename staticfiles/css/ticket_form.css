@@ -1,3 +1,4 @@
+ 
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -11,7 +12,8 @@ body {
 .container {
   max-width: 500px;
   margin: 40px auto;
-
+  margin-left: 70%;   /*  right side shift */
+  transform: translateX(-40%);
   background: white;
   padding: 20px;
   border-radius: 10px;
@@ -185,4 +187,4 @@ button:hover {
     max-width:220px;
   }
 
-}
+}  
