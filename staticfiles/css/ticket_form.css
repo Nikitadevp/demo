@@ -5,7 +5,7 @@ body {
   background-image: url("../images/image1.JPG");
   background-repeat: no-repeat;
   background-position: left center;
-  background-size: cover;
+  background-size: 59%;
 }
 
 .container {
@@ -167,10 +167,10 @@ button:hover {
     margin:20px auto;
     margin-left:auto;
     transform:none;
-    left:0;
     width:95%;
     max-width:95%;
     padding:18px;
+    left:0;
   }
   
   .priority-options{
