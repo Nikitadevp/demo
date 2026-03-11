@@ -1,3 +1,4 @@
+
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -16,7 +17,6 @@ body {
   background: white;
   padding: 20px;
   border-radius: 10px;
-  width:100%;
 }
 
 h2 {
@@ -153,36 +153,4 @@ button:hover {
 @keyframes popupFade {
   from { transform: scale(0.8); opacity: 0; }
   to   { transform: scale(1); opacity: 1; }
-}
-
-/* MOBILE RESPONSIVE */
-@media (max-width:768px){
-
-  body{
-    background-size:cover;
-    background-position:center;
-  }
-  
-  .container{
-    margin:20px auto;
-    margin-left:auto;
-    transform:none;
-    width:95%;
-    max-width:95%;
-    padding:18px;
-  }
-  
-  .priority-options{
-    gap:25px;
-  }
-  
-  .form-logo-box img{
-    max-width:220px;
-  }
-  
-  .page-wrapper{
-    justify-content:center;
-    padding:20px;
-  }
-  
 }
