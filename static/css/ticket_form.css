@@ -160,32 +160,38 @@ button:hover {
 @media (max-width:768px){
 
   body{
-    background-size:none;
+    background-image:none;     /* phone me image hide */
     background-position:center;
   }
 
   .page-wrapper{
     flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    padding:20px;
+    align-items:flex-start;    /* center ki jagah left */
+    justify-content:flex-start;
+    padding:10px 10px;         /* upar ka space kam */
   }
 
   .container{
-    margin:20px auto !important;
-    margin-left:10 !important;
+    margin:5px 0 !important;   /* upar ka gap remove */
+    margin-left:10px !important;
     transform:none !important;
-    width:95%;
+    width:94%;
     max-width:420px;
+  }
+
+  .form-logo-box{
+    margin-top:0;
+    margin-bottom:10px;
+    text-align:left;           /* logo left */
+  }
+
+  .form-logo-box img{
+    max-width:300px;
+    width:100%;
   }
 
   .priority-options{
     gap:25px;
   }
 
-  .form-logo-box img{
-    max-width:320px;   /* logo bada */
-    width:100%;
-  }
-
-}  
+}
