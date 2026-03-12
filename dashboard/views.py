@@ -372,6 +372,8 @@ def dashboard(request):
         'urgent_tickets': urgent_count,
         'normal_tickets': normal_count,
         'recent_tickets': tickets.order_by('-created_at')[:10],
+
+        
     }
 
     #  Correct according to your structure
