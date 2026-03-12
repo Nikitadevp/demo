@@ -158,34 +158,35 @@ button:hover {
 
 /* MOBILE RESPONSIVE */
 
+@media (max-width:768px){ 
 
-@media (max-width:768px){
-
-  body{
+  html, body{
     background-image:none;
     margin:0;
     padding:0;
+    overflow:hidden;          /* scroll remove */
+    height:100%;
   }
 
   .page-wrapper{
     flex-direction:column;
     align-items:flex-start;
     justify-content:flex-start;
-    padding:10px;
-    min-height:auto;        /* height fix */
+    padding:5px 10px;         /* upar niche space kam */
+    min-height:auto;
   }
 
   .container{
-    margin:0 !important;    /* upar niche space remove */
+    margin:0 !important;
     margin-left:10px !important;
     transform:none !important;
     width:95%;
     max-width:420px;
-    padding:15px;
+    padding:10px 15px;        /* niche ka space kam */
   }
 
   .form-logo-box{
-    margin:0 0 10px 0;      /* logo ke upar niche space remove */
+    margin:0 0 5px 0;         /* logo ke niche space kam */
     text-align:left;
   }
 
@@ -196,6 +197,7 @@ button:hover {
 
   button{
     margin-bottom:0;
+    padding:10px;             /* button height thodi kam */
   }
 
 }
