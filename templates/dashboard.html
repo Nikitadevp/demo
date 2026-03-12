@@ -165,12 +165,12 @@
             <div class="chart-grid">
                 <div class="chart-card">
                     <h3>Status Wise Tickets</h3>
-                    <img src="{% static 'images/status_chart.png' %}" alt="Status Chart">
+                    <img src="data:image/png;base64,{{ status_chart }}">
                 </div>   
                 
                 <div class="chart-card">
                     <h3>Priority Wise Tickets</h3>
-                    <img src="{% static 'images/priority_chart.png' %}" alt="Priority Chart">
+                    <img src="data:image/png;base64,{{ priority_chart }}">
                 </div>
             </div>      
         </div> 
