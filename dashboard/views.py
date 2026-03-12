@@ -5,6 +5,9 @@ from django.utils import timezone
 from datetime import timedelta, time
 from .models import Ticket
 from django.urls import reverse
+import matplotlib.pyplot as plt
+import io
+import base64
 
 
 
