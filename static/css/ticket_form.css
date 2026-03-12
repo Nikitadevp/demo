@@ -157,22 +157,25 @@ button:hover {
 }
 
 /* MOBILE RESPONSIVE */
+
+
 @media (max-width:768px){
 
   body{
-    background-image:none;     /* phone me image hide */
+    background-image:none;
     background-position:center;
   }
 
   .page-wrapper{
     flex-direction:column;
-    align-items:flex-start;    /* center ki jagah left */
+    align-items:flex-start;
     justify-content:flex-start;
-    padding:10px 10px;         /* upar ka space kam */
+    padding:10px;
+    min-height:auto;   /* niche ka extra space remove */
   }
 
   .container{
-    margin:5px 0 !important;   /* upar ka gap remove */
+    margin:5px 0 !important;
     margin-left:10px !important;
     transform:none !important;
     width:94%;
@@ -182,12 +185,16 @@ button:hover {
   .form-logo-box{
     margin-top:0;
     margin-bottom:10px;
-    text-align:left;           /* logo left */
+    text-align:left;
   }
 
   .form-logo-box img{
     max-width:300px;
     width:100%;
+  }
+
+  button{
+    margin-bottom:0;   /* submit ke niche space remove */
   }
 
   .priority-options{
