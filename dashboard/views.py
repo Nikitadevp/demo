@@ -340,12 +340,14 @@ DEPARTMENTS = [
 
 
 def dashboard(request):
+
     department = request.GET.get('department')
     priority = request.GET.get('priority')
     status = request.GET.get('status')
 
     tickets = Ticket.objects.all()
 
+    # -------- FILTERS --------
     if department:
         tickets = tickets.filter(department=department)
 
@@ -361,23 +363,64 @@ def dashboard(request):
     urgent_count = tickets.filter(priority="Urgent").count()
     normal_count = tickets.filter(priority="Normal").count()
 
+    # ================================
+    # STATUS CHART (Open vs Closed)
+    # ================================
+
+    buffer = io.BytesIO()
+
+    plt.figure(figsize=(4,3))
+    plt.bar(["Open", "Closed"], [open_count, closed_count])
+    plt.title("Status Wise Tickets")
+    plt.tight_layout()
+
+    plt.savefig(buffer, format="png")
+    buffer.seek(0)
+
+    status_chart = base64.b64encode(buffer.getvalue()).decode()
+
+    plt.close()
+
+    # ================================
+    # PRIORITY CHART (Urgent vs Normal)
+    # ================================
+
+    buffer2 = io.BytesIO()
+
+    plt.figure(figsize=(4,3))
+    plt.bar(["Urgent", "Normal"], [urgent_count, normal_count])
+    plt.title("Priority Wise Tickets")
+    plt.tight_layout()
+
+    plt.savefig(buffer2, format="png")
+    buffer2.seek(0)
+
+    priority_chart = base64.b64encode(buffer2.getvalue()).decode()
+
+    plt.close()
+
+    # -------- CONTEXT --------
+
     context = {
         'departments': DEPARTMENTS,
         'department': department,
         'priority': priority,
         'status': status,
+
         'total_tickets': tickets.count(),
         'open_tickets': open_count,
         'closed_tickets': closed_count,
         'urgent_tickets': urgent_count,
         'normal_tickets': normal_count,
+
         'recent_tickets': tickets.order_by('-created_at')[:10],
 
-        
+        # charts
+        'status_chart': status_chart,
+        'priority_chart': priority_chart,
     }
 
-    #  Correct according to your structure
-    return render(request, 'dashboard.html', context)
+    return render(request, "dashboard.html", context)
 
 
 
