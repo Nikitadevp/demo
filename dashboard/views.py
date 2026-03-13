@@ -160,7 +160,13 @@ def calculate_tat_deadline(priority):
 #     return render(request, "ticket_form.html", {"success": success})  
 def raise_ticket(request):
 
+    print("VIEW HIT")
+
     if request.method == "POST":
+
+        print("POST REQUEST RECEIVED")
+        print(request.POST)
+
 
         name = request.POST.get("name")
         email = request.POST.get("email")
@@ -180,6 +186,8 @@ def raise_ticket(request):
             priority=priority,
             tat_deadline=tat_deadline,
         )
+
+        print("TICKET CREATED:", ticket.ticket_no)
 
         resolve_url = request.build_absolute_uri(
             reverse("resolve_ticket", args=[ticket.ticket_no])
