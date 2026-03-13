@@ -1,94 +1,107 @@
 {% load static %}
+
 <!DOCTYPE html>
+
 <html>
 <head>
 
-    <meta charset="UTF-8">
+```
+<meta charset="UTF-8">
 
-    <!-- Mobile Responsive -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Mobile Responsive -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Help Desk - Raise Ticket</title>
+<title>Help Desk - Raise Ticket</title>
 
-    <!-- CSS File -->
-    <link rel="stylesheet" href="{% static 'css/ticket_form.css' %}">
+<!-- CSS File -->
+<link rel="stylesheet" href="{% static 'css/ticket_form.css' %}">
 
-    {% if success %}
-    <meta http-equiv="refresh" content="4;url=/raise-ticket/">
-    {% endif %}
+{% if success %}
+<meta http-equiv="refresh" content="4;url=/raise-ticket/">
+{% endif %}
+```
 
 </head>
 
 <body>
-    
+
 <div class="page-wrapper">
 
   <!-- LEFT SIDE IMAGE -->
+
   <div class="left-image-box">
     <img src="{% static 'images/image1.JPG' %}" alt="Image">
   </div>
 
 <div class="container">
 
-  <!--  LOGO INSIDE WHITE BOX -->
-  <div class="form-logo-box">
-    <img src="{% static 'images/ticket_logo.JPG' %}" alt="Help Desk Logo">
+```
+<!-- LOGO INSIDE WHITE BOX -->
+<div class="form-logo-box">
+  <img src="{% static 'images/ticket_logo.JPG' %}" alt="Help Desk Logo">
+</div>
+
+<form method="POST" action="{% url 'raise_ticket' %}">
+  {% csrf_token %}
+
+  <input type="text" name="name" placeholder="Full Name" required>
+  <input type="email" name="email" placeholder="Email" required>
+  <input type="text" name="phone" placeholder="Phone No (Don't add +91)" required>
+
+  <select name="department" required>
+    <option value="">Select Department</option>
+    <option>Accounts and Finance</option>
+    <option>Construction</option>
+    <option>CRM HO</option>
+    <option>DME</option>
+    <option>Electrical and Plumbing</option>
+    <option>Engineering Highpark</option>
+    <option>Engineering Sampoorna</option>
+    <option>Finishing Sampoorna</option>
+    <option>HR</option>
+    <option>IT and Admin</option>
+    <option>Maintenance Sampoorna</option>
+    <option>Maintenance Highpark</option>
+    <option>Project Planning</option>
+    <option>Purchase and Security</option>
+    <option>Sales and Marketing</option>
+    <option>CRM Sampoorna</option>
+    <option>CRM Highpark</option>
+    <option>JNRDME</option>
+  </select>
+
+  <input type="text" name="issue_type" placeholder="What type of issue?" required>
+
+  <!-- PRIORITY -->
+  <div class="priority-box">
+    <span class="priority-title">Select Priority</span>
+
+    <div class="priority-options">
+      <label class="radio-item">
+        <input type="radio" name="priority" value="Urgent" required>
+        Urgent
+      </label>
+
+      <label class="radio-item">
+        <input type="radio" name="priority" value="Normal" required>
+        Normal
+      </label>
+    </div>
   </div>
 
-  <form method="POST" action="{% url 'raise_ticket' %}">
-    {% csrf_token %}
+  <button type="submit">Submit Ticket</button>
 
-    <input type="text" name="name" placeholder="Full Name" required>
-    <input type="email" name="email" placeholder="Email" required>
-    <input type="text" name="phone" placeholder="Phone No (Don't add +91)" required>
+</form>
+```
 
-    <select name="department" required>
-      <option value="">Select Department</option>
-      <option>Accounts and Finance</option>
-      <option>Construction</option>
-      <option>CRM HO</option>
-      <option>DME</option>
-      <option>Electrical and Plumbing</option>
-      <option>Engineering Highpark</option>
-      <option>Engineering Sampoorna</option>
-      <option>Finishing Sampoorna</option>
-      <option>HR</option>
-      <option>IT and Admin</option>
-      <option>Maintenance Sampoorna</option>
-      <option>Maintenance Highpark</option>
-      <option>Project Planning</option>
-      <option>Purchase and Security</option>
-      <option>Sales and Marketing</option>
-      <option>CRM Sampoorna</option>
-      <option>CRM Highpark</option>
-      <option>JNRDME</option>
-    </select>
+  </div>
 
-    <input type="text" name="issue_type" placeholder="What type of issue?" required>
-
-    <!--  PRIORITY -->
-    <div class="priority-box">
-      <span class="priority-title">Select Priority</span>
-
-      <div class="priority-options">
-        <label class="radio-item">
-          <input type="radio" name="priority" value="Urgent" required>
-          Urgent
-        </label>
-
-        <label class="radio-item">
-          <input type="radio" name="priority" value="Normal" required>
-          Normal
-        </label>
-      </div>
-    </div>
-
-    <button type="submit">Submit Ticket</button>
-  </form>
 </div>
 
 <!-- SUCCESS POPUP -->
+
 {% if success %}
+
 <div class="popup-overlay">
   <div class="popup-box">
     <h3>Ticket Raised Successfully!</h3>
@@ -100,12 +113,6 @@
   </div>
 </div>
 {% endif %}
-
-
-
-
-
-
 
 </body>
 </html>
