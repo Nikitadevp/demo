@@ -187,7 +187,7 @@ def raise_ticket(request):
             tat_deadline=tat_deadline,
         )
 
-        print("TICKET CREATED:", ticket.ticket_no)
+        
 
         resolve_url = request.build_absolute_uri(
             reverse("resolve_ticket", args=[ticket.ticket_no])
@@ -246,6 +246,7 @@ We kindly request you to review the above ticket and proceed with the required a
                 fail_silently=True
             )
 
+        print("TICKET CREATED:", ticket.ticket_no)
         return redirect(f"{reverse('raise_ticket')}?success=1")
 
     success = request.GET.get("success") == "1"
