@@ -12,12 +12,25 @@ import base64
 
 
 #  Office Time Settings
+
+# Office Time
 OFFICE_START = time(9, 30)
 OFFICE_END = time(18, 30)
 
 
-#  TAT Calculation (Office Hours Based)
+def is_weekend(dt):
+    # 5 = Saturday, 6 = Sunday
+    return dt.weekday() in [5, 6]
+
+
+def next_working_day(dt):
+    while is_weekend(dt):
+        dt = dt + timedelta(days=1)
+    return dt
+
+
 def calculate_tat_deadline(priority):
+
     now = timezone.localtime(timezone.now())
 
     if priority == "Urgent":
@@ -28,6 +41,15 @@ def calculate_tat_deadline(priority):
     current_datetime = now
 
     while remaining_hours > 0:
+
+        # Weekend skip
+        if is_weekend(current_datetime):
+            current_datetime = next_working_day(current_datetime)
+            current_datetime = current_datetime.replace(
+                hour=9, minute=30, second=0, microsecond=0
+            )
+            continue
+
         current_time = current_datetime.time()
 
         if current_time < OFFICE_START:
@@ -37,11 +59,14 @@ def calculate_tat_deadline(priority):
 
         elif current_time >= OFFICE_END:
             next_day = current_datetime + timedelta(days=1)
+            next_day = next_working_day(next_day)
+
             current_datetime = next_day.replace(
                 hour=9, minute=30, second=0, microsecond=0
             )
 
         else:
+
             office_end_today = current_datetime.replace(
                 hour=18, minute=30, second=0, microsecond=0
             )
@@ -59,13 +84,15 @@ def calculate_tat_deadline(priority):
                 remaining_hours = 0
             else:
                 remaining_hours -= remaining_today_hours
+
                 next_day = current_datetime + timedelta(days=1)
+                next_day = next_working_day(next_day)
+
                 current_datetime = next_day.replace(
                     hour=9, minute=30, second=0, microsecond=0
                 )
 
     return current_datetime
-
 
 
 # #  Raise Ticket View
