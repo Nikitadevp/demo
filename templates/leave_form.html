@@ -1,0 +1,120 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Leave Application</title>
+
+<link rel="stylesheet" href="{% static 'css/leave_form.css' %}">
+
+{% if success %}
+<meta http-equiv="refresh" content="4;url=/leave-form/">
+{% endif %}
+
+</head>
+
+<body>
+
+<div class="page-wrapper">
+
+<div class="form-container">
+
+<!-- LOGO -->
+<div class="form-logo-box">
+  <img src="{% static 'images/ticket_logo.JPG' %}" alt="Company Logo">
+</div>
+
+<h2>Leave Application</h2>
+
+<form method="POST">
+{% csrf_token %}
+
+<input type="email" name="email" placeholder="Email Address of Requestor" required>
+
+<input type="text" name="name" placeholder="Employee Name" required>
+
+<select name="department" required>
+
+<option value="">Select Department</option>
+
+<option>Accounts and Finance</option>
+<option>HR and Admin</option>
+<option>Engineering</option>
+<option>MDO</option>
+<option>MDO - Sales</option>
+<option>Purchase</option>
+<option>Sales</option>
+<option>Stores</option>
+<option>DME</option>
+
+</select>
+
+<input type="text" name="mobile" placeholder="Mobile Number (WhatsApp)" required>
+
+<div class="leave-type">
+
+<p>Leave Type</p>
+
+<label>
+<input type="radio" name="leave_type" value="Earned Leave" required>
+Earned Leave
+</label>
+
+<label>
+<input type="radio" name="leave_type" value="Casual Leave">
+Casual Leave
+</label>
+
+<label>
+<input type="radio" name="leave_type" value="Week-off">
+Week-off
+</label>
+
+<label>
+<input type="radio" name="leave_type" value="Half Day">
+Half Day
+</label>
+
+</div>
+
+<label>Leave Start Date</label>
+<input type="date" name="start_date" required>
+
+<label>Leave End Date</label>
+<input type="date" name="end_date" required>
+
+<textarea name="reason" placeholder="Briefly describe leave reason" required></textarea>
+
+<button type="submit">Submit Leave Request</button>
+
+</form>
+
+</div>
+
+</div>
+
+{% if success %}
+
+<div class="popup-overlay">
+
+<div class="popup-box">
+
+<h3>Leave Request Submitted</h3>
+
+<p>
+Your leave request has been successfully submitted.<br><br>
+The department will review your request shortly.
+</p>
+
+</div>
+
+</div>
+
+{% endif %}
+
+</body>
+</html>
