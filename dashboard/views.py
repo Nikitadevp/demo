@@ -480,25 +480,27 @@ department_emails={
 }
 
 
+
+
 def leave_form(request):
 
     if request.method == "POST":
 
-        name = request.POST['name']
-        email = request.POST['email']
-        phone = request.POST['phone']
-        department = request.POST['department']
-        leave_type = request.POST['leave_type']
-        start = request.POST['start_date']
-        end = request.POST['end_date']
-        reason = request.POST['reason']
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        phone = request.POST.get('phone')
+        department = request.POST.get('department')
+        leave_type = request.POST.get('leave_type')
+        start = request.POST.get('start_date')
+        end = request.POST.get('end_date')
+        reason = request.POST.get('reason')
 
-        #  EMAIL VALIDATION (company email only)
+        # ✅ EMAIL FORMAT VALIDATION
         pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
         if not re.match(pattern, email):
-            return HttpResponse(" Please enter valid company email ID")
+            return HttpResponse("❌ Please enter valid email address")
 
-        #  SAVE DATA
+        # ✅ SAVE DATA
         leave = LeaveRequest.objects.create(
             name=name,
             email=email,
@@ -510,19 +512,26 @@ def leave_form(request):
             reason=reason
         )
 
+        # ✅ GET MANAGER EMAIL
         manager_email = department_emails.get(department)
 
-        approve_link = f"http://127.0.0.1:8000/approve/{leave.id}/"
-        reject_link = f"http://127.0.0.1:8000/reject/{leave.id}/"
+        if not manager_email:
+            return HttpResponse("❌ Department email not found")
 
-        #  MAIL TO MANAGER
+        # ✅ DYNAMIC DOMAIN (IMPORTANT FOR RENDER)
+        domain = request.build_absolute_uri('/')[:-1]
+
+        approve_link = f"{domain}/approve/{leave.id}/"
+        reject_link = f"{domain}/reject/{leave.id}/"
+
+        # ✅ MAIL TO MANAGER
         message = f"""
 New Leave Request
 
 Employee: {name}
 Email: {email}
 Department: {department}
-Leave: {leave_type}
+Leave Type: {leave_type}
 From: {start} To: {end}
 
 Reason:
@@ -543,10 +552,10 @@ Reject:
             fail_silently=False
         )
 
-        #  MAIL TO EMPLOYEE (CONFIRMATION)
+        # ✅ MAIL TO EMPLOYEE
         send_mail(
             "Leave Request Submitted",
-            "Your leave request has been sent for approval.",
+            "Your leave request has been sent for approval.\n\nIf you do not receive further updates, please check your email ID.",
             settings.EMAIL_HOST_USER,
             [email],
             fail_silently=False
