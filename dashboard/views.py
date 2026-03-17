@@ -10,6 +10,7 @@ import io
 import base64
 from .models import LeaveRequest
 from django.http import HttpResponse
+import re
 
 
 
@@ -472,7 +473,7 @@ department_emails={
 "Sales":"vinod.mishra@rajat-group.com",
 "Purchase":"ravi.jain@rajat-group.com",
 "DME":"dme.rbpl@rajat-group.com",
-"JNRDME": "jrdme.rbpl@rajat-group.com",
+"JNRDME":"jrdme.rbpl@rajat-group.com",
 "MDO Sales":"prakhar.golechha@rajat-group.com"
 
 
@@ -493,7 +494,8 @@ def leave_form(request):
         reason = request.POST['reason']
 
         #  EMAIL VALIDATION (company email only)
-        if not email.endswith("@rajat-group.com"):
+        pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
+        if not re.match(pattern, email):
             return HttpResponse(" Please enter valid company email ID")
 
         #  SAVE DATA
