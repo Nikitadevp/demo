@@ -28,9 +28,10 @@ body{
 }
 
 .logo-box img{
-    width:140px;
+    width:100%;
+    max-width:300px;   /* 👈 control size */
+    height:auto;
 }
-
 /* TITLE */
 h2{
     text-align:center;
@@ -111,4 +112,35 @@ button:hover{
     border-radius:10px;
     text-align:center;
     width:300px;
+}
+
+/* 🔥 MOBILE RESPONSIVE */
+@media (max-width:768px){
+
+    .container{
+        margin:20px;
+        padding:20px;
+        max-width:100%;
+        border-radius:8px;
+    }
+
+    .logo-box img{
+        max-width:220px; 
+    }
+
+    h2{
+        font-size:18px;
+    }
+
+    input,
+    select,
+    textarea{
+        padding:10px;
+        font-size:13px;
+    }
+
+    button{
+        padding:12px;
+        font-size:14px;
+    }
 }
