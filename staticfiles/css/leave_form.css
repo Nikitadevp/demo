@@ -2,40 +2,32 @@
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:Segoe UI;
+    font-family:Segoe UI, sans-serif;
 }
 
-/* BODY */
+/* BODY BACKGROUND */
 body{
     background:#f4f6fb;
 }
 
-/* CENTER WRAPPER */
-.page-wrapper{
-    min-height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:flex-start;  
-    padding:40px 15px;
-}
-
-/* FORM BOX */
-.form-container{
+/* MAIN CENTER ALIGN */
+.container{
     width:100%;
-    max-width:600px;   
-    background:white;
+    max-width:600px;   /* 👈 width control */
+    margin:50px auto;  /* 👈 center */
+    background:#ffffff;
     padding:30px;
     border-radius:10px;
-    box-shadow:0 4px 20px rgba(0,0,0,0.1);
+    box-shadow:0 5px 20px rgba(0,0,0,0.1);
 }
 
 /* LOGO */
-.form-logo-box{
+.logo-box{
     text-align:center;
     margin-bottom:15px;
 }
 
-.form-logo-box img{
+.logo-box img{
     width:140px;
 }
 
@@ -43,6 +35,15 @@ body{
 h2{
     text-align:center;
     margin-bottom:20px;
+    color:#333;
+}
+
+/* LABEL */
+label{
+    display:block;
+    margin-top:15px;
+    font-size:14px;
+    font-weight:500;
 }
 
 /* INPUT FIELDS */
@@ -51,7 +52,7 @@ select,
 textarea{
     width:100%;
     padding:12px;
-    margin-top:12px;
+    margin-top:6px;
     border:1px solid #ccc;
     border-radius:6px;
     font-size:14px;
@@ -63,32 +64,21 @@ textarea{
 input:focus,
 select:focus,
 textarea:focus{
-    border-color:#007bff;
-    box-shadow:0 0 5px rgba(0,123,255,0.3);
+    border-color:#1976d2;
+    box-shadow:0 0 5px rgba(25,118,210,0.3);
 }
 
 /* TEXTAREA */
 textarea{
-    height:80px;
+    height:90px;
     resize:none;
-}
-
-/* PRIORITY SECTION */
-.leave-type{
-    margin-top:15px;
-}
-
-.leave-type label{
-    display:inline-block;
-    margin-right:20px;
-    margin-top:8px;
 }
 
 /* BUTTON */
 button{
     width:100%;
-    padding:13px;
     margin-top:20px;
+    padding:13px;
     background:#1976d2;
     color:white;
     border:none;
@@ -117,8 +107,8 @@ button:hover{
 
 .popup-box{
     background:white;
-    padding:30px;
-    border-radius:8px;
+    padding:25px;
+    border-radius:10px;
     text-align:center;
     width:300px;
 }
