@@ -29,7 +29,7 @@ body{
 
 .logo-box img{
     width:100%;
-    max-width:300px;   /* 👈 control size */
+    max-width:420px;   /* 👈 control size */
     height:auto;
 }
 /* TITLE */
