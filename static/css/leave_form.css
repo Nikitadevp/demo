@@ -15,16 +15,16 @@ body{
     min-height:100vh;
     display:flex;
     justify-content:center;
-    align-items:center;
-    padding:20px;
+    align-items:flex-start;  
+    padding:40px 15px;
 }
 
 /* FORM BOX */
 .form-container{
-    background:white;
-    padding:35px;
     width:100%;
-    max-width:420px;
+    max-width:600px;   
+    background:white;
+    padding:30px;
     border-radius:10px;
     box-shadow:0 4px 20px rgba(0,0,0,0.1);
 }
