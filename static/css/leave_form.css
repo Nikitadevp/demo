@@ -1,56 +1,59 @@
-/* BODY */
-body{
+*{
     margin:0;
     padding:0;
-    font-family:Arial, sans-serif;
-    background:#e4f0f0;
+    box-sizing:border-box;
+    font-family:Segoe UI;
 }
 
-/* MAIN CONTAINER (CENTER FORM) */
-.container{
-    max-width:500px;
-    margin:60px auto;
-    background:#ffffff;
-    padding:25px 30px;
+/* BODY */
+body{
+    background:#f4f6fb;
+}
+
+/* CENTER WRAPPER */
+.page-wrapper{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+/* FORM BOX */
+.form-container{
+    background:white;
+    padding:35px;
+    width:100%;
+    max-width:420px;
     border-radius:10px;
-    box-shadow:0 5px 15px rgba(0,0,0,0.15);
+    box-shadow:0 4px 20px rgba(0,0,0,0.1);
 }
 
 /* LOGO */
-.logo-box{
+.form-logo-box{
     text-align:center;
     margin-bottom:15px;
 }
 
-.logo-box img{
-    width:130px;
+.form-logo-box img{
+    width:140px;
 }
 
 /* TITLE */
 h2{
     text-align:center;
     margin-bottom:20px;
-    color:#333;
 }
 
-/* LABEL */
-label{
-    display:block;
-    margin-top:15px;
-    font-size:14px;
-    font-weight:500;
-    color:#444;
-}
-
-/* INPUT + SELECT + TEXTAREA */
+/* INPUT FIELDS */
 input,
 select,
 textarea{
     width:100%;
-    padding:10px;
-    margin-top:5px;
+    padding:12px;
+    margin-top:12px;
     border:1px solid #ccc;
-    border-radius:5px;
+    border-radius:6px;
     font-size:14px;
     outline:none;
     transition:0.2s;
@@ -64,18 +67,29 @@ textarea:focus{
     box-shadow:0 0 5px rgba(0,123,255,0.3);
 }
 
-/* TEXTAREA HEIGHT */
+/* TEXTAREA */
 textarea{
+    height:80px;
     resize:none;
-    height:90px;
+}
+
+/* PRIORITY SECTION */
+.leave-type{
+    margin-top:15px;
+}
+
+.leave-type label{
+    display:inline-block;
+    margin-right:20px;
+    margin-top:8px;
 }
 
 /* BUTTON */
 button{
     width:100%;
+    padding:13px;
     margin-top:20px;
-    padding:12px;
-    background:#007bff;
+    background:#1976d2;
     color:white;
     border:none;
     border-radius:6px;
@@ -84,9 +98,8 @@ button{
     transition:0.3s;
 }
 
-/* BUTTON HOVER */
 button:hover{
-    background:#0056b3;
+    background:#0d47a1;
 }
 
 /* POPUP */
@@ -104,8 +117,8 @@ button:hover{
 
 .popup-box{
     background:white;
-    padding:25px;
-    border-radius:10px;
+    padding:30px;
+    border-radius:8px;
     text-align:center;
     width:300px;
 }

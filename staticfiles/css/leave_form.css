@@ -1,103 +1,124 @@
 *{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Segoe UI;
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Segoe UI;
 }
 
+/* BODY */
 body{
-background:#f4f6fb;
+    background:#f4f6fb;
 }
 
+/* CENTER WRAPPER */
 .page-wrapper{
-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
 }
 
+/* FORM BOX */
 .form-container{
-background:white;
-padding:35px;
-width:420px;
-border-radius:8px;
-box-shadow:0 0 15px rgba(0,0,0,0.1);
+    background:white;
+    padding:35px;
+    width:100%;
+    max-width:420px;
+    border-radius:10px;
+    box-shadow:0 4px 20px rgba(0,0,0,0.1);
 }
 
-h2{
-text-align:center;
-margin-bottom:20px;
-}
-
-input,select,textarea{
-
-width:100%;
-padding:10px;
-margin-top:10px;
-border:1px solid #ccc;
-border-radius:4px;
-
-}
-
-textarea{
-height:80px;
-}
-
-.leave-type{
-margin-top:10px;
-}
-
-.leave-type label{
-display:block;
-margin-top:5px;
-}
-
-button{
-
-width:100%;
-padding:12px;
-margin-top:15px;
-background:#007bff;
-color:white;
-border:none;
-border-radius:4px;
-cursor:pointer;
-
-}
-
-button:hover{
-background:#0056b3;
-}
-
-.popup-overlay{
-
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.5);
-display:flex;
-justify-content:center;
-align-items:center;
-
-}
-
-.popup-box{
-
-background:white;
-padding:30px;
-border-radius:6px;
-text-align:center;
-width:300px;
-
-}
-
+/* LOGO */
 .form-logo-box{
-text-align:center;
-margin-bottom:15px;
+    text-align:center;
+    margin-bottom:15px;
 }
 
 .form-logo-box img{
-width:120px;
+    width:140px;
+}
+
+/* TITLE */
+h2{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+/* INPUT FIELDS */
+input,
+select,
+textarea{
+    width:100%;
+    padding:12px;
+    margin-top:12px;
+    border:1px solid #ccc;
+    border-radius:6px;
+    font-size:14px;
+    outline:none;
+    transition:0.2s;
+}
+
+/* FOCUS EFFECT */
+input:focus,
+select:focus,
+textarea:focus{
+    border-color:#007bff;
+    box-shadow:0 0 5px rgba(0,123,255,0.3);
+}
+
+/* TEXTAREA */
+textarea{
+    height:80px;
+    resize:none;
+}
+
+/* PRIORITY SECTION */
+.leave-type{
+    margin-top:15px;
+}
+
+.leave-type label{
+    display:inline-block;
+    margin-right:20px;
+    margin-top:8px;
+}
+
+/* BUTTON */
+button{
+    width:100%;
+    padding:13px;
+    margin-top:20px;
+    background:#1976d2;
+    color:white;
+    border:none;
+    border-radius:6px;
+    font-size:16px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover{
+    background:#0d47a1;
+}
+
+/* POPUP */
+.popup-overlay{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.5);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.popup-box{
+    background:white;
+    padding:30px;
+    border-radius:8px;
+    text-align:center;
+    width:300px;
 }
