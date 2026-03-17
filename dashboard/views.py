@@ -385,6 +385,7 @@ department_emails={
 "Purchase":"ravi.jain@rajat-group.com",
 "DME":"dme.rbpl@rajat-group.com",
 "JNRDME":"jrdme.rbpl@rajat-group.com",
+"COORDINATOR":"pc1.rbpl@rajat-group.com",
 "MDO Sales":"prakhar.golechha@rajat-group.com"
 
 
@@ -465,7 +466,7 @@ Reject:
         #  MAIL TO USER (IMPORTANT)
         send_mail(
             "Leave Request Submitted",
-            "Your leave request has been sent successfully.\n\nIf you do not receive updates, please check your email ID.",
+            "Your leave request has been sent for approval.\n\nIf you do not receive updates, please check your email ID.",
             settings.EMAIL_HOST_USER,
             [email],
             fail_silently=True
