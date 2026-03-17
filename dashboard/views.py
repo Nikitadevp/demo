@@ -472,6 +472,7 @@ department_emails={
 "Sales":"vinod.mishra@rajat-group.com",
 "Purchase":"ravi.jain@rajat-group.com",
 "DME":"dme.rbpl@rajat-group.com",
+"JNRDME": "jrdme.rbpl@rajat-group.com",
 "MDO Sales":"prakhar.golechha@rajat-group.com"
 
 
