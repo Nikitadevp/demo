@@ -97,97 +97,8 @@ def calculate_tat_deadline(priority):
 
     return current_datetime
 
-
-# #  Raise Ticket View
-# def raise_ticket(request):
-#     if request.method == "POST":
-
-#         name = request.POST.get("name")
-#         email = request.POST.get("email")
-#         phone = request.POST.get("phone")
-#         department = request.POST.get("department")
-#         issue_type = request.POST.get("issue_type")
-#         priority = request.POST.get("priority")
-
-#         #  Calculate TAT Deadline
-#         tat_deadline = calculate_tat_deadline(priority)
-
-#         # Save Ticket
-#         ticket = Ticket.objects.create(
-#             name=name,
-#             email=email,
-#             phone=phone,
-#             department=department,
-#             issue_type=issue_type,
-#             priority=priority,
-#             tat_deadline=tat_deadline,
-#         )
-
-#         # Resolve URL (Safe way)
-#         resolve_url = request.build_absolute_uri(
-#             reverse("resolve_ticket", args=[ticket.ticket_no])
-#         )
-
-#         # Department Email Mapping
-#         department_emails = {
-#             "Accounts and Finance": "alok.agrawal@rajat-group.com",
-#             "Construction": "bagga.rbpl@rajat-group.com",
-#             "CRM HO": "crm.rbpl@rajat-group.com",
-#             "DME": "dme.rbpl@rajat-group.com",
-#             "Electrical and Plumbing": "saurav.rbpl@gmail.com",
-#             "Engineering Highpark": "highpark@rajat-group.com",
-#             "Engineering Sampoorna": "dipesh.chaudhary@rajat-group.com",
-#             "Finishing Sampoorna": "narendra04081994@gmail.com",
-#             "HR": "ea.rbpl@rajat-group.com",
-#             "IT and Admin": "it.rbpl@rajat-group.com",
-#             "Maintenance Highpark": "mainteam.hp@gmail.com",
-#             "Maintenance Sampoorna": "mainteam.sh@gmail.com",
-#             "Project Planning": "planning.rbpl@rajat-group.com",
-#             "Purchase and Security": "ravi.jain@rajat-group.com",
-#             "Sales and Marketing": "vinod.mishra@rajat-group.com",
-#             "CRM Sampoorna": "crm3.rbpl@gmail.com",
-#             "CRM Highpark": "crm2.rbpl@gmail.com",
-#             "JNRDME": "jrdme.rbpl@rajat-group.com",
-#         }
-
-#         dept_email = department_emails.get(department)
-
-#         subject = f"New Help Desk Ticket - {ticket.ticket_no}"
-
-#         message = f"""
-# Dear Team,
-
-# A new Help Desk ticket has been created.
-
-# Ticket ID   : {ticket.ticket_no}
-# Department  : {department}
-# Priority    : {priority}
-# Issue Type  : {issue_type}
-
-# Resolution Time: {tat_deadline.strftime('%d-%m-%Y %I:%M %p')}
-
-# Resolve Link:
-# {resolve_url}
-
-# -- Help Desk System
-# """
-
-#         if dept_email:
-#             try:
-#                 send_mail(
-#                     subject,
-#                     message,
-#                     settings.EMAIL_HOST_USER,
-#                     [dept_email],
-#                     fail_silently=True,  # avoid 500 error in deploy
-#                 )
-#             except Exception:
-#                 pass
-
-#         return redirect(f"{reverse('raise_ticket')}?success=1")
-
-#     success = request.GET.get("success")
-#     return render(request, "ticket_form.html", {"success": success})  
+#raise_ticket
+  
 def raise_ticket(request):
 
     print("VIEW HIT")
@@ -482,6 +393,7 @@ department_emails={
 
 
 
+
 def leave_form(request):
 
     if request.method == "POST":
@@ -495,12 +407,12 @@ def leave_form(request):
         end = request.POST.get('end_date')
         reason = request.POST.get('reason')
 
-        # ✅ EMAIL FORMAT VALIDATION
+        #  EMAIL FORMAT VALIDATION (IMPORTANT)
         pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
         if not re.match(pattern, email):
-            return HttpResponse("❌ Please enter valid email address")
+            return HttpResponse(" Please enter valid email like example@gmail.com")
 
-        # ✅ SAVE DATA
+        # SAVE DATA
         leave = LeaveRequest.objects.create(
             name=name,
             email=email,
@@ -512,19 +424,13 @@ def leave_form(request):
             reason=reason
         )
 
-        # ✅ GET MANAGER EMAIL
-        manager_email = department_emails.get(department)
-
-        if not manager_email:
-            return HttpResponse("❌ Department email not found")
-
-        # ✅ DYNAMIC DOMAIN (IMPORTANT FOR RENDER)
+        #  DYNAMIC DOMAIN (Render ke liye)
         domain = request.build_absolute_uri('/')[:-1]
 
         approve_link = f"{domain}/approve/{leave.id}/"
         reject_link = f"{domain}/reject/{leave.id}/"
 
-        # ✅ MAIL TO MANAGER
+        #  MESSAGE FOR MANAGER
         message = f"""
 New Leave Request
 
@@ -544,21 +450,25 @@ Reject:
 {reject_link}
 """
 
-        send_mail(
-            "Leave Request Approval",
-            message,
-            settings.EMAIL_HOST_USER,
-            [manager_email],
-            fail_silently=False
-        )
+        #  OPTIONAL: DEPARTMENT MAIL (agar hai to)
+        manager_email = department_emails.get(department)
 
-        # ✅ MAIL TO EMPLOYEE
+        if manager_email:
+            send_mail(
+                "Leave Request Approval",
+                message,
+                settings.EMAIL_HOST_USER,
+                [manager_email],
+                fail_silently=True
+            )
+
+        #  MAIL TO USER (IMPORTANT)
         send_mail(
             "Leave Request Submitted",
-            "Your leave request has been sent for approval.\n\nIf you do not receive further updates, please check your email ID.",
+            "Your leave request has been sent successfully.\n\nIf you do not receive updates, please check your email ID.",
             settings.EMAIL_HOST_USER,
             [email],
-            fail_silently=False
+            fail_silently=True
         )
 
         return render(request, "leave_form.html", {"success": True})
