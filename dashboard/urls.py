@@ -12,5 +12,8 @@ urlpatterns = [
     path("", views.dashboard, name="home"),   # homepage
     path("raise-ticket/", views.raise_ticket, name="raise_ticket"),
     path("resolve-ticket/<str:ticket_no>/", views.resolve_ticket, name="resolve_ticket"),
+    path('leave/',views.leave_form),
+    path('approve/<int:id>/',views.approve),
+    path('reject/<int:id>/',views.reject),
     
 ]

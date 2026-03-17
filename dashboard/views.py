@@ -8,6 +8,8 @@ from django.urls import reverse
 import matplotlib.pyplot as plt
 import io
 import base64
+from .models import LeaveRequest
+from django.http import HttpResponse
 
 
 
@@ -461,7 +463,130 @@ def dashboard(request):
     return render(request, "dashboard.html", context)
 
     
+department_emails={
+
+"Accounts and Finance":"alok.agrawal@rajat-group.com",
+"HR and Admin":"ea.rbpl@rajat-group.com",
+"Engineering":"bagga.rbpl@rajat-group.com",
+"MDO":"mrinal.golechha1@rajat-group.com",
+"Sales":"vinod.mishra@rajat-group.com",
+"Purchase":"ravi.jain@rajat-group.com",
+"DME":"dme.rbpl@rajat-group.com",
+"MDO Sales":"prakhar.golechha@rajat-group.com"
 
 
+}
 
 
+def leave_form(request):
+
+    if request.method == "POST":
+
+        name = request.POST['name']
+        email = request.POST['email']
+        phone = request.POST['phone']
+        department = request.POST['department']
+        leave_type = request.POST['leave_type']
+        start = request.POST['start_date']
+        end = request.POST['end_date']
+        reason = request.POST['reason']
+
+        #  EMAIL VALIDATION (company email only)
+        if not email.endswith("@rajat-group.com"):
+            return HttpResponse(" Please enter valid company email ID")
+
+        #  SAVE DATA
+        leave = LeaveRequest.objects.create(
+            name=name,
+            email=email,
+            phone=phone,
+            department=department,
+            leave_type=leave_type,
+            start_date=start,
+            end_date=end,
+            reason=reason
+        )
+
+        manager_email = department_emails.get(department)
+
+        approve_link = f"http://127.0.0.1:8000/approve/{leave.id}/"
+        reject_link = f"http://127.0.0.1:8000/reject/{leave.id}/"
+
+        #  MAIL TO MANAGER
+        message = f"""
+New Leave Request
+
+Employee: {name}
+Email: {email}
+Department: {department}
+Leave: {leave_type}
+From: {start} To: {end}
+
+Reason:
+{reason}
+
+Approve:
+{approve_link}
+
+Reject:
+{reject_link}
+"""
+
+        send_mail(
+            "Leave Request Approval",
+            message,
+            settings.EMAIL_HOST_USER,
+            [manager_email],
+            fail_silently=False
+        )
+
+        #  MAIL TO EMPLOYEE (CONFIRMATION)
+        send_mail(
+            "Leave Request Submitted",
+            "Your leave request has been sent for approval.",
+            settings.EMAIL_HOST_USER,
+            [email],
+            fail_silently=False
+        )
+
+        return render(request, "leave_form.html", {"success": True})
+
+    return render(request, "leave_form.html")
+
+
+# APPROVE
+def approve(request, id):
+
+    leave = LeaveRequest.objects.get(id=id)
+    leave.status = "Approved"
+    leave.save()
+
+    #  MAIL TO EMPLOYEE
+    send_mail(
+        "Leave Approved",
+        f"Your leave has been approved.\n\nFrom {leave.start_date} to {leave.end_date}",
+        settings.EMAIL_HOST_USER,
+        [leave.email],
+        fail_silently=False
+    )
+
+    return HttpResponse(" Leave Approved & Mail Sent")
+
+
+#  REJECT
+def reject(request, id):
+
+    leave = LeaveRequest.objects.get(id=id)
+    leave.status = "Rejected"
+    leave.save()
+
+    #  MAIL TO EMPLOYEE
+    send_mail(
+        "Leave Rejected",
+        "Your leave request has been rejected.",
+        settings.EMAIL_HOST_USER,
+        [leave.email],
+        fail_silently=False
+    )
+
+    return HttpResponse(" Leave Rejected & Mail Sent")

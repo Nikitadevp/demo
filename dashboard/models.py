@@ -115,3 +115,22 @@ class Ticket(models.Model):
 
 #     def __str__(self):
 #         return self.ticket_no
+
+
+class LeaveRequest(models.Model):
+
+    name=models.CharField(max_length=100)
+    email=models.EmailField()
+    phone=models.CharField(max_length=15)
+
+    department=models.CharField(max_length=100)
+
+    leave_type=models.CharField(max_length=50)
+
+    start_date=models.DateField()
+    end_date=models.DateField()
+
+    reason=models.TextField()
+
+    status=models.CharField(max_length=20,default="Pending")
+    manager_reason=models.TextField(blank=True,null=True)
