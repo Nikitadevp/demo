@@ -80,7 +80,7 @@ button{
     width:100%;
     margin-top:20px;
     padding:13px;
-    background:#1976d2;
+    background:#63b3a5;
     color:white;
     border:none;
     border-radius:6px;
@@ -90,7 +90,7 @@ button{
 }
 
 button:hover{
-    background:#0d47a1;
+    background:#63b3a5;
 }
 
 /* POPUP */
