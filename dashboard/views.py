@@ -390,7 +390,7 @@ department_emails={
 "Purchase":"ravi.jain@rajat-group.com",
 "DME":"dme.rbpl@rajat-group.com",
 "coordinator":"pc1.rbpl@rajat-group.com",
-"jrdme":"jrdme.rbpl@rajat-group.com",
+"jrdme":"purchase4.rbpl@gmail.com",
 "MDO Sales":"prakhar.golechha@rajat-group.com"
 
 
