@@ -15,5 +15,7 @@ urlpatterns = [
     path('leave/',views.leave_form),
     path('approve/<int:id>/',views.approve),
     path('reject/<int:id>/',views.reject),
+    path('review/<int:id>/', views.review_leave, name='review_leave'),
+    
     
 ]

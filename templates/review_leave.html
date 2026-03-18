@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Leave Review</title>
+
+<link rel="stylesheet" href="{% static 'css/review_leave.css' %}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>Leave Request Review</h2>
+
+    <p><b>Name:</b> {{ leave.name }}</p>
+    <p><b>Email:</b> {{ leave.email }}</p>
+    <p><b>Department:</b> {{ leave.department }}</p>
+    <p><b>Leave Type:</b> {{ leave.leave_type }}</p>
+    <p><b>From:</b> {{ leave.start_date }} <b>To:</b> {{ leave.end_date }}</p>
+    <p><b>Reason:</b> {{ leave.reason }}</p>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <!-- APPROVE -->
+        <button type="submit" name="action" value="approve" class="approve-btn">
+            Approve
+        </button>
+
+        <!-- REJECT -->
+        <textarea name="reject_reason" placeholder="Enter reject reason"></textarea>
+
+        <button type="submit" name="action" value="reject" class="reject-btn">
+            Reject
+        </button>
+
+    </form>
+
+</div>
+
+</body>
+</html>

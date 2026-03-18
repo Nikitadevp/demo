@@ -374,6 +374,11 @@ def dashboard(request):
 
     return render(request, "dashboard.html", context)
 
+
+
+
+#This for leave application     
+
     
 department_emails={
 
@@ -428,27 +433,20 @@ def leave_form(request):
         #  DYNAMIC DOMAIN (Render ke liye)
         domain = request.build_absolute_uri('/')[:-1]
 
-        approve_link = f"{domain}/approve/{leave.id}/"
-        reject_link = f"{domain}/reject/{leave.id}/"
+        review_link = f"{domain}/review/{leave.id}/"
+        
 
         #  MESSAGE FOR MANAGER
         message = f"""
 New Leave Request
 
+
+
 Employee: {name}
-Email: {email}
 Department: {department}
-Leave Type: {leave_type}
-From: {start} To: {end}
 
-Reason:
-{reason}
-
-Approve:
-{approve_link}
-
-Reject:
-{reject_link}
+Review Request:
+{review_link}
 """
 
         #  OPTIONAL: DEPARTMENT MAIL (agar hai to)
@@ -477,39 +475,69 @@ Reject:
     return render(request, "leave_form.html")
 
 
-# APPROVE
-def approve(request, id):
+# # APPROVE
+# def approve(request, id):
+
+#     leave = LeaveRequest.objects.get(id=id)
+#     leave.status = "Approved"
+#     leave.save()
+
+#     #  MAIL TO EMPLOYEE
+#     send_mail(
+#         "Leave Approved",
+#         f"Your leave has been approved.\n\nFrom {leave.start_date} to {leave.end_date}",
+#         settings.EMAIL_HOST_USER,
+#         [leave.email],
+#         fail_silently=False
+#     )
+
+#     return HttpResponse(" Leave Approved & Mail Sent")
+
+
+# #  REJECT
+# def reject(request, id):
+
+#     leave = LeaveRequest.objects.get(id=id)
+#     leave.status = "Rejected"
+#     leave.save()
+
+#     #  MAIL TO EMPLOYEE
+#     send_mail(
+#         "Leave Rejected",
+#         "Your leave request has been rejected.",
+#         settings.EMAIL_HOST_USER,
+#         [leave.email],
+#         fail_silently=False
+#     )
+
+#     return HttpResponse(" Leave Rejected & Mail Sent")
+
+def review_leave(request, id):
 
     leave = LeaveRequest.objects.get(id=id)
-    leave.status = "Approved"
-    leave.save()
 
-    #  MAIL TO EMPLOYEE
-    send_mail(
-        "Leave Approved",
-        f"Your leave has been approved.\n\nFrom {leave.start_date} to {leave.end_date}",
-        settings.EMAIL_HOST_USER,
-        [leave.email],
-        fail_silently=False
-    )
+    # ❌ already processed → block
+    if leave.status != "Pending":
+        return HttpResponse("This request is already processed.")
 
-    return HttpResponse(" Leave Approved & Mail Sent")
+    if request.method == "POST":
 
+        action = request.POST.get("action")
 
-#  REJECT
-def reject(request, id):
+        if action == "approve":
+            leave.status = "Approved"
+            leave.save()
 
-    leave = LeaveRequest.objects.get(id=id)
-    leave.status = "Rejected"
-    leave.save()
+        elif action == "reject":
+            reason = request.POST.get("reject_reason")
 
-    #  MAIL TO EMPLOYEE
-    send_mail(
-        "Leave Rejected",
-        "Your leave request has been rejected.",
-        settings.EMAIL_HOST_USER,
-        [leave.email],
-        fail_silently=False
-    )
+            if not reason:
+                return HttpResponse("Reject reason required")
 
-    return HttpResponse(" Leave Rejected & Mail Sent")
+            leave.status = "Rejected"
+            leave.reject_reason = reason
+            leave.save()
+
+        return HttpResponse("Action completed successfully")
+
+    return render(request, "review_leave.html", {"leave": leave})
