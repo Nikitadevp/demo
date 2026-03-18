@@ -443,7 +443,10 @@ New Leave Request
 
 
 Employee: {name}
+Email: {email}
 Department: {department}
+Leave Type: {leave_type}
+From: {start} To: {end}
 
 Review Request:
 {review_link}
@@ -539,7 +542,7 @@ def review_leave(request, id):
 
         # REJECT
         elif action == "reject":
-            reason = request.POST.get("reject_reason")
+            reason = request.POST.get("reject_reason") 
 
             if not reason:
                 return HttpResponse("Reject reason required")
