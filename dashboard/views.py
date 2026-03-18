@@ -537,7 +537,7 @@ def review_leave(request, id):
                 fail_silently=True
             )
 
-        #  REJECT
+        # REJECT
         elif action == "reject":
             reason = request.POST.get("reject_reason")
 
