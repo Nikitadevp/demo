@@ -380,26 +380,22 @@ def dashboard(request):
 #This for leave application     
 
     
-department_emails={
-
-"Accounts and Finance":"alok.agrawal@rajat-group.com",
-"HR and Admin":"ea.rbpl@rajat-group.com",
-"Engineering":"bagga.rbpl@rajat-group.com",
-"MDO":"mrinal.golechha1@rajat-group.com",
-"Sales":"vinod.mishra@rajat-group.com",
-"Purchase":"ravi.jain@rajat-group.com",
-"DME":"dme.rbpl@rajat-group.com",
-"coordinator":"pc1.rbpl@rajat-group.com",
-"jrdme":"purchase.rbpl@gmail.com",
-"MDO Sales":"prakhar.golechha@rajat-group.com"
-
-
+# ✅DEPARTMENT EMAILS
+department_emails = {
+    "Accounts and Finance": "alok.agrawal@rajat-group.com",
+    "HR and Admin": "ea.rbpl@rajat-group.com",
+    "Engineering": "bagga.rbpl@rajat-group.com",
+    "MDO": "mrinal.golechha1@rajat-group.com",
+    "Sales": "vinod.mishra@rajat-group.com",
+    "Purchase": "ravi.jain@rajat-group.com",
+    "DME": "dme.rbpl@rajat-group.com",
+    "coordinator": "pc1.rbpl@rajat-group.com",
+    "jrdme": "jrdme.rbpl@rajat-group.com",
+    "MDO Sales": "prakhar.golechha@rajat-group.com"
 }
 
 
-
-
-
+#  LEAVE FORM
 def leave_form(request):
 
     if request.method == "POST":
@@ -407,18 +403,18 @@ def leave_form(request):
         name = request.POST.get('name')
         email = request.POST.get('email')
         phone = request.POST.get('phone')
-        department = request.POST.get('department')
+        department = request.POST.get('department').strip()
         leave_type = request.POST.get('leave_type')
         start = request.POST.get('start_date')
         end = request.POST.get('end_date')
         reason = request.POST.get('reason')
 
-        #  EMAIL FORMAT VALIDATION (IMPORTANT)
+        #  EMAIL FORMAT CHECK
         pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
         if not re.match(pattern, email):
             return HttpResponse(" Please enter valid email like example@gmail.com")
 
-        # SAVE DATA
+        #  SAVE DATA
         leave = LeaveRequest.objects.create(
             name=name,
             email=email,
@@ -430,17 +426,13 @@ def leave_form(request):
             reason=reason
         )
 
-        #  DYNAMIC DOMAIN (Render ke liye)
+        #  DOMAIN (LIVE / LOCAL)
         domain = request.build_absolute_uri('/')[:-1]
-
         review_link = f"{domain}/review/{leave.id}/"
-        
 
         #  MESSAGE FOR MANAGER
         message = f"""
 New Leave Request
-
-
 
 Employee: {name}
 Email: {email}
@@ -448,35 +440,43 @@ Department: {department}
 Leave Type: {leave_type}
 From: {start} To: {end}
 
+Reason:
+{reason}
+
 Review Request:
 {review_link}
 """
 
-        #  OPTIONAL: DEPARTMENT MAIL (agar hai to)
+        # GET MANAGER EMAIL
         manager_email = department_emails.get(department)
 
+        print("Department:", department)
+        print("Manager Email:", manager_email)
+
+        #  SEND TO DEPARTMENT
         if manager_email:
             send_mail(
                 "Leave Request Approval",
                 message,
                 settings.EMAIL_HOST_USER,
                 [manager_email],
-                fail_silently=True
+                fail_silently=False
             )
+        else:
+            return HttpResponse(f" Department email not found: {department}")
 
-        #  MAIL TO USER (IMPORTANT)
+        #  SEND TO EMPLOYEE
         send_mail(
             "Leave Request Submitted",
-            "Your leave request has been sent for approval.\n\nIf you do not receive updates, please check your email ID.",
+            "Your leave request has been sent for approval.",
             settings.EMAIL_HOST_USER,
             [email],
-            fail_silently=True
+            fail_silently=False
         )
 
         return render(request, "leave_form.html", {"success": True})
 
     return render(request, "leave_form.html")
-
 
 # # APPROVE
 # def approve(request, id):
