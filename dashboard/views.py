@@ -389,8 +389,8 @@ department_emails={
 "Sales":"vinod.mishra@rajat-group.com",
 "Purchase":"ravi.jain@rajat-group.com",
 "DME":"dme.rbpl@rajat-group.com",
-"JNRDME":"jrdme.rbpl@rajat-group.com",
-"COORDINATOR":"pc1.rbpl@rajat-group.com",
+"coordinator":"pc1.rbpl@rajat-group.com",
+"jrdme":"jrdme.rbpl@rajat-group.com",
 "MDO Sales":"prakhar.golechha@rajat-group.com"
 
 
@@ -516,7 +516,7 @@ def review_leave(request, id):
 
     leave = LeaveRequest.objects.get(id=id)
 
-    # ❌ already processed → block
+    #  already processed → block
     if leave.status != "Pending":
         return HttpResponse("This request is already processed.")
 
