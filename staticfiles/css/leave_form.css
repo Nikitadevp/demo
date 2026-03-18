@@ -93,6 +93,11 @@ button:hover{
     background:#63b3a5;
 }
 
+button:active{
+    transform:translateY(3px);   /*   press effect */
+    box-shadow:0 1px 0 #4a8f83;
+    background:#4a8f83;
+}
 /* POPUP */
 .popup-overlay{
     position:fixed;

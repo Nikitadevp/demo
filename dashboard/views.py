@@ -511,10 +511,9 @@ Review Request:
 #     )
 
 #     return HttpResponse(" Leave Rejected & Mail Sent")
-
 def review_leave(request, id):
 
-    leave = LeaveRequest.objects.get(id=id)
+    leave = get_object_or_404(LeaveRequest, id=id)
 
     #  already processed → block
     if leave.status != "Pending":
@@ -524,10 +523,30 @@ def review_leave(request, id):
 
         action = request.POST.get("action")
 
+        #  APPROVE
         if action == "approve":
             leave.status = "Approved"
             leave.save()
 
+            #  MAIL TO EMPLOYEE
+            send_mail(
+                "Leave Request Approved",
+                f"""
+Hello {leave.name},
+
+Your leave request has been APPROVED.
+
+From: {leave.start_date}
+To: {leave.end_date}
+
+Thank you.
+""",
+                settings.EMAIL_HOST_USER,
+                [leave.email],
+                fail_silently=True
+            )
+
+        #  REJECT
         elif action == "reject":
             reason = request.POST.get("reject_reason")
 
@@ -538,6 +557,24 @@ def review_leave(request, id):
             leave.reject_reason = reason
             leave.save()
 
-        return HttpResponse("Action completed successfully")
+            # MAIL TO EMPLOYEE
+            send_mail(
+                "Leave Request Rejected",
+                f"""
+Hello {leave.name},
+
+Your leave request has been REJECTED.
+
+Reason:
+{reason}
+
+Thank you.
+""",
+                settings.EMAIL_HOST_USER,
+                [leave.email],
+                fail_silently=True
+            )
+
+        return HttpResponse("Action completed successfully and mail sent")
 
     return render(request, "review_leave.html", {"leave": leave})
