@@ -380,7 +380,7 @@ def dashboard(request):
 #This for leave application     
 
     
-# ✅DEPARTMENT EMAILS
+#  DEPARTMENT EMAILS
 department_emails = {
     "Accounts and Finance": "alok.agrawal@rajat-group.com",
     "HR and Admin": "ea.rbpl@rajat-group.com",
@@ -389,13 +389,13 @@ department_emails = {
     "Sales": "vinod.mishra@rajat-group.com",
     "Purchase": "ravi.jain@rajat-group.com",
     "DME": "dme.rbpl@rajat-group.com",
-    "Coordinator": "pc1.rbpl@rajat-group.com",
-    "Jrdme": "jrdme.rbpl@rajat-group.com",
+    "coordinator": "pc1.rbpl@rajat-group.com",
+    "jrdme": "purchase.rbpl@gmail.com",
     "MDO Sales": "prakhar.golechha@rajat-group.com"
 }
 
 
-#  LEAVE FORM
+# LEAVE FORM
 def leave_form(request):
 
     if request.method == "POST":
@@ -409,12 +409,12 @@ def leave_form(request):
         end = request.POST.get('end_date')
         reason = request.POST.get('reason')
 
-        #  EMAIL FORMAT CHECK
+        # EMAIL FORMAT CHECK
         pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
         if not re.match(pattern, email):
             return HttpResponse(" Please enter valid email like example@gmail.com")
 
-        #  SAVE DATA
+        # SAVE DATA
         leave = LeaveRequest.objects.create(
             name=name,
             email=email,
@@ -447,7 +447,7 @@ Review Request:
 {review_link}
 """
 
-        # GET MANAGER EMAIL
+        # gET MANAGER EMAIL
         manager_email = department_emails.get(department)
 
         print("Department:", department)
