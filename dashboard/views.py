@@ -559,6 +559,10 @@ def review_leave(request, id):
                 fail_silently=True
             )
 
-        return HttpResponse("Action completed successfully")
+        return HttpResponse("""
+        <h1 style="text-align:center; margin-top:100px; font-size:32px;">
+        Action completed successfully
+        </h1>
+        """)
 
     return render(request, "review_leave.html", {"leave": leave})
