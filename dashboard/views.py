@@ -553,7 +553,7 @@ def review_leave(request, id):
                 return HttpResponse("Reject reason required")
 
             leave.status = "Rejected"
-            leave.reject_reason = reason
+            leave.manager_reason = reason
             leave.save()
 
             send_mail(
