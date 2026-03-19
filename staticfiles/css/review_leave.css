@@ -65,3 +65,40 @@ button{
 button:hover{
     opacity:0.9;
 }
+
+/* 📱 MOBILE RESPONSIVE */
+@media (max-width:768px){
+
+    body{
+        height:auto;              /*  important */
+        padding:20px 10px;        /*  side space */
+        align-items:flex-start;
+    }
+
+    .container{
+        width:100%;
+        max-width:95%;
+        margin:0 auto;            /* center */
+        padding:20px;
+        border-radius:8px;
+    }
+
+    h2{
+        font-size:18px;
+        text-align:center;
+    }
+
+    p{
+        font-size:13px;
+    }
+
+    textarea{
+        height:70px;
+        font-size:13px;
+    }
+
+    button{
+        padding:12px;
+        font-size:14px;
+    }
+}
