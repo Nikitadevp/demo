@@ -521,7 +521,12 @@ def review_leave(request, id):
     leave = get_object_or_404(LeaveRequest, id=id)
 
     if leave.status != "Pending":
-        return HttpResponse("This request is already processed.")
+        return HttpResponse("""
+        <div style="display:flex; justify-content:center; align-items:center; height:100vh;">
+        <h2 style="font-size:28px; text-align:center;">
+            This request is already processed.
+        </h2>
+    </div>""")
 
     if request.method == "POST":
 
