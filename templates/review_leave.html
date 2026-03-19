@@ -32,14 +32,16 @@
         <button type="submit" name="action" value="approve" class="approve-btn">
             Approve
         </button>
-
-        <!-- REJECT -->
-        
+    </form>
+    <!-- REJECT -->
+    
+    <form method="POST">
+        {% csrf_token %}
 
         <button type="submit" name="action" value="reject" class="reject-btn">
-            Reject
+                Reject
         </button>
-        <textarea name="reject_reason" placeholder="Enter reject reason *"></textarea>
+        <textarea name="reject_reason" placeholder="Enter reject reason *" required></textarea>
 
     </form>
 
