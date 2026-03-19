@@ -119,20 +119,35 @@ class Ticket(models.Model):
 
 class LeaveRequest(models.Model):
 
-    leave_id = models.CharField(max_length=20, unique=True, editable=False)
-    
-    name=models.CharField(max_length=100)
-    email=models.EmailField()
-    phone=models.CharField(max_length=15)
+    # ✅ UNIQUE LEAVE ID
+    leave_id = models.CharField(
+        max_length=20,
+        unique=True,
+        blank=True,
+        null=True,
+        editable=False
+    )
 
-    department=models.CharField(max_length=100)
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    phone = models.CharField(max_length=15)
 
-    leave_type=models.CharField(max_length=50)
+    department = models.CharField(max_length=100)
+    leave_type = models.CharField(max_length=50)
 
-    start_date=models.DateField()
-    end_date=models.DateField()
+    start_date = models.DateField()
+    end_date = models.DateField()
 
-    reason=models.TextField()
+    reason = models.TextField()
 
-    status=models.CharField(max_length=20,default="Pending")
-    manager_reason=models.TextField(blank=True,null=True)
+    status = models.CharField(max_length=20, default="Pending")
+    manager_reason = models.TextField(blank=True, null=True)
+
+    #  AUTO GENERATE LEAVE ID
+    def save(self, *args, **kwargs):
+        if not self.leave_id:
+            self.leave_id = f"LR-{str(uuid.uuid4())[:8].upper()}"
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.leave_id if self.leave_id else self.name

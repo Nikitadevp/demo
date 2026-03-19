@@ -538,8 +538,11 @@ def review_leave(request, id):
             leave.save()
 
             send_mail(
-                "Leave Approved ✅",
-                f"Your leave has been approved.\nFrom {leave.start_date} to {leave.end_date}",
+                f"Leave Approved ✅ | ID: {leave.leave_id}",  
+                f"""Your leave has been approved.
+            From: {leave.start_date}
+            To: {leave.end_date}
+            """,
                 settings.EMAIL_HOST_USER,
                 [leave.email],
                 fail_silently=True
