@@ -456,7 +456,7 @@ Review Request:
         #  SEND TO DEPARTMENT
         if manager_email:
             send_mail(
-                "Leave Request Approval ",
+                f"Leave Request Approval | ID: {leave.leave_id}",
                 message,
                 settings.EMAIL_HOST_USER,
                 [manager_email],
@@ -543,6 +543,7 @@ def review_leave(request, id):
             From: {leave.start_date}
             To: {leave.end_date}
             """,
+            
                 settings.EMAIL_HOST_USER,
                 [leave.email],
                 fail_silently=True
