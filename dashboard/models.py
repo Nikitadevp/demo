@@ -150,4 +150,4 @@ class LeaveRequest(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.leave_id if self.leave_id else self.name
+        return self.leave_id
