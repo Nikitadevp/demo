@@ -122,19 +122,34 @@ button:active{
 /* 🔥 MOBILE RESPONSIVE */
 @media (max-width:768px){
 
+    body{
+        display:flex;
+        justify-content:center;
+        align-items:center;
+    }
+
     .container{
-        margin:20px;
+        width:90%;
+        margin:0 auto;          /*  center fix */
         padding:20px;
-        max-width:100%;
         border-radius:8px;
     }
 
-    .logo-box img{
-        max-width:220px; 
+    .logo-box{
+        text-align:center;      /*  logo center */
     }
 
+    .logo-box img{
+        width:100%;
+        max-width:320px;   
+        height:auto;
+        margin:0 auto;
+        display:block;
+    }
+    
     h2{
         font-size:18px;
+        text-align:center;
     }
 
     input,
