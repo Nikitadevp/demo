@@ -119,6 +119,8 @@ class Ticket(models.Model):
 
 class LeaveRequest(models.Model):
 
+    leave_id = models.CharField(max_length=20, unique=True, editable=False)
+    
     name=models.CharField(max_length=100)
     email=models.EmailField()
     phone=models.CharField(max_length=15)
