@@ -15,6 +15,7 @@ urlpatterns = [
     path('leave/',views.leave_form),
    
     path('review/<int:id>/', views.review_leave, name='review_leave'),
+    path("dme-dashboard/", views.dme_dashboard, name="dme_dashboard"),
     
     
 ]

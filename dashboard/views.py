@@ -575,3 +575,30 @@ def review_leave(request, id):
         """)
 
     return render(request, "review_leave.html", {"leave": leave})
+
+
+# dme_dashboard
+
+def dme_dashboard(request):
+    tickets = Ticket.objects.filter(department="DME")
+
+    priority = request.GET.get("priority")
+    status = request.GET.get("status")
+
+    if priority:
+        tickets = tickets.filter(priority=priority)
+
+    if status:
+        tickets = tickets.filter(status=status)
+
+    context = {
+        "recent_tickets": tickets.order_by("-created_at")[:20],
+        "total_tickets": tickets.count(),
+        "open_tickets": tickets.filter(status="Open").count(),
+        "closed_tickets": tickets.filter(status="Closed").count(),
+        "urgent_tickets": tickets.filter(priority="Urgent").count(),
+        "priority": priority,
+        "status": status,
+    }
+
+    return render(request, "dme_dashboard.html", context)    
