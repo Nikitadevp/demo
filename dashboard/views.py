@@ -612,18 +612,26 @@ def dme_dashboard(request):
 
 def export_leave_csv(request):
     rows = LeaveRequest.objects.all().values_list(
+        "leave_id",
         "name",
         "email",
         "phone",
         "department",
-        "leave_type"
+        "leave_type",
+        "start_date",
+        "end_date",
+        "reason",
+        "status",
+        "manager_reason"
     )
 
     response = HttpResponse(content_type="text/csv")
     response["Content-Disposition"] = 'inline; filename="leave_data.csv"'
 
-    # header
-    response.write("Name,Email,Phone,Department,Leave Type\n")
+    # Header row
+    response.write(
+        "Leave ID,Name,Email,Phone,Department,Leave Type,Start Date,End Date,Reason,Status,Manager Reason\n"
+    )
 
     for row in rows:
         response.write(",".join(map(str, row)) + "\n")
