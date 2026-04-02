@@ -601,4 +601,31 @@ def dme_dashboard(request):
         "status": status,
     }
 
-    return render(request, "dme_dashboard.html", context)    
+    return render(request, "dme_dashboard.html", context) 
+
+
+
+
+
+#export_leave_csv
+
+
+def export_leave_csv(request):
+    rows = LeaveRequest.objects.all().values_list(
+        "name",
+        "email",
+        "phone",
+        "department",
+        "leave_type"
+    )
+
+    response = HttpResponse(content_type="text/csv")
+    response["Content-Disposition"] = 'inline; filename="leave_data.csv"'
+
+    # header
+    response.write("Name,Email,Phone,Department,Leave Type\n")
+
+    for row in rows:
+        response.write(",".join(map(str, row)) + "\n")
+
+    return response
