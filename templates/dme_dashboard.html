@@ -45,6 +45,7 @@
 
         <!-- Filters -->
         <form method="get" class="filters">
+
             <select name="priority">
                 <option value="">All Priority</option>
                 <option value="Urgent" {% if priority == "Urgent" %}selected{% endif %}>Urgent</option>
@@ -98,13 +99,9 @@
                     <tr>
                         <th>Ticket</th>
                         <th>Name</th>
-                        <th>Issue Type</th>
                         <th>Priority</th>
                         <th>Status</th>
-                        <th>TAT Deadline</th>
-                        <th>Created</th>
-                        <th>Resolved</th>
-                        <th>Action</th>
+                        <th>Date</th>
                     </tr>
                 </thead>
 
@@ -117,7 +114,6 @@
                         </td>
 
                         <td>{{ t.name }}</td>
-                        <td>{{ t.issue_type }}</td>
 
                         <td>
                             {% if t.priority == "Urgent" %}
@@ -135,23 +131,11 @@
                             {% endif %}
                         </td>
 
-                        <td>{{ t.tat_deadline|date:"d M Y H:i" }}</td>
                         <td>{{ t.created_at|date:"d M Y H:i" }}</td>
-                        <td>{{ t.resolved_at|date:"d M Y H:i" }}</td>
-
-                        <td>
-                            {% if t.status == "Open" %}
-                                <a href="{% url 'resolve_ticket' t.id %}" class="resolve-btn">
-                                    Resolve
-                                </a>
-                            {% else %}
-                                ✅ Done
-                            {% endif %}
-                        </td>
                     </tr>
                 {% empty %}
                     <tr>
-                        <td colspan="9">No DME tickets found</td>
+                        <td colspan="5">No DME tickets found</td>
                     </tr>
                 {% endfor %}
                 </tbody>
