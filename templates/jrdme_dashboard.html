@@ -38,6 +38,7 @@
     <!-- Main -->
     <main class="content" id="topDashboard">
 
+        <!-- Header -->
         <div class="header">
             <h1>JRDME Department Dashboard</h1>
         </div>
@@ -110,7 +111,11 @@
                 <tbody>
                 {% for t in recent_tickets %}
                     <tr>
-                        <td><i class="fa fa-ticket"></i> {{ t.ticket_no }}</td>
+                        <td>
+                            <i class="fa fa-ticket"></i>
+                            {{ t.ticket_no }}
+                        </td>
+
                         <td>{{ t.name }}</td>
                         <td>{{ t.issue_type }}</td>
 
@@ -140,7 +145,7 @@
                                     Resolve
                                 </a>
                             {% else %}
-                                Done
+                                 Done
                             {% endif %}
                         </td>
                     </tr>
