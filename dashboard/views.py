@@ -577,10 +577,9 @@ def review_leave(request, id):
     return render(request, "review_leave.html", {"leave": leave})
 
 
-# dme_dashboard
-def dme_dashboard(request):
-    # ✅ only DME department data
-    tickets = Ticket.objects.filter(department="DME")
+def jrdme_dashboard(request):
+    # ✅ only JRDME department data
+    tickets = Ticket.objects.filter(department="JRDME")
 
     # ✅ filters
     priority = request.GET.get("priority")
@@ -611,7 +610,7 @@ def dme_dashboard(request):
         "status": status,
     }
 
-    return render(request, "dme_dashboard.html", context)
+    return render(request, "jrdme_dashboard.html", context)
 
 
 
@@ -649,8 +648,8 @@ def export_leave_csv(request):
     return response  
 
 
-def jnrjme_dashboard(request):
-    tickets = Ticket.objects.filter(department="JNRJME")
+def jrdme_dashboard(request):
+    tickets = Ticket.objects.filter(department="JRDME")
 
     priority = request.GET.get("priority")
     status = request.GET.get("status")
@@ -671,4 +670,4 @@ def jnrjme_dashboard(request):
         "status": status,
     }
 
-    return render(request, "jnrjme_dashboard.html", context)
+    return render(request, "jrdme_dashboard.html", context)
