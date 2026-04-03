@@ -578,10 +578,11 @@ def review_leave(request, id):
 
 
 # dme_dashboard
-
 def dme_dashboard(request):
+    #  only DME department data
     tickets = Ticket.objects.filter(department="DME")
 
+    #  filters
     priority = request.GET.get("priority")
     status = request.GET.get("status")
 
@@ -591,17 +592,26 @@ def dme_dashboard(request):
     if status:
         tickets = tickets.filter(status=status)
 
+    # counts
+    total_tickets = tickets.count()
+    open_tickets = tickets.filter(status="Open").count()
+    closed_tickets = tickets.filter(status="Closed").count()
+    urgent_tickets = tickets.filter(priority="Urgent").count()
+
+    #  latest tickets
+    recent_tickets = tickets.order_by("-created_at")[:20]
+
     context = {
-        "recent_tickets": tickets.order_by("-created_at")[:20],
-        "total_tickets": tickets.count(),
-        "open_tickets": tickets.filter(status="Open").count(),
-        "closed_tickets": tickets.filter(status="Closed").count(),
-        "urgent_tickets": tickets.filter(priority="Urgent").count(),
+        "recent_tickets": recent_tickets,
+        "total_tickets": total_tickets,
+        "open_tickets": open_tickets,
+        "closed_tickets": closed_tickets,
+        "urgent_tickets": urgent_tickets,
         "priority": priority,
         "status": status,
     }
 
-    return render(request, "dme_dashboard.html", context) 
+    return render(request, "dme_dashboard.html", context)
 
 
 
