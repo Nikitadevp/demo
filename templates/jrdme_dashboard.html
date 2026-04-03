@@ -7,7 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
-
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
@@ -141,11 +140,11 @@
 
                         <td>
                             {% if t.status == "Open" %}
-                                <a href="{% url 'resolve_ticket' t.id %}" class="resolve-btn">
+                                <a href="{% url 'resolve_ticket' t.ticket_no %}" class="resolve-btn">
                                     Resolve
                                 </a>
                             {% else %}
-                                 Done
+                                <span class="badge closed">Done</span>
                             {% endif %}
                         </td>
                     </tr>
