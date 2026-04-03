@@ -637,8 +637,10 @@ def export_leave_csv(request):
     return response  
 
 
+    
+
 def jrdme_dashboard(request):
-    tickets = Ticket.objects.filter(department="JRDME")
+    tickets = Ticket.objects.filter(department__iexact="JRDME")
 
     priority = request.GET.get("priority")
     status = request.GET.get("status")
