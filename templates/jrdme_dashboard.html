@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>DME Help Desk Dashboard</title>
+    <title>JRDME Help Desk Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
@@ -18,7 +18,7 @@
 
     <!-- Sidebar -->
     <aside class="sidebar">
-        <h2 class="logo">DME HelpDesk</h2>
+        <h2 class="logo">JRDME HelpDesk</h2>
 
         <ul class="menu">
             <li>
@@ -38,9 +38,8 @@
     <!-- Main -->
     <main class="content" id="topDashboard">
 
-        <!-- Header -->
         <div class="header">
-            <h1>DME Department Dashboard</h1>
+            <h1>JRDME Department Dashboard</h1>
         </div>
 
         <!-- Filters -->
@@ -91,7 +90,7 @@
 
         <!-- Table -->
         <div class="table-box" id="ticketSection">
-            <h2>DME Recent Tickets</h2>
+            <h2>JRDME Recent Tickets</h2>
 
             <table>
                 <thead>
@@ -111,11 +110,7 @@
                 <tbody>
                 {% for t in recent_tickets %}
                     <tr>
-                        <td>
-                            <i class="fa fa-ticket"></i>
-                            {{ t.ticket_no }}
-                        </td>
-
+                        <td><i class="fa fa-ticket"></i> {{ t.ticket_no }}</td>
                         <td>{{ t.name }}</td>
                         <td>{{ t.issue_type }}</td>
 
@@ -145,13 +140,13 @@
                                     Resolve
                                 </a>
                             {% else %}
-                                 Done
+                                Done
                             {% endif %}
                         </td>
                     </tr>
                 {% empty %}
                     <tr>
-                        <td colspan="9">No DME tickets found</td>
+                        <td colspan="9">No JRDME tickets found</td>
                     </tr>
                 {% endfor %}
                 </tbody>

@@ -579,10 +579,10 @@ def review_leave(request, id):
 
 # dme_dashboard
 def dme_dashboard(request):
-    #  only DME department data
+    # ✅ only DME department data
     tickets = Ticket.objects.filter(department="DME")
 
-    #  filters
+    # ✅ filters
     priority = request.GET.get("priority")
     status = request.GET.get("status")
 
@@ -592,13 +592,13 @@ def dme_dashboard(request):
     if status:
         tickets = tickets.filter(status=status)
 
-    # counts
+    # ✅ counts
     total_tickets = tickets.count()
     open_tickets = tickets.filter(status="Open").count()
     closed_tickets = tickets.filter(status="Closed").count()
     urgent_tickets = tickets.filter(priority="Urgent").count()
 
-    #  latest tickets
+    # ✅ latest tickets
     recent_tickets = tickets.order_by("-created_at")[:20]
 
     context = {
@@ -646,4 +646,29 @@ def export_leave_csv(request):
     for row in rows:
         response.write(",".join(map(str, row)) + "\n")
 
-    return response
+    return response  
+
+
+def jrdme_dashboard(request):
+    tickets = Ticket.objects.filter(department="JRDME")
+
+    priority = request.GET.get("priority")
+    status = request.GET.get("status")
+
+    if priority:
+        tickets = tickets.filter(priority=priority)
+
+    if status:
+        tickets = tickets.filter(status=status)
+
+    context = {
+        "recent_tickets": tickets.order_by("-created_at")[:20],
+        "total_tickets": tickets.count(),
+        "open_tickets": tickets.filter(status="Open").count(),
+        "closed_tickets": tickets.filter(status="Closed").count(),
+        "urgent_tickets": tickets.filter(priority="Urgent").count(),
+        "priority": priority,
+        "status": status,
+    }
+
+    return render(request, "jrdme_dashboard.html", context)

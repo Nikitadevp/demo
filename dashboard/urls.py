@@ -19,6 +19,7 @@ urlpatterns = [
     path('review/<int:id>/', views.review_leave, name='review_leave'),
     path("dme-dashboard/", views.dme_dashboard, name="dme_dashboard"),
     path("leave-csv/", export_leave_csv, name="leave_csv"),
+    path("jrdme-dashboard/", views.jrdme_dashboard, name="jrdme_dashboard"),
     
     
 ]
