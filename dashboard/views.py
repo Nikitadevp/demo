@@ -649,8 +649,8 @@ def export_leave_csv(request):
     return response  
 
 
-def jrdme_dashboard(request):
-    tickets = Ticket.objects.filter(department="JRDME")
+def jnrjme_dashboard(request):
+    tickets = Ticket.objects.filter(department="JNRJME")
 
     priority = request.GET.get("priority")
     status = request.GET.get("status")
@@ -671,4 +671,4 @@ def jrdme_dashboard(request):
         "status": status,
     }
 
-    return render(request, "jrdme_dashboard.html", context)
+    return render(request, "jnrjme_dashboard.html", context)
