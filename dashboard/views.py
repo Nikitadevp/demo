@@ -572,6 +572,7 @@ def review_leave(request, id):
 
     return render(request, "review_leave.html", {"leave": leave})
 
+from django.db.models import Case, When, Value, IntegerField
 
 def dme_dashboard(request):
     tickets = Ticket.objects.filter(department="DME")
@@ -585,8 +586,15 @@ def dme_dashboard(request):
     if status:
         tickets = tickets.filter(status=status)
 
-    #  OPEN first, CLOSED after that, latest first
-    recent_tickets = tickets.order_by("status", "-created_at")
+    # ✅ OPEN first, CLOSED after
+    recent_tickets = tickets.annotate(
+        status_order=Case(
+            When(status="Open", then=Value(0)),
+            When(status="Closed", then=Value(1)),
+            default=Value(2),
+            output_field=IntegerField(),
+        )
+    ).order_by("status_order", "-created_at")
 
     context = {
         "recent_tickets": recent_tickets,
