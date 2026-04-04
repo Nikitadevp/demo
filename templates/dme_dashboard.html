@@ -100,10 +100,10 @@
                         <th>Issue Type</th>
                         <th>Priority</th>
                         <th>Status</th>
-                        
                         <th>Created</th>
                         <th>TAT Deadline</th>
                         <th>Resolved</th>
+                        <th>Solution Provided</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -135,9 +135,18 @@
                             {% endif %}
                         </td>
 
-                        <td>{{ t.tat_deadline|date:"d M Y H:i" }}</td>
                         <td>{{ t.created_at|date:"d M Y H:i" }}</td>
+                        <td>{{ t.tat_deadline|date:"d M Y H:i" }}</td>
                         <td>{{ t.resolved_at|date:"d M Y H:i" }}</td>
+
+                        <!-- ✅ Solution Provided -->
+                        <td>
+                            {% if t.solution_provided %}
+                                {{ t.solution_provided }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
 
                         <td>
                             {% if t.status == "Open" %}
@@ -151,7 +160,7 @@
                     </tr>
                 {% empty %}
                     <tr>
-                        <td colspan="9">No DME tickets found</td>
+                        <td colspan="10">No DME tickets found</td>
                     </tr>
                 {% endfor %}
                 </tbody>

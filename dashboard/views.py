@@ -585,8 +585,11 @@ def dme_dashboard(request):
     if status:
         tickets = tickets.filter(status=status)
 
+    #  OPEN first, CLOSED after that, latest first
+    recent_tickets = tickets.order_by("status", "-created_at")
+
     context = {
-        "recent_tickets": tickets.order_by("-created_at")[:20],
+        "recent_tickets": recent_tickets,
         "total_tickets": tickets.count(),
         "open_tickets": tickets.filter(status="Open").count(),
         "closed_tickets": tickets.filter(status="Closed").count(),
