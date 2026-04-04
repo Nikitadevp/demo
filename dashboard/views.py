@@ -14,12 +14,10 @@ import re
 
 
 
-#  Office Time Settings
 
 # Office Time
 OFFICE_START = time(9, 30)
 OFFICE_END = time(18, 30)
-OFFICE_HOURS_PER_DAY = 9
 
 
 def is_weekend(dt):
@@ -36,60 +34,81 @@ def next_working_day(dt):
 def calculate_tat_deadline(priority):
     now = timezone.localtime(timezone.now())
 
+    #  TAT hours
     if priority == "Urgent":
         remaining_hours = 6
     else:
-        remaining_hours = OFFICE_HOURS_PER_DAY   # ✅ 1 working day = 9 hr
+        remaining_hours = 24   #  Normal = 24 working hours
 
     current_datetime = now
 
     while remaining_hours > 0:
 
-        # Sunday skip only
+        #  Sunday skip
         if is_weekend(current_datetime):
             current_datetime = next_working_day(current_datetime)
             current_datetime = current_datetime.replace(
-                hour=9, minute=30, second=0, microsecond=0
+                hour=9,
+                minute=30,
+                second=0,
+                microsecond=0
             )
             continue
 
         current_time = current_datetime.time()
 
+        #  before office time
         if current_time < OFFICE_START:
             current_datetime = current_datetime.replace(
-                hour=9, minute=30, second=0, microsecond=0
+                hour=9,
+                minute=30,
+                second=0,
+                microsecond=0
             )
 
+        #  after office close
         elif current_time >= OFFICE_END:
             next_day = current_datetime + timedelta(days=1)
             next_day = next_working_day(next_day)
 
             current_datetime = next_day.replace(
-                hour=9, minute=30, second=0, microsecond=0
+                hour=9,
+                minute=30,
+                second=0,
+                microsecond=0
             )
-            continue   #  important fix
+            continue
 
+        #  today's available office hours
+        office_end_today = current_datetime.replace(
+            hour=18,
+            minute=30,
+            second=0,
+            microsecond=0
+        )
+
+        available_today = (
+            office_end_today - current_datetime
+        ).total_seconds() / 3600
+
+        # complete today
+        if available_today >= remaining_hours:
+            current_datetime += timedelta(hours=remaining_hours)
+            remaining_hours = 0
+
+        #  move remaining to next working day
         else:
-            office_end_today = current_datetime.replace(
-                hour=18, minute=30, second=0, microsecond=0
+            remaining_hours -= available_today
+
+            next_day = current_datetime + timedelta(days=1)
+            next_day = next_working_day(next_day)
+
+            current_datetime = next_day.replace(
+                hour=9,
+                minute=30,
+                second=0,
+                microsecond=0
             )
-
-            available_today = (
-                office_end_today - current_datetime
-            ).total_seconds() / 3600
-
-            if available_today >= remaining_hours:
-                current_datetime += timedelta(hours=remaining_hours)
-                remaining_hours = 0
-            else:
-                remaining_hours -= available_today
-
-                next_day = current_datetime + timedelta(days=1)
-                next_day = next_working_day(next_day)
-
-                current_datetime = next_day.replace(
-                    hour=9, minute=30, second=0, microsecond=0
-                )
 
     return timezone.localtime(current_datetime)
 
