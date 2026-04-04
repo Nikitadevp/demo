@@ -20,97 +20,69 @@ OFFICE_START = time(9, 30)
 OFFICE_END = time(18, 30)
 
 
-def is_weekend(dt):
-    #  only Sunday holiday
-    return dt.weekday() == 6
-
-
-def next_working_day(dt):
-    while is_weekend(dt):
-        dt += timedelta(days=1)
-    return dt
-
-
 def calculate_tat_deadline(priority):
     now = timezone.localtime(timezone.now())
 
-    #  TAT hours
+    # 🚨 URGENT = 6 office hours only
     if priority == "Urgent":
         remaining_hours = 6
+        current_datetime = now
+
+        while remaining_hours > 0:
+            current_time = current_datetime.time()
+
+            # before office time
+            if current_time < OFFICE_START:
+                current_datetime = current_datetime.replace(
+                    hour=9,
+                    minute=30,
+                    second=0,
+                    microsecond=0
+                )
+                continue
+
+            # after office close → next day start
+            if current_time >= OFFICE_END:
+                next_day = current_datetime + timedelta(days=1)
+                current_datetime = next_day.replace(
+                    hour=9,
+                    minute=30,
+                    second=0,
+                    microsecond=0
+                )
+                continue
+
+            # today's office available time
+            office_end_today = current_datetime.replace(
+                hour=18,
+                minute=30,
+                second=0,
+                microsecond=0
+            )
+
+            available_today = (
+                office_end_today - current_datetime
+            ).total_seconds() / 3600
+
+            if available_today >= remaining_hours:
+                current_datetime += timedelta(hours=remaining_hours)
+                remaining_hours = 0
+            else:
+                remaining_hours -= available_today
+                next_day = current_datetime + timedelta(days=1)
+
+                current_datetime = next_day.replace(
+                    hour=9,
+                    minute=30,
+                    second=0,
+                    microsecond=0
+                )
+
+        return timezone.localtime(current_datetime)
+
+    # 📌 NORMAL = simple 24 real hours
     else:
-        remaining_hours = 24   #  Normal = 24 working hours
-
-    current_datetime = now
-
-    while remaining_hours > 0:
-
-        #  Sunday skip
-        if is_weekend(current_datetime):
-            current_datetime = next_working_day(current_datetime)
-            current_datetime = current_datetime.replace(
-                hour=9,
-                minute=30,
-                second=0,
-                microsecond=0
-            )
-            continue
-
-        current_time = current_datetime.time()
-
-        #  before office time
-        if current_time < OFFICE_START:
-            current_datetime = current_datetime.replace(
-                hour=9,
-                minute=30,
-                second=0,
-                microsecond=0
-            )
-
-        #  after office close
-        elif current_time >= OFFICE_END:
-            next_day = current_datetime + timedelta(days=1)
-            next_day = next_working_day(next_day)
-
-            current_datetime = next_day.replace(
-                hour=9,
-                minute=30,
-                second=0,
-                microsecond=0
-            )
-            continue
-
-        #  today's available office hours
-        office_end_today = current_datetime.replace(
-            hour=18,
-            minute=30,
-            second=0,
-            microsecond=0
-        )
-
-        available_today = (
-            office_end_today - current_datetime
-        ).total_seconds() / 3600
-
-        # complete today
-        if available_today >= remaining_hours:
-            current_datetime += timedelta(hours=remaining_hours)
-            remaining_hours = 0
-
-        #  move remaining to next working day
-        else:
-            remaining_hours -= available_today
-
-            next_day = current_datetime + timedelta(days=1)
-            next_day = next_working_day(next_day)
-
-            current_datetime = next_day.replace(
-                hour=9,
-                minute=30,
-                second=0,
-                microsecond=0
-            )
-
-    return timezone.localtime(current_datetime)
+        return timezone.localtime(now + timedelta(hours=24))
 
 #raise_ticket
   
@@ -592,6 +564,9 @@ def review_leave(request, id):
     return render(request, "review_leave.html", {"leave": leave})
 
 from django.db.models import Case, When, Value, IntegerField
+
+
+
 
 def dme_dashboard(request):
     tickets = Ticket.objects.filter(department="DME")
