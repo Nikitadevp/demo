@@ -19,33 +19,33 @@ import re
 # Office Time
 OFFICE_START = time(9, 30)
 OFFICE_END = time(18, 30)
+OFFICE_HOURS_PER_DAY = 9
 
 
 def is_weekend(dt):
-    # 5 = Saturday, 6 = Sunday
-    return dt.weekday() in [5, 6]
+    #  only Sunday holiday
+    return dt.weekday() == 6
 
 
 def next_working_day(dt):
     while is_weekend(dt):
-        dt = dt + timedelta(days=1)
+        dt += timedelta(days=1)
     return dt
 
 
 def calculate_tat_deadline(priority):
-
     now = timezone.localtime(timezone.now())
 
     if priority == "Urgent":
         remaining_hours = 6
     else:
-        remaining_hours = 24
+        remaining_hours = OFFICE_HOURS_PER_DAY   # ✅ 1 working day = 9 hr
 
     current_datetime = now
 
     while remaining_hours > 0:
 
-        # Weekend skip
+        # Sunday skip only
         if is_weekend(current_datetime):
             current_datetime = next_working_day(current_datetime)
             current_datetime = current_datetime.replace(
@@ -67,26 +67,22 @@ def calculate_tat_deadline(priority):
             current_datetime = next_day.replace(
                 hour=9, minute=30, second=0, microsecond=0
             )
+            continue   #  important fix
 
         else:
-
             office_end_today = current_datetime.replace(
                 hour=18, minute=30, second=0, microsecond=0
             )
 
-            remaining_today_seconds = (
+            available_today = (
                 office_end_today - current_datetime
-            ).total_seconds()
+            ).total_seconds() / 3600
 
-            remaining_today_hours = remaining_today_seconds / 3600
-
-            if remaining_today_hours >= remaining_hours:
-                current_datetime = current_datetime + timedelta(
-                    hours=remaining_hours
-                )
+            if available_today >= remaining_hours:
+                current_datetime += timedelta(hours=remaining_hours)
                 remaining_hours = 0
             else:
-                remaining_hours -= remaining_today_hours
+                remaining_hours -= available_today
 
                 next_day = current_datetime + timedelta(days=1)
                 next_day = next_working_day(next_day)
@@ -95,7 +91,7 @@ def calculate_tat_deadline(priority):
                     hour=9, minute=30, second=0, microsecond=0
                 )
 
-    return current_datetime
+    return timezone.localtime(current_datetime)
 
 #raise_ticket
   
