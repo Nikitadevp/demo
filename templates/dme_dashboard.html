@@ -1,4 +1,5 @@
 {% load static %}
+{% load tz %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,8 +18,6 @@
 
     <!-- Sidebar -->
     <aside class="sidebar">
-        
-
         <ul class="menu">
             <li>
                 <a href="#topDashboard">
@@ -135,11 +134,11 @@
                             {% endif %}
                         </td>
 
-                        <td>{{ t.created_at|date:"d M Y H:i" }}</td>
-                        <td>{{ t.tat_deadline|date:"d M Y H:i" }}</td>
-                        <td>{{ t.resolved_at|date:"d M Y H:i" }}</td>
+                        <!-- ✅ timezone fixed -->
+                        <td>{{ t.created_at|localtime|date:"d M Y h:i A" }}</td>
+                        <td>{{ t.tat_deadline|localtime|date:"d M Y h:i A" }}</td>
+                        <td>{{ t.resolved_at|localtime|date:"d M Y h:i A"|default:"-" }}</td>
 
-                        <!-- ✅ Solution Provided -->
                         <td>
                             {% if t.solution_provided %}
                                 {{ t.solution_provided }}
