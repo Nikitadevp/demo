@@ -11,7 +11,7 @@ import base64
 from .models import LeaveRequest
 from django.http import HttpResponse
 import re
-
+from django.http import HttpResponseForbidden
 
 
 
@@ -567,8 +567,12 @@ from django.db.models import Case, When, Value, IntegerField
 
 
 
-
 def dme_dashboard(request):
+    secret_key = request.GET.get("key")
+
+    if secret_key != "dme123":
+        return HttpResponseForbidden("Access Denied")
+
     tickets = Ticket.objects.filter(department="DME")
 
     priority = request.GET.get("priority")
@@ -580,7 +584,6 @@ def dme_dashboard(request):
     if status:
         tickets = tickets.filter(status=status)
 
-    # ✅ OPEN first, CLOSED after
     recent_tickets = tickets.annotate(
         status_order=Case(
             When(status="Open", then=Value(0)),
