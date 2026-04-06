@@ -1,0 +1,159 @@
+{% load static %}
+{% load tz %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Accounts and Finance Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+<div class="layout">
+
+    <aside class="sidebar">
+        <ul class="menu">
+            <li>
+                <a href="#topDashboard">
+                    <i class="fa fa-chart-line"></i> Dashboard
+                </a>
+            </li>
+            <li>
+                <a href="#ticketSection">
+                    <i class="fa fa-ticket"></i> Tickets
+                </a>
+            </li>
+        </ul>
+    </aside>
+
+    <main class="content" id="topDashboard">
+
+        <div class="header">
+            <h1>Accounts and Finance Dashboard</h1>
+        </div>
+
+        <form method="get" class="filters">
+            <select name="priority">
+                <option value="">All Priority</option>
+                <option value="Urgent" {% if priority == "Urgent" %}selected{% endif %}>Urgent</option>
+                <option value="Normal" {% if priority == "Normal" %}selected{% endif %}>Normal</option>
+            </select>
+
+            <select name="status">
+                <option value="">All Status</option>
+                <option value="Open" {% if status == "Open" %}selected{% endif %}>Open</option>
+                <option value="Closed" {% if status == "Closed" %}selected{% endif %}>Closed</option>
+            </select>
+
+            <button type="submit">
+                <i class="fa fa-filter"></i> Apply
+            </button>
+        </form>
+
+        <div class="cards">
+            <div class="card total">
+                <i class="fa fa-layer-group"></i>
+                <span>Total Tickets</span>
+                <b>{{ total_tickets }}</b>
+            </div>
+
+            <div class="card open">
+                <i class="fa fa-folder-open"></i>
+                <span>Open</span>
+                <b>{{ open_tickets }}</b>
+            </div>
+
+            <div class="card closed">
+                <i class="fa fa-circle-check"></i>
+                <span>Closed</span>
+                <b>{{ closed_tickets }}</b>
+            </div>
+
+            <div class="card urgent">
+                <i class="fa fa-triangle-exclamation"></i>
+                <span>Urgent</span>
+                <b>{{ urgent_tickets }}</b>
+            </div>
+        </div>
+
+        <div class="table-box" id="ticketSection">
+            <h2>Accounts and Finance Recent Tickets</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ticket</th>
+                        <th>Name</th>
+                        <th>Issue Type</th>
+                        <th>Priority</th>
+                        <th>Status</th>
+                        <th>Created</th>
+                        <th>TAT Deadline</th>
+                        <th>Resolved</th>
+                        <th>Solution Provided</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                {% for t in recent_tickets %}
+                    <tr>
+                        <td><i class="fa fa-ticket"></i> {{ t.ticket_no }}</td>
+                        <td>{{ t.name }}</td>
+                        <td>{{ t.issue_type }}</td>
+
+                        <td>
+                            {% if t.priority == "Urgent" %}
+                                <span class="badge urgent">Urgent</span>
+                            {% else %}
+                                <span class="badge normal">Normal</span>
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            {% if t.status == "Open" %}
+                                <span class="badge open">Open</span>
+                            {% else %}
+                                <span class="badge closed">Closed</span>
+                            {% endif %}
+                        </td>
+
+                        <td>{{ t.created_at|localtime|date:"d M Y h:i A" }}</td>
+                        <td>{{ t.tat_deadline|localtime|date:"d M Y h:i A" }}</td>
+                        <td>{{ t.resolved_at|localtime|date:"d M Y h:i A"|default:"-" }}</td>
+
+                        <td>
+                            {% if t.solution_provided %}
+                                {{ t.solution_provided }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            {% if t.status == "Open" %}
+                                <a href="{% url 'resolve_ticket' t.ticket_no %}" class="resolve-btn">
+                                    Resolve
+                                </a>
+                            {% else %}
+                                <span class="badge closed">Done</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="10">No tickets found</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </main>
+</div>
+</body>
+</html>

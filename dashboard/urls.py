@@ -20,6 +20,7 @@ urlpatterns = [
     path("dme-dashboard/", views.dme_dashboard, name="dme_dashboard"),
     path("leave-csv/", export_leave_csv, name="leave_csv"),
     path("jrdme-dashboard/", views.jrdme_dashboard, name="jrdme_dashboard"),
+    path("accounts-dashboard/", views.accounts_dashboard, name="ac_dashboard"),
     
     
 ]

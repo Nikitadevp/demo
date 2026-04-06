@@ -630,6 +630,7 @@ def jrdme_dashboard(request):
 
     return render(request, "jrdme_dashboard.html", context)
 
+#dme_dashboard
 
 def dme_dashboard(request):
     secret_key = request.GET.get("key")
@@ -668,3 +669,48 @@ def dme_dashboard(request):
     }
 
     return render(request, "dme_dashboard.html", context)
+
+
+
+
+#accounts_dashboard
+
+def accounts_dashboard(request):
+    secret_key = request.GET.get("key")
+
+    #  secret key check
+    if secret_key != "accounts123":
+        return HttpResponseForbidden("Access Denied")
+
+    tickets = Ticket.objects.filter(department="Accounts and Finance")
+
+    priority = request.GET.get("priority")
+    status = request.GET.get("status")
+
+    if priority:
+        tickets = tickets.filter(priority=priority)
+
+    if status:
+        tickets = tickets.filter(status=status)
+
+    #  open first, closed later
+    recent_tickets = tickets.annotate(
+        status_order=Case(
+            When(status="Open", then=Value(0)),
+            When(status="Closed", then=Value(1)),
+            default=Value(2),
+            output_field=IntegerField(),
+        )
+    ).order_by("status_order", "-created_at")
+
+    context = {
+        "recent_tickets": recent_tickets,
+        "total_tickets": tickets.count(),
+        "open_tickets": tickets.filter(status="Open").count(),
+        "closed_tickets": tickets.filter(status="Closed").count(),
+        "urgent_tickets": tickets.filter(priority="Urgent").count(),
+        "priority": priority,
+        "status": status,
+    }
+
+    return render(request, "accounts_dashboard.html", context)
