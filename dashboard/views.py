@@ -635,32 +635,22 @@ def jrdme_dashboard(request):
 #dme_dashboard
 
 
-
 def dme_dashboard(request):
     secret_key = request.GET.get("key")
 
+    #  Security
     if secret_key != "dme123":
         return HttpResponseForbidden("Access Denied")
 
+    #  Base queryset
     tickets = Ticket.objects.filter(department="DME")
 
-    priority = request.GET.get("priority")
-    status = request.GET.get("status")
-    from_date = request.GET.get("from_date")
-    to_date = request.GET.get("to_date")
-    search = request.GET.get("search")
-
-    if priority:
-        tickets = tickets.filter(priority=priority)
-
-    if status:
-        tickets = tickets.filter(status=status)
-
-    if from_date:
-        tickets = tickets.filter(created_at__date__gte=from_date)
-
-    if to_date:
-        tickets = tickets.filter(created_at__date__lte=to_date)
+    #  Filters
+    priority = request.GET.get("priority", "")
+    status = request.GET.get("status", "")
+    from_date = request.GET.get("from_date", "")
+    to_date = request.GET.get("to_date", "")
+    search = request.GET.get("search", "")
 
     #  Search filter
     if search:
@@ -669,6 +659,21 @@ def dme_dashboard(request):
             Q(name__icontains=search) |
             Q(issue_type__icontains=search)
         )
+
+    #  Priority filter
+    if priority:
+        tickets = tickets.filter(priority=priority)
+
+    #  Status filter
+    if status:
+        tickets = tickets.filter(status=status)
+
+    #  Date filters
+    if from_date:
+        tickets = tickets.filter(created_at__date__gte=from_date)
+
+    if to_date:
+        tickets = tickets.filter(created_at__date__lte=to_date)
 
     #  Export CSV
     if request.GET.get("export") == "csv":
@@ -695,14 +700,15 @@ def dme_dashboard(request):
                 t.issue_type,
                 t.priority,
                 t.status,
-                t.created_at,
-                t.tat_deadline,
-                t.resolved_at or "-",
+                t.created_at.strftime("%d-%m-%Y %I:%M %p") if t.created_at else "-",
+                t.tat_deadline.strftime("%d-%m-%Y %I:%M %p") if t.tat_deadline else "-",
+                t.resolved_at.strftime("%d-%m-%Y %I:%M %p") if t.resolved_at else "-",
                 t.solution_provided or "-"
             ])
 
         return response
 
+    #Open tickets first
     recent_tickets = tickets.annotate(
         status_order=Case(
             When(status="Open", then=Value(0)),
@@ -712,6 +718,7 @@ def dme_dashboard(request):
         )
     ).order_by("status_order", "-created_at")
 
+    # Context
     context = {
         "recent_tickets": recent_tickets,
         "total_tickets": tickets.count(),

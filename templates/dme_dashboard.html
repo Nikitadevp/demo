@@ -24,7 +24,6 @@
                     <i class="fa fa-chart-line"></i> Dashboard
                 </a>
             </li>
-
             <li>
                 <a href="#ticketSection">
                     <i class="fa fa-ticket"></i> Tickets
@@ -41,14 +40,22 @@
             <h1>DME Department Dashboard</h1>
         </div>
 
-        <!--  Filters Updated -->
+        <!-- ✅ Separate Search Bar -->
+        <div class="search-box">
+            <form method="get">
+                <input type="hidden" name="key" value="dme123">
+                <input type="text"
+                       name="search"
+                       value="{{ search }}"
+                       placeholder="🔍 Search Ticket / Name / Issue"
+                       onkeypress="if(event.key==='Enter'){this.form.submit();}">
+            </form>
+        </div>
+
+        <!-- ✅ Separate Filter Row -->
         <form method="get" class="filters">
-
             <input type="hidden" name="key" value="dme123">
-
-            <input type="text" name="search" placeholder="Search Ticket / Name"
-                value="{{ search }}">
-
+            <input type="hidden" name="search" value="{{ search }}">
 
             <select name="priority">
                 <option value="">All Priority</option>
@@ -62,14 +69,14 @@
                 <option value="Closed" {% if status == "Closed" %}selected{% endif %}>Closed</option>
             </select>
 
-            <!--  Calendar Filters -->
             <div class="date-filter">
-                    <label>From</label>
-                    <input type="date" name="from_date" value="{{ from_date }}">
+                <label>From</label>
+                <input type="date" name="from_date" value="{{ from_date }}">
             </div>
+
             <div class="date-filter">
-                    <label>To</label>
-                    <input type="date" name="to_date" value="{{ to_date }}">
+                <label>To</label>
+                <input type="date" name="to_date" value="{{ to_date }}">
             </div>
 
             <button type="submit">
@@ -77,11 +84,8 @@
             </button>
 
             <button type="submit" name="export" value="csv">
-                    <i class="fa fa-download"></i> Export CSV
+                <i class="fa fa-download"></i> Export CSV
             </button>
-
-
-
         </form>
 
         <!-- Cards -->
