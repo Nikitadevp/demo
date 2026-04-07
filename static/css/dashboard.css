@@ -325,6 +325,11 @@ tr:not(:last-child) {
     background: #ef4444;
 }
 
+.filters input[type="date"] {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
 
 
 
