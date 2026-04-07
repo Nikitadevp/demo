@@ -41,8 +41,12 @@
             <h1>DME Department Dashboard</h1>
         </div>
 
-        <!-- ✅ Filters Updated -->
+        <!--  Filters Updated -->
         <form method="get" class="filters">
+
+            <input type="hidden" name="key" value="dme123">
+
+
             <select name="priority">
                 <option value="">All Priority</option>
                 <option value="Urgent" {% if priority == "Urgent" %}selected{% endif %}>Urgent</option>
@@ -55,7 +59,7 @@
                 <option value="Closed" {% if status == "Closed" %}selected{% endif %}>Closed</option>
             </select>
 
-            <!-- ✅ Calendar Filters -->
+            <!--  Calendar Filters -->
             <input type="date" name="from_date" value="{{ from_date }}">
             <input type="date" name="to_date" value="{{ to_date }}">
 
