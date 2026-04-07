@@ -60,8 +60,14 @@
             </select>
 
             <!--  Calendar Filters -->
-            <input type="date" name="from_date" value="{{ from_date }}">
-            <input type="date" name="to_date" value="{{ to_date }}">
+            <div class="date-filter">
+                    <label>From</label>
+                    <input type="date" name="from_date" value="{{ from_date }}">
+            </div>
+            <div class="date-filter">
+                    <label>To</label>
+                    <input type="date" name="to_date" value="{{ to_date }}">
+            </div>
 
             <button type="submit">
                 <i class="fa fa-filter"></i> Apply
