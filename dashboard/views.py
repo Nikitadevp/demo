@@ -672,36 +672,36 @@ def dme_dashboard(request):
 
     #  Export CSV
     if request.GET.get("export") == "csv":
-    response = HttpResponse(content_type="text/csv")
-    response["Content-Disposition"] = 'attachment; filename="dme_tickets.csv"'
+        response = HttpResponse(content_type="text/csv")
+        response["Content-Disposition"] = 'attachment; filename="dme_tickets.csv"'
 
-    writer = csv.writer(response)
-    writer.writerow([
-        "Ticket No",
-        "Name",
-        "Issue Type",
-        "Priority",
-        "Status",
-        "Created",
-        "TAT Deadline",
-        "Resolved",
-        "Solution Provided"
-    ])
-
-    for t in tickets:
+        writer = csv.writer(response)
         writer.writerow([
-            t.ticket_no,
-            t.name,
-            t.issue_type,
-            t.priority,
-            t.status,
-            t.created_at,
-            t.tat_deadline,
-            t.resolved_at or "-",
-            t.solution_provided or "-"
+            "Ticket No",
+            "Name",
+            "Issue Type",
+            "Priority",
+            "Status",
+            "Created",
+            "TAT Deadline",
+            "Resolved",
+            "Solution Provided"
         ])
 
-    return response
+        for t in tickets:
+            writer.writerow([
+                t.ticket_no,
+                t.name,
+                t.issue_type,
+                t.priority,
+                t.status,
+                t.created_at,
+                t.tat_deadline,
+                t.resolved_at or "-",
+                t.solution_provided or "-"
+            ])
+
+        return response
 
     recent_tickets = tickets.annotate(
         status_order=Case(
