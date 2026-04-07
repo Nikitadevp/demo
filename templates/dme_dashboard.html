@@ -40,10 +40,17 @@
             <h1>DME Department Dashboard</h1>
         </div>
 
-        <!--  Separate Search Bar -->
+        <!-- ✅ Search Bar -->
         <div class="search-box">
             <form method="get">
                 <input type="hidden" name="key" value="dme123">
+
+                <!-- keep filters while searching -->
+                <input type="hidden" name="priority" value="{{ priority }}">
+                <input type="hidden" name="status" value="{{ status }}">
+                <input type="hidden" name="from_date" value="{{ from_date }}">
+                <input type="hidden" name="to_date" value="{{ to_date }}">
+
                 <input type="text"
                        name="search"
                        value="{{ search }}"
@@ -52,18 +59,18 @@
             </form>
         </div>
 
-        <!--  Separate Filter Row -->
-        <form method="get" class="filters">
+        <!-- ✅ Auto Apply Filters -->
+        <form method="get" class="filters" id="filterForm">
             <input type="hidden" name="key" value="dme123">
             <input type="hidden" name="search" value="{{ search }}">
 
-            <select name="priority">
+            <select name="priority" onchange="this.form.submit()">
                 <option value="">All Priority</option>
                 <option value="Urgent" {% if priority == "Urgent" %}selected{% endif %}>Urgent</option>
                 <option value="Normal" {% if priority == "Normal" %}selected{% endif %}>Normal</option>
             </select>
 
-            <select name="status">
+            <select name="status" onchange="this.form.submit()">
                 <option value="">All Status</option>
                 <option value="Open" {% if status == "Open" %}selected{% endif %}>Open</option>
                 <option value="Closed" {% if status == "Closed" %}selected{% endif %}>Closed</option>
@@ -71,19 +78,19 @@
 
             <div class="date-filter">
                 <label>From</label>
-                <input type="date" name="from_date" value="{{ from_date }}">
+                <input type="date"
+                       name="from_date"
+                       value="{{ from_date }}"
+                       onchange="this.form.submit()">
             </div>
 
             <div class="date-filter">
                 <label>To</label>
-                <input type="date" name="to_date" value="{{ to_date }}">
+                <input type="date"
+                       name="to_date"
+                       value="{{ to_date }}"
+                       onchange="this.form.submit()">
             </div>
-
-            <button type="submit">
-                <i class="fa fa-filter"></i> Apply
-            </button>
-
-            
         </form>
 
         <!-- Cards -->
@@ -136,11 +143,7 @@
                 <tbody>
                 {% for t in recent_tickets %}
                     <tr>
-                        <td>
-                            <i class="fa fa-ticket"></i>
-                            {{ t.ticket_no }}
-                        </td>
-
+                        <td><i class="fa fa-ticket"></i> {{ t.ticket_no }}</td>
                         <td>{{ t.name }}</td>
                         <td>{{ t.issue_type }}</td>
 
