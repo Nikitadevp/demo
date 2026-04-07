@@ -40,26 +40,26 @@
             <h1>DME Department Dashboard</h1>
         </div>
 
-        <!-- ✅ Search Bar -->
+        <!--  Search Bar -->
         <div class="search-box">
-            <form method="get">
-                <input type="hidden" name="key" value="dme123">
+                <form method="get" id="searchForm">
+                    <input type="hidden" name="key" value="dme123">
+            
+                    <!-- keep filters while searching -->
+                    <input type="hidden" name="priority" value="{{ priority }}">
+                    <input type="hidden" name="status" value="{{ status }}">
+                    <input type="hidden" name="from_date" value="{{ from_date }}">
+                    <input type="hidden" name="to_date" value="{{ to_date }}">
+            
+                    <input type="text"
+                           name="search"
+                           value="{{ search }}"
+                           placeholder="🔍 Search Ticket / Name / Issue"
+                           onchange="this.form.submit()">
+                </form>
+            </div>
 
-                <!-- keep filters while searching -->
-                <input type="hidden" name="priority" value="{{ priority }}">
-                <input type="hidden" name="status" value="{{ status }}">
-                <input type="hidden" name="from_date" value="{{ from_date }}">
-                <input type="hidden" name="to_date" value="{{ to_date }}">
-
-                <input type="text"
-                       name="search"
-                       value="{{ search }}"
-                       placeholder="🔍 Search Ticket / Name / Issue"
-                       onkeypress="if(event.key==='Enter'){this.form.submit();}">
-            </form>
-        </div>
-
-        <!-- ✅ Auto Apply Filters -->
+        <!--  Auto Apply Filters -->
         <form method="get" class="filters" id="filterForm">
             <input type="hidden" name="key" value="dme123">
             <input type="hidden" name="search" value="{{ search }}">
