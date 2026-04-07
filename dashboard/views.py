@@ -12,6 +12,7 @@ from .models import LeaveRequest
 from django.http import HttpResponse
 import re
 from django.http import HttpResponseForbidden
+from django.db.models import Case, When, Value, IntegerField
 
 
 
@@ -632,6 +633,8 @@ def jrdme_dashboard(request):
 
 #dme_dashboard
 
+
+
 def dme_dashboard(request):
     secret_key = request.GET.get("key")
 
@@ -643,12 +646,25 @@ def dme_dashboard(request):
     priority = request.GET.get("priority")
     status = request.GET.get("status")
 
+    # New date filters
+    from_date = request.GET.get("from_date")
+    to_date = request.GET.get("to_date")
+
+    # Existing filters
     if priority:
         tickets = tickets.filter(priority=priority)
 
     if status:
         tickets = tickets.filter(status=status)
 
+    #  Date filter added
+    if from_date:
+        tickets = tickets.filter(created_at__date__gte=from_date)
+
+    if to_date:
+        tickets = tickets.filter(created_at__date__lte=to_date)
+
+    # Existing sorting logic
     recent_tickets = tickets.annotate(
         status_order=Case(
             When(status="Open", then=Value(0)),
@@ -666,6 +682,10 @@ def dme_dashboard(request):
         "urgent_tickets": tickets.filter(priority="Urgent").count(),
         "priority": priority,
         "status": status,
+
+        #  Important for calendar value retain
+        "from_date": from_date,
+        "to_date": to_date,
     }
 
     return render(request, "dme_dashboard.html", context)

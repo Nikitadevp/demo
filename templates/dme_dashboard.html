@@ -41,7 +41,7 @@
             <h1>DME Department Dashboard</h1>
         </div>
 
-        <!-- Filters -->
+        <!-- ✅ Filters Updated -->
         <form method="get" class="filters">
             <select name="priority">
                 <option value="">All Priority</option>
@@ -54,6 +54,10 @@
                 <option value="Open" {% if status == "Open" %}selected{% endif %}>Open</option>
                 <option value="Closed" {% if status == "Closed" %}selected{% endif %}>Closed</option>
             </select>
+
+            <!-- ✅ Calendar Filters -->
+            <input type="date" name="from_date" value="{{ from_date }}">
+            <input type="date" name="to_date" value="{{ to_date }}">
 
             <button type="submit">
                 <i class="fa fa-filter"></i> Apply
@@ -134,7 +138,6 @@
                             {% endif %}
                         </td>
 
-                        <!-- ✅ timezone fixed -->
                         <td>{{ t.created_at|localtime|date:"d M Y h:i A" }}</td>
                         <td>{{ t.tat_deadline|localtime|date:"d M Y h:i A" }}</td>
                         <td>{{ t.resolved_at|localtime|date:"d M Y h:i A"|default:"-" }}</td>
