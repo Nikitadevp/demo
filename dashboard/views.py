@@ -12,7 +12,8 @@ from .models import LeaveRequest
 from django.http import HttpResponse
 import re
 from django.http import HttpResponseForbidden
-from django.db.models import Case, When, Value, IntegerField
+from django.db.models import Case, When, Value, IntegerField, Q
+import csv
 
 
 
@@ -24,7 +25,7 @@ OFFICE_END = time(18, 30)
 def calculate_tat_deadline(priority):
     now = timezone.localtime(timezone.now())
 
-    # 🚨 URGENT = 6 office hours only
+    # URGENT = 6 office hours only
     if priority == "Urgent":
         remaining_hours = 6
         current_datetime = now
@@ -645,26 +646,55 @@ def dme_dashboard(request):
 
     priority = request.GET.get("priority")
     status = request.GET.get("status")
-
-    # New date filters
     from_date = request.GET.get("from_date")
     to_date = request.GET.get("to_date")
+    search = request.GET.get("search")
 
-    # Existing filters
     if priority:
         tickets = tickets.filter(priority=priority)
 
     if status:
         tickets = tickets.filter(status=status)
 
-    #  Date filter added
     if from_date:
         tickets = tickets.filter(created_at__date__gte=from_date)
 
     if to_date:
         tickets = tickets.filter(created_at__date__lte=to_date)
 
-    # Existing sorting logic
+    #  Search filter
+    if search:
+        tickets = tickets.filter(
+            Q(ticket_no__icontains=search) |
+            Q(name__icontains=search) |
+            Q(issue_type__icontains=search)
+        )
+
+    #  Export CSV
+    if request.GET.get("export") == "csv":
+        response = HttpResponse(content_type="text/csv")
+        response["Content-Disposition"] = 'attachment; filename="dme_tickets.csv"'
+
+        writer = csv.writer(response)
+        writer.writerow([
+            "Ticket No", "Name", "Issue Type", "Priority",
+            "Status", "Created", "TAT Deadline", "Resolved"
+        ])
+
+        for t in tickets:
+            writer.writerow([
+                t.ticket_no,
+                t.name,
+                t.issue_type,
+                t.priority,
+                t.status,
+                t.created_at,
+                t.tat_deadline,
+                t.resolved_at or "-"
+            ])
+
+        return response
+
     recent_tickets = tickets.annotate(
         status_order=Case(
             When(status="Open", then=Value(0)),
@@ -682,10 +712,9 @@ def dme_dashboard(request):
         "urgent_tickets": tickets.filter(priority="Urgent").count(),
         "priority": priority,
         "status": status,
-
-        #  Important for calendar value retain
         "from_date": from_date,
         "to_date": to_date,
+        "search": search,
     }
 
     return render(request, "dme_dashboard.html", context)

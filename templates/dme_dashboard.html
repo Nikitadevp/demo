@@ -46,6 +46,9 @@
 
             <input type="hidden" name="key" value="dme123">
 
+            <input type="text" name="search" placeholder="Search Ticket / Name"
+                value="{{ search }}">
+
 
             <select name="priority">
                 <option value="">All Priority</option>
@@ -72,6 +75,13 @@
             <button type="submit">
                 <i class="fa fa-filter"></i> Apply
             </button>
+
+            <button type="submit" name="export" value="csv">
+                    <i class="fa fa-download"></i> Export CSV
+            </button>
+
+
+
         </form>
 
         <!-- Cards -->

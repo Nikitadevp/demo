@@ -325,13 +325,12 @@ tr:not(:last-child) {
     background: #ef4444;
 }
 
-.filters input[type="date"] {
+.filters input[type="text"] {
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 8px;
+    min-width: 220px;
 }
-
-
 
 /* ===== Mobile ===== */
 @media (max-width: 768px) {
