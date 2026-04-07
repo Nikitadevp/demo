@@ -13,7 +13,7 @@ from django.http import HttpResponse
 import re
 from django.http import HttpResponseForbidden
 from django.db.models import Case, When, Value, IntegerField, Q
-import csv
+
 
 
 
@@ -675,40 +675,7 @@ def dme_dashboard(request):
     if to_date:
         tickets = tickets.filter(created_at__date__lte=to_date)
 
-    #  Export CSV
-    if request.GET.get("export") == "csv":
-        response = HttpResponse(content_type="text/csv")
-        response["Content-Disposition"] = 'attachment; filename="dme_tickets.csv"'
-
-        writer = csv.writer(response)
-        writer.writerow([
-            "Ticket No",
-            "Name",
-            "Issue Type",
-            "Priority",
-            "Status",
-            "Created",
-            "TAT Deadline",
-            "Resolved",
-            "Solution Provided"
-        ])
-
-        for t in tickets:
-            writer.writerow([
-                t.ticket_no,
-                t.name,
-                t.issue_type,
-                t.priority,
-                t.status,
-                t.created_at.strftime("%d-%m-%Y %I:%M %p") if t.created_at else "-",
-                t.tat_deadline.strftime("%d-%m-%Y %I:%M %p") if t.tat_deadline else "-",
-                t.resolved_at.strftime("%d-%m-%Y %I:%M %p") if t.resolved_at else "-",
-                t.solution_provided or "-"
-            ])
-
-        return response
-
-    #Open tickets first
+    #  Open tickets first
     recent_tickets = tickets.annotate(
         status_order=Case(
             When(status="Open", then=Value(0)),
@@ -718,7 +685,7 @@ def dme_dashboard(request):
         )
     ).order_by("status_order", "-created_at")
 
-    # Context
+    #  Context
     context = {
         "recent_tickets": recent_tickets,
         "total_tickets": tickets.count(),
