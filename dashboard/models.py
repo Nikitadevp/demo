@@ -118,10 +118,9 @@ class Ticket(models.Model):
 
 
 class LeaveRequest(models.Model):
-    # ✅ unique leave tracking id
     leave_id = models.CharField(
         max_length=20,
-        unique=True,
+        primary_key=True,
         editable=False
     )
 
@@ -144,13 +143,9 @@ class LeaveRequest(models.Model):
 
     approved_rejected_date = models.DateTimeField(blank=True, null=True)
     resolved_date = models.DateTimeField(blank=True, null=True)
-
     updated_at = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
         if not self.leave_id:
-            self.leave_id = f"LR-{str(uuid.uuid4())[:8].upper()}"
+            self.leave_id = f"LR-{uuid.uuid4().hex[:8].upper()}"
         super().save(*args, **kwargs)
-
-    def __str__(self):
-        return self.leave_id

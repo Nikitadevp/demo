@@ -370,20 +370,45 @@ def dashboard(request):
 
     
 #  DEPARTMENT EMAILS
-department_emails = {
-    "Accounts and Finance": "alok.agrawal@rajat-group.com",
-    "HR and Admin": "ea.rbpl@rajat-group.com",
-    "Engineering": "bagga.rbpl@rajat-group.com",
-    "MDO": "mrinal.golechha1@rajat-group.com",
-    "Sales": "vinod.mishra@rajat-group.com",
-    "Purchase": "ravi.jain@rajat-group.com",
-    "DME": "dme.rbpl@rajat-group.com",
-    
-    "Jrdme": "jrdme.rbpl@rajat-group.com",
-    "MDO Sales": "prakhar.golechha@rajat-group.com"
+department_details = {
+    "Accounts and Finance": {
+        "email": "alok.agrawal@rajat-group.com",
+        "phone": "8889799199"
+
+    },
+    "HR and Admin": {
+        "email": "ea.rbpl@rajat-group.com",
+        "phone": "8889102393"
+    },
+    "Engineering": {
+        "email": "bagga.rbpl@rajat-group.com",
+        "phone": "6262240006"
+    },
+    "MDO": {
+        "email": "mrinal.golechha1@rajat-group.com",
+        "phone": "9009923000"
+    },
+    "Sales": {
+        "email": "vinod.mishra@rajat-group.com",
+        "phone": "9644290004"
+    },
+    "Purchase": {
+        "email": "ravi.jain@rajat-group.com",
+        "phone": "9669425500"
+    },
+    "DME": {
+        "email": "dme.rbpl@rajat-group.com",
+        "phone": "8827740281"
+    },
+    "Jrdme": {
+        "email": "jrdme.rbpl@rajat-group.com",
+        "phone": "7974500140"
+    },
+    "MDO Sales": {
+        "email": "prakhar.golechha@rajat-group.com",
+        "phone": "9926193300"
+    }
 }
-
-
 # LEAVE FORM
 def leave_form(request):
 
@@ -403,29 +428,38 @@ def leave_form(request):
         if not re.match(pattern, email):
             return HttpResponse(" Please enter valid email like example@gmail.com")
 
+        # GET DEPARTMENT EMAIL + PHONE
+        dept_data = department_details.get(department, {})
+        manager_email = dept_data.get("email")
+        manager_phone = dept_data.get("phone")
+
         # SAVE DATA
         leave = LeaveRequest.objects.create(
             name=name,
             email=email,
             phone=phone,
             department=department,
+            department_email=manager_email,   # NEW
+            department_phone=manager_phone,   # NEW
             leave_type=leave_type,
             start_date=start,
             end_date=end,
             reason=reason
         )
 
-        #  DOMAIN (LIVE / LOCAL)
+        # DOMAIN (LIVE / LOCAL)
         domain = request.build_absolute_uri('/')[:-1]
         review_link = f"{domain}/review/{leave.id}/"
 
-        #  MESSAGE FOR MANAGER
+        # MESSAGE FOR MANAGER
         message = f"""
 New Leave Request
 
+Leave ID: {leave.leave_id}
 Employee: {name}
 Email: {email}
 Department: {department}
+Department Phone: {manager_phone}
 Leave Type: {leave_type}
 From: {start} To: {end}
 
@@ -436,13 +470,11 @@ Review Request:
 {review_link}
 """
 
-        # gET MANAGER EMAIL
-        manager_email = department_emails.get(department)
-
         print("Department:", department)
         print("Manager Email:", manager_email)
+        print("Manager Phone:", manager_phone)
 
-        #  SEND TO DEPARTMENT
+        # SEND TO DEPARTMENT
         if manager_email:
             send_mail(
                 f"Leave Request Approval | ID: {leave.leave_id}",
@@ -454,10 +486,10 @@ Review Request:
         else:
             return HttpResponse(f" Department email not found: {department}")
 
-        #  SEND TO EMPLOYEE
+        # SEND TO EMPLOYEE
         send_mail(
-            "Leave Request Submitted",
-            "Your leave request has been sent for approval.",
+            f"Leave Request Submitted | ID: {leave.leave_id}",
+            f"Your leave request has been sent for approval.\n\nLeave ID: {leave.leave_id}",
             settings.EMAIL_HOST_USER,
             [email],
             fail_silently=False
@@ -466,7 +498,6 @@ Review Request:
         return render(request, "leave_form.html", {"success": True})
 
     return render(request, "leave_form.html")
-
 # # APPROVE
 # def approve(request, id):
 
@@ -503,8 +534,10 @@ Review Request:
 #     )
 
 #     return HttpResponse(" Leave Rejected & Mail Sent")
-# review_leave
 
+
+
+# review_leave
 def review_leave(request, id):
 
     leave = get_object_or_404(LeaveRequest, id=id)
@@ -524,15 +557,17 @@ def review_leave(request, id):
         # APPROVE
         if action == "approve":
             leave.status = "Approved"
+            leave.approved_rejected_date = timezone.now()   # NEW
+            leave.resolved_date = timezone.now()            # NEW
             leave.save()
 
             send_mail(
-                f"Leave Approved ✅ | ID: {leave.leave_id}",  
+                f"Leave Approved ✅ | ID: {leave.leave_id}",
                 f"""Your leave has been approved.
-            From: {leave.start_date}
-            To: {leave.end_date}
-            """,
-            
+From: {leave.start_date}
+To: {leave.end_date}
+Leave ID: {leave.leave_id}
+""",
                 settings.EMAIL_HOST_USER,
                 [leave.email],
                 fail_silently=True
@@ -540,18 +575,23 @@ def review_leave(request, id):
 
         # REJECT
         elif action == "reject":
-            reason = request.POST.get("reject_reason") 
+            reason = request.POST.get("reject_reason")
 
             if not reason:
                 return HttpResponse("Reject reason required")
 
             leave.status = "Rejected"
             leave.manager_reason = reason
+            leave.approved_rejected_date = timezone.now()   # NEW
+            leave.resolved_date = timezone.now()            # NEW
             leave.save()
 
             send_mail(
-                "Leave Rejected",
-                f"Your leave has been rejected.\nReason: {reason}",
+                f"Leave Rejected ❌ | ID: {leave.leave_id}",
+                f"""Your leave has been rejected.
+Reason: {reason}
+Leave ID: {leave.leave_id}
+""",
                 settings.EMAIL_HOST_USER,
                 [leave.email],
                 fail_silently=True
@@ -564,8 +604,6 @@ def review_leave(request, id):
         """)
 
     return render(request, "review_leave.html", {"leave": leave})
-
-from django.db.models import Case, When, Value, IntegerField
 
 
 
