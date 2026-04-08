@@ -408,8 +408,6 @@ department_details = {
         "email": "prakhar.golechha@rajat-group.com",
         "phone": "9926193300"
     }
-}
-# LEAVE FORM
 def leave_form(request):
 
     if request.method == "POST":
@@ -426,12 +424,15 @@ def leave_form(request):
         # EMAIL FORMAT CHECK
         pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
         if not re.match(pattern, email):
-            return HttpResponse(" Please enter valid email like example@gmail.com")
+            return HttpResponse("Please enter valid email like example@gmail.com")
 
         # GET DEPARTMENT EMAIL + PHONE
         dept_data = department_details.get(department, {})
         manager_email = dept_data.get("email")
         manager_phone = dept_data.get("phone")
+
+        if not manager_email:
+            return HttpResponse(f"Department email not found: {department}")
 
         # SAVE DATA
         leave = LeaveRequest.objects.create(
@@ -444,7 +445,9 @@ def leave_form(request):
             leave_type=leave_type,
             start_date=start,
             end_date=end,
-            reason=reason
+            reason=reason,
+            request_date=timezone.now(),      # NEW
+            updated_at=timezone.now()         # NEW
         )
 
         # DOMAIN (LIVE / LOCAL)
@@ -475,16 +478,13 @@ Review Request:
         print("Manager Phone:", manager_phone)
 
         # SEND TO DEPARTMENT
-        if manager_email:
-            send_mail(
-                f"Leave Request Approval | ID: {leave.leave_id}",
-                message,
-                settings.EMAIL_HOST_USER,
-                [manager_email],
-                fail_silently=False
-            )
-        else:
-            return HttpResponse(f" Department email not found: {department}")
+        send_mail(
+            f"Leave Request Approval | ID: {leave.leave_id}",
+            message,
+            settings.EMAIL_HOST_USER,
+            [manager_email],
+            fail_silently=False
+        )
 
         # SEND TO EMPLOYEE
         send_mail(
