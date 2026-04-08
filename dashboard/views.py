@@ -432,8 +432,12 @@ def leave_form(request):
                 return HttpResponse("Please enter valid email like example@gmail.com")
 
             # ✅ DATE FIX FOR POSTGRESQL
-            start_date = datetime.strptime(start, "%d-%m-%Y").date()
-            end_date = datetime.strptime(end, "%d-%m-%Y").date()
+            try:
+                start_date = datetime.strptime(start, "%Y-%m-%d").date()
+                end_date = datetime.strptime(end, "%Y-%m-%d").date()
+            except:
+                start_date = datetime.strptime(start, "%d-%m-%Y").date()
+                end_date = datetime.strptime(end, "%d-%m-%Y").date()
 
             # GET DEPARTMENT EMAIL + PHONE
             dept_data = department_details.get(department, {})
