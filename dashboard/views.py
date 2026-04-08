@@ -415,50 +415,53 @@ def leave_form(request):
 
     if request.method == "POST":
 
-        name = request.POST.get('name')
-        email = request.POST.get('email')
-        phone = request.POST.get('phone')
-        department = request.POST.get('department').strip()
-        leave_type = request.POST.get('leave_type')
-        start = request.POST.get('start_date')
-        end = request.POST.get('end_date')
-        reason = request.POST.get('reason')
+        try:
+            name = request.POST.get('name')
+            email = request.POST.get('email')
+            phone = request.POST.get('phone')
+            department = request.POST.get('department').strip()
+            leave_type = request.POST.get('leave_type')
+            start = request.POST.get('start_date')
+            end = request.POST.get('end_date')
+            reason = request.POST.get('reason')
 
-        # EMAIL FORMAT CHECK
-        pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
-        if not re.match(pattern, email):
-            return HttpResponse("Please enter valid email like example@gmail.com")
+            # EMAIL FORMAT CHECK
+            pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
+            if not re.match(pattern, email):
+                return HttpResponse("Please enter valid email like example@gmail.com")
 
-        # GET DEPARTMENT EMAIL + PHONE
-        dept_data = department_details.get(department, {})
-        manager_email = dept_data.get("email")
-        manager_phone = dept_data.get("phone")
+            # ✅ DATE FIX FOR POSTGRESQL
+            start_date = datetime.strptime(start, "%d-%m-%Y").date()
+            end_date = datetime.strptime(end, "%d-%m-%Y").date()
 
-        if not manager_email:
-            return HttpResponse(f"Department email not found: {department}")
+            # GET DEPARTMENT EMAIL + PHONE
+            dept_data = department_details.get(department, {})
+            manager_email = dept_data.get("email")
+            manager_phone = dept_data.get("phone")
 
-        # SAVE DATA
-        leave = LeaveRequest.objects.create(
-            name=name,
-            email=email,
-            phone=phone,
-            department=department,
-            department_email=manager_email,   # NEW
-            department_phone=manager_phone,   # NEW
-            leave_type=leave_type,
-            start_date=start,
-            end_date=end,
-            reason=reason,
-            request_date=timezone.now(),      # NEW
-            updated_at=timezone.now()         # NEW
-        )
+            if not manager_email:
+                return HttpResponse(f"Department email not found: {department}")
 
-        # DOMAIN (LIVE / LOCAL)
-        domain = request.build_absolute_uri('/')[:-1]
-        review_link = f"{domain}/review/{leave.id}/"
+            # SAVE DATA
+            leave = LeaveRequest.objects.create(
+                name=name,
+                email=email,
+                phone=phone,
+                department=department,
+                department_email=manager_email,
+                department_phone=manager_phone,
+                leave_type=leave_type,
+                start_date=start_date,   # ✅ FIXED
+                end_date=end_date,       # ✅ FIXED
+                reason=reason
+            )
 
-        # MESSAGE FOR MANAGER
-        message = f"""
+            # DOMAIN
+            domain = request.build_absolute_uri('/')[:-1]
+            review_link = f"{domain}/review/{leave.id}/"
+
+            # MESSAGE
+            message = f"""
 New Leave Request
 
 Leave ID: {leave.leave_id}
@@ -467,7 +470,8 @@ Email: {email}
 Department: {department}
 Department Phone: {manager_phone}
 Leave Type: {leave_type}
-From: {start} To: {end}
+From: {start}
+To: {end}
 
 Reason:
 {reason}
@@ -476,29 +480,28 @@ Review Request:
 {review_link}
 """
 
-        print("Department:", department)
-        print("Manager Email:", manager_email)
-        print("Manager Phone:", manager_phone)
+            # SEND TO DEPARTMENT
+            send_mail(
+                f"Leave Request Approval | ID: {leave.leave_id}",
+                message,
+                settings.EMAIL_HOST_USER,
+                [manager_email],
+                fail_silently=False
+            )
 
-        # SEND TO DEPARTMENT
-        send_mail(
-            f"Leave Request Approval | ID: {leave.leave_id}",
-            message,
-            settings.EMAIL_HOST_USER,
-            [manager_email],
-            fail_silently=False
-        )
+            # SEND TO EMPLOYEE
+            send_mail(
+                f"Leave Request Submitted | ID: {leave.leave_id}",
+                f"Your leave request has been sent for approval.\n\nLeave ID: {leave.leave_id}",
+                settings.EMAIL_HOST_USER,
+                [email],
+                fail_silently=False
+            )
 
-        # SEND TO EMPLOYEE
-        send_mail(
-            f"Leave Request Submitted | ID: {leave.leave_id}",
-            f"Your leave request has been sent for approval.\n\nLeave ID: {leave.leave_id}",
-            settings.EMAIL_HOST_USER,
-            [email],
-            fail_silently=False
-        )
+            return render(request, "leave_form.html", {"success": True})
 
-        return render(request, "leave_form.html", {"success": True})
+        except Exception as e:
+            return HttpResponse(f"ERROR: {str(e)}")
 
     return render(request, "leave_form.html")
 # # APPROVE
