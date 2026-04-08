@@ -463,7 +463,7 @@ def leave_form(request):
 
             # DOMAIN
             domain = request.build_absolute_uri('/')[:-1]
-            review_link = f"{domain}/review/{leave.id}/"
+            review_link = f"{domain}/review/{leave.leave_id}/"
 
             # MESSAGE
             message = f"""
@@ -551,7 +551,7 @@ Review Request:
 # review_leave
 def review_leave(request, id):
 
-    leave = get_object_or_404(LeaveRequest, id=id)
+    leave = get_object_or_404(LeaveRequest, leave_id=id)
 
     if leave.status != "Pending":
         return HttpResponse("""
