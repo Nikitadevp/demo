@@ -408,6 +408,9 @@ department_details = {
         "email": "prakhar.golechha@rajat-group.com",
         "phone": "9926193300"
     }
+}
+# LEAVE FORM
+# LEAVE FORM
 def leave_form(request):
 
     if request.method == "POST":
