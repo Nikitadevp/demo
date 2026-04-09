@@ -844,4 +844,4 @@ def admin_leave_dashboard(request):
         "rejected_leaves": LeaveRequest.objects.filter(status="Rejected").count(),
     }
 
-    return render(request, "leave_dashboard.html", context)
+    return render(request, "admin_leave_dashboard.html", context)
