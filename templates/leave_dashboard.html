@@ -1,0 +1,138 @@
+# Admin Leave Dashboard (HTML + CSS)
+
+## `templates/admin_leave_dashboard.html`
+
+```html
+{% load static %}
+{% load tz %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Leave Dashboard</title>
+    <link rel="stylesheet" href="{% static 'css/leave_dashboard.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+<div class="dashboard-container">
+
+    <!-- Header -->
+    <div class="header">
+        <h1><i class="fa fa-user-shield"></i> Admin Leave Dashboard</h1>
+        <p>Manage all employee leave requests in one place</p>
+    </div>
+
+    <!-- Search + Filters -->
+    <form method="get" class="filters">
+        <input type="hidden" name="key" value="admin123">
+
+        <input type="text" name="search" value="{{ search }}"
+               placeholder="🔍 Search Leave ID / Name / Email">
+
+        <select name="department" onchange="this.form.submit()">
+            <option value="">All Departments</option>
+            <option value="DME" {% if department == "DME" %}selected{% endif %}>DME</option>
+            <option value="HR" {% if department == "HR" %}selected{% endif %}>HR</option>
+            <option value="IT" {% if department == "IT" %}selected{% endif %}>IT</option>
+        </select>
+
+        <select name="status" onchange="this.form.submit()">
+            <option value="">All Status</option>
+            <option value="Pending" {% if status == "Pending" %}selected{% endif %}>Pending</option>
+            <option value="Approved" {% if status == "Approved" %}selected{% endif %}>Approved</option>
+            <option value="Rejected" {% if status == "Rejected" %}selected{% endif %}>Rejected</option>
+        </select>
+
+        <input type="date" name="from_date" value="{{ from_date }}" onchange="this.form.submit()">
+        <input type="date" name="to_date" value="{{ to_date }}" onchange="this.form.submit()">
+    </form>
+
+    <!-- Stats Cards -->
+    <div class="cards">
+        <div class="card total">
+            <i class="fa fa-file"></i>
+            <span>Total Leaves</span>
+            <b>{{ total_leaves }}</b>
+        </div>
+
+        <div class="card pending">
+            <i class="fa fa-clock"></i>
+            <span>Pending</span>
+            <b>{{ pending_leaves }}</b>
+        </div>
+
+        <div class="card approved">
+            <i class="fa fa-circle-check"></i>
+            <span>Approved</span>
+            <b>{{ approved_leaves }}</b>
+        </div>
+
+        <div class="card rejected">
+            <i class="fa fa-circle-xmark"></i>
+            <span>Rejected</span>
+            <b>{{ rejected_leaves }}</b>
+        </div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-box">
+        <h2>Recent Leave Requests</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Leave ID</th>
+                    <th>Name</th>
+                    <th>Department</th>
+                    <th>Leave Type</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Status</th>
+                    <th>Request Date</th>
+                    <th>Manager Reason</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for leave in leaves %}
+                <tr>
+                    <td>{{ leave.leave_id }}</td>
+                    <td>{{ leave.name }}</td>
+                    <td>{{ leave.department }}</td>
+                    <td>{{ leave.leave_type }}</td>
+                    <td>{{ leave.start_date }}</td>
+                    <td>{{ leave.end_date }}</td>
+
+                    <td>
+                        {% if leave.status == "Pending" %}
+                            <span class="badge pending">Pending</span>
+                        {% elif leave.status == "Approved" %}
+                            <span class="badge approved">Approved</span>
+                        {% else %}
+                            <span class="badge rejected">Rejected</span>
+                        {% endif %}
+                    </td>
+
+                    <td>{{ leave.request_date|localtime|date:"d M Y h:i A" }}</td>
+                    <td>{{ leave.manager_reason|default:"-" }}</td>
+
+                    <td>
+                        <a href="{% url 'leave_detail' leave.leave_id %}" class="view-btn">
+                            View
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="10">No leave requests found</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+</body>
+</html>
