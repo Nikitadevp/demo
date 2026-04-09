@@ -549,9 +549,9 @@ Review Request:
 
 
 # review_leave
-def review_leave(request, id):
+def review_leave(request, leave_id):
 
-    leave = get_object_or_404(LeaveRequest, leave_id=id)
+   leave = get_object_or_404(LeaveRequest, leave_id=leave_id)
 
     if leave.status != "Pending":
         return HttpResponse("""

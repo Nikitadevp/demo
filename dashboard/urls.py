@@ -16,11 +16,12 @@ urlpatterns = [
     path("resolve-ticket/<str:ticket_no>/", views.resolve_ticket, name="resolve_ticket"),
     path('leave/',views.leave_form),
    
-    path('review/<int:id>/', views.review_leave, name='review_leave'),
+    
     path("dme-dashboard/", views.dme_dashboard, name="dme_dashboard"),
     path("leave-csv/", export_leave_csv, name="leave_csv"),
     path("jrdme-dashboard/", views.jrdme_dashboard, name="jrdme_dashboard"),
     path("accounts-dashboard/", views.accounts_dashboard, name="accounts_dashboard"),
+    path("review/<str:leave_id>/", views.review_leave, name="review_leave")
     
     
 ]
