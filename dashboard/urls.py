@@ -23,7 +23,7 @@ urlpatterns = [
     path("accounts-dashboard/", views.accounts_dashboard, name="accounts_dashboard"),
     path("review/<str:leave_id>/", views.review_leave, name="review_leave"),
 
-    path("leave-dashboard/", views.leave_dashboard, name="leave_dashboard")
+    path("leave-dashboard/", views.admin_leave_dashboard, name="leave_dashboard")
     
     
 ]
