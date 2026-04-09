@@ -792,4 +792,56 @@ def accounts_dashboard(request):
         "status": status,
     }
 
-    return render(request, "accounts_dashboard.html", context)
+    return render(request, "accounts_dashboard.html", context) 
+
+
+
+
+def admin_leave_dashboard(request):
+    secret_key = request.GET.get("key")
+
+    if secret_key != "admin123":
+        from django.http import HttpResponseForbidden
+        return HttpResponseForbidden("Access Denied")
+
+    leaves = LeaveRequest.objects.all().order_by("-request_date")
+
+    search = request.GET.get("search")
+    department = request.GET.get("department")
+    status = request.GET.get("status")
+    from_date = request.GET.get("from_date")
+    to_date = request.GET.get("to_date")
+
+    if search:
+        leaves = leaves.filter(
+            Q(leave_id__icontains=search) |
+            Q(name__icontains=search) |
+            Q(email__icontains=search)
+        )
+
+    if department:
+        leaves = leaves.filter(department=department)
+
+    if status:
+        leaves = leaves.filter(status=status)
+
+    if from_date:
+        leaves = leaves.filter(request_date__date__gte=from_date)
+
+    if to_date:
+        leaves = leaves.filter(request_date__date__lte=to_date)
+
+    context = {
+        "leaves": leaves[:50],
+        "search": search,
+        "department": department,
+        "status": status,
+        "from_date": from_date,
+        "to_date": to_date,
+        "total_leaves": LeaveRequest.objects.count(),
+        "pending_leaves": LeaveRequest.objects.filter(status="Pending").count(),
+        "approved_leaves": LeaveRequest.objects.filter(status="Approved").count(),
+        "rejected_leaves": LeaveRequest.objects.filter(status="Rejected").count(),
+    }
+
+    return render(request, "admin_leave_dashboard.html", context)
