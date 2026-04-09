@@ -550,26 +550,25 @@ Review Request:
 
 # review_leave
 def review_leave(request, leave_id):
-
-   leave = get_object_or_404(LeaveRequest, leave_id=leave_id)
+    leave = get_object_or_404(LeaveRequest, leave_id=leave_id)
 
     if leave.status != "Pending":
         return HttpResponse("""
         <div style="display:flex; justify-content:center; align-items:center; height:100vh;">
-        <h2 style="font-size:28px; text-align:center;">
-            This request is already processed.
-        </h2>
-    </div>""")
+            <h2 style="font-size:28px; text-align:center;">
+                This request is already processed.
+            </h2>
+        </div>
+        """)
 
     if request.method == "POST":
-
         action = request.POST.get("action")
 
         # APPROVE
         if action == "approve":
             leave.status = "Approved"
-            leave.approved_rejected_date = timezone.now()   # NEW
-            leave.resolved_date = timezone.now()            # NEW
+            leave.approved_rejected_date = timezone.now()
+            leave.resolved_date = timezone.now()
             leave.save()
 
             send_mail(
@@ -593,8 +592,8 @@ Leave ID: {leave.leave_id}
 
             leave.status = "Rejected"
             leave.manager_reason = reason
-            leave.approved_rejected_date = timezone.now()   # NEW
-            leave.resolved_date = timezone.now()            # NEW
+            leave.approved_rejected_date = timezone.now()
+            leave.resolved_date = timezone.now()
             leave.save()
 
             send_mail(
@@ -610,7 +609,7 @@ Leave ID: {leave.leave_id}
 
         return HttpResponse("""
         <h1 style="text-align:center; margin-top:100px; font-size:32px;">
-        Action completed successfully
+            Action completed successfully
         </h1>
         """)
 
