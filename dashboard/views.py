@@ -798,38 +798,41 @@ def accounts_dashboard(request):
 
 #leave_admin_dashboard
 
+
 def leave_admin_dashboard(request):
-    secret_key = request.GET.get("key")
+    leave_requests = LeaveRequest.objects.all().order_by("-request_date")
 
-    if secret_key != "admin123":
-        from django.http import HttpResponseForbidden
-        return HttpResponseForbidden("Access Denied")
-
-    leaves = LeaveRequest.objects.all().order_by("-request_date")
-
-    # filters
-    search = request.GET.get("search")
-    department = request.GET.get("department")
-    status = request.GET.get("status")
+    status = request.GET.get("status", "")
+    search = request.GET.get("search", "")
+    from_date = request.GET.get("from_date", "")
+    to_date = request.GET.get("to_date", "")
 
     if search:
-        leaves = leaves.filter(name__icontains=search) | leaves.filter(leave_id__icontains=search)
-
-    if department:
-        leaves = leaves.filter(department=department)
+        leave_requests = leave_requests.filter(
+            Q(leave_id__icontains=search) |
+            Q(name__icontains=search) |
+            Q(email__icontains=search)
+        )
 
     if status:
-        leaves = leaves.filter(status=status)
+        leave_requests = leave_requests.filter(status=status)
+
+    if from_date:
+        leave_requests = leave_requests.filter(request_date__date__gte=from_date)
+
+    if to_date:
+        leave_requests = leave_requests.filter(request_date__date__lte=to_date)
 
     context = {
-        "recent_leaves": leaves[:50],
-        "total_leaves": LeaveRequest.objects.count(),
-        "pending_leaves": LeaveRequest.objects.filter(status="Pending").count(),
-        "approved_leaves": LeaveRequest.objects.filter(status="Approved").count(),
-        "rejected_leaves": LeaveRequest.objects.filter(status="Rejected").count(),
-        "department": department,
+        "leave_requests": leave_requests,
+        "total_requests": leave_requests.count(),
+        "pending_requests": leave_requests.filter(status="Pending").count(),
+        "approved_requests": leave_requests.filter(status="Approved").count(),
+        "rejected_requests": leave_requests.filter(status="Rejected").count(),
         "status": status,
         "search": search,
+        "from_date": from_date,
+        "to_date": to_date,
     }
 
     return render(request, "leave_admin_dashboard.html", context)
