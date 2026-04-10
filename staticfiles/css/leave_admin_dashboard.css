@@ -1,0 +1,51 @@
+body{
+    font-family: Arial, sans-serif;
+    background:#f5f6fa;
+    padding:20px;
+}
+
+h1{
+    margin-bottom:20px;
+}
+
+.filters{
+    margin-bottom:20px;
+    display:flex;
+    gap:10px;
+}
+
+input,select,button{
+    padding:10px;
+    border:1px solid #ddd;
+    border-radius:6px;
+}
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+    margin-bottom:20px;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+
+table{
+    width:100%;
+    background:white;
+    border-collapse:collapse;
+}
+
+th,td{
+    padding:12px;
+    border:1px solid #ddd;
+    text-align:left;
+}
+
+th{
+    background:#f0f0f0;
+}

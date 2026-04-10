@@ -680,6 +680,7 @@ def jrdme_dashboard(request):
 
     return render(request, "jrdme_dashboard.html", context)
 
+
 #dme_dashboard
 
 
@@ -795,5 +796,40 @@ def accounts_dashboard(request):
     return render(request, "accounts_dashboard.html", context) 
 
 
+#leave_admin_dashboard
 
+def leave_admin_dashboard(request):
+    secret_key = request.GET.get("key")
 
+    if secret_key != "admin123":
+        from django.http import HttpResponseForbidden
+        return HttpResponseForbidden("Access Denied")
+
+    leaves = LeaveRequest.objects.all().order_by("-request_date")
+
+    # filters
+    search = request.GET.get("search")
+    department = request.GET.get("department")
+    status = request.GET.get("status")
+
+    if search:
+        leaves = leaves.filter(name__icontains=search) | leaves.filter(leave_id__icontains=search)
+
+    if department:
+        leaves = leaves.filter(department=department)
+
+    if status:
+        leaves = leaves.filter(status=status)
+
+    context = {
+        "recent_leaves": leaves[:50],
+        "total_leaves": LeaveRequest.objects.count(),
+        "pending_leaves": LeaveRequest.objects.filter(status="Pending").count(),
+        "approved_leaves": LeaveRequest.objects.filter(status="Approved").count(),
+        "rejected_leaves": LeaveRequest.objects.filter(status="Rejected").count(),
+        "department": department,
+        "status": status,
+        "search": search,
+    }
+
+    return render(request, "leave_admin_dashboard.html", context)

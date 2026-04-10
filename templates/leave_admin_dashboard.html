@@ -1,0 +1,66 @@
+{% load static %}
+
+<h1>Leave Admin Dashboard</h1>
+
+<form method="get" class="filters">
+    <input type="hidden" name="key" value="admin123">
+    <input type="text" name="search" placeholder="Search leave ID / Name" value="{{ search }}">
+
+    <select name="department">
+        <option value="">All Department</option>
+        <option value="DME">DME</option>
+        <option value="JNRDME">JNRDME</option>
+    </select>
+
+    <select name="status">
+        <option value="">All Status</option>
+        <option value="Pending">Pending</option>
+        <option value="Approved">Approved</option>
+        <option value="Rejected">Rejected</option>
+    </select>
+
+    <button type="submit">Apply</button>
+</form>
+
+<div class="cards">
+    <div class="card"><b>Total</b><br>{{ total_leaves }}</div>
+    <div class="card"><b>Pending</b><br>{{ pending_leaves }}</div>
+    <div class="card"><b>Approved</b><br>{{ approved_leaves }}</div>
+    <div class="card"><b>Rejected</b><br>{{ rejected_leaves }}</div>
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>Leave ID</th>
+            <th>Name</th>
+            <th>Department</th>
+            <th>Leave Type</th>
+            <th>Start</th>
+            <th>End</th>
+            <th>Status</th>
+            <th>Request Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for leave in recent_leaves %}
+        <tr>
+            <td>{{ leave.leave_id }}</td>
+            <td>{{ leave.name }}</td>
+            <td>{{ leave.department }}</td>
+            <td>{{ leave.leave_type }}</td>
+            <td>{{ leave.start_date }}</td>
+            <td>{{ leave.end_date }}</td>
+            <td>{{ leave.status }}</td>
+            <td>{{ leave.request_date|localtime|date:"d M Y h:i A" }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="8">No leave requests found</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+</body>
+</html>
