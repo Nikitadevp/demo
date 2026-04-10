@@ -12,7 +12,6 @@
 
     <!-- Search -->
     <form method="get" class="search-box">
-        <input type="hidden" name="key" value="leave123">
 
         <input type="text" name="search" value="{{ search }}"
                placeholder="Search by ID, Name, Email">
@@ -28,7 +27,7 @@
         <input type="date" name="to_date" value="{{ to_date }}">
 
         <button type="submit">Apply</button>
-        <a href="?key=leave123">Clear</a>
+        <a href="{% url 'leave_admin_dashboard' %}">Clear</a>
     </form>
 
     <!-- Cards -->

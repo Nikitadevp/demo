@@ -799,20 +799,13 @@ def accounts_dashboard(request):
 #leave_admin_dashboard
 
 def leave_admin_dashboard(request):
-    # secret key check
-    secret_key = request.GET.get("key")
-    if secret_key != "leave123":
-        return HttpResponseForbidden("Access Denied")
-
     leave_requests = LeaveRequest.objects.all().order_by("-request_date")
 
-    # filters
     status = request.GET.get("status", "")
     search = request.GET.get("search", "")
     from_date = request.GET.get("from_date", "")
     to_date = request.GET.get("to_date", "")
 
-    # search
     if search:
         leave_requests = leave_requests.filter(
             Q(leave_id__icontains=search) |
@@ -821,11 +814,9 @@ def leave_admin_dashboard(request):
             Q(department__icontains=search)
         )
 
-    # status
     if status:
         leave_requests = leave_requests.filter(status=status)
 
-    # date filter
     if from_date:
         leave_requests = leave_requests.filter(request_date__date__gte=from_date)
 
