@@ -1,164 +1,77 @@
 {% load static %}
-{% load tz %}
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
     <title>Leave Admin Dashboard</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/leave_admin_dashboard.css' %}">
 </head>
 <body>
 
-<div class="layout">
+<div class="container">
+    <h1>Leave Admin Dashboard</h1>
 
-    <!-- Sidebar -->
-    <aside class="sidebar">
-        <ul class="menu">
-            <li class="active">
-                <a href="#topDashboard">
-                    <i class="fa fa-chart-line"></i> Dashboard
-                </a>
-            </li>
-            <li>
-                <a href="#leaveSection">
-                    <i class="fa fa-calendar-check"></i> Leave Requests
-                </a>
-            </li>
-        </ul>
-    </aside>
+    <!-- Search -->
+    <form method="get" class="search-box">
+        <input type="hidden" name="key" value="leave123">
 
-    <!-- Main -->
-    <main class="content" id="topDashboard">
+        <input type="text" name="search" value="{{ search }}"
+               placeholder="Search by ID, Name, Email">
 
-        <!-- Header -->
-        <div class="header">
-            <h1>Leave Admin Dashboard</h1>
-        </div>
+        <select name="status">
+            <option value="">All Status</option>
+            <option value="Pending" {% if status == "Pending" %}selected{% endif %}>Pending</option>
+            <option value="Approved" {% if status == "Approved" %}selected{% endif %}>Approved</option>
+            <option value="Rejected" {% if status == "Rejected" %}selected{% endif %}>Rejected</option>
+        </select>
 
-        <!-- Search -->
-        <div class="search-box">
-            <form method="get">
-                <input type="text"
-                       name="search"
-                       value="{{ search }}"
-                       placeholder="🔍 Search Name / Email / Leave ID"
-                       onblur="this.form.submit()">
-            </form>
-        </div>
+        <input type="date" name="from_date" value="{{ from_date }}">
+        <input type="date" name="to_date" value="{{ to_date }}">
 
-        <!-- Filters -->
-        <form method="get" class="filters">
-            <input type="hidden" name="search" value="{{ search }}">
+        <button type="submit">Apply</button>
+        <a href="?key=leave123">Clear</a>
+    </form>
 
-            <select name="status" onchange="this.form.submit()">
-                <option value="">All Status</option>
-                <option value="Pending" {% if status == "Pending" %}selected{% endif %}>Pending</option>
-                <option value="Approved" {% if status == "Approved" %}selected{% endif %}>Approved</option>
-                <option value="Rejected" {% if status == "Rejected" %}selected{% endif %}>Rejected</option>
-            </select>
+    <!-- Cards -->
+    <div class="cards">
+        <div class="card total">Total: {{ total_requests }}</div>
+        <div class="card pending">Pending: {{ pending_requests }}</div>
+        <div class="card approved">Approved: {{ approved_requests }}</div>
+        <div class="card rejected">Rejected: {{ rejected_requests }}</div>
+    </div>
 
-            <input type="date" name="from_date" value="{{ from_date }}" onchange="this.form.submit()">
-            <input type="date" name="to_date" value="{{ to_date }}" onchange="this.form.submit()">
-        </form>
-
-        <!-- Clear -->
-        <div class="clear-filters">
-            <a href="{% url 'leave_admin_dashboard' %}" class="clear-btn">
-                <i class="fa fa-rotate-left"></i> Clear All
-            </a>
-        </div>
-
-        <!-- Cards -->
-        <div class="cards">
-            <div class="card total">
-                <i class="fa fa-layer-group"></i>
-                <span>Total Requests</span>
-                <b>{{ total_requests }}</b>
-            </div>
-
-            <div class="card pending">
-                <i class="fa fa-clock"></i>
-                <span>Pending</span>
-                <b>{{ pending_requests }}</b>
-            </div>
-
-            <div class="card approved">
-                <i class="fa fa-circle-check"></i>
-                <span>Approved</span>
-                <b>{{ approved_requests }}</b>
-            </div>
-
-            <div class="card rejected">
-                <i class="fa fa-circle-xmark"></i>
-                <span>Rejected</span>
-                <b>{{ rejected_requests }}</b>
-            </div>
-        </div>
-
-        <!-- Table -->
-        <div class="table-box" id="leaveSection">
-            <h2>Recent Leave Requests</h2>
-
-            <table>
-                <thead>
-                    <tr>
-                        <th>Leave ID</th>
-                        <th>Name</th>
-                        <th>Department</th>
-                        <th>Leave Type</th>
-                        <th>Start</th>
-                        <th>End</th>
-                        <th>Status</th>
-                        <th>Request Date</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                {% for leave in leave_requests %}
-                    <tr>
-                        <td>{{ leave.leave_id }}</td>
-                        <td>{{ leave.name }}</td>
-                        <td>{{ leave.department }}</td>
-                        <td>{{ leave.leave_type }}</td>
-                        <td>{{ leave.start_date }}</td>
-                        <td>{{ leave.end_date }}</td>
-
-                        <td>
-                            {% if leave.status == "Pending" %}
-                                <span class="badge pending">Pending</span>
-                            {% elif leave.status == "Approved" %}
-                                <span class="badge approved">Approved</span>
-                            {% else %}
-                                <span class="badge rejected">Rejected</span>
-                            {% endif %}
-                        </td>
-
-                        <td>{{ leave.request_date|date:"d M Y" }}</td>
-
-                        <td>
-                            {% if leave.status == "Pending" %}
-                                <a href="{% url 'approve_leave' leave.leave_id %}" class="approve-btn">Approve</a>
-                                <a href="{% url 'reject_leave' leave.leave_id %}" class="reject-btn">Reject</a>
-                            {% else %}
-                                <span class="badge approved">Done</span>
-                            {% endif %}
-                        </td>
-                    </tr>
-                {% empty %}
-                    <tr>
-                        <td colspan="9">No leave requests found</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
-
-    </main>
+    <!-- Table -->
+    <table>
+        <thead>
+            <tr>
+                <th>Leave ID</th>
+                <th>Name</th>
+                <th>Department</th>
+                <th>Leave Type</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>Status</th>
+                <th>Request Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for leave in leave_requests %}
+            <tr>
+                <td>{{ leave.leave_id }}</td>
+                <td>{{ leave.name }}</td>
+                <td>{{ leave.department }}</td>
+                <td>{{ leave.leave_type }}</td>
+                <td>{{ leave.start_date }}</td>
+                <td>{{ leave.end_date }}</td>
+                <td>{{ leave.status }}</td>
+                <td>{{ leave.request_date|date:"d M Y h:i A" }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="8">No leave requests found</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </div>
 
 </body>

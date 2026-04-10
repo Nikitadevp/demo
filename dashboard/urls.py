@@ -24,6 +24,7 @@ urlpatterns = [
     path("review/<str:leave_id>/", views.review_leave, name="review_leave"),
     path("leave-admin/", views.leave_admin_dashboard, name="leave_admin_dashboard")
 
+
     
 ]
     
