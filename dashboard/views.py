@@ -807,7 +807,6 @@ def leave_admin_dashboard(request):
     from_date = request.GET.get("from_date", "")
     to_date = request.GET.get("to_date", "")
 
-    # search
     if search:
         leave_requests = leave_requests.filter(
             Q(leave_id__icontains=search) |
@@ -816,11 +815,9 @@ def leave_admin_dashboard(request):
             Q(department__icontains=search)
         )
 
-    # status filter
     if status:
         leave_requests = leave_requests.filter(status=status)
 
-    # date filters
     if from_date:
         leave_requests = leave_requests.filter(request_date__date__gte=from_date)
 
