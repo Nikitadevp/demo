@@ -2,7 +2,7 @@
 from django.db import models
 import uuid
 from django.utils import timezone
-from django.core.exceptions import ValidationError
+
 
 def generate_ticket_no():
     return "TCKT-" + uuid.uuid4().hex[:8].upper()
@@ -74,26 +74,37 @@ class LeaveRequest(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()
 
-    # auto calculated
+    # ✅ auto calculated leave days
     leave_days = models.PositiveIntegerField(default=1)
 
+    # employee reason
     reason = models.TextField()
 
     request_date = models.DateTimeField(default=timezone.now)
+
+    # Pending / Approved / Rejected
     status = models.CharField(max_length=20, default="Pending")
+
+    # manager approval/reject note
     manager_reason = models.TextField(blank=True, null=True)
 
+    # approval / rejection datetime
     approved_rejected_date = models.DateTimeField(blank=True, null=True)
+
+    # final resolved datetime
     resolved_date = models.DateTimeField(blank=True, null=True)
+
     updated_at = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
+        # auto leave id
         if not self.leave_id:
             self.leave_id = f"LR-{uuid.uuid4().hex[:8].upper()}"
 
-        # leave days auto
+        # ✅ calculate total leave days from start & end
         if self.start_date and self.end_date:
-            self.leave_days = (self.end_date - self.start_date).days + 1
+            total_days = (self.end_date - self.start_date).days + 1
+            self.leave_days = max(total_days, 1)
 
         super().save(*args, **kwargs)
 
