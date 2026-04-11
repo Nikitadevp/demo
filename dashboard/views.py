@@ -823,12 +823,18 @@ def leave_admin_dashboard(request):
     if to_date:
         leave_requests = leave_requests.filter(request_date__date__lte=to_date)
 
+    #  total leave days
+    total_leave_days = leave_requests.aggregate(
+        total=Sum("leave_days")
+    )["total"] or 0
+
     context = {
         "leave_requests": leave_requests,
         "total_requests": leave_requests.count(),
         "pending_requests": leave_requests.filter(status="Pending").count(),
         "approved_requests": leave_requests.filter(status="Approved").count(),
         "rejected_requests": leave_requests.filter(status="Rejected").count(),
+        "total_leave_days": total_leave_days,   #  added
         "status": status,
         "search": search,
         "from_date": from_date,
