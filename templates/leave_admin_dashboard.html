@@ -7,8 +7,38 @@
 </head>
 <body>
 
-<!-- Table -->
-<div class="table-wrapper">
+<div class="container">
+    <h1>Leave Admin Dashboard</h1>
+
+    <!-- Search -->
+    <form method="get" class="search-box">
+
+        <input type="text" name="search" value="{{ search }}"
+               placeholder="Search by ID, Name, Email">
+
+        <select name="status">
+            <option value="">All Status</option>
+            <option value="Pending" {% if status == "Pending" %}selected{% endif %}>Pending</option>
+            <option value="Approved" {% if status == "Approved" %}selected{% endif %}>Approved</option>
+            <option value="Rejected" {% if status == "Rejected" %}selected{% endif %}>Rejected</option>
+        </select>
+
+        <input type="date" name="from_date" value="{{ from_date }}">
+        <input type="date" name="to_date" value="{{ to_date }}">
+
+        <button type="submit">Apply</button>
+        <a href="{% url 'leave_admin_dashboard' %}">Clear</a>
+    </form>
+
+    <!-- Cards -->
+    <div class="cards">
+        <div class="card total">Total: {{ total_requests }}</div>
+        <div class="card pending">Pending: {{ pending_requests }}</div>
+        <div class="card approved">Approved: {{ approved_requests }}</div>
+        <div class="card rejected">Rejected: {{ rejected_requests }}</div>
+    </div>
+
+    <!-- Table -->
     <table>
         <thead>
             <tr>
@@ -18,12 +48,7 @@
                 <th>Leave Type</th>
                 <th>Start</th>
                 <th>End</th>
-                <th>Days</th>
-                <th>Reason</th>
                 <th>Status</th>
-                <th>Manager Reason</th>
-                <th>Approved/Rejected Date</th>
-                <th>Resolved Date</th>
                 <th>Request Date</th>
             </tr>
         </thead>
@@ -36,23 +61,12 @@
                 <td>{{ leave.leave_type }}</td>
                 <td>{{ leave.start_date }}</td>
                 <td>{{ leave.end_date }}</td>
-                <td>{{ leave.leave_days }}</td>
-                <td>{{ leave.reason }}</td>
                 <td>{{ leave.status }}</td>
-                <td>{{ leave.manager_reason|default:"-" }}</td>
-                <td>
-                    {{ leave.approved_rejected_date|date:"d M Y h:i A"|default:"-" }}
-                </td>
-                <td>
-                    {{ leave.resolved_date|date:"d M Y h:i A"|default:"-" }}
-                </td>
-                <td>
-                    {{ leave.request_date|date:"d M Y h:i A" }}
-                </td>
+                <td>{{ leave.request_date|date:"d M Y h:i A" }}</td>
             </tr>
             {% empty %}
             <tr>
-                <td colspan="13">No leave requests found</td>
+                <td colspan="8">No leave requests found</td>
             </tr>
             {% endfor %}
         </tbody>
