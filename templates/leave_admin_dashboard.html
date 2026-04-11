@@ -10,8 +10,11 @@
 <div class="container">
     <h1>Leave Admin Dashboard</h1>
 
+    <!-- Search Filters -->
     <form method="get" class="search-box">
-        <input type="text" name="search" value="{{ search }}"
+        <input type="text"
+               name="search"
+               value="{{ search }}"
                placeholder="Search by ID, Name, Email">
 
         <select name="status">
@@ -68,19 +71,16 @@
                     <td>{{ leave.leave_days }}</td>
                     <td>{{ leave.reason }}</td>
 
-                    <td class="
-                        {% if leave.status == 'Approved' %}status-approved
-                        {% elif leave.status == 'Rejected' %}status-rejected
-                        {% else %}status-pending
-                        {% endif %}
-                    ">
+                    <td class="{% if leave.status == 'Approved' %}status-approved{% elif leave.status == 'Rejected' %}status-rejected{% else %}status-pending{% endif %}">
                         {{ leave.status }}
                     </td>
 
                     <td>{{ leave.manager_reason|default:"-" }}</td>
-                    <td>{{ leave.approved_rejected_date|date:"d M Y h:i A"|default:"-" }}</td>
-                    <td>{{ leave.resolved_date|date:"d M Y h:i A"|default:"-" }}</td>
-                    <td>{{ leave.request_date|date:"d M Y h:i A" }}</td>
+
+                    <!-- SAFE DATE VALUES -->
+                    <td>{{ leave.approved_rejected_date|default:"-" }}</td>
+                    <td>{{ leave.resolved_date|default:"-" }}</td>
+                    <td>{{ leave.request_date }}</td>
                 </tr>
                 {% empty %}
                 <tr>
