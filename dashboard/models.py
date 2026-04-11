@@ -55,7 +55,6 @@ class Ticket(models.Model):
     def __str__(self):
         return self.ticket_no
 
-
 class LeaveRequest(models.Model):
     leave_id = models.CharField(
         max_length=20,
@@ -75,6 +74,7 @@ class LeaveRequest(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()
 
+    # auto calculated
     leave_days = models.PositiveIntegerField(default=1)
 
     reason = models.TextField()
@@ -88,21 +88,14 @@ class LeaveRequest(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
-        # auto leave id
         if not self.leave_id:
             self.leave_id = f"LR-{uuid.uuid4().hex[:8].upper()}"
 
-        #  validate dates
+        # leave days auto
         if self.start_date and self.end_date:
-            if self.end_date < self.start_date:
-                raise ValidationError("End date cannot be before start date")
-
-            #  exact leave days
-            total_days = (self.end_date - self.start_date).days
-            self.leave_days = total_days + 1
+            self.leave_days = (self.end_date - self.start_date).days + 1
 
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.leave_id} - {self.name}"
         return f"{self.leave_id} - {self.name}"
