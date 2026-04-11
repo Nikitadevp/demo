@@ -55,7 +55,6 @@ class Ticket(models.Model):
         return self.ticket_no
 
 
-
 class LeaveRequest(models.Model):
     leave_id = models.CharField(
         max_length=20,
@@ -74,6 +73,10 @@ class LeaveRequest(models.Model):
     leave_type = models.CharField(max_length=50)
     start_date = models.DateField()
     end_date = models.DateField()
+
+    # ✅ NEW FIELD
+    leave_days = models.PositiveIntegerField(default=1)
+
     reason = models.TextField()
 
     request_date = models.DateTimeField(default=timezone.now)
@@ -85,8 +88,14 @@ class LeaveRequest(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
+        # auto leave id
         if not self.leave_id:
             self.leave_id = f"LR-{uuid.uuid4().hex[:8].upper()}"
+
+        # ✅ auto leave days calculation
+        if self.start_date and self.end_date:
+            self.leave_days = (self.end_date - self.start_date).days + 1
+
         super().save(*args, **kwargs)
 
     def __str__(self):
