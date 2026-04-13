@@ -68,7 +68,13 @@
                     <td>{{ leave.leave_type }}</td>
                     <td>{{ leave.start_date }}</td>
                     <td>{{ leave.end_date }}</td>
-                    <td>{{ leave.leave_days }}</td>
+                    <td>
+                        {% if leave.leave_days == 0.5 %}
+                            Half Day
+                        {% else %}
+                            {{ leave.leave_days|floatformat:0 }}
+                        {% endif %}
+                    </td>
                     <td>{{ leave.reason }}</td>
 
                     <td class="{% if leave.status == 'Approved' %}status-approved{% elif leave.status == 'Rejected' %}status-rejected{% else %}status-pending{% endif %}">
