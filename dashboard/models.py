@@ -55,6 +55,9 @@ class Ticket(models.Model):
     def __str__(self):
         return self.ticket_no
 
+
+
+
 class LeaveRequest(models.Model):
     leave_id = models.CharField(
         max_length=20,
@@ -74,26 +77,17 @@ class LeaveRequest(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()
 
-    # ✅ auto calculated leave days
-    leave_days = models.PositiveIntegerField(default=1)
+    #  supports 0.5 for half day
+    leave_days = models.FloatField(default=1)
 
-    # employee reason
     reason = models.TextField()
 
     request_date = models.DateTimeField(default=timezone.now)
-
-    # Pending / Approved / Rejected
     status = models.CharField(max_length=20, default="Pending")
-
-    # manager approval/reject note
     manager_reason = models.TextField(blank=True, null=True)
 
-    # approval / rejection datetime
     approved_rejected_date = models.DateTimeField(blank=True, null=True)
-
-    # final resolved datetime
     resolved_date = models.DateTimeField(blank=True, null=True)
-
     updated_at = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
@@ -101,10 +95,17 @@ class LeaveRequest(models.Model):
         if not self.leave_id:
             self.leave_id = f"LR-{uuid.uuid4().hex[:8].upper()}"
 
-        # ✅ calculate total leave days from start & end
-        if self.start_date and self.end_date:
+        #  Half Day = 0.5
+        if self.leave_type and self.leave_type.lower() == "half day":
+            self.leave_days = 0.5
+
+        #  Normal leave calculation
+        elif self.start_date and self.end_date:
             total_days = (self.end_date - self.start_date).days + 1
             self.leave_days = max(total_days, 1)
+
+        else:
+            self.leave_days = 1
 
         super().save(*args, **kwargs)
 
