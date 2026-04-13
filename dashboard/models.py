@@ -57,7 +57,6 @@ class Ticket(models.Model):
 
 
 
-
 class LeaveRequest(models.Model):
     leave_id = models.CharField(
         max_length=20,
@@ -77,7 +76,7 @@ class LeaveRequest(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()
 
-    #  supports 0.5 for half day
+    # supports half day
     leave_days = models.FloatField(default=1)
 
     reason = models.TextField()
@@ -91,18 +90,18 @@ class LeaveRequest(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
-        # auto leave id
         if not self.leave_id:
             self.leave_id = f"LR-{uuid.uuid4().hex[:8].upper()}"
 
-        #  Half Day = 0.5
-        if self.leave_type and self.leave_type.lower() == "half day":
+        leave_type_clean = (self.leave_type or "").strip().lower()
+
+        # ✅ half day
+        if "half" in leave_type_clean:
             self.leave_days = 0.5
 
-        #  Normal leave calculation
+        # ✅ normal leave
         elif self.start_date and self.end_date:
-            total_days = (self.end_date - self.start_date).days + 1
-            self.leave_days = max(total_days, 1)
+            self.leave_days = (self.end_date - self.start_date).days + 1
 
         else:
             self.leave_days = 1
