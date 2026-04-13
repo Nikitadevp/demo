@@ -76,7 +76,7 @@ class LeaveRequest(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()
 
-    # supports half day
+    # supports 0.5 for half day
     leave_days = models.FloatField(default=1)
 
     reason = models.TextField()
@@ -90,18 +90,20 @@ class LeaveRequest(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
+        # auto leave id
         if not self.leave_id:
             self.leave_id = f"LR-{uuid.uuid4().hex[:8].upper()}"
 
         leave_type_clean = (self.leave_type or "").strip().lower()
 
-        # ✅ half day
+        #  half day
         if "half" in leave_type_clean:
             self.leave_days = 0.5
 
-        # ✅ normal leave
+        #  same logic as Google Sheet
         elif self.start_date and self.end_date:
-            self.leave_days = (self.end_date - self.start_date).days + 1
+            diff_days = (self.end_date - self.start_date).days
+            self.leave_days = diff_days + 1
 
         else:
             self.leave_days = 1
