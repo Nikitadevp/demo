@@ -13,14 +13,14 @@
     <!-- Search Filters -->
     <form method="get" class="search-box" id="filterForm">
 
-        <!-- ✅ Smart auto search -->
+        <!--  Search like DME dashboard -->
         <input type="text"
-               id="searchInput"
                name="search"
                value="{{ search }}"
-               placeholder="🔍 Search by ID, Name">
+               placeholder="🔍 Search by ID, Name"
+               onblur="this.form.submit()">
 
-        <!-- Status auto -->
+        <!-- Status auto filter -->
         <select name="status" onchange="this.form.submit()">
             <option value="">All Status</option>
             <option value="Pending" {% if status == "Pending" %}selected{% endif %}>Pending</option>
@@ -28,7 +28,7 @@
             <option value="Rejected" {% if status == "Rejected" %}selected{% endif %}>Rejected</option>
         </select>
 
-        <!-- Date auto -->
+        <!-- Date filters auto -->
         <input type="date"
                name="from_date"
                value="{{ from_date }}"
@@ -39,6 +39,7 @@
                value="{{ to_date }}"
                onchange="this.form.submit()">
 
+        <!-- Clear -->
         <a href="{% url 'leave_admin_dashboard' %}" class="clear-btn">Clear</a>
     </form>
 
@@ -108,19 +109,6 @@
         </table>
     </div>
 </div>
-
-<!-- ✅ Auto search after typing stop -->
-<script>
-let timer;
-
-document.getElementById("searchInput").addEventListener("keyup", function () {
-    clearTimeout(timer);
-
-    timer = setTimeout(() => {
-        document.getElementById("filterForm").submit();
-    }, 800);   // 0.8 sec after typing stop
-});
-</script>
 
 </body>
 </html>
