@@ -12,29 +12,34 @@
 
     <!-- Search Filters -->
     <form method="get" class="search-box" id="filterForm">
+
+        <!--  Search like DME dashboard -->
         <input type="text"
                name="search"
                value="{{ search }}"
-               placeholder="Search by ID, Name"
-               onkeyup="autoSubmit()">
+               placeholder="🔍 Search by ID, Name"
+               onblur="this.form.submit()">
 
-        <select name="status" onchange="autoSubmit()">
+        <!-- Status auto filter -->
+        <select name="status" onchange="this.form.submit()">
             <option value="">All Status</option>
             <option value="Pending" {% if status == "Pending" %}selected{% endif %}>Pending</option>
             <option value="Approved" {% if status == "Approved" %}selected{% endif %}>Approved</option>
             <option value="Rejected" {% if status == "Rejected" %}selected{% endif %}>Rejected</option>
         </select>
 
+        <!-- Date filters auto -->
         <input type="date"
                name="from_date"
                value="{{ from_date }}"
-               onchange="autoSubmit()">
+               onchange="this.form.submit()">
 
         <input type="date"
                name="to_date"
                value="{{ to_date }}"
-               onchange="autoSubmit()">
+               onchange="this.form.submit()">
 
+        <!-- Clear -->
         <a href="{% url 'leave_admin_dashboard' %}" class="clear-btn">Clear</a>
     </form>
 
@@ -76,7 +81,6 @@
                     <td>{{ leave.start_date }}</td>
                     <td>{{ leave.end_date }}</td>
 
-                    <!-- Days -->
                     <td>
                         {% if leave.leave_days == 0.5 %}
                             0.5
@@ -87,7 +91,6 @@
 
                     <td>{{ leave.reason }}</td>
 
-                    <!-- Status -->
                     <td class="{% if leave.status == 'Approved' %}status-approved{% elif leave.status == 'Rejected' %}status-rejected{% else %}status-pending{% endif %}">
                         {{ leave.status }}
                     </td>
@@ -106,13 +109,6 @@
         </table>
     </div>
 </div>
-
-<!-- Auto submit -->
-<script>
-function autoSubmit() {
-    document.getElementById("filterForm").submit();
-}
-</script>
 
 </body>
 </html>
