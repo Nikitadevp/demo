@@ -6,7 +6,7 @@
 }
 
 body {
-    background: #f8fafc;
+    background: #eef2f7;
     padding: 20px;
 }
 
@@ -17,7 +17,7 @@ body {
 h1 {
     font-size: 34px;
     margin-bottom: 25px;
-    color: #334155;
+    color: #1e293b;
     font-weight: 700;
 }
 
@@ -34,23 +34,24 @@ h1 {
 .search-box a {
     padding: 10px 14px;
     border-radius: 10px;
-    border: 1px solid #dbe2ea;
+    border: 1px solid #cbd5e1;
     text-decoration: none;
     background: #ffffff;
     color: #334155;
     outline: none;
     transition: 0.2s;
+    font-size: 14px;
 }
 
 .search-box input:focus,
 .search-box select:focus {
-    border-color: #93c5fd;
-    box-shadow: 0 0 0 3px rgba(147, 197, 253, 0.25);
+    border-color: #60a5fa;
+    box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.2);
 }
 
 .search-box a {
-    background: #eef2f7;
-    color: #334155;
+    background: #dbeafe;
+    color: #1e3a8a;
     font-weight: 600;
 }
 
@@ -68,24 +69,24 @@ h1 {
     color: #1e293b;
     font-size: 20px;
     font-weight: 600;
-    box-shadow: 0 6px 16px rgba(0,0,0,0.05);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.06);
 }
 
-/* Softer Light Colors */
+/* Better medium colors */
 .total {
-    background: #e0e7ff;
+    background: #c7d2fe;
 }
 
 .pending {
-    background: #fef3c7;
+    background: #fde68a;
 }
 
 .approved {
-    background: #dcfce7;
+    background: #bbf7d0;
 }
 
 .rejected {
-    background: #fee2e2;
+    background: #fecaca;
 }
 
 /* Table */
@@ -93,7 +94,7 @@ h1 {
     overflow-x: auto;
     background: white;
     border-radius: 16px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
 }
 
 table {
@@ -102,32 +103,34 @@ table {
     border-collapse: collapse;
 }
 
+/* ✅ first row light blue */
 thead {
-    background: #e2e8f0;
-    color: #334155;
+    background: #dbeafe;
+    color: #1e3a8a;
 }
 
 th, td {
     padding: 14px;
     text-align: left;
-    border-bottom: 1px solid #f1f5f9;
+    border-bottom: 1px solid #e2e8f0;
+    font-size: 14px;
 }
 
-/* ❌ hover remove */
+/* hover off */
 tr:hover {
     background: transparent;
 }
 
-/* ✅ row click color remove */
+/* click selection look remove */
 tr,
 td,
 th {
-    background: transparent !important;
+    transition: none;
 }
 
 /* Status */
 .status-approved {
-    color: #16a34a;
+    color: #15803d;
     font-weight: 700;
 }
 
