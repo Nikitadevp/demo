@@ -11,7 +11,6 @@
     <h1>DME Leave Dashboard</h1>
 
     <form method="get" class="search-box" id="filterForm">
-        <!-- KEY preserve -->
         <input type="hidden" name="key" value="dme123">
 
         <input type="text"
@@ -57,7 +56,7 @@
                     <th>Start</th>
                     <th>End</th>
                     <th>Days</th>
-                    <th>Reason</th>
+                    <th>Reason</th>   
                     <th>Status</th>
                     <th>Review</th>
                 </tr>
@@ -79,10 +78,7 @@
                         {% endif %}
                     </td>
 
-                    <td class="{% if leave.status == 'Approved' %}status-approved{% elif leave.status == 'Rejected' %}status-rejected{% else %}status-pending{% endif %}">
-                        {{ leave.status }}
-                    </td>
-
+                  
                     <td>{{ leave.reason }}</td>
 
                     <td class="{% if leave.status == 'Approved' %}status-approved{% elif leave.status == 'Rejected' %}status-rejected{% else %}status-pending{% endif %}">
