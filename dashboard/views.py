@@ -945,6 +945,11 @@ def engineering_leave_dashboard(request):
 
 #dme_leave
 def dme_leave(request):
+    secret_key = request.GET.get("key")
+
+    if secret_key != "dme123":
+        return HttpResponseForbidden("Access Denied")
+
     leave_requests = LeaveRequest.objects.filter(
         department__iexact="DME"
     ).order_by("-request_date")
@@ -979,7 +984,6 @@ def dme_leave(request):
         "status": status,
         "from_date": from_date,
         "to_date": to_date,
-        "department_name": "DME",
     }
 
     return render(request, "dme.html", context)

@@ -10,8 +10,10 @@
 <div class="container">
     <h1>DME Leave Dashboard</h1>
 
-    <!-- Filters -->
     <form method="get" class="search-box" id="filterForm">
+        <!-- KEY preserve -->
+        <input type="hidden" name="key" value="dme123">
+
         <input type="text"
                name="search"
                value="{{ search }}"
@@ -35,10 +37,9 @@
                value="{{ to_date }}"
                onchange="this.form.submit()">
 
-        <a href="{% url 'dme_leave' %}" class="clear-btn">Clear</a>
+        <a href="?key=dme123" class="clear-btn">Clear</a>
     </form>
 
-    <!-- Cards -->
     <div class="cards">
         <div class="card total">Total: {{ total_requests }}</div>
         <div class="card pending">Pending: {{ pending_requests }}</div>
@@ -46,7 +47,6 @@
         <div class="card rejected">Rejected: {{ rejected_requests }}</div>
     </div>
 
-    <!-- Table -->
     <div class="table-wrapper">
         <table>
             <thead>
