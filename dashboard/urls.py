@@ -22,7 +22,8 @@ urlpatterns = [
     path("jrdme-dashboard/", views.jrdme_dashboard, name="jrdme_dashboard"),
     path("accounts-dashboard/", views.accounts_dashboard, name="accounts_dashboard"),
     path("review/<str:leave_id>/", views.review_leave, name="review_leave"),
-    path("leave-admin/", views.leave_admin_dashboard, name="leave_admin_dashboard")
+    path("leave-admin/", views.leave_admin_dashboard, name="leave_admin_dashboard"),
+    path("finance-leave-dashboard/", views.finance_leave_dashboard, name="finance_leave_dashboard")
 
 
     

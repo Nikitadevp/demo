@@ -836,4 +836,62 @@ def leave_admin_dashboard(request):
         "to_date": to_date,
     }
 
+
     return render(request, "leave_admin_dashboard.html", context)
+
+
+
+#finance_leave_dashboard
+
+def finance_leave_dashboard(request):
+    secret_key = request.GET.get("key")
+
+    if secret_key != "leave123":
+        return HttpResponseForbidden("Access Denied")
+
+    leave_requests = LeaveRequest.objects.filter(
+        department__iexact="Accounts and Finance"
+    ).order_by("-request_date")
+
+    search = request.GET.get("search", "")
+    status = request.GET.get("status", "")
+    from_date = request.GET.get("from_date", "")
+    to_date = request.GET.get("to_date", "")
+
+    # search
+    if search:
+        leave_requests = leave_requests.filter(
+            Q(leave_id__icontains=search) |
+            Q(name__icontains=search)
+        )
+
+    # status
+    if status:
+        leave_requests = leave_requests.filter(status=status)
+
+    # date filters
+    if from_date:
+        leave_requests = leave_requests.filter(
+            request_date__date__gte=from_date
+        )
+
+    if to_date:
+        leave_requests = leave_requests.filter(
+            request_date__date__lte=to_date
+        )
+
+    context = {
+        "leave_requests": leave_requests,
+        "total_requests": leave_requests.count(),
+        "pending_requests": leave_requests.filter(status="Pending").count(),
+        "approved_requests": leave_requests.filter(status="Approved").count(),
+        "rejected_requests": leave_requests.filter(status="Rejected").count(),
+        "search": search,
+        "status": status,
+        "from_date": from_date,
+        "to_date": to_date,
+    }
+
+    return render(request, "ac_finance_leave.html", context)
+
+
