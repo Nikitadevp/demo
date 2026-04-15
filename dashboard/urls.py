@@ -30,6 +30,7 @@ urlpatterns = [
     path("purchase-leave/", views.purchase_leave_dashboard, name="purchase_leave_dashboard"),
     path("sales-leave/", views.sales_leave_dashboard, name="sales_leave_dashboard"),
     path("mdo-leave/", views.mdo_leave_dashboard, name="mdo_leave_dashboard"),
+    path("mdo-sales-leave/", views.mdo_sales_leave_dashboard, name="mdo_sales_leave_dashboard"),
 
 
     
