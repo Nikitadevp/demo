@@ -799,6 +799,9 @@ def accounts_dashboard(request):
 #leave_admin_dashboard
 
 
+# LEAVE KA HAI YAHA SE 
+
+
 def leave_admin_dashboard(request):
     leave_requests = LeaveRequest.objects.all().order_by("-request_date")
 
@@ -849,14 +852,23 @@ def finance_leave_dashboard(request):
     if secret_key != "leave123":
         return HttpResponseForbidden("Access Denied")
 
-    leave_requests = LeaveRequest.objects.filter(
-        department__iexact="Accounts and Finance"
-    ).order_by("-request_date")
-
     search = request.GET.get("search", "")
     status = request.GET.get("status", "")
     from_date = request.GET.get("from_date", "")
     to_date = request.GET.get("to_date", "")
+
+    #  Accounts & Finance + Pending first
+    leave_requests = LeaveRequest.objects.filter(
+        department__iexact="Accounts and Finance"
+    ).annotate(
+        status_order=Case(
+            When(status="Pending", then=Value(1)),
+            When(status="Approved", then=Value(2)),
+            When(status="Rejected", then=Value(3)),
+            default=Value(4),
+            output_field=IntegerField(),
+        )
+    )
 
     # search
     if search:
@@ -879,6 +891,9 @@ def finance_leave_dashboard(request):
         leave_requests = leave_requests.filter(
             request_date__date__lte=to_date
         )
+
+    #  Pending first + latest first
+    leave_requests = leave_requests.order_by("status_order", "-request_date")
 
     context = {
         "leave_requests": leave_requests,

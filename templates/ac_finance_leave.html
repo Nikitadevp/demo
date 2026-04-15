@@ -7,7 +7,6 @@
     <title>Accounts & Finance Leave Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- same leave admin css -->
     <link rel="stylesheet" href="{% static 'css/leave_admin_dashboard.css' %}">
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -78,6 +77,7 @@
                     <th>Start</th>
                     <th>End</th>
                     <th>Days</th>
+                    <th>Reason</th>
                     <th>Status</th>
                     <th>Request Date</th>
                     <th>Review</th>
@@ -102,6 +102,9 @@
                         {% endif %}
                     </td>
 
+                    <!-- ✅ Reason -->
+                    <td>{{ leave.reason }}</td>
+
                     <td class="{% if leave.status == 'Approved' %}status-approved{% elif leave.status == 'Rejected' %}status-rejected{% else %}status-pending{% endif %}">
                         {{ leave.status }}
                     </td>
@@ -116,7 +119,7 @@
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="10">No leave requests found</td>
+                    <td colspan="11">No leave requests found</td>
                 </tr>
                 {% endfor %}
             </tbody>
