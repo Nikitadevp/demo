@@ -1169,3 +1169,71 @@ def purchase_leave_dashboard(request):
     }
 
     return render(request, "purchase_leave.html", context)
+
+
+
+def sales_leave_dashboard(request):
+    secret_key = request.GET.get("key")
+
+    if secret_key != "sales123":
+        return HttpResponseForbidden("Access Denied")
+
+    search = request.GET.get("search", "")
+    status = request.GET.get("status", "")
+    from_date = request.GET.get("from_date", "")
+    to_date = request.GET.get("to_date", "")
+
+    # Sales only + pending top
+    leave_requests = LeaveRequest.objects.filter(
+        department__iexact="Sales"
+    ).annotate(
+        status_order=Case(
+            When(status="Pending", then=Value(1)),
+            When(status="Approved", then=Value(2)),
+            When(status="Rejected", then=Value(3)),
+            default=Value(4),
+            output_field=IntegerField(),
+        )
+    )
+
+    # Search
+    if search:
+        leave_requests = leave_requests.filter(
+            Q(leave_id__icontains=search) |
+            Q(name__icontains=search)
+        )
+
+    # Status
+    if status:
+        leave_requests = leave_requests.filter(status=status)
+
+    # Date filters
+    if from_date:
+        leave_requests = leave_requests.filter(
+            request_date__date__gte=from_date
+        )
+
+    if to_date:
+        leave_requests = leave_requests.filter(
+            request_date__date__lte=to_date
+        )
+
+    # Final sorting
+    leave_requests = leave_requests.order_by(
+        "status_order",
+        "-request_date"
+    )
+
+    context = {
+        "leave_requests": leave_requests,
+        "total_requests": leave_requests.count(),
+        "pending_requests": leave_requests.filter(status="Pending").count(),
+        "approved_requests": leave_requests.filter(status="Approved").count(),
+        "rejected_requests": leave_requests.filter(status="Rejected").count(),
+        "search": search,
+        "status": status,
+        "from_date": from_date,
+        "to_date": to_date,
+    }
+
+    return render(request, "sales_leave.html", context)
