@@ -24,7 +24,8 @@ urlpatterns = [
     path("review/<str:leave_id>/", views.review_leave, name="review_leave"),
     path("leave-admin/", views.leave_admin_dashboard, name="leave_admin_dashboard"),
     path("finance-leave-dashboard/", views.finance_leave_dashboard, name="finance_leave_dashboard"),
-    path("engineering-leave-dashboard/", views.engineering_leave_dashboard, name="engineering_leave_dashboard")
+    path("engineering-leave-dashboard/", views.engineering_leave_dashboard, name="engineering_leave_dashboard"),
+    path("dme-leave/", views.dme_leave, name="dme_leave")
 
 
     

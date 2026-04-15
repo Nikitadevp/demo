@@ -941,3 +941,45 @@ def engineering_leave_dashboard(request):
     }
 
     return render(request, "eng_leave.html", context)
+
+
+#dme_leave
+def dme_leave(request):
+    leave_requests = LeaveRequest.objects.filter(
+        department__iexact="DME"
+    ).order_by("-request_date")
+
+    search = request.GET.get("search", "")
+    status = request.GET.get("status", "")
+    from_date = request.GET.get("from_date", "")
+    to_date = request.GET.get("to_date", "")
+
+    if search:
+        leave_requests = leave_requests.filter(
+            Q(leave_id__icontains=search) |
+            Q(name__icontains=search)
+        )
+
+    if status:
+        leave_requests = leave_requests.filter(status=status)
+
+    if from_date:
+        leave_requests = leave_requests.filter(request_date__date__gte=from_date)
+
+    if to_date:
+        leave_requests = leave_requests.filter(request_date__date__lte=to_date)
+
+    context = {
+        "leave_requests": leave_requests,
+        "total_requests": leave_requests.count(),
+        "pending_requests": leave_requests.filter(status="Pending").count(),
+        "approved_requests": leave_requests.filter(status="Approved").count(),
+        "rejected_requests": leave_requests.filter(status="Rejected").count(),
+        "search": search,
+        "status": status,
+        "from_date": from_date,
+        "to_date": to_date,
+        "department_name": "DME",
+    }
+
+    return render(request, "dme.html", context)
