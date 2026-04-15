@@ -945,34 +945,49 @@ def engineering_leave_dashboard(request):
 
 #dme_leave
 def dme_leave(request):
+    #  secure key check
     secret_key = request.GET.get("key")
-
     if secret_key != "dme123":
         return HttpResponseForbidden("Access Denied")
-
-    leave_requests = LeaveRequest.objects.filter(
-        department__iexact="DME"
-    ).order_by("-request_date")
 
     search = request.GET.get("search", "")
     status = request.GET.get("status", "")
     from_date = request.GET.get("from_date", "")
     to_date = request.GET.get("to_date", "")
 
+    #  only DME + pending first
+    leave_requests = LeaveRequest.objects.filter(
+        department__iexact="DME"
+    ).annotate(
+        status_order=Case(
+            When(status="Pending", then=Value(1)),
+            When(status="Approved", then=Value(2)),
+            When(status="Rejected", then=Value(3)),
+            default=Value(4),
+            output_field=IntegerField(),
+        )
+    )
+
+    #  search
     if search:
         leave_requests = leave_requests.filter(
             Q(leave_id__icontains=search) |
             Q(name__icontains=search)
         )
 
+    #  status filter
     if status:
         leave_requests = leave_requests.filter(status=status)
 
+    # date filters
     if from_date:
         leave_requests = leave_requests.filter(request_date__date__gte=from_date)
 
     if to_date:
         leave_requests = leave_requests.filter(request_date__date__lte=to_date)
+
+    #  final sorting
+    leave_requests = leave_requests.order_by("status_order", "-request_date")
 
     context = {
         "leave_requests": leave_requests,
