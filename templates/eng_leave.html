@@ -70,6 +70,7 @@
                     <th>Start</th>
                     <th>End</th>
                     <th>Days</th>
+                    <th>Reason</th>
                     <th>Status</th>
                     <th>Request Date</th>
                     <th>Review</th>
@@ -93,6 +94,9 @@
                         {% endif %}
                     </td>
 
+                    <!-- ✅ Reason -->
+                    <td>{{ leave.reason }}</td>
+
                     <td class="{% if leave.status == 'Approved' %}status-approved{% elif leave.status == 'Rejected' %}status-rejected{% else %}status-pending{% endif %}">
                         {{ leave.status }}
                     </td>
@@ -107,7 +111,7 @@
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="10">No leave requests found</td>
+                    <td colspan="11">No leave requests found</td>
                 </tr>
                 {% endfor %}
             </tbody>

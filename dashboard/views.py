@@ -898,35 +898,51 @@ def finance_leave_dashboard(request):
 
 
  # engineering_leave_dashboard
+
 def engineering_leave_dashboard(request):
     secret_key = request.GET.get("key")
 
     if secret_key != "eng123":
         return HttpResponseForbidden("Access Denied")
 
-    leave_requests = LeaveRequest.objects.filter(
-        department__iexact="Engineering"
-    ).order_by("-request_date")
-
     search = request.GET.get("search", "")
     status = request.GET.get("status", "")
     from_date = request.GET.get("from_date", "")
     to_date = request.GET.get("to_date", "")
 
+    #  Engineering + Pending first
+    leave_requests = LeaveRequest.objects.filter(
+        department__iexact="Engineering"
+    ).annotate(
+        status_order=Case(
+            When(status="Pending", then=Value(1)),
+            When(status="Approved", then=Value(2)),
+            When(status="Rejected", then=Value(3)),
+            default=Value(4),
+            output_field=IntegerField(),
+        )
+    )
+
+    #  Search
     if search:
         leave_requests = leave_requests.filter(
             Q(leave_id__icontains=search) |
             Q(name__icontains=search)
         )
 
+    #  Status filter
     if status:
         leave_requests = leave_requests.filter(status=status)
 
+    #  Date filters
     if from_date:
         leave_requests = leave_requests.filter(request_date__date__gte=from_date)
 
     if to_date:
         leave_requests = leave_requests.filter(request_date__date__lte=to_date)
+
+    #  Final sorting → Pending first
+    leave_requests = leave_requests.order_by("status_order", "-request_date")
 
     context = {
         "leave_requests": leave_requests,
