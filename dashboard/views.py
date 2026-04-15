@@ -986,4 +986,4 @@ def dme_leave(request):
         "to_date": to_date,
     }
 
-    return render(request, "dme.html", context)
+    return render(request, "dme_leave.html", context)
