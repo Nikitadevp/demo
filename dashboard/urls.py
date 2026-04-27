@@ -33,6 +33,7 @@ urlpatterns = [
     path("mdo-sales-leave/", views.mdo_sales_leave_dashboard, name="mdo_sales_leave_dashboard"),
     path("construction-dashboard/", views.construction_dashboard, name="construction_dashboard"),
     path("crm-ho-dashboard/", views.crm_ho_dashboard, name="crm_ho_dashboard"),
+    path("hr-dashboard/", views.hr_dashboard, name="hr_dashboard"),
 
 
     
