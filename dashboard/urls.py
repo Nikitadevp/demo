@@ -35,6 +35,7 @@ urlpatterns = [
     path("crm-ho-dashboard/", views.crm_ho_dashboard, name="crm_ho_dashboard"),
     path("hr-dashboard/", views.hr_dashboard, name="hr_dashboard"),
     path("it-admin-dashboard/", views.it_admin_dashboard, name="it_admin_dashboard"),
+    path("project-planning-dashboard/", views.project_planning_dashboard, name="project_planning_dashboard"),
 
 
     
