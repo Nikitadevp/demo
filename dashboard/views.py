@@ -279,21 +279,23 @@ DEPARTMENTS = [
     
 
 #dashboard    
+
 def dashboard(request):
 
-    department = request.GET.get('department')
-    priority = request.GET.get('priority')
-    status = request.GET.get('status')
-    search = request.GET.get('search')   #  ADD THIS
+    department = request.GET.get('department', '').strip()
+    priority = request.GET.get('priority', '').strip()
+    status = request.GET.get('status', '').strip()
+    search = request.GET.get('search', '').strip()
 
     tickets = Ticket.objects.all()
 
-    # 🔍 SEARCH (NEW)
+    # -------- SEARCH --------
     if search:
         tickets = tickets.filter(
             Q(ticket_no__icontains=search) |
             Q(name__icontains=search) |
-            Q(issue_type__icontains=search)
+            Q(issue_type__icontains=search) |
+            Q(department__icontains=search)
         )
 
     # -------- FILTERS --------
@@ -348,7 +350,7 @@ def dashboard(request):
         'department': department,
         'priority': priority,
         'status': status,
-        'search': search,   # ADD THIS
+        'search': search,
 
         'total_tickets': tickets.count(),
         'open_tickets': open_count,

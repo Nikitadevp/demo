@@ -1,4 +1,5 @@
 {% load static %}
+{% load tz %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,7 +7,10 @@
     <title>Help Desk Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <!-- CSS -->
     <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+
+    <!-- Icons -->
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
@@ -15,49 +19,47 @@
 
 <div class="layout">
 
-    <!-- Sidebar -->
+    <!-- SIDEBAR -->
     <aside class="sidebar">
         <h2 class="logo">HelpDesk</h2>
 
         <ul class="menu">
-            <li><a href="#topDashboard"><i class="fa fa-chart-line"></i> Dashboard</a></li>
-            <li><a href="#chartSection"><i class="fa fa-chart-bar"></i> Charts</a></li>
+            <li>
+                <a href="#topDashboard">
+                    <i class="fa fa-chart-line"></i> Dashboard
+                </a>
+            </li>
+            <li>
+                <a href="#ticketSection">
+                    <i class="fa fa-ticket"></i> Tickets
+                </a>
+            </li>
         </ul>
     </aside>
 
-    <!-- Main -->
+    <!-- MAIN -->
     <main class="content" id="topDashboard">
 
-        <!-- Header -->
+        <!-- HEADER -->
         <div class="header">
             {% if department %}
-                <h1>{{ department }} Department Dashboard</h1>
+                <h1>{{ department }} Dashboard</h1>
             {% else %}
                 <h1>All Departments Dashboard</h1>
             {% endif %}
         </div>
 
-        <!-- 🔍 SEARCH -->
-        <div class="search-box">
-            <form method="get">
-                <!-- preserve filters -->
-                <input type="hidden" name="department" value="{{ department }}">
-                <input type="hidden" name="priority" value="{{ priority }}">
-                <input type="hidden" name="status" value="{{ status }}">
-
-                <input type="text"
-                       name="search"
-                       value="{{ search }}"
-                       placeholder="🔍 Search Ticket / Name"
-                       onblur="this.form.submit()">
-            </form>
-        </div>
-
-        <!-- 🎯 FILTERS (AUTO SUBMIT) -->
+        <!-- SEARCH + FILTER -->
         <form method="get" class="filters">
 
-            <input type="hidden" name="search" value="{{ search }}">
+            <!-- SEARCH -->
+            <input type="text"
+                   name="search"
+                   value="{{ search }}"
+                   placeholder="🔍 Search Ticket / Name / Issue"
+                   onkeypress="if(event.key === 'Enter'){ this.form.submit(); }">
 
+            <!-- DEPARTMENT -->
             <select name="department" onchange="this.form.submit()">
                 <option value="">All Departments</option>
                 {% for d in departments %}
@@ -67,26 +69,28 @@
                 {% endfor %}
             </select>
 
+            <!-- PRIORITY -->
             <select name="priority" onchange="this.form.submit()">
                 <option value="">All Priority</option>
                 <option value="Urgent" {% if priority == "Urgent" %}selected{% endif %}>Urgent</option>
                 <option value="Normal" {% if priority == "Normal" %}selected{% endif %}>Normal</option>
             </select>
 
+            <!-- STATUS -->
             <select name="status" onchange="this.form.submit()">
                 <option value="">All Status</option>
                 <option value="Open" {% if status == "Open" %}selected{% endif %}>Open</option>
                 <option value="Closed" {% if status == "Closed" %}selected{% endif %}>Closed</option>
             </select>
 
-            <!-- ✅ CLEAR BUTTON -->
-            <a href="?" class="clear-btn">
+            <!-- CLEAR -->
+            <a href="{% url 'dashboard' %}" class="clear-btn">
                 <i class="fa fa-rotate-left"></i> Clear All
             </a>
 
         </form>
 
-        <!-- Cards -->
+        <!-- CARDS -->
         <div class="cards">
             <div class="card total">
                 <i class="fa fa-layer-group"></i>
@@ -113,8 +117,8 @@
             </div>
         </div>
 
-        <!-- Table -->
-        <div class="table-box">
+        <!-- TABLE -->
+        <div class="table-box" id="ticketSection">
             <h2>Recent Tickets</h2>
 
             <table>
@@ -123,6 +127,7 @@
                         <th>Ticket</th>
                         <th>Name</th>
                         <th>Department</th>
+                        <th>Issue</th>
                         <th>Priority</th>
                         <th>Status</th>
                         <th>Date</th>
@@ -135,6 +140,7 @@
                         <td><i class="fa fa-ticket"></i> {{ t.ticket_no }}</td>
                         <td>{{ t.name }}</td>
                         <td>{{ t.department }}</td>
+                        <td>{{ t.issue_type }}</td>
 
                         <td>
                             {% if t.priority == "Urgent" %}
@@ -152,29 +158,29 @@
                             {% endif %}
                         </td>
 
-                        <td>{{ t.created_at|date:"d M Y H:i" }}</td>
+                        <td>{{ t.created_at|localtime|date:"d M Y h:i A" }}</td>
                     </tr>
                 {% empty %}
                     <tr>
-                        <td colspan="6">No tickets found</td>
+                        <td colspan="7">No tickets found</td>
                     </tr>
                 {% endfor %}
                 </tbody>
             </table>
         </div>
 
-        <!-- Charts -->
-        <div class="chart-box" id="chartSection">
+        <!-- CHARTS -->
+        <div class="chart-box">
             <h2>Ticket Statistics</h2>
 
             <div class="chart-grid">
                 <div class="chart-card">
-                    <h3>Status Wise Tickets</h3>
+                    <h3>Status Wise</h3>
                     <img src="data:image/png;base64,{{ status_chart }}">
                 </div>
 
                 <div class="chart-card">
-                    <h3>Priority Wise Tickets</h3>
+                    <h3>Priority Wise</h3>
                     <img src="data:image/png;base64,{{ priority_chart }}">
                 </div>
             </div>
