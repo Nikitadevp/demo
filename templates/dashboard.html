@@ -1,5 +1,4 @@
 {% load static %}
-{% load tz %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,7 +6,7 @@
     <title>Help Desk Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- CSS -->
+    <!-- ✅ Correct CSS Path -->
     <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
 
     <!-- Icons -->
@@ -19,7 +18,7 @@
 
 <div class="layout">
 
-    <!-- SIDEBAR -->
+    <!-- ========== LEFT SIDEBAR ========== -->
     <aside class="sidebar">
         <h2 class="logo">HelpDesk</h2>
 
@@ -29,53 +28,31 @@
                     <i class="fa fa-chart-line"></i> Dashboard
                 </a>
             </li>
+
             <li>
-                <a href="#ticketSection">
-                    <i class="fa fa-ticket"></i> Tickets
+                <a href="#chartSection">
+                    <i class="fa fa-chart-bar"></i> Charts
                 </a>
             </li>
-        </ul>
+        </ul> 
     </aside>
 
-    <!-- MAIN -->
+    <!-- ========== MAIN CONTENT ========== -->
     <main class="content" id="topDashboard">
 
-        <!-- HEADER -->
+        <!-- Header -->
         <div class="header">
             {% if department %}
-                <h1>{{ department }} Dashboard</h1>
+                <h1>{{ department }} Department Dashboard</h1>
             {% else %}
                 <h1>All Departments Dashboard</h1>
             {% endif %}
         </div>
 
-        <!-- SEARCH -->
-        <div class="search-box">
-            <form method="get">
-
-                <!-- KEEP FILTERS -->
-                <input type="hidden" name="department" value="{{ department }}">
-                <input type="hidden" name="priority" value="{{ priority }}">
-                <input type="hidden" name="status" value="{{ status }}">
-                <input type="hidden" name="from_date" value="{{ from_date }}">
-                <input type="hidden" name="to_date" value="{{ to_date }}">
-
-                <input type="text"
-                       name="search"
-                       value="{{ search }}"
-                       placeholder="🔍 Search Ticket / Name / Issue"
-                       onkeypress="if(event.key==='Enter'){this.form.submit();}">
-            </form>
-        </div>
-
-        <!-- FILTERS -->
+        <!-- Filters -->
         <form method="get" class="filters">
 
-            <!-- KEEP SEARCH -->
-            <input type="hidden" name="search" value="{{ search }}">
-
-            <!-- DEPARTMENT -->
-            <select name="department" onchange="this.form.submit()">
+            <select name="department">
                 <option value="">All Departments</option>
                 {% for d in departments %}
                     <option value="{{ d }}" {% if department == d %}selected{% endif %}>
@@ -84,39 +61,24 @@
                 {% endfor %}
             </select>
 
-            <!-- PRIORITY -->
-            <select name="priority" onchange="this.form.submit()">
+            <select name="priority">
                 <option value="">All Priority</option>
                 <option value="Urgent" {% if priority == "Urgent" %}selected{% endif %}>Urgent</option>
                 <option value="Normal" {% if priority == "Normal" %}selected{% endif %}>Normal</option>
             </select>
 
-            <!-- STATUS -->
-            <select name="status" onchange="this.form.submit()">
+            <select name="status">
                 <option value="">All Status</option>
                 <option value="Open" {% if status == "Open" %}selected{% endif %}>Open</option>
                 <option value="Closed" {% if status == "Closed" %}selected{% endif %}>Closed</option>
             </select>
 
-            <!-- DATE -->
-            <div class="date-filter">
-                <label>From</label>
-                <input type="date" name="from_date" value="{{ from_date }}" onchange="this.form.submit()">
-            </div>
-
-            <div class="date-filter">
-                <label>To</label>
-                <input type="date" name="to_date" value="{{ to_date }}" onchange="this.form.submit()">
-            </div>
-
-            <!-- CLEAR -->
-            <a href="{% url 'dashboard' %}" class="clear-btn">
-                <i class="fa fa-rotate-left"></i> Clear All
-            </a>
-
+            <button type="submit">
+                <i class="fa fa-filter"></i> Apply
+            </button>
         </form>
 
-        <!-- CARDS -->
+        <!-- Cards -->
         <div class="cards">
             <div class="card total">
                 <i class="fa fa-layer-group"></i>
@@ -143,8 +105,8 @@
             </div>
         </div>
 
-        <!-- TABLE -->
-        <div class="table-box" id="ticketSection">
+        <!-- Table -->
+        <div class="table-box">
             <h2>Recent Tickets</h2>
 
             <table>
@@ -153,24 +115,21 @@
                         <th>Ticket</th>
                         <th>Name</th>
                         <th>Department</th>
-                        <th>Issue</th>
                         <th>Priority</th>
                         <th>Status</th>
-                        <th>Created</th>
-                        <th>TAT Deadline</th>
-                        <th>Resolved</th>
-                        <th>Solution</th>
-                        <th>Action</th>
+                        <th>Date</th>
                     </tr>
                 </thead>
 
                 <tbody>
                 {% for t in recent_tickets %}
                     <tr>
-                        <td>{{ t.ticket_no }}</td>
+                        <td>
+                            <i class="fa fa-ticket"></i>
+                            {{ t.ticket_no }}
+                        </td>
                         <td>{{ t.name }}</td>
                         <td>{{ t.department }}</td>
-                        <td>{{ t.issue_type }}</td>
 
                         <td>
                             {% if t.priority == "Urgent" %}
@@ -188,47 +147,33 @@
                             {% endif %}
                         </td>
 
-                        <td>{{ t.created_at|localtime|date:"d M Y h:i A" }}</td>
-                        <td>{{ t.tat_deadline|localtime|date:"d M Y h:i A" }}</td>
-                        <td>{{ t.resolved_at|localtime|date:"d M Y h:i A"|default:"-" }}</td>
-
-                        <td>{{ t.solution_provided|default:"-" }}</td>
-
-                        <td>
-                            {% if t.status == "Open" %}
-                                <a href="{% url 'resolve_ticket' t.ticket_no %}" class="resolve-btn">
-                                    Resolve
-                                </a>
-                            {% else %}
-                                <span class="badge closed">Done</span>
-                            {% endif %}
-                        </td>
+                        <td>{{ t.created_at|date:"d M Y H:i" }}</td>
                     </tr>
                 {% empty %}
                     <tr>
-                        <td colspan="11">No tickets found</td>
+                        <td colspan="6">No tickets found</td>
                     </tr>
                 {% endfor %}
                 </tbody>
             </table>
         </div>
 
-        <!-- CHARTS -->
-        <div class="chart-box">
+        <!-- Charts -->
+        <div class="chart-box" id="chartSection">
             <h2>Ticket Statistics</h2>
 
             <div class="chart-grid">
                 <div class="chart-card">
-                    <h3>Status Wise</h3>
+                    <h3>Status Wise Tickets</h3>
                     <img src="data:image/png;base64,{{ status_chart }}">
-                </div>
-
+                </div>   
+                
                 <div class="chart-card">
-                    <h3>Priority Wise</h3>
+                    <h3>Priority Wise Tickets</h3>
                     <img src="data:image/png;base64,{{ priority_chart }}">
                 </div>
-            </div>
-        </div>
+            </div>      
+        </div> 
 
     </main>
 </div>

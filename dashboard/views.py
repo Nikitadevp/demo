@@ -279,25 +279,15 @@ DEPARTMENTS = [
     
 
 #dashboard    
+
+
 def dashboard(request):
 
-    department = request.GET.get('department', '').strip()
-    priority = request.GET.get('priority', '').strip()
-    status = request.GET.get('status', '').strip()
-    search = request.GET.get('search', '').strip()
-    from_date = request.GET.get('from_date', '').strip()
-    to_date = request.GET.get('to_date', '').strip()
+    department = request.GET.get('department')
+    priority = request.GET.get('priority')
+    status = request.GET.get('status')
 
     tickets = Ticket.objects.all()
-
-    # -------- SEARCH --------
-    if search:
-        tickets = tickets.filter(
-            Q(ticket_no__icontains=search) |
-            Q(name__icontains=search) |
-            Q(issue_type__icontains=search) |
-            Q(department__icontains=search)
-        )
 
     # -------- FILTERS --------
     if department:
@@ -309,46 +299,55 @@ def dashboard(request):
     if status:
         tickets = tickets.filter(status=status)
 
-    # -------- DATE FILTER --------
-    if from_date:
-        tickets = tickets.filter(created_at__date__gte=from_date)
-
-    if to_date:
-        tickets = tickets.filter(created_at__date__lte=to_date)
-
     # -------- COUNTS --------
     open_count = tickets.filter(status="Open").count()
     closed_count = tickets.filter(status="Closed").count()
     urgent_count = tickets.filter(priority="Urgent").count()
     normal_count = tickets.filter(priority="Normal").count()
 
-    # -------- CHARTS --------
+    # ================================
+    # STATUS CHART (Open vs Closed)
+    # ================================
+
     buffer = io.BytesIO()
+
     plt.figure(figsize=(4,3))
     plt.bar(["Open", "Closed"], [open_count, closed_count])
+    plt.title("Status Wise Tickets")
     plt.tight_layout()
+
     plt.savefig(buffer, format="png")
     buffer.seek(0)
+
     status_chart = base64.b64encode(buffer.getvalue()).decode()
+
     plt.close()
 
+    # ================================
+    # PRIORITY CHART (Urgent vs Normal)
+    # ================================
+
     buffer2 = io.BytesIO()
+
     plt.figure(figsize=(4,3))
     plt.bar(["Urgent", "Normal"], [urgent_count, normal_count])
+    plt.title("Priority Wise Tickets")
     plt.tight_layout()
+
     plt.savefig(buffer2, format="png")
     buffer2.seek(0)
+
     priority_chart = base64.b64encode(buffer2.getvalue()).decode()
+
     plt.close()
+
+    # -------- CONTEXT --------
 
     context = {
         'departments': DEPARTMENTS,
         'department': department,
         'priority': priority,
         'status': status,
-        'search': search,
-        'from_date': from_date,
-        'to_date': to_date,
 
         'total_tickets': tickets.count(),
         'open_tickets': open_count,
@@ -358,6 +357,7 @@ def dashboard(request):
 
         'recent_tickets': tickets.order_by('-created_at')[:10],
 
+        # charts
         'status_chart': status_chart,
         'priority_chart': priority_chart,
     }
@@ -1081,127 +1081,7 @@ def it_admin_dashboard(request):
 
 
 
-def project_planning_dashboard(request):
-    secret_key = request.GET.get("xid")
 
-    #  Security Key
-    if secret_key != "PP_83kdLx9WmT4QpZ7N2rH5":
-        return HttpResponseForbidden("Access Denied")
-
-    tickets = Ticket.objects.filter(department="Project Planning")
-
-    # Filters
-    priority = request.GET.get("priority", "")
-    status = request.GET.get("status", "")
-    from_date = request.GET.get("from_date", "")
-    to_date = request.GET.get("to_date", "")
-    search = request.GET.get("search", "")
-
-    # 🔍 Search
-    if search:
-        tickets = tickets.filter(
-            Q(ticket_no__icontains=search) |
-            Q(name__icontains=search) |
-            Q(issue_type__icontains=search)
-        )
-
-    if priority:
-        tickets = tickets.filter(priority=priority)
-
-    if status:
-        tickets = tickets.filter(status=status)
-
-    if from_date:
-        tickets = tickets.filter(created_at__date__gte=from_date)
-
-    if to_date:
-        tickets = tickets.filter(created_at__date__lte=to_date)
-
-    # Open first
-    recent_tickets = tickets.annotate(
-        status_order=Case(
-            When(status="Open", then=Value(0)),
-            When(status="Closed", then=Value(1)),
-            default=Value(2),
-            output_field=IntegerField(),
-        )
-    ).order_by("status_order", "-created_at")
-
-    context = {
-        "recent_tickets": recent_tickets,
-        "total_tickets": tickets.count(),
-        "open_tickets": tickets.filter(status="Open").count(),
-        "closed_tickets": tickets.filter(status="Closed").count(),
-        "urgent_tickets": tickets.filter(priority="Urgent").count(),
-        "priority": priority,
-        "status": status,
-        "from_date": from_date,
-        "to_date": to_date,
-        "search": search,
-    }
-
-    return render(request, "project_planning_dashboard.html", context)
-
-def purchase_security_dashboard(request):
-    secret_key = request.GET.get("xid")
-
-    # 🔐 Secret Key (change ki hai unique)
-    if secret_key != "PS_54LmX9qT7ZpN2H8Rk3W":
-        return HttpResponseForbidden("Access Denied")
-
-    tickets = Ticket.objects.filter(department="Purchase and Security")
-
-    # Filters
-    priority = request.GET.get("priority", "")
-    status = request.GET.get("status", "")
-    from_date = request.GET.get("from_date", "")
-    to_date = request.GET.get("to_date", "")
-    search = request.GET.get("search", "")
-
-    # 🔍 Search
-    if search:
-        tickets = tickets.filter(
-            Q(ticket_no__icontains=search) |
-            Q(name__icontains=search) |
-            Q(issue_type__icontains=search)
-        )
-
-    if priority:
-        tickets = tickets.filter(priority=priority)
-
-    if status:
-        tickets = tickets.filter(status=status)
-
-    if from_date:
-        tickets = tickets.filter(created_at__date__gte=from_date)
-
-    if to_date:
-        tickets = tickets.filter(created_at__date__lte=to_date)
-
-    # Open first
-    recent_tickets = tickets.annotate(
-        status_order=Case(
-            When(status="Open", then=Value(0)),
-            When(status="Closed", then=Value(1)),
-            default=Value(2),
-            output_field=IntegerField(),
-        )
-    ).order_by("status_order", "-created_at")
-
-    context = {
-        "recent_tickets": recent_tickets,
-        "total_tickets": tickets.count(),
-        "open_tickets": tickets.filter(status="Open").count(),
-        "closed_tickets": tickets.filter(status="Closed").count(),
-        "urgent_tickets": tickets.filter(priority="Urgent").count(),
-        "priority": priority,
-        "status": status,
-        "from_date": from_date,
-        "to_date": to_date,
-        "search": search,
-    }
-
-    return render(request, "purchase_security_dashboard.html", context)
 
 
 #leave_admin_dashboard
