@@ -36,7 +36,12 @@
             <h1>Accounts and Finance Dashboard</h1>
         </div>
 
+        <!-- 🔍 FILTERS -->
         <form method="get" class="filters">
+
+            <!--  IMPORTANT hidden key -->
+            <input type="hidden" name="xid" value="AC_92ksLxPq7ZtF3HjW8mR4vB1uN5yQ">
+
             <select name="priority">
                 <option value="">All Priority</option>
                 <option value="Urgent" {% if priority == "Urgent" %}selected{% endif %}>Urgent</option>
@@ -52,8 +57,15 @@
             <button type="submit">
                 <i class="fa fa-filter"></i> Apply
             </button>
+
+            <!--  Clear button -->
+            <a href="?xid=AC_92ksLxPq7ZtF3HjW8mR4vB1uN5yQ" class="clear-btn">
+                Clear
+            </a>
+
         </form>
 
+        <!-- CARDS -->
         <div class="cards">
             <div class="card total">
                 <i class="fa fa-layer-group"></i>
@@ -80,6 +92,7 @@
             </div>
         </div>
 
+        <!-- TABLE -->
         <div class="table-box" id="ticketSection">
             <h2>Accounts and Finance Recent Tickets</h2>
 

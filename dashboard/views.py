@@ -756,10 +756,10 @@ def dme_dashboard(request):
 #accounts_dashboard
 
 def accounts_dashboard(request):
-    secret_key = request.GET.get("key")
+    secret_key = request.GET.get("xid")
 
     #  secret key check
-    if secret_key != "accounts123":
+   if secret_key != "AC_92ksLxPq7ZtF3HjW8mR4vB1uN5yQ":
         return HttpResponseForbidden("Access Denied")
 
     tickets = Ticket.objects.filter(department="Accounts and Finance")
