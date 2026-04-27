@@ -685,10 +685,10 @@ def jrdme_dashboard(request):
 
 
 def dme_dashboard(request):
-    secret_key = request.GET.get("key")
+    secret_key = request.GET.get("xid")
 
     #  Security
-    if secret_key != "dme123":
+    if secret_key != "7_-BdJw3d9L432IN8tjgGNl3gdVpBwp8dOmpwOFIU":
         return HttpResponseForbidden("Access Denied")
 
     #  Base queryset
