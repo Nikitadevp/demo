@@ -1142,7 +1142,66 @@ def project_planning_dashboard(request):
 
     return render(request, "project_planning_dashboard.html", context)
 
+def purchase_security_dashboard(request):
+    secret_key = request.GET.get("xid")
 
+    # 🔐 Secret Key (change ki hai unique)
+    if secret_key != "PS_54LmX9qT7ZpN2H8Rk3W":
+        return HttpResponseForbidden("Access Denied")
+
+    tickets = Ticket.objects.filter(department="Purchase and Security")
+
+    # Filters
+    priority = request.GET.get("priority", "")
+    status = request.GET.get("status", "")
+    from_date = request.GET.get("from_date", "")
+    to_date = request.GET.get("to_date", "")
+    search = request.GET.get("search", "")
+
+    # 🔍 Search
+    if search:
+        tickets = tickets.filter(
+            Q(ticket_no__icontains=search) |
+            Q(name__icontains=search) |
+            Q(issue_type__icontains=search)
+        )
+
+    if priority:
+        tickets = tickets.filter(priority=priority)
+
+    if status:
+        tickets = tickets.filter(status=status)
+
+    if from_date:
+        tickets = tickets.filter(created_at__date__gte=from_date)
+
+    if to_date:
+        tickets = tickets.filter(created_at__date__lte=to_date)
+
+    # Open first
+    recent_tickets = tickets.annotate(
+        status_order=Case(
+            When(status="Open", then=Value(0)),
+            When(status="Closed", then=Value(1)),
+            default=Value(2),
+            output_field=IntegerField(),
+        )
+    ).order_by("status_order", "-created_at")
+
+    context = {
+        "recent_tickets": recent_tickets,
+        "total_tickets": tickets.count(),
+        "open_tickets": tickets.filter(status="Open").count(),
+        "closed_tickets": tickets.filter(status="Closed").count(),
+        "urgent_tickets": tickets.filter(priority="Urgent").count(),
+        "priority": priority,
+        "status": status,
+        "from_date": from_date,
+        "to_date": to_date,
+        "search": search,
+    }
+
+    return render(request, "purchase_security_dashboard.html", context)
 
 
 #leave_admin_dashboard
