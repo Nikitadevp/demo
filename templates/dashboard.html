@@ -6,10 +6,7 @@
     <title>Help Desk Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- ✅ Correct CSS Path -->
     <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
-
-    <!-- Icons -->
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
@@ -18,26 +15,17 @@
 
 <div class="layout">
 
-    <!-- ========== LEFT SIDEBAR ========== -->
+    <!-- Sidebar -->
     <aside class="sidebar">
         <h2 class="logo">HelpDesk</h2>
 
         <ul class="menu">
-            <li>
-                <a href="#topDashboard">
-                    <i class="fa fa-chart-line"></i> Dashboard
-                </a>
-            </li>
-
-            <li>
-                <a href="#chartSection">
-                    <i class="fa fa-chart-bar"></i> Charts
-                </a>
-            </li>
-        </ul> 
+            <li><a href="#topDashboard"><i class="fa fa-chart-line"></i> Dashboard</a></li>
+            <li><a href="#chartSection"><i class="fa fa-chart-bar"></i> Charts</a></li>
+        </ul>
     </aside>
 
-    <!-- ========== MAIN CONTENT ========== -->
+    <!-- Main -->
     <main class="content" id="topDashboard">
 
         <!-- Header -->
@@ -49,10 +37,28 @@
             {% endif %}
         </div>
 
-        <!-- Filters -->
+        <!-- 🔍 SEARCH -->
+        <div class="search-box">
+            <form method="get">
+                <!-- preserve filters -->
+                <input type="hidden" name="department" value="{{ department }}">
+                <input type="hidden" name="priority" value="{{ priority }}">
+                <input type="hidden" name="status" value="{{ status }}">
+
+                <input type="text"
+                       name="search"
+                       value="{{ search }}"
+                       placeholder="🔍 Search Ticket / Name"
+                       onblur="this.form.submit()">
+            </form>
+        </div>
+
+        <!-- 🎯 FILTERS (AUTO SUBMIT) -->
         <form method="get" class="filters">
 
-            <select name="department">
+            <input type="hidden" name="search" value="{{ search }}">
+
+            <select name="department" onchange="this.form.submit()">
                 <option value="">All Departments</option>
                 {% for d in departments %}
                     <option value="{{ d }}" {% if department == d %}selected{% endif %}>
@@ -61,21 +67,23 @@
                 {% endfor %}
             </select>
 
-            <select name="priority">
+            <select name="priority" onchange="this.form.submit()">
                 <option value="">All Priority</option>
                 <option value="Urgent" {% if priority == "Urgent" %}selected{% endif %}>Urgent</option>
                 <option value="Normal" {% if priority == "Normal" %}selected{% endif %}>Normal</option>
             </select>
 
-            <select name="status">
+            <select name="status" onchange="this.form.submit()">
                 <option value="">All Status</option>
                 <option value="Open" {% if status == "Open" %}selected{% endif %}>Open</option>
                 <option value="Closed" {% if status == "Closed" %}selected{% endif %}>Closed</option>
             </select>
 
-            <button type="submit">
-                <i class="fa fa-filter"></i> Apply
-            </button>
+            <!-- ✅ CLEAR BUTTON -->
+            <a href="?" class="clear-btn">
+                <i class="fa fa-rotate-left"></i> Clear All
+            </a>
+
         </form>
 
         <!-- Cards -->
@@ -124,10 +132,7 @@
                 <tbody>
                 {% for t in recent_tickets %}
                     <tr>
-                        <td>
-                            <i class="fa fa-ticket"></i>
-                            {{ t.ticket_no }}
-                        </td>
+                        <td><i class="fa fa-ticket"></i> {{ t.ticket_no }}</td>
                         <td>{{ t.name }}</td>
                         <td>{{ t.department }}</td>
 
@@ -166,14 +171,14 @@
                 <div class="chart-card">
                     <h3>Status Wise Tickets</h3>
                     <img src="data:image/png;base64,{{ status_chart }}">
-                </div>   
-                
+                </div>
+
                 <div class="chart-card">
                     <h3>Priority Wise Tickets</h3>
                     <img src="data:image/png;base64,{{ priority_chart }}">
                 </div>
-            </div>      
-        </div> 
+            </div>
+        </div>
 
     </main>
 </div>
