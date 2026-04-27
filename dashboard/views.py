@@ -279,13 +279,14 @@ DEPARTMENTS = [
     
 
 #dashboard    
-
 def dashboard(request):
 
     department = request.GET.get('department', '').strip()
     priority = request.GET.get('priority', '').strip()
     status = request.GET.get('status', '').strip()
     search = request.GET.get('search', '').strip()
+    from_date = request.GET.get('from_date', '').strip()
+    to_date = request.GET.get('to_date', '').strip()
 
     tickets = Ticket.objects.all()
 
@@ -308,49 +309,46 @@ def dashboard(request):
     if status:
         tickets = tickets.filter(status=status)
 
+    # -------- DATE FILTER --------
+    if from_date:
+        tickets = tickets.filter(created_at__date__gte=from_date)
+
+    if to_date:
+        tickets = tickets.filter(created_at__date__lte=to_date)
+
     # -------- COUNTS --------
     open_count = tickets.filter(status="Open").count()
     closed_count = tickets.filter(status="Closed").count()
     urgent_count = tickets.filter(priority="Urgent").count()
     normal_count = tickets.filter(priority="Normal").count()
 
-    # ================================
-    # STATUS CHART
-    # ================================
+    # -------- CHARTS --------
     buffer = io.BytesIO()
-
     plt.figure(figsize=(4,3))
     plt.bar(["Open", "Closed"], [open_count, closed_count])
-    plt.title("Status Wise Tickets")
     plt.tight_layout()
-
     plt.savefig(buffer, format="png")
     buffer.seek(0)
     status_chart = base64.b64encode(buffer.getvalue()).decode()
     plt.close()
 
-    # ================================
-    # PRIORITY CHART
-    # ================================
     buffer2 = io.BytesIO()
-
     plt.figure(figsize=(4,3))
     plt.bar(["Urgent", "Normal"], [urgent_count, normal_count])
-    plt.title("Priority Wise Tickets")
     plt.tight_layout()
-
     plt.savefig(buffer2, format="png")
     buffer2.seek(0)
     priority_chart = base64.b64encode(buffer2.getvalue()).decode()
     plt.close()
 
-    # -------- CONTEXT --------
     context = {
         'departments': DEPARTMENTS,
         'department': department,
         'priority': priority,
         'status': status,
         'search': search,
+        'from_date': from_date,
+        'to_date': to_date,
 
         'total_tickets': tickets.count(),
         'open_tickets': open_count,

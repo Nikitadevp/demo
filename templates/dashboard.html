@@ -49,15 +49,30 @@
             {% endif %}
         </div>
 
-        <!-- SEARCH + FILTER -->
+        <!-- SEARCH -->
+        <div class="search-box">
+            <form method="get">
+
+                <!-- KEEP FILTERS -->
+                <input type="hidden" name="department" value="{{ department }}">
+                <input type="hidden" name="priority" value="{{ priority }}">
+                <input type="hidden" name="status" value="{{ status }}">
+                <input type="hidden" name="from_date" value="{{ from_date }}">
+                <input type="hidden" name="to_date" value="{{ to_date }}">
+
+                <input type="text"
+                       name="search"
+                       value="{{ search }}"
+                       placeholder="🔍 Search Ticket / Name / Issue"
+                       onkeypress="if(event.key==='Enter'){this.form.submit();}">
+            </form>
+        </div>
+
+        <!-- FILTERS -->
         <form method="get" class="filters">
 
-            <!-- SEARCH -->
-            <input type="text"
-                   name="search"
-                   value="{{ search }}"
-                   placeholder="🔍 Search Ticket / Name / Issue"
-                   onkeypress="if(event.key === 'Enter'){ this.form.submit(); }">
+            <!-- KEEP SEARCH -->
+            <input type="hidden" name="search" value="{{ search }}">
 
             <!-- DEPARTMENT -->
             <select name="department" onchange="this.form.submit()">
@@ -82,6 +97,17 @@
                 <option value="Open" {% if status == "Open" %}selected{% endif %}>Open</option>
                 <option value="Closed" {% if status == "Closed" %}selected{% endif %}>Closed</option>
             </select>
+
+            <!-- DATE -->
+            <div class="date-filter">
+                <label>From</label>
+                <input type="date" name="from_date" value="{{ from_date }}" onchange="this.form.submit()">
+            </div>
+
+            <div class="date-filter">
+                <label>To</label>
+                <input type="date" name="to_date" value="{{ to_date }}" onchange="this.form.submit()">
+            </div>
 
             <!-- CLEAR -->
             <a href="{% url 'dashboard' %}" class="clear-btn">
@@ -130,14 +156,18 @@
                         <th>Issue</th>
                         <th>Priority</th>
                         <th>Status</th>
-                        <th>Date</th>
+                        <th>Created</th>
+                        <th>TAT Deadline</th>
+                        <th>Resolved</th>
+                        <th>Solution</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
 
                 <tbody>
                 {% for t in recent_tickets %}
                     <tr>
-                        <td><i class="fa fa-ticket"></i> {{ t.ticket_no }}</td>
+                        <td>{{ t.ticket_no }}</td>
                         <td>{{ t.name }}</td>
                         <td>{{ t.department }}</td>
                         <td>{{ t.issue_type }}</td>
@@ -159,10 +189,24 @@
                         </td>
 
                         <td>{{ t.created_at|localtime|date:"d M Y h:i A" }}</td>
+                        <td>{{ t.tat_deadline|localtime|date:"d M Y h:i A" }}</td>
+                        <td>{{ t.resolved_at|localtime|date:"d M Y h:i A"|default:"-" }}</td>
+
+                        <td>{{ t.solution_provided|default:"-" }}</td>
+
+                        <td>
+                            {% if t.status == "Open" %}
+                                <a href="{% url 'resolve_ticket' t.ticket_no %}" class="resolve-btn">
+                                    Resolve
+                                </a>
+                            {% else %}
+                                <span class="badge closed">Done</span>
+                            {% endif %}
+                        </td>
                     </tr>
                 {% empty %}
                     <tr>
-                        <td colspan="7">No tickets found</td>
+                        <td colspan="11">No tickets found</td>
                     </tr>
                 {% endfor %}
                 </tbody>
