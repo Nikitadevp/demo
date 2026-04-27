@@ -758,22 +758,42 @@ def dme_dashboard(request):
 def accounts_dashboard(request):
     secret_key = request.GET.get("xid")
 
-    #  secret key check
-   if secret_key != "AC_92ksLxPq7ZtF3HjW8mR4vB1uN5yQ":
+    #  Security
+    if secret_key != "AC_92ksLxPq7ZtF3HjW8mR4vB1uN5yQ":
         return HttpResponseForbidden("Access Denied")
 
+    # Base queryset
     tickets = Ticket.objects.filter(department="Accounts and Finance")
 
-    priority = request.GET.get("priority")
-    status = request.GET.get("status")
+    # Filters
+    priority = request.GET.get("priority", "")
+    status = request.GET.get("status", "")
+    search = request.GET.get("search", "")
+    from_date = request.GET.get("from_date", "")
+    to_date = request.GET.get("to_date", "")
 
+    # Search
+    if search:
+        tickets = tickets.filter(
+            Q(ticket_no__icontains=search) |
+            Q(name__icontains=search) |
+            Q(issue_type__icontains=search)
+        )
+
+    # Filters
     if priority:
         tickets = tickets.filter(priority=priority)
 
     if status:
         tickets = tickets.filter(status=status)
 
-    #  open first, closed later
+    if from_date:
+        tickets = tickets.filter(created_at__date__gte=from_date)
+
+    if to_date:
+        tickets = tickets.filter(created_at__date__lte=to_date)
+
+    # Open first
     recent_tickets = tickets.annotate(
         status_order=Case(
             When(status="Open", then=Value(0)),
@@ -791,9 +811,12 @@ def accounts_dashboard(request):
         "urgent_tickets": tickets.filter(priority="Urgent").count(),
         "priority": priority,
         "status": status,
+        "search": search,
+        "from_date": from_date,
+        "to_date": to_date,
     }
 
-    return render(request, "accounts_dashboard.html", context) 
+    return render(request, "accounts_dashboard.html", context)
 
 
 
