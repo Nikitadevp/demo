@@ -1080,6 +1080,54 @@ def it_admin_dashboard(request):
 
 
 
+def project_planning_dashboard(request):
+    secret_key = request.GET.get("xid")
+
+    if secret_key != "PP_92ksLxPq7ZtF3HjW8mR4vB1uN5yQ":
+        return HttpResponseForbidden("Access Denied")
+
+    tickets = Ticket.objects.filter(department="Project Planning")
+
+    priority = request.GET.get("priority", "")
+    status = request.GET.get("status", "")
+    search = request.GET.get("search", "")
+
+    if search:
+        tickets = tickets.filter(
+            Q(ticket_no__icontains=search) |
+            Q(name__icontains=search) |
+            Q(issue_type__icontains=search)
+        )
+
+    if priority:
+        tickets = tickets.filter(priority=priority)
+
+    if status:
+        tickets = tickets.filter(status=status)
+
+    recent_tickets = tickets.annotate(
+        status_order=Case(
+            When(status="Open", then=Value(0)),
+            When(status="Closed", then=Value(1)),
+            default=Value(2),
+            output_field=IntegerField(),
+        )
+    ).order_by("status_order", "-created_at")
+
+    context = {
+        "recent_tickets": recent_tickets,
+        "total_tickets": tickets.count(),
+        "open_tickets": tickets.filter(status="Open").count(),
+        "closed_tickets": tickets.filter(status="Closed").count(),
+        "urgent_tickets": tickets.filter(priority="Urgent").count(),
+        "priority": priority,
+        "status": status,
+        "search": search,
+    }
+
+    return render(request, "project_planning_dashboard.html", context)
+
+
 
 
 
