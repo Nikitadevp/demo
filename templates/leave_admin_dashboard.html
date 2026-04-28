@@ -11,7 +11,7 @@
     <h1>Leave Admin Dashboard</h1>
 
     <!-- 🔍 FILTERS -->
-    <form method="get" class="search-box" id="filterForm">
+    <form method="get" class="search-box">
 
         <!-- Search -->
         <input type="text"
@@ -23,6 +23,7 @@
         <!-- Department -->
         <select name="department" onchange="this.form.submit()">
             <option value="">All Departments</option>
+
             {% for d in departments %}
                 <option value="{{ d }}" {% if department == d %}selected{% endif %}>
                     {{ d }}
@@ -93,7 +94,6 @@
                     <td>{{ leave.department }}</td>
                     <td>{{ leave.leave_type }}</td>
 
-                    <!--  DATE FORMAT -->
                     <td>{{ leave.start_date|date:"d/m/y" }}</td>
                     <td>{{ leave.end_date|date:"d/m/y" }}</td>
 
@@ -107,7 +107,6 @@
 
                     <td>{{ leave.reason }}</td>
 
-                    <!-- Status Color -->
                     <td class="
                         {% if leave.status == 'Approved' %}status-approved
                         {% elif leave.status == 'Rejected' %}status-rejected
@@ -117,7 +116,6 @@
 
                     <td>{{ leave.manager_reason|default:"-" }}</td>
 
-                    <!-- Dates -->
                     <td>{{ leave.approved_rejected_date|date:"d/m/y"|default:"-" }}</td>
                     <td>{{ leave.resolved_date|date:"d/m/y"|default:"-" }}</td>
                     <td>{{ leave.request_date|date:"d/m/y" }}</td>
