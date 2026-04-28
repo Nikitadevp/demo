@@ -10,17 +10,17 @@
 <div class="container">
     <h1>Leave Admin Dashboard</h1>
 
-    <!-- Search Filters -->
+    <!-- 🔍 FILTERS -->
     <form method="get" class="search-box" id="filterForm">
 
-        <!--  Search -->
+        <!-- Search -->
         <input type="text"
                name="search"
                value="{{ search }}"
-               placeholder="🔍 Search by ID, Name"
+               placeholder="🔍 Search by ID, Name, Email"
                onblur="this.form.submit()">
 
-        <!--  Department Filter -->
+        <!-- Department -->
         <select name="department" onchange="this.form.submit()">
             <option value="">All Departments</option>
             {% for d in departments %}
@@ -30,7 +30,7 @@
             {% endfor %}
         </select>
 
-        <!--  Status -->
+        <!-- Status -->
         <select name="status" onchange="this.form.submit()">
             <option value="">All Status</option>
             <option value="Pending" {% if status == "Pending" %}selected{% endif %}>Pending</option>
@@ -38,7 +38,7 @@
             <option value="Rejected" {% if status == "Rejected" %}selected{% endif %}>Rejected</option>
         </select>
 
-        <!--  Date filters -->
+        <!-- Date -->
         <input type="date"
                name="from_date"
                value="{{ from_date }}"
@@ -49,11 +49,14 @@
                value="{{ to_date }}"
                onchange="this.form.submit()">
 
-        <!--  Clear -->
-        <a href="{% url 'leave_admin_dashboard' %}" class="clear-btn">Clear</a>
+        <!-- Clear -->
+        <a href="{% url 'leave_admin_dashboard' %}" class="clear-btn">
+            ❌ Clear All
+        </a>
+
     </form>
 
-    <!-- Cards -->
+    <!--  CARDS -->
     <div class="cards">
         <div class="card total">Total: {{ total_requests }}</div>
         <div class="card pending">Pending: {{ pending_requests }}</div>
@@ -61,7 +64,7 @@
         <div class="card rejected">Rejected: {{ rejected_requests }}</div>
     </div>
 
-    <!-- Table -->
+    <!--  TABLE -->
     <div class="table-wrapper">
         <table>
             <thead>
@@ -76,11 +79,12 @@
                     <th>Reason</th>
                     <th>Status</th>
                     <th>Manager Reason</th>
-                    <th>Approved/Rejected Date</th>
-                    <th>Resolved Date</th>
+                    <th>Approved/Rejected</th>
+                    <th>Resolved</th>
                     <th>Request Date</th>
                 </tr>
             </thead>
+
             <tbody>
                 {% for leave in leave_requests %}
                 <tr>
@@ -89,7 +93,7 @@
                     <td>{{ leave.department }}</td>
                     <td>{{ leave.leave_type }}</td>
 
-                    <!--  DATE FORMAT dd/mm/yy -->
+                    <!--  DATE FORMAT -->
                     <td>{{ leave.start_date|date:"d/m/y" }}</td>
                     <td>{{ leave.end_date|date:"d/m/y" }}</td>
 
@@ -103,26 +107,32 @@
 
                     <td>{{ leave.reason }}</td>
 
-                    <td class="{% if leave.status == 'Approved' %}status-approved{% elif leave.status == 'Rejected' %}status-rejected{% else %}status-pending{% endif %}">
+                    <!-- Status Color -->
+                    <td class="
+                        {% if leave.status == 'Approved' %}status-approved
+                        {% elif leave.status == 'Rejected' %}status-rejected
+                        {% else %}status-pending{% endif %}">
                         {{ leave.status }}
                     </td>
 
                     <td>{{ leave.manager_reason|default:"-" }}</td>
 
-                    <!--  DATE FORMAT -->
+                    <!-- Dates -->
                     <td>{{ leave.approved_rejected_date|date:"d/m/y"|default:"-" }}</td>
                     <td>{{ leave.resolved_date|date:"d/m/y"|default:"-" }}</td>
                     <td>{{ leave.request_date|date:"d/m/y" }}</td>
-
                 </tr>
+
                 {% empty %}
                 <tr>
                     <td colspan="13">No leave requests found</td>
                 </tr>
                 {% endfor %}
             </tbody>
+
         </table>
     </div>
+
 </div>
 
 </body>

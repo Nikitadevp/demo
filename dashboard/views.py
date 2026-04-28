@@ -1173,6 +1173,7 @@ def purchase_security_dashboard(request):
 #leave_admin_dashboard
 # LEAVE KA HAI YAHA SE 
 
+from django.db.models import Q
 
 def leave_admin_dashboard(request):
     leave_requests = LeaveRequest.objects.all().order_by("-request_date")
@@ -1181,7 +1182,9 @@ def leave_admin_dashboard(request):
     search = request.GET.get("search", "")
     from_date = request.GET.get("from_date", "")
     to_date = request.GET.get("to_date", "")
+    department = request.GET.get("department", "")   #  NEW
 
+    #  SEARCH
     if search:
         leave_requests = leave_requests.filter(
             Q(leave_id__icontains=search) |
@@ -1190,27 +1193,40 @@ def leave_admin_dashboard(request):
             Q(department__icontains=search)
         )
 
+    #  DEPARTMENT FILTER (NEW)
+    if department:
+        leave_requests = leave_requests.filter(department=department)
+
+    #  STATUS FILTER
     if status:
         leave_requests = leave_requests.filter(status=status)
 
+    #  DATE FILTER
     if from_date:
         leave_requests = leave_requests.filter(request_date__date__gte=from_date)
 
     if to_date:
         leave_requests = leave_requests.filter(request_date__date__lte=to_date)
 
+    #  GET UNIQUE DEPARTMENTS (dropdown ke liye)
+    departments = LeaveRequest.objects.values_list('department', flat=True).distinct()
+
+    #  CONTEXT
     context = {
         "leave_requests": leave_requests,
+
         "total_requests": leave_requests.count(),
         "pending_requests": leave_requests.filter(status="Pending").count(),
         "approved_requests": leave_requests.filter(status="Approved").count(),
         "rejected_requests": leave_requests.filter(status="Rejected").count(),
+
         "status": status,
         "search": search,
         "from_date": from_date,
         "to_date": to_date,
+        "department": department,      # ✅NEW
+        "departments": departments,    #  NEW
     }
-
 
     return render(request, "leave_admin_dashboard.html", context)
 
