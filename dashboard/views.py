@@ -280,13 +280,12 @@ DEPARTMENTS = [
 
 #dashboard    
 
-
 def dashboard(request):
 
-    department = request.GET.get('department', '').strip()
-    priority = request.GET.get('priority', '').strip()
-    status = request.GET.get('status', '').strip()
-    search = request.GET.get('search', '').strip()
+    department = request.GET.get('department', '')
+    priority = request.GET.get('priority', '')
+    status = request.GET.get('status', '')
+    search = request.GET.get('search', '')
 
     tickets = Ticket.objects.all()
 
@@ -346,7 +345,6 @@ def dashboard(request):
         'open_tickets': open_count,
         'closed_tickets': closed_count,
         'urgent_tickets': urgent_count,
-        'normal_tickets': normal_count,
 
         'recent_tickets': tickets.order_by('-created_at')[:10],
 

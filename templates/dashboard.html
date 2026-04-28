@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Help Desk Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
     <link rel="stylesheet"
@@ -14,27 +15,54 @@
 
 <div class="layout">
 
-    <!-- Sidebar -->
+    <!-- SIDEBAR -->
     <aside class="sidebar">
         <h2 class="logo">HelpDesk</h2>
+
+        <ul class="menu">
+            <li>
+                <a href="#topDashboard">
+                    <i class="fa fa-chart-line"></i> Dashboard
+                </a>
+            </li>
+
+            <li>
+                <a href="#chartSection">
+                    <i class="fa fa-chart-bar"></i> Charts
+                </a>
+            </li>
+        </ul>
     </aside>
 
-    <!-- Main -->
-    <main class="content">
+    <!-- MAIN -->
+    <main class="content" id="topDashboard">
 
-        <!-- Header -->
+        <!-- HEADER -->
         <div class="header">
-            <h1>Dashboard</h1>
+            {% if department %}
+                <h1>{{ department }} Department Dashboard</h1>
+            {% else %}
+                <h1>All Departments Dashboard</h1>
+            {% endif %}
         </div>
 
-        <!-- 🔍 SEARCH -->
-        <form method="get" class="search-box">
-            <input type="text" name="search" value="{{ search }}"
-                   placeholder="🔍 Search Ticket / Name / Department"
-                   onkeyup="if(event.key==='Enter'){this.form.submit();}">
-        </form>
+        <!-- SEARCH -->
+        <div class="search-box">
+            <form method="get">
+                <input type="text"
+                       name="search"
+                       value="{{ search }}"
+                       placeholder="🔍 Search Ticket / Name / Issue"
+                       onkeypress="if(event.key==='Enter'){this.form.submit();}">
+                
+                <!-- keep filters -->
+                <input type="hidden" name="department" value="{{ department }}">
+                <input type="hidden" name="priority" value="{{ priority }}">
+                <input type="hidden" name="status" value="{{ status }}">
+            </form>
+        </div>
 
-        <!-- FILTERS (AUTO APPLY) -->
+        <!-- FILTERS -->
         <form method="get" class="filters">
 
             <input type="hidden" name="search" value="{{ search }}">
@@ -42,7 +70,9 @@
             <select name="department" onchange="this.form.submit()">
                 <option value="">All Departments</option>
                 {% for d in departments %}
-                    <option value="{{ d }}" {% if department == d %}selected{% endif %}>{{ d }}</option>
+                    <option value="{{ d }}" {% if department == d %}selected{% endif %}>
+                        {{ d }}
+                    </option>
                 {% endfor %}
             </select>
 
@@ -65,16 +95,37 @@
 
         </form>
 
-        <!-- Cards -->
+        <!-- CARDS -->
         <div class="cards">
-            <div class="card total"><span>Total</span><b>{{ total_tickets }}</b></div>
-            <div class="card open"><span>Open</span><b>{{ open_tickets }}</b></div>
-            <div class="card closed"><span>Closed</span><b>{{ closed_tickets }}</b></div>
-            <div class="card urgent"><span>Urgent</span><b>{{ urgent_tickets }}</b></div>
+            <div class="card total">
+                <i class="fa fa-layer-group"></i>
+                <span>Total Tickets</span>
+                <b>{{ total_tickets }}</b>
+            </div>
+
+            <div class="card open">
+                <i class="fa fa-folder-open"></i>
+                <span>Open</span>
+                <b>{{ open_tickets }}</b>
+            </div>
+
+            <div class="card closed">
+                <i class="fa fa-circle-check"></i>
+                <span>Closed</span>
+                <b>{{ closed_tickets }}</b>
+            </div>
+
+            <div class="card urgent">
+                <i class="fa fa-triangle-exclamation"></i>
+                <span>Urgent</span>
+                <b>{{ urgent_tickets }}</b>
+            </div>
         </div>
 
-        <!-- Table -->
+        <!-- TABLE -->
         <div class="table-box">
+            <h2>Recent Tickets</h2>
+
             <table>
                 <thead>
                     <tr>
@@ -90,26 +141,52 @@
                 <tbody>
                 {% for t in recent_tickets %}
                     <tr>
-                        <td>{{ t.ticket_no }}</td>
+                        <td><i class="fa fa-ticket"></i> {{ t.ticket_no }}</td>
                         <td>{{ t.name }}</td>
                         <td>{{ t.department }}</td>
-                        <td>{{ t.priority }}</td>
-                        <td>{{ t.status }}</td>
+
+                        <td>
+                            {% if t.priority == "Urgent" %}
+                                <span class="badge urgent">Urgent</span>
+                            {% else %}
+                                <span class="badge normal">Normal</span>
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            {% if t.status == "Open" %}
+                                <span class="badge open">Open</span>
+                            {% else %}
+                                <span class="badge closed">Closed</span>
+                            {% endif %}
+                        </td>
+
                         <td>{{ t.created_at|date:"d M Y H:i" }}</td>
                     </tr>
                 {% empty %}
                     <tr>
-                        <td colspan="6">No data</td>
+                        <td colspan="6">No tickets found</td>
                     </tr>
                 {% endfor %}
                 </tbody>
             </table>
         </div>
 
-        <!-- Charts -->
-        <div class="chart-box">
-            <img src="data:image/png;base64,{{ status_chart }}">
-            <img src="data:image/png;base64,{{ priority_chart }}">
+        <!-- CHARTS -->
+        <div class="chart-box" id="chartSection">
+            <h2>Ticket Statistics</h2>
+
+            <div class="chart-grid">
+                <div class="chart-card">
+                    <h3>Status Wise</h3>
+                    <img src="data:image/png;base64,{{ status_chart }}">
+                </div>
+
+                <div class="chart-card">
+                    <h3>Priority Wise</h3>
+                    <img src="data:image/png;base64,{{ priority_chart }}">
+                </div>
+            </div>
         </div>
 
     </main>
