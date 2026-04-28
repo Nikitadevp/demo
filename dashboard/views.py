@@ -1174,7 +1174,6 @@ def purchase_security_dashboard(request):
 # LEAVE KA HAI YAHA SE 
 
 
-
 def leave_admin_dashboard(request):
     leave_requests = LeaveRequest.objects.all()
 
@@ -1184,7 +1183,7 @@ def leave_admin_dashboard(request):
     to_date = request.GET.get("to_date", "")
     department = request.GET.get("department", "")
 
-    # -------- SEARCH --------
+    # SEARCH
     if search:
         leave_requests = leave_requests.filter(
             Q(leave_id__icontains=search) |
@@ -1193,7 +1192,7 @@ def leave_admin_dashboard(request):
             Q(department__icontains=search)
         )
 
-    # -------- FILTERS --------
+    # FILTERS
     if status:
         leave_requests = leave_requests.filter(status=status)
 
@@ -1206,19 +1205,16 @@ def leave_admin_dashboard(request):
     if to_date:
         leave_requests = leave_requests.filter(request_date__date__lte=to_date)
 
-    #  Pending first sorting
+    # ✅ Pending first
     leave_requests = leave_requests.annotate(
-        priority_order=Case(
+        order_status=Case(
             When(status="Pending", then=0),
             When(status="Approved", then=1),
             When(status="Rejected", then=2),
             default=3,
             output_field=IntegerField(),
         )
-    ).order_by("priority_order", "-request_date")
-
-    #  unique departments list
-    departments = LeaveRequest.objects.values_list("department", flat=True).distinct()
+    ).order_by("order_status", "-request_date")
 
     context = {
         "leave_requests": leave_requests,
@@ -1232,12 +1228,9 @@ def leave_admin_dashboard(request):
         "from_date": from_date,
         "to_date": to_date,
         "department": department,
-
-        "departments": departments,
     }
 
     return render(request, "leave_admin_dashboard.html", context)
-
 
 
 #finance_leave_dashboard

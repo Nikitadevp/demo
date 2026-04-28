@@ -11,7 +11,7 @@
     <h1>Leave Admin Dashboard</h1>
 
     <!-- 🔍 FILTERS -->
-    <form method="get" class="search-box">
+    <form method="get" class="search-box" id="filterForm">
 
         <!-- Search -->
         <input type="text"
@@ -20,15 +20,20 @@
                placeholder="🔍 Search by ID, Name, Email"
                onblur="this.form.submit()">
 
-        <!-- Department -->
+        <!-- ✅ FULL DEPARTMENT LIST -->
         <select name="department" onchange="this.form.submit()">
             <option value="">All Departments</option>
 
-            {% for d in departments %}
-                <option value="{{ d }}" {% if department == d %}selected{% endif %}>
-                    {{ d }}
-                </option>
-            {% endfor %}
+            <option value="DME" {% if department == "DME" %}selected{% endif %}>DME</option>
+            <option value="Accounts & Finance" {% if department == "Accounts & Finance" %}selected{% endif %}>Accounts & Finance</option>
+            <option value="Construction" {% if department == "Construction" %}selected{% endif %}>Construction</option>
+            <option value="CRM HO" {% if department == "CRM HO" %}selected{% endif %}>CRM HO</option>
+            <option value="HR" {% if department == "HR" %}selected{% endif %}>HR</option>
+            <option value="IT & Admin" {% if department == "IT & Admin" %}selected{% endif %}>IT & Admin</option>
+            <option value="Project Planning" {% if department == "Project Planning" %}selected{% endif %}>Project Planning</option>
+            <option value="Purchase" {% if department == "Purchase" %}selected{% endif %}>Purchase</option>
+            <option value="Security" {% if department == "Security" %}selected{% endif %}>Security</option>
+
         </select>
 
         <!-- Status -->
@@ -50,14 +55,14 @@
                value="{{ to_date }}"
                onchange="this.form.submit()">
 
-        <!-- Clear -->
+        <!-- ✅ SAME CLEAR BUTTON -->
         <a href="{% url 'leave_admin_dashboard' %}" class="clear-btn">
-            ❌ Clear All
+            ❌ Clear
         </a>
 
     </form>
 
-    <!--  CARDS -->
+    <!-- 📊 CARDS -->
     <div class="cards">
         <div class="card total">Total: {{ total_requests }}</div>
         <div class="card pending">Pending: {{ pending_requests }}</div>
@@ -65,7 +70,7 @@
         <div class="card rejected">Rejected: {{ rejected_requests }}</div>
     </div>
 
-    <!--  TABLE -->
+    <!-- 📋 TABLE -->
     <div class="table-wrapper">
         <table>
             <thead>
@@ -80,8 +85,8 @@
                     <th>Reason</th>
                     <th>Status</th>
                     <th>Manager Reason</th>
-                    <th>Approved/Rejected</th>
-                    <th>Resolved</th>
+                    <th>Approved/Rejected Date</th>
+                    <th>Resolved Date</th>
                     <th>Request Date</th>
                 </tr>
             </thead>
@@ -94,6 +99,7 @@
                     <td>{{ leave.department }}</td>
                     <td>{{ leave.leave_type }}</td>
 
+                    <!-- ✅ DATE FORMAT -->
                     <td>{{ leave.start_date|date:"d/m/y" }}</td>
                     <td>{{ leave.end_date|date:"d/m/y" }}</td>
 
