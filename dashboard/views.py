@@ -283,11 +283,21 @@ DEPARTMENTS = [
 
 def dashboard(request):
 
-    department = request.GET.get('department')
-    priority = request.GET.get('priority')
-    status = request.GET.get('status')
+    department = request.GET.get('department', '').strip()
+    priority = request.GET.get('priority', '').strip()
+    status = request.GET.get('status', '').strip()
+    search = request.GET.get('search', '').strip()
 
     tickets = Ticket.objects.all()
+
+    # -------- SEARCH --------
+    if search:
+        tickets = tickets.filter(
+            Q(ticket_no__icontains=search) |
+            Q(name__icontains=search) |
+            Q(issue_type__icontains=search) |
+            Q(department__icontains=search)
+        )
 
     # -------- FILTERS --------
     if department:
@@ -305,49 +315,32 @@ def dashboard(request):
     urgent_count = tickets.filter(priority="Urgent").count()
     normal_count = tickets.filter(priority="Normal").count()
 
-    # ================================
-    # STATUS CHART (Open vs Closed)
-    # ================================
-
+    # -------- STATUS CHART --------
     buffer = io.BytesIO()
-
     plt.figure(figsize=(4,3))
     plt.bar(["Open", "Closed"], [open_count, closed_count])
-    plt.title("Status Wise Tickets")
     plt.tight_layout()
-
     plt.savefig(buffer, format="png")
     buffer.seek(0)
-
     status_chart = base64.b64encode(buffer.getvalue()).decode()
-
     plt.close()
 
-    # ================================
-    # PRIORITY CHART (Urgent vs Normal)
-    # ================================
-
+    # -------- PRIORITY CHART --------
     buffer2 = io.BytesIO()
-
     plt.figure(figsize=(4,3))
     plt.bar(["Urgent", "Normal"], [urgent_count, normal_count])
-    plt.title("Priority Wise Tickets")
     plt.tight_layout()
-
     plt.savefig(buffer2, format="png")
     buffer2.seek(0)
-
     priority_chart = base64.b64encode(buffer2.getvalue()).decode()
-
     plt.close()
-
-    # -------- CONTEXT --------
 
     context = {
         'departments': DEPARTMENTS,
         'department': department,
         'priority': priority,
         'status': status,
+        'search': search,
 
         'total_tickets': tickets.count(),
         'open_tickets': open_count,
@@ -357,13 +350,11 @@ def dashboard(request):
 
         'recent_tickets': tickets.order_by('-created_at')[:10],
 
-        # charts
         'status_chart': status_chart,
         'priority_chart': priority_chart,
     }
 
     return render(request, "dashboard.html", context)
-
 
 
 
