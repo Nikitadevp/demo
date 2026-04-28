@@ -13,14 +13,24 @@
     <!-- Search Filters -->
     <form method="get" class="search-box" id="filterForm">
 
-        <!--  Search like DME dashboard -->
+        <!--  Search -->
         <input type="text"
                name="search"
                value="{{ search }}"
                placeholder="🔍 Search by ID, Name"
                onblur="this.form.submit()">
 
-        <!-- Status auto filter -->
+        <!--  Department Filter -->
+        <select name="department" onchange="this.form.submit()">
+            <option value="">All Departments</option>
+            {% for d in departments %}
+                <option value="{{ d }}" {% if department == d %}selected{% endif %}>
+                    {{ d }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <!--  Status -->
         <select name="status" onchange="this.form.submit()">
             <option value="">All Status</option>
             <option value="Pending" {% if status == "Pending" %}selected{% endif %}>Pending</option>
@@ -28,7 +38,7 @@
             <option value="Rejected" {% if status == "Rejected" %}selected{% endif %}>Rejected</option>
         </select>
 
-        <!-- Date filters auto -->
+        <!--  Date filters -->
         <input type="date"
                name="from_date"
                value="{{ from_date }}"
@@ -39,7 +49,7 @@
                value="{{ to_date }}"
                onchange="this.form.submit()">
 
-        <!-- Clear -->
+        <!--  Clear -->
         <a href="{% url 'leave_admin_dashboard' %}" class="clear-btn">Clear</a>
     </form>
 
@@ -78,8 +88,10 @@
                     <td>{{ leave.name }}</td>
                     <td>{{ leave.department }}</td>
                     <td>{{ leave.leave_type }}</td>
-                    <td>{{ leave.start_date }}</td>
-                    <td>{{ leave.end_date }}</td>
+
+                    <!--  DATE FORMAT dd/mm/yy -->
+                    <td>{{ leave.start_date|date:"d/m/y" }}</td>
+                    <td>{{ leave.end_date|date:"d/m/y" }}</td>
 
                     <td>
                         {% if leave.leave_days == 0.5 %}
@@ -96,9 +108,12 @@
                     </td>
 
                     <td>{{ leave.manager_reason|default:"-" }}</td>
-                    <td>{{ leave.approved_rejected_date|default:"-" }}</td>
-                    <td>{{ leave.resolved_date|default:"-" }}</td>
-                    <td>{{ leave.request_date }}</td>
+
+                    <!--  DATE FORMAT -->
+                    <td>{{ leave.approved_rejected_date|date:"d/m/y"|default:"-" }}</td>
+                    <td>{{ leave.resolved_date|date:"d/m/y"|default:"-" }}</td>
+                    <td>{{ leave.request_date|date:"d/m/y" }}</td>
+
                 </tr>
                 {% empty %}
                 <tr>
