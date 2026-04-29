@@ -16,7 +16,7 @@ from django.http import HttpResponseForbidden
 from django.db.models import Case, When, Value, IntegerField, Q
 from datetime import datetime
 from django.core.paginator import Paginator
-matplotlib.use('Agg')
+
 
 
 
