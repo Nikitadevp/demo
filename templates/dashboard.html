@@ -19,18 +19,10 @@
     <aside class="sidebar">
         <h2 class="logo">HelpDesk</h2>
 
+        <!-- ❌ Text removed as you asked -->
         <ul class="menu">
-            <li>
-                <a href="#topDashboard">
-                    <i class="fa fa-chart-line"></i> Dashboard
-                </a>
-            </li>
-
-            <li>
-                <a href="#chartSection">
-                    <i class="fa fa-chart-bar"></i> Charts
-                </a>
-            </li>
+            <li><a href="#topDashboard"><i class="fa fa-chart-line"></i></a></li>
+            <li><a href="#chartSection"><i class="fa fa-chart-bar"></i></a></li>
         </ul>
     </aside>
 
@@ -54,8 +46,7 @@
                        value="{{ search }}"
                        placeholder="🔍 Search Ticket / Name / Issue"
                        onkeypress="if(event.key==='Enter'){this.form.submit();}">
-                
-                <!-- keep filters -->
+
                 <input type="hidden" name="department" value="{{ department }}">
                 <input type="hidden" name="priority" value="{{ priority }}">
                 <input type="hidden" name="status" value="{{ status }}">
@@ -88,7 +79,6 @@
                 <option value="Closed" {% if status == "Closed" %}selected{% endif %}>Closed</option>
             </select>
 
-            <!-- CLEAR BUTTON -->
             <a href="?" class="clear-btn">
                 <i class="fa fa-rotate-left"></i> Clear All
             </a>
@@ -129,21 +119,26 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Ticket</th>
-                        <th>Name</th>
+                        <th>Ticket ID</th>
+                        <th>Raised By</th>
                         <th>Department</th>
+                        <th>Issue Details</th>
                         <th>Priority</th>
                         <th>Status</th>
-                        <th>Date</th>
+                        <th>Ticket Raised On</th>
+                        <th>Assigned Resolution Time (TAT)</th>
+                        <th>Resolved On</th>
+                        <th>Remarks</th>
                     </tr>
                 </thead>
 
                 <tbody>
                 {% for t in recent_tickets %}
                     <tr>
-                        <td><i class="fa fa-ticket"></i> {{ t.ticket_no }}</td>
+                        <td>{{ t.ticket_no }}</td>
                         <td>{{ t.name }}</td>
                         <td>{{ t.department }}</td>
+                        <td>{{ t.issue_type }}</td>
 
                         <td>
                             {% if t.priority == "Urgent" %}
@@ -161,11 +156,40 @@
                             {% endif %}
                         </td>
 
+                        <!-- Ticket Created -->
                         <td>{{ t.created_at|date:"d M Y H:i" }}</td>
+
+                        <!-- TAT -->
+                        <td>
+                            {% if t.tat_deadline %}
+                                {{ t.tat_deadline|date:"d M Y H:i" }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+
+                        <!-- Resolved -->
+                        <td>
+                            {% if t.resolved_at %}
+                                {{ t.resolved_at|date:"d M Y H:i" }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+
+                        <!-- Remarks -->
+                        <td>
+                            {% if t.solution_provided %}
+                                {{ t.solution_provided }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
                     </tr>
+
                 {% empty %}
                     <tr>
-                        <td colspan="6">No tickets found</td>
+                        <td colspan="10">No tickets found</td>
                     </tr>
                 {% endfor %}
                 </tbody>
