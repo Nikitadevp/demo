@@ -228,8 +228,9 @@ table {
     border-collapse: collapse;
 }
 thead {
-    background: #e3f2fd;   /* light blue */
+    background: #dbeafe !important;   /* soft light blue */
 }
+
 
 th {
     color: #0f172a;        /* dark text for clarity */
