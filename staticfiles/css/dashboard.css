@@ -128,10 +128,27 @@ body {
     padding: 25px;
 }
 
+/* Header title with image */
 .header h1 {
-    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    font-size: 26px;
+    font-weight: 600;
+    color: #222;
 }
 
+/* Helpdesk image */
+.header h1 img {
+    height: 45px;
+    width: auto;
+    margin-right: 12px;
+}
+
+/* Right side logo (already hai but thoda improve) */
+.header .logo {
+    height: 40px;
+    width: auto;
+}
 /* ===== Filters ===== */
 .filters {
     display: flex;

@@ -19,9 +19,14 @@
     <!-- MAIN CONTENT -->
     <main class="content">
 
-        <!-- HEADER -->
+        <!-- HEADER (ONLY CHANGE HERE) -->
         <div class="header">
-            <h1>Admin Dashboard</h1>
+            <h1>
+                <img src="{% static 'images/admin_helpdesk.png' %}" 
+                     style="height:40px; vertical-align:middle; margin-right:10px;">
+                Admin Dashboard
+            </h1>
+
             <img src="{% static 'images/rajat_logo.PNG' %}" class="logo">
         </div>
 
@@ -111,7 +116,7 @@
                         <th>Priority</th>
                         <th>Status</th>
                         <th>Ticket Raised On</th>
-                        <th>Assigned Resolution Time</th>
+                        <th>Estimated Resolution Time</th>
                         <th>Resolved On</th>
                         <th>Remarks</th>
                     </tr>
