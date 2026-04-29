@@ -314,6 +314,11 @@ def dashboard(request):
     urgent_count = tickets.filter(priority="Urgent").count()
     normal_count = tickets.filter(priority="Normal").count()
 
+    #  PAGINATION
+    paginator = Paginator(tickets.order_by('-created_at'), 20)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     # -------- STATUS CHART --------
     buffer = io.BytesIO()
     plt.figure(figsize=(4,3))
@@ -334,6 +339,7 @@ def dashboard(request):
     priority_chart = base64.b64encode(buffer2.getvalue()).decode()
     plt.close()
 
+    #  FINAL CONTEXT (IMPORTANT FIX)
     context = {
         'departments': DEPARTMENTS,
         'department': department,
@@ -346,7 +352,7 @@ def dashboard(request):
         'closed_tickets': closed_count,
         'urgent_tickets': urgent_count,
 
-        'recent_tickets': tickets.order_by('-created_at')[:10],
+        'page_obj': page_obj,   #  THIS IS REQUIRED
 
         'status_chart': status_chart,
         'priority_chart': priority_chart,
