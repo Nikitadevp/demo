@@ -303,7 +303,7 @@ def dashboard(request):
 
     # -------- FILTERS --------
     if department:
-        tickets = tickets.filter(department=departmedef dant)
+        tickets = tickets.filter(department=department)
 
     if priority:
         tickets = tickets.filter(priority=priority)
@@ -326,23 +326,23 @@ def dashboard(request):
     buffer = io.BytesIO()
     plt.figure(figsize=(4,3))
     plt.bar(["Open", "Closed"], [open_count, closed_count])
-    plt.title("Status")  
+    plt.title("Status")
     plt.tight_layout()
     plt.savefig(buffer, format="png")
     buffer.seek(0)
     status_chart = base64.b64encode(buffer.getvalue()).decode()
-    plt.close('all')   
+    plt.close()
 
     # -------- PRIORITY CHART --------
     buffer2 = io.BytesIO()
     plt.figure(figsize=(4,3))
     plt.bar(["Urgent", "Normal"], [urgent_count, normal_count])
-    plt.title("Priority")  
+    plt.title("Priority")
     plt.tight_layout()
     plt.savefig(buffer2, format="png")
     buffer2.seek(0)
     priority_chart = base64.b64encode(buffer2.getvalue()).decode()
-    plt.close('all')   #
+    plt.close()
 
     # -------- CONTEXT --------
     context = {
@@ -357,14 +357,13 @@ def dashboard(request):
         'closed_tickets': closed_count,
         'urgent_tickets': urgent_count,
 
-        'page_obj': page_obj,   
+        'page_obj': page_obj,
 
         'status_chart': status_chart,
         'priority_chart': priority_chart,
     }
 
     return render(request, "dashboard.html", context)
-
 
 
 #This for leave application     
