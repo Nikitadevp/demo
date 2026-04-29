@@ -233,8 +233,9 @@ thead {
 
 
 th {
-    color: #0f172a;        /* dark text for clarity */
-    font-weight: 600;
+    color: #0f172a;
+    font-weight: 700;   /* 🔥 full bold */
+    font-size: 15px;    /* thoda bada */
 }
 
 th, td {
