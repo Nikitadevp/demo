@@ -412,15 +412,15 @@ tr:not(:last-child) {
 
 .header {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between;  /* ye right push karega */
     align-items: center;
+    width: 100%;
 }
 
 .logo {
-    height: 50px;
+    height: 60px;
     object-fit: contain;
 }
-
 
 .clear-btn:hover {
     background: #e2e2e2;
