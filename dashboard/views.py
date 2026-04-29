@@ -283,6 +283,7 @@ DEPARTMENTS = [
     
 
 #dashboard    
+
 def dashboard(request):
 
     department = request.GET.get('department', '')
@@ -303,7 +304,7 @@ def dashboard(request):
 
     # -------- FILTERS --------
     if department:
-        tickets = tickets.filter(department=department)
+        tickets = tickets.filter(department=department)   # ✅ FIXED
 
     if priority:
         tickets = tickets.filter(priority=priority)
@@ -317,15 +318,25 @@ def dashboard(request):
     urgent_count = tickets.filter(priority="Urgent").count()
     normal_count = tickets.filter(priority="Normal").count()
 
-    # -------- PAGINATION --------
-    paginator = Paginator(tickets.order_by('-created_at'), 20)
+    # -------- SORT (OPEN FIRST, THEN CLOSED) --------
+    tickets = tickets.annotate(
+        status_order=Case(
+            When(status="Open", then=Value(0)),
+            When(status="Closed", then=Value(1)),
+            default=Value(2),
+            output_field=IntegerField(),
+        )
+    ).order_by('status_order', '-created_at')
+
+    # -------- PAGINATION (20 PER PAGE) --------
+    paginator = Paginator(tickets, 20)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
     # -------- STATUS CHART --------
     buffer = io.BytesIO()
     plt.figure(figsize=(4,3))
-    plt.bar(["Open", "Closed"], [open_count, closed_count])
+    plt.bar(["Open", "Closed"], [open_count, closed_count], color=["blue", "orange"])
     plt.title("Status")
     plt.tight_layout()
     plt.savefig(buffer, format="png")
@@ -336,7 +347,7 @@ def dashboard(request):
     # -------- PRIORITY CHART --------
     buffer2 = io.BytesIO()
     plt.figure(figsize=(4,3))
-    plt.bar(["Urgent", "Normal"], [urgent_count, normal_count])
+    plt.bar(["Urgent", "Normal"], [urgent_count, normal_count], color=["blue", "orange"])
     plt.title("Priority")
     plt.tight_layout()
     plt.savefig(buffer2, format="png")
