@@ -303,7 +303,7 @@ def dashboard(request):
 
     # -------- FILTERS --------
     if department:
-        tickets = tickets.filter(department=department)
+        tickets = tickets.filter(department=departmedef dant)
 
     if priority:
         tickets = tickets.filter(priority=priority)
