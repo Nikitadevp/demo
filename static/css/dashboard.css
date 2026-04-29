@@ -227,9 +227,13 @@ table {
     width: 100%;
     border-collapse: collapse;
 }
-
 thead {
-    background: #f3f4f6;
+    background: #e3f2fd;   /* light blue */
+}
+
+th {
+    color: #0f172a;        /* dark text for clarity */
+    font-weight: 600;
 }
 
 th, td {
