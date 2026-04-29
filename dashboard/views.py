@@ -6,6 +6,7 @@ from datetime import timedelta, time
 from .models import Ticket
 from django.urls import reverse
 import matplotlib.pyplot as plt
+matplotlib.use('Agg')
 import io
 import base64
 from .models import LeaveRequest
