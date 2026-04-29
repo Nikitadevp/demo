@@ -314,12 +314,6 @@ def dashboard(request):
     urgent_count = tickets.filter(priority="Urgent").count()
     normal_count = tickets.filter(priority="Normal").count()
 
-
-    # ✅ PAGINATION (20 per page)
-    paginator = Paginator(tickets.order_by('-created_at'), 20)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-
     # -------- STATUS CHART --------
     buffer = io.BytesIO()
     plt.figure(figsize=(4,3))
@@ -1740,7 +1734,7 @@ def mdo_sales_leave_dashboard(request):
 
 
 
-
+        
     if to_date:
         leave_requests = leave_requests.filter(
             request_date__date__lte=to_date
