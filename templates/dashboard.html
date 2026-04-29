@@ -9,33 +9,34 @@
     <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- ✅ Heading Highlight Style -->
+    <style>
+        table thead {
+            background-color: #1e293b;
+            color: white;
+        }
+
+        table thead th {
+            padding: 12px;
+            font-weight: bold;
+            text-align: left;
+        }
+    </style>
 </head>
 
 <body>
 
 <div class="layout">
 
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
-        <h2 class="logo">HelpDesk</h2>
-
-        <!-- ❌ Text removed as you asked -->
-        <ul class="menu">
-            <li><a href="#topDashboard"><i class="fa fa-chart-line"></i></a></li>
-            <li><a href="#chartSection"><i class="fa fa-chart-bar"></i></a></li>
-        </ul>
-    </aside>
+    <!-- ❌ SIDEBAR REMOVED -->
 
     <!-- MAIN -->
-    <main class="content" id="topDashboard">
+    <main class="content" id="topDashboard" style="width:100%;">
 
         <!-- HEADER -->
         <div class="header">
-            {% if department %}
-                <h1>{{ department }} Department Dashboard</h1>
-            {% else %}
-                <h1>All Departments Dashboard</h1>
-            {% endif %}
+            <h1>Admin Dashboard</h1>
         </div>
 
         <!-- SEARCH -->
@@ -126,7 +127,7 @@
                         <th>Priority</th>
                         <th>Status</th>
                         <th>Ticket Raised On</th>
-                        <th>Assigned Resolution Time (TAT)</th>
+                        <th>Assigned Resolution Time </th>
                         <th>Resolved On</th>
                         <th>Remarks</th>
                     </tr>
@@ -156,10 +157,8 @@
                             {% endif %}
                         </td>
 
-                        <!-- Ticket Created -->
                         <td>{{ t.created_at|date:"d M Y H:i" }}</td>
 
-                        <!-- TAT -->
                         <td>
                             {% if t.tat_deadline %}
                                 {{ t.tat_deadline|date:"d M Y H:i" }}
@@ -168,7 +167,6 @@
                             {% endif %}
                         </td>
 
-                        <!-- Resolved -->
                         <td>
                             {% if t.resolved_at %}
                                 {{ t.resolved_at|date:"d M Y H:i" }}
@@ -177,7 +175,6 @@
                             {% endif %}
                         </td>
 
-                        <!-- Remarks -->
                         <td>
                             {% if t.solution_provided %}
                                 {{ t.solution_provided }}
