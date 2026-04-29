@@ -15,6 +15,7 @@ from django.http import HttpResponseForbidden
 from django.db.models import Case, When, Value, IntegerField, Q
 from datetime import datetime
 from django.core.paginator import Paginator
+matplotlib.use('Agg')
 
 
 
@@ -289,7 +290,7 @@ def dashboard(request):
 
     tickets = Ticket.objects.all()
 
-    # SEARCH
+    # -------- SEARCH --------
     if search:
         tickets = tickets.filter(
             Q(ticket_no__icontains=search) |
@@ -298,7 +299,7 @@ def dashboard(request):
             Q(department__icontains=search)
         )
 
-    # FILTERS
+    # -------- FILTERS --------
     if department:
         tickets = tickets.filter(department=department)
 
@@ -308,16 +309,40 @@ def dashboard(request):
     if status:
         tickets = tickets.filter(status=status)
 
-    # COUNTS
+    # -------- COUNTS --------
     open_count = tickets.filter(status="Open").count()
     closed_count = tickets.filter(status="Closed").count()
     urgent_count = tickets.filter(priority="Urgent").count()
+    normal_count = tickets.filter(priority="Normal").count()
 
-    #  PAGINATION (20 per page)
+    # -------- PAGINATION --------
     paginator = Paginator(tickets.order_by('-created_at'), 20)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
+    # -------- STATUS CHART --------
+    buffer = io.BytesIO()
+    plt.figure(figsize=(4,3))
+    plt.bar(["Open", "Closed"], [open_count, closed_count])
+    plt.title("Status")  
+    plt.tight_layout()
+    plt.savefig(buffer, format="png")
+    buffer.seek(0)
+    status_chart = base64.b64encode(buffer.getvalue()).decode()
+    plt.close('all')   
+
+    # -------- PRIORITY CHART --------
+    buffer2 = io.BytesIO()
+    plt.figure(figsize=(4,3))
+    plt.bar(["Urgent", "Normal"], [urgent_count, normal_count])
+    plt.title("Priority")  
+    plt.tight_layout()
+    plt.savefig(buffer2, format="png")
+    buffer2.seek(0)
+    priority_chart = base64.b64encode(buffer2.getvalue()).decode()
+    plt.close('all')   #
+
+    # -------- CONTEXT --------
     context = {
         'departments': DEPARTMENTS,
         'department': department,
@@ -330,7 +355,10 @@ def dashboard(request):
         'closed_tickets': closed_count,
         'urgent_tickets': urgent_count,
 
-        'page_obj': page_obj,   # 👈 IMPORTANT
+        'page_obj': page_obj,   
+
+        'status_chart': status_chart,
+        'priority_chart': priority_chart,
     }
 
     return render(request, "dashboard.html", context)
