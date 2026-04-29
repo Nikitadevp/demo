@@ -368,24 +368,7 @@ tr:not(:last-child) {
     margin-bottom: 25px;
 }
 
-.pagination {
-    margin-top: 20px;
-    text-align: center;
-}
 
-.pagination a {
-    padding: 8px 14px;
-    margin: 0 5px;
-    background: #2563eb;
-    color: white;
-    border-radius: 6px;
-    text-decoration: none;
-}
-
-.pagination span {
-    margin: 0 10px;
-    font-weight: 600;
-}
 
 
 
