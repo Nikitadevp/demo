@@ -149,6 +149,11 @@ body {
     height: 40px;
     width: auto;
 }
+
+.header-title-img {
+    height: 60px;
+    width: auto;
+}
 /* ===== Filters ===== */
 .filters {
     display: flex;

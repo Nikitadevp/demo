@@ -19,14 +19,13 @@
     <!-- MAIN CONTENT -->
     <main class="content">
 
-        <!-- HEADER (ONLY CHANGE HERE) -->
+        <!-- HEADER (UPDATED) -->
         <div class="header">
-            <h1>
-                <img src="{% static 'images/admin_helpdesk.png' %}" 
-                     style="height:40px; vertical-align:middle; margin-right:10px;">
-                Admin Dashboard
-            </h1>
+            
+            <!-- ONLY IMAGE AS TITLE -->
+            <img src="{% static 'images/admin_helpdesk.png' %}" class="header-title-img">
 
+            <!-- Right logo -->
             <img src="{% static 'images/rajat_logo.PNG' %}" class="logo">
         </div>
 
@@ -39,7 +38,6 @@
                        placeholder="🔍 Search Ticket / Name / Issue"
                        onkeypress="if(event.key==='Enter'){this.form.submit();}">
 
-                <!-- keep filters -->
                 <input type="hidden" name="department" value="{{ department }}">
                 <input type="hidden" name="priority" value="{{ priority }}">
                 <input type="hidden" name="status" value="{{ status }}">
@@ -48,7 +46,6 @@
 
         <!-- FILTERS -->
         <form method="get" class="filters">
-
             <input type="hidden" name="search" value="{{ search }}">
 
             <select name="department" onchange="this.form.submit()">
@@ -72,11 +69,9 @@
                 <option value="Closed" {% if status == "Closed" %}selected{% endif %}>Closed</option>
             </select>
 
-            <!-- CLEAR -->
             <a href="?" class="clear-btn">
                 <i class="fa fa-rotate-left"></i> Clear All
             </a>
-
         </form>
 
         <!-- CARDS -->
