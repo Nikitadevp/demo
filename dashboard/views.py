@@ -336,7 +336,7 @@ def dashboard(request):
     # -------- STATUS CHART --------
     buffer = io.BytesIO()
     plt.figure(figsize=(4,3))
-    plt.bar(["Open", "Closed"], [open_count, closed_count], color=["blue", "orange"])
+    plt.bar(["Open", "Closed"], [open_count, closed_count], color=["#60a5fa", "#fbbf24"])
     plt.title("Status")
     plt.tight_layout()
     plt.savefig(buffer, format="png")
