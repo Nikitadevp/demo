@@ -347,7 +347,7 @@ def dashboard(request):
     # -------- PRIORITY CHART --------
     buffer2 = io.BytesIO()
     plt.figure(figsize=(4,3))
-    plt.bar(["Urgent", "Normal"], [urgent_count, normal_count], color=["blue", "orange"])
+    plt.bar(["Urgent", "Normal"], [urgent_count, normal_count], color=["#60a5fa", "#fbbf24"])
     plt.title("Priority")
     plt.tight_layout()
     plt.savefig(buffer2, format="png")
