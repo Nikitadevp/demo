@@ -232,10 +232,10 @@ thead {
 }
 
 
-th {
+thead th {
     color: #0f172a;
-    font-weight: 700;   /* 🔥 full bold */
-    font-size: 15px;    /* thoda bada */
+    font-weight: 700;
+    font-size: 15px;
 }
 
 th, td {
@@ -367,14 +367,6 @@ tr:not(:last-child) {
     flex-wrap: wrap;
     margin-bottom: 25px;
 }
-
-
-
-
-
-
-
-
 
 .clear-btn {
     display: inline-flex;
