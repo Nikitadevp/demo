@@ -238,6 +238,30 @@ th {
     font-size: 15px;    /* thoda bada */
 }
 
+
+/* 🔵 Pagination */
+.pagination {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.pagination a {
+    padding: 8px 14px;
+    margin: 0 5px;
+    background: #2563eb;
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+}
+
+.pagination span {
+    margin: 0 10px;
+    font-weight: 600;
+}
+
+
+
+
 th, td {
     padding: 12px;
     text-align: left;
@@ -368,27 +392,6 @@ tr:not(:last-child) {
     margin-bottom: 25px;
 }
 
-.pagination {
-    margin-top: 20px;
-    text-align: center;
-}
-
-.pagination a {
-    padding: 8px 14px;
-    margin: 0 5px;
-    background: #2563eb;
-    color: white;
-    border-radius: 6px;
-    text-decoration: none;
-}
-
-.pagination span {
-    margin: 0 10px;
-    font-weight: 600;
-}
-
-
-
 
 
 
@@ -406,6 +409,9 @@ tr:not(:last-child) {
     font-weight: 600;
     transition: 0.3s;
 }
+
+
+
 
 .clear-btn:hover {
     background: #e2e2e2;
