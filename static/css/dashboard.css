@@ -444,6 +444,36 @@ tr:not(:last-child) {
 .clear-btn:hover {
     background: #e2e2e2;
 }
+
+.header {
+    position: relative;
+    height: 180px;
+    background: url("../images/ac_fc_image.jpg") no-repeat center center/cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.header::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.header h1 {
+    position: relative;
+    color: #fff;
+    font-size: 30px;
+    font-weight: 600;
+    z-index: 1;
+}
+
+
+
 /* ===== Mobile ===== */
 @media (max-width: 768px) {
     .sidebar {

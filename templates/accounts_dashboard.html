@@ -7,7 +7,10 @@
     <title>Accounts and Finance Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <!-- CSS -->
     <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+
+    <!-- Font Awesome -->
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
@@ -16,22 +19,20 @@
 
 <div class="layout">
 
-   
-    <!-- Main -->
+    <!-- MAIN -->
     <main class="content" id="topDashboard">
 
-        <!-- Header -->
+        <!-- HEADER WITH BACKGROUND IMAGE -->
         <div class="header">
             <h1>Accounts and Finance Dashboard</h1>
         </div>
 
-        <!-- 🔍 SEARCH -->
+        <!-- SEARCH -->
         <div class="search-box">
             <form method="get">
 
                 <input type="hidden" name="xid" value="AC_92ksLxPq7ZtF3HjW8mR4vB1uN5yQ">
 
-                <!-- keep filters -->
                 <input type="hidden" name="priority" value="{{ priority }}">
                 <input type="hidden" name="status" value="{{ status }}">
                 <input type="hidden" name="from_date" value="{{ from_date }}">
@@ -45,7 +46,7 @@
             </form>
         </div>
 
-        <!-- 🔽 FILTERS -->
+        <!-- FILTERS -->
         <form method="get" class="filters">
 
             <input type="hidden" name="xid" value="AC_92ksLxPq7ZtF3HjW8mR4vB1uN5yQ">
@@ -65,18 +66,12 @@
 
             <div class="date-filter">
                 <label>From</label>
-                <input type="date"
-                       name="from_date"
-                       value="{{ from_date }}"
-                       onchange="this.form.submit()">
+                <input type="date" name="from_date" value="{{ from_date }}" onchange="this.form.submit()">
             </div>
 
             <div class="date-filter">
                 <label>To</label>
-                <input type="date"
-                       name="to_date"
-                       value="{{ to_date }}"
-                       onchange="this.form.submit()">
+                <input type="date" name="to_date" value="{{ to_date }}" onchange="this.form.submit()">
             </div>
 
             <a href="?xid=AC_92ksLxPq7ZtF3HjW8mR4vB1uN5yQ" class="clear-btn">
@@ -159,13 +154,7 @@
                         <td>{{ t.tat_deadline|localtime|date:"d M Y h:i A" }}</td>
                         <td>{{ t.resolved_at|localtime|date:"d M Y h:i A"|default:"-" }}</td>
 
-                        <td>
-                            {% if t.solution_provided %}
-                                {{ t.solution_provided }}
-                            {% else %}
-                                -
-                            {% endif %}
-                        </td>
+                        <td>{{ t.solution_provided|default:"-" }}</td>
 
                         <td>
                             {% if t.status == "Open" %}
