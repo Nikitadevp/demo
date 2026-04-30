@@ -448,7 +448,7 @@ tr:not(:last-child) {
 /* ONLY Accounts & Finance header */
 .af-header {
     position: relative;
-    height: 180px;
+    height: 240px;
     background: url("../images/account_img.png") no-repeat center center/cover;
     display: flex;
     align-items: center;
