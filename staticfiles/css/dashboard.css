@@ -142,7 +142,7 @@ body {
 
 /* Right side logo (already hai but thoda improve) */
 .header .logo {
-    height: 80px;   /* pehle 40 tha → ab bada */
+    height: 60px;   /* pehle 40 tha → ab bada */
     width: auto;    /* proportion maintain */
 }
 .header-title-img {
