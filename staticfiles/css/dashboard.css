@@ -448,7 +448,7 @@ tr:not(:last-child) {
 .header {
     position: relative;
     height: 180px;
-    background: url("../images/ac_fc_image.jpg") no-repeat center center/cover;
+    background: url("../images/account_img.png") no-repeat center center/cover;
     display: flex;
     align-items: center;
     justify-content: center;
