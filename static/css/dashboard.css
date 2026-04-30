@@ -475,6 +475,37 @@ tr:not(:last-child) {
 
 
 
+/* ONLY DME HEADER IMAGE */
+.dme-header {
+    position: relative;
+    height: 300px;
+    background: url("../images/dme_image.PNG") no-repeat center center/cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: -25px;
+    margin-right: -25px;
+    border-radius: 0;
+    overflow: hidden;
+}
+
+/* overlay */
+.dme-header::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+/* text */
+.dme-header h1 {
+    position: relative;
+    color: #fff;
+    z-index: 1;
+}
+
+
+
 /* ===== Mobile ===== */
 @media (max-width: 768px) {
     .sidebar {
