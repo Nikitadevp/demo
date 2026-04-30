@@ -445,7 +445,8 @@ tr:not(:last-child) {
     background: #e2e2e2;
 }
 
-.header {
+/* ONLY Accounts & Finance header */
+.af-header {
     position: relative;
     height: 180px;
     background: url("../images/account_img.png") no-repeat center center/cover;
@@ -457,18 +458,18 @@ tr:not(:last-child) {
     overflow: hidden;
 }
 
-.header::before {
+/* overlay */
+.af-header::before {
     content: "";
     position: absolute;
     inset: 0;
     background: rgba(0, 0, 0, 0.5);
 }
 
-.header h1 {
+/* text */
+.af-header h1 {
     position: relative;
     color: #fff;
-    font-size: 30px;
-    font-weight: 600;
     z-index: 1;
 }
 
