@@ -2,13 +2,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Leave Admin Dashboard</title>
+    <title>Leave Dashboard Admin</title>
     <link rel="stylesheet" href="{% static 'css/leave_admin_dashboard.css' %}">
 </head>
 <body>
 
 <div class="container">
-    <h1>Leave Admin Dashboard</h1>
+
+    <!-- HEADER -->
+    <div class="header">
+        <h1>Leave Dashboard Admin</h1>
+        <img src="{% static 'images/rajat_logo.PNG' %}" class="logo">
+    </div>
 
     <!-- 🔍 FILTERS -->
     <form method="get" class="search-box" id="filterForm">
@@ -20,26 +25,27 @@
                placeholder="🔍 Search by ID, Name"
                onblur="this.form.submit()">
 
-        <!-- ✅ FULL DEPARTMENT LIST -->
+        <!-- FULL DEPARTMENT LIST -->
         <select name="department" onchange="this.form.submit()">
             <option value="">All Departments</option>
-        
+
             <option value="Accounts and Finance" {% if department == "Accounts and Finance" %}selected{% endif %}>Accounts and Finance</option>
-        
-            <option value="Engenarring" {% if department == "Engenarring" %}selected{% endif %}>Engenarring</option>
-        
+
+            <!-- ✅ FIXED SPELLING -->
+            <option value="Engineering" {% if department == "Engineering" %}selected{% endif %}>Engineering</option>
+
             <option value="DME" {% if department == "DME" %}selected{% endif %}>DME</option>
-        
+
             <option value="HR and Admin" {% if department == "HR and Admin" %}selected{% endif %}>HR and Admin</option>
-        
+
             <option value="Purchase" {% if department == "Purchase" %}selected{% endif %}>Purchase</option>
-        
+
             <option value="Sales" {% if department == "Sales" %}selected{% endif %}>Sales</option>
-        
+
             <option value="MDO" {% if department == "MDO" %}selected{% endif %}>MDO</option>
-        
+
             <option value="MDO Sales" {% if department == "MDO Sales" %}selected{% endif %}>MDO Sales</option>
-        
+
         </select>
 
         <!-- Status -->
@@ -61,7 +67,7 @@
                value="{{ to_date }}"
                onchange="this.form.submit()">
 
-        <!-- ✅ SAME CLEAR BUTTON -->
+        <!-- CLEAR -->
         <a href="{% url 'leave_admin_dashboard' %}" class="clear-btn">
             ❌ Clear
         </a>
@@ -82,17 +88,17 @@
             <thead>
                 <tr>
                     <th>Leave ID</th>
-                    <th>Name</th>
+                    <th>Applied By</th> <!-- ✅ changed -->
                     <th>Department</th>
                     <th>Leave Type</th>
                     <th>Start</th>
                     <th>End</th>
                     <th>Days</th>
                     <th>Reason</th>
-                    <th>Status</th>
-                    <th>Manager Reason</th>
-                    <th>Approved/Rejected Date</th>
-                    <th>Resolved Date</th>
+                    <th>Approval Status</th> <!-- ✅ changed -->
+                    <th>Approval Remark</th> <!-- ✅ changed -->
+                    <th>Review Date</th> <!-- ✅ changed -->
+                    <th>Review Date</th> <!-- ✅ changed -->
                     <th>Request Date</th>
                 </tr>
             </thead>
@@ -105,7 +111,6 @@
                     <td>{{ leave.department }}</td>
                     <td>{{ leave.leave_type }}</td>
 
-                    <!-- ✅ DATE FORMAT -->
                     <td>{{ leave.start_date|date:"d/m/y" }}</td>
                     <td>{{ leave.end_date|date:"d/m/y" }}</td>
 
