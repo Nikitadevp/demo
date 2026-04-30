@@ -125,9 +125,8 @@ body {
 /* ===== Main ===== */
 .content {
     flex: 1;
-    padding: 25px;
+    padding: 0 25px 25px 25px;  /* 🔥 top padding hata diya */
 }
-
 /* Header title with image */
 .header h1 {
     font-weight: 700;   /* bold */
@@ -448,14 +447,14 @@ tr:not(:last-child) {
 /* ONLY Accounts & Finance header */
 .af-header {
     position: relative;
-    height: 300px;   /* 🔥 height badha di (pehle 180/260 thi) */
+    height: 280px;
     background: url("../images/account_img.png") no-repeat center center/cover;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 12px;
-    margin-bottom: 30px;  /* 🔥 niche extra gap */
-    overflow: hidden;
+    margin-left: -25px;
+    margin-right: -25px;
+    border-radius: 0;
 }
 
 /* overlay */
