@@ -98,7 +98,7 @@
                     <th>Approval Status</th> <!-- ✅ changed -->
                     <th>Approval Remark</th> <!-- ✅ changed -->
                     <th>Review Date</th> <!-- ✅ changed -->
-                   
+                    
                     <th>Request Date</th>
                 </tr>
             </thead>
@@ -134,7 +134,7 @@
                     <td>{{ leave.manager_reason|default:"-" }}</td>
 
                     <td>{{ leave.approved_rejected_date|date:"d/m/y"|default:"-" }}</td>
-                    <td>{{ leave.resolved_date|date:"d/m/y"|default:"-" }}</td>
+                    
                     <td>{{ leave.request_date|date:"d/m/y" }}</td>
                 </tr>
 
