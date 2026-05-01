@@ -527,7 +527,7 @@ tr:not(:last-child) {
 /* Accounts title (niche) */
 .header-text h1 {
     font-size: 34px;   /* thoda adjust */
-    font-weight: 700;
+    font-weight: 800;
 }
 
 /* CONSTRUCTION HEADER IMAGE */
