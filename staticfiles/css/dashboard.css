@@ -535,7 +535,7 @@ tr:not(:last-child) {
 .cn-header {
     position: relative;
     height: 320px;
-    background: url("../images/con_img.png") no-repeat center;
+    background: url("../images/con_img.PNG") no-repeat center;
     background-size: cover;
     background-position: center 15%;
 
