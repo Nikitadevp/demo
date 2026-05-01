@@ -509,6 +509,28 @@ tr:not(:last-child) {
     z-index: 1;
 }
 
+.header-text {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    color: #fff;
+}
+
+/* Help Desk (upar wala) */
+.header-text h2 {
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+    opacity: 0.9;
+}
+
+/* Main title */
+.header-text h1 {
+    font-size: 38px;
+    font-weight: 700;
+}
+
 
 
 /* ===== Mobile ===== */
