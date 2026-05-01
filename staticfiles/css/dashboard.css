@@ -519,8 +519,8 @@ tr:not(:last-child) {
 /* Help Desk (upar) */
 /* Help Desk (upar) */
 .header-text h2 {
-    font-size: 38px;     /* 🔥 bada karo (pehle 22px tha) */
-    font-weight: 700;    /* 🔥 full bold */
+    font-size: 38px;     /* bada karo (pehle 22px tha) */
+    font-weight: 600;    /*  full bold */
     margin-bottom: 8px;  /* thoda gap */
     letter-spacing: 1px;
 }
