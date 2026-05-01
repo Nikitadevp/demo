@@ -516,22 +516,19 @@ tr:not(:last-child) {
     color: #fff;
 }
 
-/* Help Desk (upar wala) */
+/* Help Desk (upar) */
 .header-text h2 {
-    font-size: 20px;
-    font-weight: 500;
-    margin-bottom: 8px;
-    letter-spacing: 1px;
-    opacity: 0.9;
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 10px;   /* 🔥 gap niche */
 }
 
-/* Main title */
+/* Accounts title (niche) */
 .header-text h1 {
-    font-size: 38px;
+    font-size: 36px;
     font-weight: 700;
+    margin-top: 5px;
 }
-
-
 
 /* ===== Mobile ===== */
 @media (max-width: 768px) {
