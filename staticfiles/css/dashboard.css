@@ -448,13 +448,13 @@ tr:not(:last-child) {
 /* ONLY Accounts & Finance header */
 .af-header {
     position: relative;
-    height: 300px;   /* 🔥 height badha di (pehle 180/260 thi) */
+    height: 300px;   /*  height badha di (pehle 180/260 thi) */
     background: url("../images/account_img.png") no-repeat center center/cover;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 12px;
-    margin-bottom: 30px;  /* 🔥 niche extra gap */
+    margin-bottom: 30px;  /*  niche extra gap */
     overflow: hidden;
 }
 
@@ -520,7 +520,7 @@ tr:not(:last-child) {
 /* Help Desk (upar) */
 .header-text h2 {
     font-size: 32px;     /* thoda balanced size */
-    font-weight: 400;    /* 🔥 bold kam (pehle 800 tha) */
+    font-weight: 400;    /* bold kam (pehle 800 tha) */
     margin-bottom: 8px;
     letter-spacing: 1px;
 }
@@ -574,6 +574,52 @@ tr:not(:last-child) {
     font-weight: 700;
 }
 
+
+/* CRM HO HEADER IMAGE */
+.crm-header {
+    position: relative;
+    height: 300px;
+    background: url("../images/crm_image.png") no-repeat center;
+    background-size: cover;
+    background-position: center 15%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 25px;
+}
+
+/* overlay */
+.crm-header::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+/* text */
+.header-text {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    color: #fff;
+}
+
+/* Help Desk (NOT too bold) */
+.header-text h2 {
+    font-size: 28px;
+    font-weight: 500;   /*  balanced (na jyada bold) */
+    margin-bottom: 6px;
+}
+
+/* Main title */
+.header-text h1 {
+    font-size: 34px;
+    font-weight: 700;
+}
 
 /* ===== Mobile ===== */
 @media (max-width: 768px) {
