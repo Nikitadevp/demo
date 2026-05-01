@@ -7,7 +7,10 @@
     <title>Construction Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <!-- CSS -->
     <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+
+    <!-- Font Awesome -->
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
@@ -16,36 +19,22 @@
 
 <div class="layout">
 
-    <!-- Sidebar -->
-    <aside class="sidebar">
-        <ul class="menu">
-            <li>
-                <a href="#topDashboard">
-                    <i class="fa fa-chart-line"></i> Dashboard
-                </a>
-            </li>
-            <li>
-                <a href="#ticketSection">
-                    <i class="fa fa-ticket"></i> Tickets
-                </a>
-            </li>
-        </ul>
-    </aside>
-
-    <!-- Main -->
     <main class="content" id="topDashboard">
 
-        <!-- Header -->
-        <div class="header">
-            <h1>Construction Dashboard</h1>
+        <!-- HEADER WITH IMAGE -->
+        <div class="header cn-header">
+            <div class="header-text">
+                <h2>Help Desk</h2>
+                <h1>Construction Dashboard</h1>
+            </div>
         </div>
 
-        <!-- 🔍 SEARCH -->
+        <!-- SEARCH -->
         <div class="search-box">
             <form method="get">
+
                 <input type="hidden" name="xid" value="CN_83KdlPq9XzT5LmR2Wv7N4bH1yQ">
 
-                <!-- keep filters -->
                 <input type="hidden" name="priority" value="{{ priority }}">
                 <input type="hidden" name="status" value="{{ status }}">
                 <input type="hidden" name="from_date" value="{{ from_date }}">
@@ -59,8 +48,9 @@
             </form>
         </div>
 
-        <!-- 🔽 FILTERS -->
+        <!-- FILTERS -->
         <form method="get" class="filters">
+
             <input type="hidden" name="xid" value="CN_83KdlPq9XzT5LmR2Wv7N4bH1yQ">
             <input type="hidden" name="search" value="{{ search }}">
 
@@ -78,24 +68,21 @@
 
             <div class="date-filter">
                 <label>From</label>
-                <input type="date" name="from_date"
-                       value="{{ from_date }}"
-                       onchange="this.form.submit()">
+                <input type="date" name="from_date" value="{{ from_date }}" onchange="this.form.submit()">
             </div>
 
             <div class="date-filter">
                 <label>To</label>
-                <input type="date" name="to_date"
-                       value="{{ to_date }}"
-                       onchange="this.form.submit()">
+                <input type="date" name="to_date" value="{{ to_date }}" onchange="this.form.submit()">
             </div>
 
             <a href="?xid=CN_83KdlPq9XzT5LmR2Wv7N4bH1yQ" class="clear-btn">
                 <i class="fa fa-rotate-left"></i> Clear All
             </a>
+
         </form>
 
-        <!-- 📊 CARDS -->
+        <!-- CARDS -->
         <div class="cards">
             <div class="card total">
                 <i class="fa fa-layer-group"></i>
@@ -122,7 +109,7 @@
             </div>
         </div>
 
-        <!-- 📋 TABLE -->
+        <!-- TABLE -->
         <div class="table-box" id="ticketSection">
             <h2>Construction Recent Tickets</h2>
 
@@ -149,7 +136,6 @@
                         <td>{{ t.name }}</td>
                         <td>{{ t.issue_type }}</td>
 
-                        <!-- Priority Badge -->
                         <td>
                             {% if t.priority == "Urgent" %}
                                 <span class="badge urgent">Urgent</span>
@@ -158,7 +144,6 @@
                             {% endif %}
                         </td>
 
-                        <!-- Status Badge -->
                         <td>
                             {% if t.status == "Open" %}
                                 <span class="badge open">Open</span>
@@ -171,16 +156,8 @@
                         <td>{{ t.tat_deadline|localtime|date:"d M Y h:i A" }}</td>
                         <td>{{ t.resolved_at|localtime|date:"d M Y h:i A"|default:"-" }}</td>
 
-                        <!-- Solution -->
-                        <td>
-                            {% if t.solution_provided %}
-                                {{ t.solution_provided }}
-                            {% else %}
-                                -
-                            {% endif %}
-                        </td>
+                        <td>{{ t.solution_provided|default:"-" }}</td>
 
-                        <!-- Action -->
                         <td>
                             {% if t.status == "Open" %}
                                 <a href="{% url 'resolve_ticket' t.ticket_no %}" class="resolve-btn">
@@ -190,7 +167,6 @@
                                 <span class="badge closed">Done</span>
                             {% endif %}
                         </td>
-
                     </tr>
                 {% empty %}
                     <tr>

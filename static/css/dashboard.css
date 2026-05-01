@@ -530,6 +530,52 @@ tr:not(:last-child) {
     font-size: 34px;   /* thoda adjust */
     font-weight: 700;
 }
+
+/* CONSTRUCTION HEADER IMAGE */
+.cn-header {
+    position: relative;
+    height: 320px;
+    background: url("../images/con_img.png") no-repeat center;
+    background-size: cover;
+    background-position: center 15%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 25px;
+}
+
+/* overlay */
+.cn-header::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+/* text */
+.header-text {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    color: #fff;
+}
+
+.header-text h2 {
+    font-size: 38px;
+    font-weight: 800;
+    margin-bottom: 10px;
+}
+
+.header-text h1 {
+    font-size: 36px;
+    font-weight: 700;
+}
+
+
 /* ===== Mobile ===== */
 @media (max-width: 768px) {
     .sidebar {
