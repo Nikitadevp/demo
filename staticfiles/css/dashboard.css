@@ -517,19 +517,19 @@ tr:not(:last-child) {
 }
 
 /* Help Desk (upar) */
+/* Help Desk (upar) */
 .header-text h2 {
-    font-size: 22px;
-    font-weight: 600;
-    margin-bottom: 10px;   /* 🔥 gap niche */
+    font-size: 32px;     /* 🔥 bada karo (pehle 22px tha) */
+    font-weight: 700;    /* 🔥 full bold */
+    margin-bottom: 8px;  /* thoda gap */
+    letter-spacing: 1px;
 }
 
 /* Accounts title (niche) */
 .header-text h1 {
-    font-size: 36px;
+    font-size: 34px;   /* thoda adjust */
     font-weight: 700;
-    margin-top: 5px;
 }
-
 /* ===== Mobile ===== */
 @media (max-width: 768px) {
     .sidebar {
