@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>CRM HO Dashboard</title>
+    <title>Accounts and Finance Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- CSS -->
@@ -21,11 +21,10 @@
 
     <main class="content" id="topDashboard">
 
-        <!-- HEADER -->
-        <div class="header crm-header">
+        <div class="header af-header">
             <div class="header-text">
                 <h2>Help Desk</h2>
-                <h1>CRM HO Dashboard</h1>
+                <h1>Accounts and Finance Dashboard</h1>
             </div>
         </div>
 
@@ -33,8 +32,7 @@
         <div class="search-box">
             <form method="get">
 
-                <!-- ✅ CRM KEY -->
-                <input type="hidden" name="xid" value="CRM_92ksLxPq7ZtF3HjW8mR4">
+                <input type="hidden" name="xid" value="AC_92ksLxPq7ZtF3HjW8mR4vB1uN5yQ">
 
                 <input type="hidden" name="priority" value="{{ priority }}">
                 <input type="hidden" name="status" value="{{ status }}">
@@ -52,7 +50,7 @@
         <!-- FILTERS -->
         <form method="get" class="filters">
 
-            <input type="hidden" name="xid" value="CRM_92ksLxPq7ZtF3HjW8mR4">
+            <input type="hidden" name="xid" value="AC_92ksLxPq7ZtF3HjW8mR4vB1uN5yQ">
             <input type="hidden" name="search" value="{{ search }}">
 
             <select name="priority" onchange="this.form.submit()">
@@ -77,7 +75,7 @@
                 <input type="date" name="to_date" value="{{ to_date }}" onchange="this.form.submit()">
             </div>
 
-            <a href="?xid=CRM_92ksLxPq7ZtF3HjW8mR4" class="clear-btn">
+            <a href="?xid=AC_92ksLxPq7ZtF3HjW8mR4vB1uN5yQ" class="clear-btn">
                 <i class="fa fa-rotate-left"></i> Clear All
             </a>
 
@@ -112,7 +110,7 @@
 
         <!-- TABLE -->
         <div class="table-box" id="ticketSection">
-            <h2>CRM HO Recent Tickets</h2>
+            <h2>Accounts and Finance Recent Tickets</h2>
 
             <table>
                 <thead>
