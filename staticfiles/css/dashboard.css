@@ -576,29 +576,46 @@ tr:not(:last-child) {
 
 
 /* CRM HO HEADER IMAGE */
-
+/* CRM HO HEADER */
 .crm-header {
     position: relative;
     height: 300px;
-
-    background: url("../images/crm.png") no-repeat;
-    background-size: cover;          /* 🔥 full cover */
-    background-position: center 20%; /* 🔥 upar shift (important) */
-
+    background: url("../images/crm.png") no-repeat center center/cover;
     display: flex;
     align-items: center;
     justify-content: center;
-
     border-radius: 12px;
     margin-bottom: 30px;
     overflow: hidden;
 }
 
+/* overlay */
 .crm-header::before {
     content: "";
     position: absolute;
     inset: 0;
     background: rgba(0, 0, 0, 0.3);
+}
+
+/* TEXT SAME AS AF */
+.header-text {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    color: #fff;
+}
+
+/* Help Desk (light) */
+.header-text h2 {
+    font-size: 26px;
+    font-weight: 500;   /* 🔥 halka */
+    margin-bottom: 6px;
+}
+
+/* Main title */
+.header-text h1 {
+    font-size: 36px;
+    font-weight: 700;
 }
 
 /* ===== Mobile ===== */
