@@ -519,9 +519,10 @@ tr:not(:last-child) {
 /* Help Desk (upar) */
 /* Help Desk (upar) */
 /* FINAL FIX - Help Desk same everywhere */
+/* FINAL FIX - Help Desk same everywhere */
 .header-text h2 {
-    font-size: 28px !important;
-    font-weight: 700 !important;   /* 🔥 ab proper bold */
+    font-size: 32px !important;   /* 🔥 thoda aur bada */
+    font-weight: 700 !important;
     margin-bottom: 8px;
 }
 /* Accounts title (niche) */
@@ -564,12 +565,12 @@ tr:not(:last-child) {
 }
 
 /* FINAL FIX - Help Desk same everywhere */
+/* FINAL FIX - Help Desk same everywhere */
 .header-text h2 {
-    font-size: 28px !important;
-    font-weight: 700 !important;   /* 🔥 ab proper bold */
+    font-size: 32px !important;   /* 🔥 thoda aur bada */
+    font-weight: 700 !important;
     margin-bottom: 8px;
 }
-
 .header-text h1 {
     font-size: 36px;
     font-weight: 700;
@@ -608,9 +609,10 @@ tr:not(:last-child) {
 
 /* Help Desk (light) */
 /* FINAL FIX - Help Desk same everywhere */
+/* FINAL FIX - Help Desk same everywhere */
 .header-text h2 {
-    font-size: 28px !important;
-    font-weight: 700 !important;   /* 🔥 ab proper bold */
+    font-size: 32px !important;   /* 🔥 thoda aur bada */
+    font-weight: 700 !important;
     margin-bottom: 8px;
 }
 /* Main title */
