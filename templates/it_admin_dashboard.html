@@ -22,7 +22,7 @@
     <!-- MAIN -->
     <main class="content" id="topDashboard">
 
-        <!-- ✅ HEADER WITH IMAGE -->
+        <!-- HEADER WITH BACKGROUND IMAGE -->
         <div class="header it-header">
             <div class="header-text">
                 <h2>Help Desk</h2>
@@ -33,6 +33,7 @@
         <!-- SEARCH -->
         <div class="search-box">
             <form method="get">
+
                 <input type="hidden" name="xid" value="IT_7LmQpR2XcV9zH4Bn8W5K3DyT">
 
                 <input type="hidden" name="priority" value="{{ priority }}">
@@ -50,6 +51,7 @@
 
         <!-- FILTERS -->
         <form method="get" class="filters">
+
             <input type="hidden" name="xid" value="IT_7LmQpR2XcV9zH4Bn8W5K3DyT">
             <input type="hidden" name="search" value="{{ search }}">
 
@@ -78,6 +80,7 @@
             <a href="?xid=IT_7LmQpR2XcV9zH4Bn8W5K3DyT" class="clear-btn">
                 <i class="fa fa-rotate-left"></i> Clear All
             </a>
+
         </form>
 
         <!-- CARDS -->
@@ -122,7 +125,7 @@
                         <th>Raised On</th>
                         <th>Estimated Resolved</th>
                         <th>Resolved On</th>
-                        <th>Solution</th>
+                        <th>Solution Provided</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -130,20 +133,24 @@
                 <tbody>
                 {% for t in recent_tickets %}
                     <tr>
-                        <td>{{ t.ticket_no }}</td>
+                        <td><i class="fa fa-ticket"></i> {{ t.ticket_no }}</td>
                         <td>{{ t.name }}</td>
                         <td>{{ t.issue_type }}</td>
 
                         <td>
-                            <span class="badge {{ t.priority|lower }}">
-                                {{ t.priority }}
-                            </span>
+                            {% if t.priority == "Urgent" %}
+                                <span class="badge urgent">Urgent</span>
+                            {% else %}
+                                <span class="badge normal">Normal</span>
+                            {% endif %}
                         </td>
 
                         <td>
-                            <span class="badge {{ t.status|lower }}">
-                                {{ t.status }}
-                            </span>
+                            {% if t.status == "Open" %}
+                                <span class="badge open">Open</span>
+                            {% else %}
+                                <span class="badge closed">Closed</span>
+                            {% endif %}
                         </td>
 
                         <td>{{ t.created_at|localtime|date:"d M Y h:i A" }}</td>

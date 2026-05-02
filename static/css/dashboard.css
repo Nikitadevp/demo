@@ -642,7 +642,6 @@ tr:not(:last-child) {
     background: rgba(0, 0, 0, 0.3);
 }
 
-/* IT HEADER IMAGE */
 .it-header {
     position: relative;
     height: 300px;
@@ -655,14 +654,12 @@ tr:not(:last-child) {
     overflow: hidden;
 }
 
-/* overlay */
 .it-header::before {
     content: "";
     position: absolute;
     inset: 0;
     background: rgba(0, 0, 0, 0.3);
 }
-
 
 /* ===== Mobile ===== */
 @media (max-width: 768px) {
