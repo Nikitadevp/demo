@@ -47,23 +47,6 @@ body {
     font-size: 15px;
 }
 
-/* HOVER */
-.sidebar .menu li a:hover {
-    background-color: #1e293b;
-    color: #ffffff !important;
-}
-
-/* ACTIVE */
-.sidebar .menu li.active a {
-    background-color: #2563eb;
-    color: #ffffff !important;
-    font-weight: 600;
-}
-
-/* ACTIVE ICON */
-.sidebar .menu li.active a i {
-    color: #ffffff !important;
-}
 
 /* MENU */
 .menu {
@@ -509,6 +492,8 @@ tr:not(:last-child) {
     z-index: 1;
 }
 
+/* ===== FINAL GLOBAL HEADER FIX (ALL DEPARTMENTS SAME) ===== */
+
 .header-text {
     position: relative;
     z-index: 1;
@@ -516,20 +501,17 @@ tr:not(:last-child) {
     color: #fff;
 }
 
-/* Help Desk (upar) */
-/* Help Desk (upar) */
-/* FINAL FIX - Help Desk same everywhere */
-/* FINAL FIX - Help Desk same everywhere */
+/* Help Desk */
 .header-text h2 {
-    font-size: 32px;
-    font-weight: 700;
+    font-size: 34px !important;
+    font-weight: 700 !important;
     margin-bottom: 8px;
 }
 
-/* Accounts title (niche) */
+/* Dashboard Title */
 .header-text h1 {
-    font-size: 34px;   /* thoda adjust */
-    font-weight: 800;
+    font-size: 38px !important;
+    font-weight: 800 !important;
 }
 
 /* CONSTRUCTION HEADER IMAGE */
@@ -557,25 +539,7 @@ tr:not(:last-child) {
     background: rgba(0, 0, 0, 0.3);
 }
 
-/* text */
-.header-text {
-    position: relative;
-    z-index: 1;
-    text-align: center;
-    color: #fff;
-}
-
-/* FINAL FIX - Help Desk same everywhere */
-/* FINAL FIX - Help Desk same everywhere */
-.header-text h2 {
-    font-size: 32px;
-    font-weight: 700;
-    margin-bottom: 8px;
-}
-.header-text h1 {
-    font-size: 36px;
-    font-weight: 700;
-}
+/* ===== FINAL GLOBAL HEADER FIX (ALL DEPARTMENTS SAME) ===== */
 
 
 /* CRM HO HEADER IMAGE */
@@ -601,26 +565,6 @@ tr:not(:last-child) {
 }
 
 /* TEXT SAME AS AF */
-.header-text {
-    position: relative;
-    z-index: 1;
-    text-align: center;
-    color: #fff;
-}
-
-/* Help Desk (light) */
-/* FINAL FIX - Help Desk same everywhere */
-/* FINAL FIX - Help Desk same everywhere */
-.header-text h2 {
-    font-size: 32px;
-    font-weight: 700;
-    margin-bottom: 8px;
-}
-/* Main title */
-.header-text h1 {
-    font-size: 36px;
-    font-weight: 700;
-}
 
 
 /* HR HEADER IMAGE */
