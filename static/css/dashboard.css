@@ -519,8 +519,8 @@ tr:not(:last-child) {
 /* Help Desk (upar) */
 /* Help Desk (upar) */
 .header-text h2 {
-    font-size: 32px;     /* thoda balanced size */
-    font-weight: 400;    /* bold kam (pehle 800 tha) */
+    font-size: 28px;     /* thoda balanced size */
+    font-weight: 600;    /* bold kam (pehle 800 tha) */
     margin-bottom: 8px;
     letter-spacing: 1px;
 }
@@ -608,7 +608,7 @@ tr:not(:last-child) {
 /* Help Desk (light) */
 .header-text h2 {
     font-size: 26px;
-    font-weight: 500;   /* 🔥 halka */
+    font-weight: 600;   /* 🔥 halka */
     margin-bottom: 6px;
 }
 
