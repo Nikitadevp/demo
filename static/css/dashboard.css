@@ -632,7 +632,26 @@ tr:not(:last-child) {
     background: rgba(0,0,0,0.3);
 }
 
+/* PURCHASE HEADER IMAGE */
+.purchase-header {
+    position: relative;
+    height: 300px;
+    background: url("../images/purchase_img.jpg") no-repeat center center/cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    overflow: hidden;
+}
 
+/* overlay */
+.purchase-header::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.3);
+}
 
 
 /* ===== Mobile ===== */
