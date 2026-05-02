@@ -7,7 +7,10 @@
     <title>Project Planning Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <!-- CSS -->
     <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+
+    <!-- Font Awesome -->
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
@@ -16,37 +19,40 @@
 
 <div class="layout">
 
-    <aside class="sidebar">
-        <ul class="menu">
-            <li><a href="#topDashboard"><i class="fa fa-chart-line"></i> Dashboard</a></li>
-            <li><a href="#ticketSection"><i class="fa fa-ticket"></i> Tickets</a></li>
-        </ul>
-    </aside>
-
+    <!-- MAIN -->
     <main class="content" id="topDashboard">
 
-        <div class="header">
-            <h1>Project Planning Dashboard</h1>
+        <!-- HEADER -->
+        <div class="header pp-header">
+            <div class="header-text">
+                <h2>Help Desk</h2>
+                <h1>Project Planning Dashboard</h1>
+            </div>
         </div>
 
-        <!-- 🔍 SEARCH -->
+        <!-- SEARCH -->
         <div class="search-box">
             <form method="get">
-                <input type="hidden" name="xid" value="PP_83kdLx9WmT4QpZ7N2rH5">
+
+                <input type="hidden" name="xid" value="PP_92ksLxPq7ZtF3HjW8mR4vB1uN5yQ">
+
                 <input type="hidden" name="priority" value="{{ priority }}">
                 <input type="hidden" name="status" value="{{ status }}">
                 <input type="hidden" name="from_date" value="{{ from_date }}">
                 <input type="hidden" name="to_date" value="{{ to_date }}">
 
-                <input type="text" name="search" value="{{ search }}"
+                <input type="text"
+                       name="search"
+                       value="{{ search }}"
                        placeholder="🔍 Search Ticket / Name / Issue"
                        onblur="this.form.submit()">
             </form>
         </div>
 
-        <!-- 🎯 FILTERS -->
+        <!-- FILTERS -->
         <form method="get" class="filters">
-            <input type="hidden" name="xid" value="PP_83kdLx9WmT4QpZ7N2rH5">
+
+            <input type="hidden" name="xid" value="PP_92ksLxPq7ZtF3HjW8mR4vB1uN5yQ">
             <input type="hidden" name="search" value="{{ search }}">
 
             <select name="priority" onchange="this.form.submit()">
@@ -71,35 +77,55 @@
                 <input type="date" name="to_date" value="{{ to_date }}" onchange="this.form.submit()">
             </div>
 
-            <a href="?xid=PP_83kdLx9WmT4QpZ7N2rH5" class="clear-btn">
-                <i class="fa fa-rotate-left"></i> Clear
+            <a href="?xid=PP_92ksLxPq7ZtF3HjW8mR4vB1uN5yQ" class="clear-btn">
+                <i class="fa fa-rotate-left"></i> Clear All
             </a>
+
         </form>
 
-        <!-- 📊 CARDS -->
+        <!-- CARDS -->
         <div class="cards">
-            <div class="card total"><span>Total</span><b>{{ total_tickets }}</b></div>
-            <div class="card open"><span>Open</span><b>{{ open_tickets }}</b></div>
-            <div class="card closed"><span>Closed</span><b>{{ closed_tickets }}</b></div>
-            <div class="card urgent"><span>Urgent</span><b>{{ urgent_tickets }}</b></div>
+            <div class="card total">
+                <i class="fa fa-layer-group"></i>
+                <span>Total Tickets</span>
+                <b>{{ total_tickets }}</b>
+            </div>
+
+            <div class="card open">
+                <i class="fa fa-folder-open"></i>
+                <span>Open</span>
+                <b>{{ open_tickets }}</b>
+            </div>
+
+            <div class="card closed">
+                <i class="fa fa-circle-check"></i>
+                <span>Closed</span>
+                <b>{{ closed_tickets }}</b>
+            </div>
+
+            <div class="card urgent">
+                <i class="fa fa-triangle-exclamation"></i>
+                <span>Urgent</span>
+                <b>{{ urgent_tickets }}</b>
+            </div>
         </div>
 
-        <!-- 📋 TABLE -->
+        <!-- TABLE -->
         <div class="table-box" id="ticketSection">
-            <h2>Project Planning Tickets</h2>
+            <h2>Project Planning Recent Tickets</h2>
 
             <table>
                 <thead>
                     <tr>
-                        <th>Ticket</th>
-                        <th>Name</th>
-                        <th>Issue</th>
+                        <th>Ticket Id</th>
+                        <th>Raised By</th>
+                        <th>Issue Details</th>
                         <th>Priority</th>
                         <th>Status</th>
-                        <th>Created</th>
-                        <th>TAT</th>
-                        <th>Resolved</th>
-                        <th>Solution</th>
+                        <th>Raised On</th>
+                        <th>Estimated Resolved</th>
+                        <th>Resolved On</th>
+                        <th>Solution Provided</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -112,19 +138,15 @@
                         <td>{{ t.issue_type }}</td>
 
                         <td>
-                            {% if t.priority == "Urgent" %}
-                                <span class="badge urgent">Urgent</span>
-                            {% else %}
-                                <span class="badge normal">Normal</span>
-                            {% endif %}
+                            <span class="badge {{ t.priority|lower }}">
+                                {{ t.priority }}
+                            </span>
                         </td>
 
                         <td>
-                            {% if t.status == "Open" %}
-                                <span class="badge open">Open</span>
-                            {% else %}
-                                <span class="badge closed">Closed</span>
-                            {% endif %}
+                            <span class="badge {{ t.status|lower }}">
+                                {{ t.status }}
+                            </span>
                         </td>
 
                         <td>{{ t.created_at|localtime|date:"d M Y h:i A" }}</td>
@@ -135,7 +157,9 @@
 
                         <td>
                             {% if t.status == "Open" %}
-                                <a href="{% url 'resolve_ticket' t.ticket_no %}" class="resolve-btn">Resolve</a>
+                                <a href="{% url 'resolve_ticket' t.ticket_no %}" class="resolve-btn">
+                                    Resolve
+                                </a>
                             {% else %}
                                 <span class="badge closed">Done</span>
                             {% endif %}
