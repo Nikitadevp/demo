@@ -7,16 +7,26 @@
     <title>Accounts & Finance Leave Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <!-- CSS -->
     <link rel="stylesheet" href="{% static 'css/leave_admin_dashboard.css' %}">
+
+    <!-- Font Awesome -->
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
 
 <div class="container">
-    <h1>Accounts & Finance Leave Dashboard</h1>
 
-    <!-- Search -->                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+    <!-- ✅ HEADER IMAGE -->
+    <div class="header af-header">
+        <div class="header-text">
+            <h2>Help Desk</h2>
+            <h1>Accounts & Finance Leave Dashboard</h1>
+        </div>
+    </div>
+
+    <!-- SEARCH -->
     <div class="search-box">
         <form method="get" id="searchForm">
             <input type="hidden" name="key" value="leave123">
@@ -32,7 +42,7 @@
         </form>
     </div>
 
-    <!-- Filters -->
+    <!-- FILTERS -->
     <form method="get" class="search-box">
         <input type="hidden" name="key" value="leave123">
         <input type="hidden" name="search" value="{{ search }}">
@@ -44,20 +54,13 @@
             <option value="Rejected" {% if status == "Rejected" %}selected{% endif %}>Rejected</option>
         </select>
 
-        <input type="date"
-               name="from_date"
-               value="{{ from_date }}"
-               onchange="this.form.submit()">
-
-        <input type="date"
-               name="to_date"
-               value="{{ to_date }}"
-               onchange="this.form.submit()">
+        <input type="date" name="from_date" value="{{ from_date }}" onchange="this.form.submit()">
+        <input type="date" name="to_date" value="{{ to_date }}" onchange="this.form.submit()">
 
         <a href="?key=leave123" class="clear-btn">Clear</a>
     </form>
 
-    <!-- Cards -->
+    <!-- CARDS -->
     <div class="cards">
         <div class="card total">Total: {{ total_requests }}</div>
         <div class="card pending">Pending: {{ pending_requests }}</div>
@@ -65,7 +68,7 @@
         <div class="card rejected">Rejected: {{ rejected_requests }}</div>
     </div>
 
-    <!-- Table -->
+    <!-- TABLE -->
     <div class="table-wrapper">
         <table>
             <thead>
@@ -102,7 +105,6 @@
                         {% endif %}
                     </td>
 
-                    <!-- ✅ Reason -->
                     <td>{{ leave.reason }}</td>
 
                     <td class="{% if leave.status == 'Approved' %}status-approved{% elif leave.status == 'Rejected' %}status-rejected{% else %}status-pending{% endif %}">
@@ -125,6 +127,7 @@
             </tbody>
         </table>
     </div>
+
 </div>
 
 </body>
