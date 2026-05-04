@@ -14,12 +14,19 @@
 <body>
 
 <div class="container">
-    <h1>Purchase Leave Dashboard</h1>
+
+    <!-- ✅ HEADER IMAGE -->
+    <div class="header purchase-header">
+        <div class="header-text">
+            <h1>Purchase Leave Dashboard</h1>
+        </div>
+    </div>
 
     <!-- Search -->
     <div class="search-box">
-        <form method="get" id="searchForm">
-            <input type="hidden" name="key" value="pur123">
+        <form method="get">
+            <input type="hidden" name="key" value="purchase123">
+
             <input type="hidden" name="status" value="{{ status }}">
             <input type="hidden" name="from_date" value="{{ from_date }}">
             <input type="hidden" name="to_date" value="{{ to_date }}">
@@ -34,7 +41,7 @@
 
     <!-- Filters -->
     <form method="get" class="search-box">
-        <input type="hidden" name="key" value="pur123">
+        <input type="hidden" name="key" value="purchase123">
         <input type="hidden" name="search" value="{{ search }}">
 
         <select name="status" onchange="this.form.submit()">
@@ -44,17 +51,10 @@
             <option value="Rejected" {% if status == "Rejected" %}selected{% endif %}>Rejected</option>
         </select>
 
-        <input type="date"
-               name="from_date"
-               value="{{ from_date }}"
-               onchange="this.form.submit()">
+        <input type="date" name="from_date" value="{{ from_date }}" onchange="this.form.submit()">
+        <input type="date" name="to_date" value="{{ to_date }}" onchange="this.form.submit()">
 
-        <input type="date"
-               name="to_date"
-               value="{{ to_date }}"
-               onchange="this.form.submit()">
-
-        <a href="?key=pur123" class="clear-btn">Clear</a>
+        <a href="?key=purchase123" class="clear-btn">Clear</a>
     </form>
 
     <!-- Cards -->
@@ -124,6 +124,7 @@
             </tbody>
         </table>
     </div>
+
 </div>
 
 </body>
