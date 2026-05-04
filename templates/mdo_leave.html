@@ -12,15 +12,18 @@
 <body>
 
 <div class="container">
-    <h1>MDO Leave Dashboard</h1>
+
+    <!-- ✅ HEADER IMAGE -->
+    <div class="header mdo-header">
+        <div class="header-text">
+            <h1>MDO Leave Dashboard</h1>
+        </div>
+    </div>
 
     <!-- Search -->
     <div class="search-box">
-        <form method="get" id="searchForm">
+        <form method="get">
             <input type="hidden" name="key" value="mdo123">
-            <input type="hidden" name="status" value="{{ status }}">
-            <input type="hidden" name="from_date" value="{{ from_date }}">
-            <input type="hidden" name="to_date" value="{{ to_date }}">
 
             <input type="text"
                    name="search"
@@ -33,17 +36,16 @@
     <!-- Filters -->
     <form method="get" class="search-box">
         <input type="hidden" name="key" value="mdo123">
-        <input type="hidden" name="search" value="{{ search }}">
 
         <select name="status" onchange="this.form.submit()">
             <option value="">All Status</option>
-            <option value="Pending" {% if status == "Pending" %}selected{% endif %}>Pending</option>
-            <option value="Approved" {% if status == "Approved" %}selected{% endif %}>Approved</option>
-            <option value="Rejected" {% if status == "Rejected" %}selected{% endif %}>Rejected</option>
+            <option value="Pending">Pending</option>
+            <option value="Approved">Approved</option>
+            <option value="Rejected">Rejected</option>
         </select>
 
-        <input type="date" name="from_date" value="{{ from_date }}" onchange="this.form.submit()">
-        <input type="date" name="to_date" value="{{ to_date }}" onchange="this.form.submit()">
+        <input type="date" name="from_date">
+        <input type="date" name="to_date">
 
         <a href="?key=mdo123" class="clear-btn">Clear</a>
     </form>
@@ -84,15 +86,7 @@
                     <td>{{ leave.leave_type }}</td>
                     <td>{{ leave.start_date }}</td>
                     <td>{{ leave.end_date }}</td>
-
-                    <td>
-                        {% if leave.leave_days == 0.5 %}
-                            0.5
-                        {% else %}
-                            {{ leave.leave_days|floatformat:0 }}
-                        {% endif %}
-                    </td>
-
+                    <td>{{ leave.leave_days }}</td>
                     <td>{{ leave.reason }}</td>
 
                     <td class="{% if leave.status == 'Approved' %}status-approved{% elif leave.status == 'Rejected' %}status-rejected{% else %}status-pending{% endif %}">
@@ -115,6 +109,7 @@
             </tbody>
         </table>
     </div>
+
 </div>
 
 </body>
