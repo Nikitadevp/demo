@@ -14,12 +14,19 @@
 <body>
 
 <div class="container">
-    <h1>HR and Admin Leave Dashboard</h1>
+
+    <!-- ✅ HEADER IMAGE -->
+    <div class="header hr-header">
+        <div class="header-text">
+            <h1>HR and Admin Leave Dashboard</h1>
+        </div>
+    </div>
 
     <!-- Search -->
     <div class="search-box">
-        <form method="get" id="searchForm">
+        <form method="get">
             <input type="hidden" name="key" value="hr123">
+
             <input type="hidden" name="status" value="{{ status }}">
             <input type="hidden" name="from_date" value="{{ from_date }}">
             <input type="hidden" name="to_date" value="{{ to_date }}">
@@ -44,15 +51,8 @@
             <option value="Rejected" {% if status == "Rejected" %}selected{% endif %}>Rejected</option>
         </select>
 
-        <input type="date"
-               name="from_date"
-               value="{{ from_date }}"
-               onchange="this.form.submit()">
-
-        <input type="date"
-               name="to_date"
-               value="{{ to_date }}"
-               onchange="this.form.submit()">
+        <input type="date" name="from_date" value="{{ from_date }}" onchange="this.form.submit()">
+        <input type="date" name="to_date" value="{{ to_date }}" onchange="this.form.submit()">
 
         <a href="?key=hr123" class="clear-btn">Clear</a>
     </form>
@@ -124,6 +124,7 @@
             </tbody>
         </table>
     </div>
+
 </div>
 
 </body>
