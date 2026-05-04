@@ -1,23 +1,48 @@
 {% load static %}
+{% load tz %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>DME Leave Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link rel="stylesheet" href="{% static 'css/leave_admin_dashboard.css' %}">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
 
 <div class="container">
-    <h1>DME Leave Dashboard</h1>
 
-    <form method="get" class="search-box" id="filterForm">
+    <!-- ✅ HEADER IMAGE -->
+    <div class="header dme-header">
+        <div class="header-text">
+            <h1>DME Leave Dashboard</h1>
+        </div>
+    </div>
+
+    <!-- Search -->
+    <div class="search-box">
+        <form method="get">
+            <input type="hidden" name="key" value="dme123">
+
+            <input type="hidden" name="status" value="{{ status }}">
+            <input type="hidden" name="from_date" value="{{ from_date }}">
+            <input type="hidden" name="to_date" value="{{ to_date }}">
+
+            <input type="text"
+                   name="search"
+                   value="{{ search }}"
+                   placeholder="🔍 Search Leave ID / Name"
+                   onblur="this.form.submit()">
+        </form>
+    </div>
+
+    <!-- Filters -->
+    <form method="get" class="search-box">
         <input type="hidden" name="key" value="dme123">
-
-        <input type="text"
-               name="search"
-               value="{{ search }}"
-               placeholder="Search Leave ID / Name"
-               onkeyup="delayedSearch()">
+        <input type="hidden" name="search" value="{{ search }}">
 
         <select name="status" onchange="this.form.submit()">
             <option value="">All Status</option>
@@ -26,19 +51,13 @@
             <option value="Rejected" {% if status == "Rejected" %}selected{% endif %}>Rejected</option>
         </select>
 
-        <input type="date"
-               name="from_date"
-               value="{{ from_date }}"
-               onchange="this.form.submit()">
-
-        <input type="date"
-               name="to_date"
-               value="{{ to_date }}"
-               onchange="this.form.submit()">
+        <input type="date" name="from_date" value="{{ from_date }}" onchange="this.form.submit()">
+        <input type="date" name="to_date" value="{{ to_date }}" onchange="this.form.submit()">
 
         <a href="?key=dme123" class="clear-btn">Clear</a>
     </form>
 
+    <!-- Cards -->
     <div class="cards">
         <div class="card total">Total: {{ total_requests }}</div>
         <div class="card pending">Pending: {{ pending_requests }}</div>
@@ -46,26 +65,31 @@
         <div class="card rejected">Rejected: {{ rejected_requests }}</div>
     </div>
 
+    <!-- Table -->
     <div class="table-wrapper">
         <table>
             <thead>
                 <tr>
                     <th>Leave ID</th>
                     <th>Name</th>
+                    <th>Department</th>
                     <th>Leave Type</th>
                     <th>Start</th>
                     <th>End</th>
                     <th>Days</th>
-                    <th>Reason</th>   
+                    <th>Reason</th>
                     <th>Status</th>
+                    <th>Request Date</th>
                     <th>Review</th>
                 </tr>
             </thead>
+
             <tbody>
                 {% for leave in leave_requests %}
                 <tr>
                     <td>{{ leave.leave_id }}</td>
                     <td>{{ leave.name }}</td>
+                    <td>{{ leave.department }}</td>
                     <td>{{ leave.leave_type }}</td>
                     <td>{{ leave.start_date }}</td>
                     <td>{{ leave.end_date }}</td>
@@ -78,38 +102,30 @@
                         {% endif %}
                     </td>
 
-                  
                     <td>{{ leave.reason }}</td>
 
                     <td class="{% if leave.status == 'Approved' %}status-approved{% elif leave.status == 'Rejected' %}status-rejected{% else %}status-pending{% endif %}">
                         {{ leave.status }}
                     </td>
 
+                    <td>{{ leave.request_date|localtime|date:"d M Y h:i A" }}</td>
+
                     <td>
-                        <a href="/review/{{ leave.leave_id }}/" class="resolve-btn">
-                            View
+                        <a href="/review/{{ leave.leave_id }}/" class="clear-btn">
+                            Review
                         </a>
                     </td>
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="9">No DME leave requests found</td>
+                    <td colspan="11">No leave requests found</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
-</div>
 
-<script>
-let timer;
-function delayedSearch() {
-    clearTimeout(timer);
-    timer = setTimeout(() => {
-        document.getElementById("filterForm").submit();
-    }, 800);
-}
-</script>
+</div>
 
 </body>
 </html>
