@@ -211,7 +211,7 @@ th {
 .header-text h1 {
     font-size: 34px;
     font-weight: 800;
-    color: #ffffff !important;   /* ✅ force white */
+    color: #ffffff !important;   /* force white */
 }
 
 /* ENGINEERING HEADER IMAGE */
@@ -244,114 +244,6 @@ th {
 }
 
 /* ONLY TITLE */
-.header-text h1 {
-    font-size: 36px;
-    font-weight: 800;
-    color: #fff;
-}
-
-/* DME HEADER IMAGE */
-.dme-header {
-    position: relative;
-    height: 300px;
-    background: url("../images/dme_img.PNG") no-repeat center center/cover;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 12px;
-    margin-bottom: 30px;
-    overflow: hidden;
-}
-
-/* overlay */
-.dme-header::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.3);
-}
-
-/* text */
-.header-text {
-    position: relative;
-    z-index: 1;
-    text-align: center;
-    color: #fff;
-}
-
-/* title */
-.header-text h1 {
-    font-size: 36px;
-    font-weight: 800;
-    color: #fff;
-}
-
-/* HR HEADER IMAGE */
-.hr-header {
-    position: relative;
-    height: 300px;
-    background: url("../images/hr_img.png") no-repeat center center/cover;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 12px;
-    margin-bottom: 30px;
-    overflow: hidden;
-}
-
-/* overlay */
-.hr-header::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.3);
-}
-
-/* text */
-.header-text {
-    position: relative;
-    z-index: 1;
-    text-align: center;
-    color: #fff;
-}
-
-/* title */
-.header-text h1 {
-    font-size: 36px;
-    font-weight: 800;
-    color: #fff;
-}
-
-/* PURCHASE HEADER IMAGE */
-.purchase-header {
-    position: relative;
-    height: 300px;
-    background: url("../images/purchase_img.jpg") no-repeat center center/cover;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 12px;
-    margin-bottom: 30px;
-    overflow: hidden;
-}
-
-/* overlay */
-.purchase-header::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.3);
-}
-
-/* text */
-.header-text {
-    position: relative;
-    z-index: 1;
-    text-align: center;
-    color: #fff;
-}
-
-/* title */
 .header-text h1 {
     font-size: 36px;
     font-weight: 800;
@@ -393,6 +285,7 @@ th {
     font-weight: 800;
     color: #fff;
 }
+
 
 
 /* Mobile */
