@@ -14,7 +14,13 @@
 <body>
 
 <div class="container">
-    <h1>Engineering Leave Dashboard</h1>
+
+    <!-- ✅ HEADER IMAGE (NO HELP DESK) -->
+    <div class="header eng-header">
+        <div class="header-text">
+            <h1>Engineering Leave Dashboard</h1>
+        </div>
+    </div>
 
     <!-- Search -->
     <div class="search-box">
@@ -86,6 +92,7 @@
                     <td>{{ leave.leave_type }}</td>
                     <td>{{ leave.start_date }}</td>
                     <td>{{ leave.end_date }}</td>
+
                     <td>
                         {% if leave.leave_days == 0.5 %}
                             0.5
@@ -94,7 +101,6 @@
                         {% endif %}
                     </td>
 
-                    <!-- Reason -->
                     <td>{{ leave.reason }}</td>
 
                     <td class="{% if leave.status == 'Approved' %}status-approved{% elif leave.status == 'Rejected' %}status-rejected{% else %}status-pending{% endif %}">
@@ -117,6 +123,7 @@
             </tbody>
         </table>
     </div>
+
 </div>
 
 </body>

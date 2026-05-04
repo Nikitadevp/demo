@@ -206,12 +206,54 @@ th {
     margin-bottom: 6px;
 }
 
+
 /* Title */
 .header-text h1 {
     font-size: 34px;
     font-weight: 800;
     color: #ffffff !important;   /* ✅ force white */
 }
+
+/* ENGINEERING HEADER IMAGE */
+.eng-header {
+    position: relative;
+    height: 300px;
+    background: url("../images/engineering.jpg") no-repeat center center/cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    overflow: hidden;
+}
+
+/* overlay */
+.eng-header::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+/* text */
+.header-text {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    color: #fff;
+}
+
+/* ONLY TITLE */
+.header-text h1 {
+    font-size: 36px;
+    font-weight: 800;
+    color: #fff;
+}
+
+
+
+
+
 /* Mobile */
 @media (max-width: 768px) {
     h1 {
