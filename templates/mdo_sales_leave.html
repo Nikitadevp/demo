@@ -8,16 +8,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="{% static 'css/leave_admin_dashboard.css' %}">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
 
 <div class="container">
-    <h1>MDO Sales Leave Dashboard</h1>
+
+    <!-- ✅ HEADER IMAGE -->
+    <div class="header mdos-header">
+        <div class="header-text">
+            <h1>MDO Sales Leave Dashboard</h1>
+        </div>
+    </div>
 
     <!-- Search -->
     <div class="search-box">
-        <form method="get" id="searchForm">
-            <input type="hidden" name="key" value="mdosales123">
+        <form method="get">
+            <input type="hidden" name="key" value="mdos123">
+
             <input type="hidden" name="status" value="{{ status }}">
             <input type="hidden" name="from_date" value="{{ from_date }}">
             <input type="hidden" name="to_date" value="{{ to_date }}">
@@ -32,7 +41,7 @@
 
     <!-- Filters -->
     <form method="get" class="search-box">
-        <input type="hidden" name="key" value="mdosales123">
+        <input type="hidden" name="key" value="mdos123">
         <input type="hidden" name="search" value="{{ search }}">
 
         <select name="status" onchange="this.form.submit()">
@@ -45,7 +54,7 @@
         <input type="date" name="from_date" value="{{ from_date }}" onchange="this.form.submit()">
         <input type="date" name="to_date" value="{{ to_date }}" onchange="this.form.submit()">
 
-        <a href="?key=mdosales123" class="clear-btn">Clear</a>
+        <a href="?key=mdos123" class="clear-btn">Clear</a>
     </form>
 
     <!-- Cards -->
@@ -115,6 +124,7 @@
             </tbody>
         </table>
     </div>
+
 </div>
 
 </body>
