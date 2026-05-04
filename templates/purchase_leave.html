@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Purchase Leave Dashboard</title>
+    <title>Sales Leave Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="{% static 'css/leave_admin_dashboard.css' %}">
@@ -16,16 +16,16 @@
 <div class="container">
 
     <!-- ✅ HEADER IMAGE -->
-    <div class="header purchase-header">
+    <div class="header sales-header">
         <div class="header-text">
-            <h1>Purchase Leave Dashboard</h1>
+            <h1>Sales Leave Dashboard</h1>
         </div>
     </div>
 
     <!-- Search -->
     <div class="search-box">
         <form method="get">
-            <input type="hidden" name="key" value="purchase123">
+            <input type="hidden" name="key" value="sales123">
 
             <input type="hidden" name="status" value="{{ status }}">
             <input type="hidden" name="from_date" value="{{ from_date }}">
@@ -41,7 +41,7 @@
 
     <!-- Filters -->
     <form method="get" class="search-box">
-        <input type="hidden" name="key" value="purchase123">
+        <input type="hidden" name="key" value="sales123">
         <input type="hidden" name="search" value="{{ search }}">
 
         <select name="status" onchange="this.form.submit()">
@@ -54,7 +54,7 @@
         <input type="date" name="from_date" value="{{ from_date }}" onchange="this.form.submit()">
         <input type="date" name="to_date" value="{{ to_date }}" onchange="this.form.submit()">
 
-        <a href="?key=purchase123" class="clear-btn">Clear</a>
+        <a href="?key=sales123" class="clear-btn">Clear</a>
     </form>
 
     <!-- Cards -->
