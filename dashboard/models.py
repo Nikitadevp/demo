@@ -112,3 +112,55 @@ class LeaveRequest(models.Model):
 
     def __str__(self):
         return f"{self.leave_id} - {self.name}"
+
+
+
+
+
+class CustomerQuery(models.Model):
+
+    TOWER_CHOICES = [
+        ('A', 'A'),
+        ('B', 'B'),
+        ('C', 'C'),
+        ('D', 'D'),
+        ('Non Tower', 'Non Tower'),
+        ('Amenities', 'Amenities'),
+    ]
+
+    AREA_CHOICES = [
+        ('STP Area', 'STP Area'),
+        ('Parking Area', 'Parking Area'),
+        ('Temple Area', 'Temple Area'),
+        ('Club House', 'Club House'),
+    ]
+
+    ISSUE_CHOICES = [
+        ('Civil', 'Civil'),
+        ('Plumbing', 'Plumbing'),
+        ('Waterproofing', 'Waterproofing'),
+        ('Door and Windows', 'Door and Windows'),
+        ('Flooring', 'Flooring'),
+        ('Maintenance Sampoorna', 'Maintenance Sampoorna'),
+    ]
+
+    email = models.EmailField()
+    name = models.CharField(max_length=100)
+    contact = models.CharField(max_length=15)
+    whatsapp = models.CharField(max_length=15, blank=True, null=True)
+
+    block = models.CharField(max_length=50)
+    flat = models.CharField(max_length=50)
+
+    tower = models.CharField(max_length=50, choices=TOWER_CHOICES)
+    area = models.CharField(max_length=50, choices=AREA_CHOICES)
+    issue = models.CharField(max_length=100, choices=ISSUE_CHOICES)
+
+    problem = models.TextField()
+
+    photo = models.ImageField(upload_to='customer_photos/', blank=True, null=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name

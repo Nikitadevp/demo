@@ -17,6 +17,7 @@ from django.http import HttpResponseForbidden
 from django.db.models import Case, When, Value, IntegerField, Q
 from datetime import datetime
 from django.core.paginator import Paginator
+from .models import CustomerQuery
 
 
 
@@ -1780,3 +1781,34 @@ def mdo_sales_leave_dashboard(request):
     }
 
     return render(request, "mdo_sales_leave.html", context)
+
+
+
+
+
+
+
+def customer_query_form(request):
+
+    if request.method == "POST":
+        CustomerQuery.objects.create(
+            email=request.POST.get('email'),
+            name=request.POST.get('name'),
+            contact=request.POST.get('contact'),
+            whatsapp=request.POST.get('whatsapp'),
+
+            block=request.POST.get('block'),
+            flat=request.POST.get('flat'),
+
+            tower=request.POST.get('tower'),
+            area=request.POST.get('area'),
+            issue=request.POST.get('issue'),
+
+            problem=request.POST.get('problem'),
+            photo=request.FILES.get('photo')
+        )
+
+        return redirect('/customer-form/?success=1')
+
+    success = request.GET.get('success') == '1'
+    return render(request, 'customer_query_form.html', {"success": success})
