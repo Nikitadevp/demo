@@ -5,6 +5,7 @@ from . import views
 from .views import export_leave_csv
 
 
+
 urlpatterns = [
     #path('', views.dashboard, name='dashboard'),
    # path("", views.ticket_form, name="home"),   # 👈 Ye line change karo
@@ -37,9 +38,10 @@ urlpatterns = [
     path("it-admin-dashboard/", views.it_admin_dashboard, name="it_admin_dashboard"),
     path("project-planning-dashboard/", views.project_planning_dashboard, name="project_planning_dashboard"),
     path("purchase-security-dashboard/", views.purchase_security_dashboard, name="purchase_security_dashboard"),
+    path("customer-form/", views.customer_query_form, name="customer_form"),
 
 
     
 ]
     
-    
+

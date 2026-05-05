@@ -1786,7 +1786,7 @@ def mdo_sales_leave_dashboard(request):
 
 
 
-
+#customer_query_form
 
 def customer_query_form(request):
 

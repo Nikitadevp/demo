@@ -1,0 +1,150 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Segoe UI, sans-serif;
+}
+
+/* BODY */
+body{
+    background:#f4f6fb;
+}
+
+/* CONTAINER */
+.container{
+    width:100%;
+    max-width:600px;
+    margin:50px auto;
+    background:#ffffff;
+    padding:30px;
+    border-radius:12px;
+    box-shadow:0 6px 25px rgba(0,0,0,0.1);
+}
+
+/* LOGO */
+.logo-box{
+    text-align:center;
+    margin-bottom:15px;
+}
+
+.logo-box img{
+    width:100%;
+    max-width:450px;
+}
+
+/* TITLE */
+h2{
+    text-align:center;
+    margin-bottom:20px;
+    color:#333;
+}
+
+/* LABEL */
+label{
+    display:block;
+    margin-top:15px;
+    font-size:14px;
+    font-weight:600;
+    color:#444;
+}
+
+/* INPUT FIELDS */
+input,
+select,
+textarea{
+    width:100%;
+    padding:12px;
+    margin-top:6px;
+    border:1px solid #ccc;
+    border-radius:6px;
+    font-size:14px;
+    outline:none;
+    transition:0.3s;
+}
+
+/* FOCUS */
+input:focus,
+select:focus,
+textarea:focus{
+    border-color:#1976d2;
+    box-shadow:0 0 6px rgba(25,118,210,0.25);
+}
+
+/* TEXTAREA */
+textarea{
+    height:100px;
+    resize:none;
+}
+
+/* BUTTON */
+button{
+    width:100%;
+    margin-top:20px;
+    padding:13px;
+    background:#63b3a5;
+    color:white;
+    border:none;
+    border-radius:6px;
+    font-size:16px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover{
+    background:#4a8f83;
+}
+
+button:active{
+    transform:translateY(2px);
+}
+
+/* SUCCESS POPUP */
+.popup-overlay{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.5);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.popup-box{
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    text-align:center;
+    width:300px;
+}
+
+/* MOBILE */
+@media (max-width:768px){
+
+    .container{
+        width:90%;
+        margin:20px auto;
+        padding:20px;
+    }
+
+    .logo-box img{
+        max-width:280px;
+    }
+
+    h2{
+        font-size:18px;
+    }
+
+    input,
+    select,
+    textarea{
+        padding:10px;
+        font-size:13px;
+    }
+
+    button{
+        padding:12px;
+        font-size:14px;
+    }
+}

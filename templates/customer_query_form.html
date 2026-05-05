@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Customer Query</title>
+
+    <link rel="stylesheet" href="{% static 'css/customer_form.css' %}">
+
+    {% if success %}
+    <meta http-equiv="refresh" content="3;url=/customer-form/">
+    {% endif %}
+</head>
+
+<body>
+
+<div class="page-wrapper">
+
+    <div class="left-image-box">
+        <img src="{% static 'images/image1.JPG' %}">
+    </div>
+
+    <div class="container">
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="text" name="name" placeholder="Customer Name" required>
+            <input type="text" name="contact" placeholder="Contact Number" required>
+            <input type="text" name="whatsapp" placeholder="WhatsApp Number">
+
+            <input type="text" name="block" placeholder="Block" required>
+            <input type="text" name="flat" placeholder="Flat / Location" required>
+
+            <select name="tower" required>
+                <option value="">Tower</option>
+                <option>A</option><option>B</option><option>C</option>
+                <option>D</option><option>Non Tower</option><option>Amenities</option>
+            </select>
+
+            <select name="area" required>
+                <option value="">Area</option>
+                <option>STP Area</option><option>Parking Area</option>
+                <option>Temple Area</option><option>Club House</option>
+            </select>
+
+            <select name="issue" required>
+                <option value="">Issue</option>
+                <option>Civil</option><option>Plumbing</option>
+                <option>Waterproofing</option><option>Door and Windows</option>
+                <option>Flooring</option><option>Maintenance Sampoorna</option>
+            </select>
+
+            <textarea name="problem" placeholder="Problem"></textarea>
+
+            <input type="file" name="photo">
+
+            <button type="submit">Submit</button>
+
+        </form>
+
+    </div>
+</div>
+
+{% if success %}
+<div class="popup">Submitted Successfully</div>
+{% endif %}
+
+</body>
+</html>
