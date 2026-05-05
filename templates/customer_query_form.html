@@ -16,7 +16,7 @@
 
 <div class="container">
 
-    <!-- LOGO (optional, hata bhi sakti ho) -->
+    <!-- LOGO -->
     <div class="logo-box">
         <img src="{% static 'images/ticket_logo.JPG' %}" alt="Logo">
     </div>
@@ -26,24 +26,52 @@
     <form method="POST" enctype="multipart/form-data" action="{% url 'customer_form' %}">
         {% csrf_token %}
 
+        <!-- Email -->
         <label>Email *</label>
         <input type="email" name="email" required>
 
+        <!-- Name -->
         <label>Customer Name *</label>
         <input type="text" name="name" required>
 
+        <!-- Contact -->
         <label>Contact Number *</label>
         <input type="text" name="contact" placeholder="Without +91" required>
 
+        <!-- WhatsApp -->
         <label>WhatsApp Number</label>
         <input type="text" name="whatsapp">
 
+        <!-- BLOCK -->
         <label>Block *</label>
-        <input type="text" name="block" required>
+        <select name="block_select" id="block_select" onchange="toggleBlockOther()" required>
+            <option value="">Select</option>
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+            <option value="D">D</option>
+            <option value="Other">Other</option>
+        </select>
 
+        <input type="text" name="block_other" id="block_other"
+               placeholder="Enter Block"
+               style="display:none;">
+
+        <!-- FLAT -->
         <label>Flat / Location *</label>
-        <input type="text" name="flat" required>
+        <select name="flat_select" id="flat_select" onchange="toggleFlatOther()" required>
+            <option value="">Select</option>
+            <option value="101">101</option>
+            <option value="102">102</option>
+            <option value="103">103</option>
+            <option value="Other">Other</option>
+        </select>
 
+        <input type="text" name="flat_other" id="flat_other"
+               placeholder="Enter Flat / Location"
+               style="display:none;">
+
+        <!-- TOWER -->
         <label>Tower *</label>
         <select name="tower" required>
             <option value="">Select</option>
@@ -55,6 +83,7 @@
             <option>Amenities</option>
         </select>
 
+        <!-- AREA -->
         <label>Area *</label>
         <select name="area" required>
             <option value="">Select</option>
@@ -64,25 +93,29 @@
             <option>Club House</option>
         </select>
 
+        <!-- ISSUE -->
         <label>Issue Related With *</label>
         <select name="issue" required>
             <option value="">Select</option>
-            <option>Civil</option>
-            <option>Plumbing</option>
-            <option>Waterproofing</option>
+            <option>Civil Work</option>
+            <option>Plumbing Work</option>
+            <option>Waterproofing Work</option>
             <option>Door and Windows</option>
-            <option>Flooring</option>
-            <option>Maintenance Sampoorna</option>
+            <option>Flooring Work</option>
+            <option>Painting Work</option>
+            <option>Electrical Work</option>
         </select>
 
+        <!-- PROBLEM -->
         <label>Problem Facing *</label>
         <textarea name="problem" required></textarea>
 
-        <!-- FILE OPTIONAL (agar nahi chahiye to hata do) -->
+        <!-- FILE -->
         <label>Upload Photo</label>
         <input type="file" name="photo">
 
         <button type="submit">Submit</button>
+
     </form>
 
 </div>
@@ -96,6 +129,37 @@
     </div>
 </div>
 {% endif %}
+
+<!-- JAVASCRIPT -->
+<script>
+function toggleBlockOther() {
+    let select = document.getElementById("block_select");
+    let input = document.getElementById("block_other");
+
+    if (select.value === "Other") {
+        input.style.display = "block";
+        input.required = true;
+    } else {
+        input.style.display = "none";
+        input.required = false;
+        input.value = "";
+    }
+}
+
+function toggleFlatOther() {
+    let select = document.getElementById("flat_select");
+    let input = document.getElementById("flat_other");
+
+    if (select.value === "Other") {
+        input.style.display = "block";
+        input.required = true;
+    } else {
+        input.style.display = "none";
+        input.required = false;
+        input.value = "";
+    }
+}
+</script>
 
 </body>
 </html>

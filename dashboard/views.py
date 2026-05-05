@@ -1791,14 +1791,26 @@ def mdo_sales_leave_dashboard(request):
 def customer_query_form(request):
 
     if request.method == "POST":
+
+        #  BLOCK logic
+        block = request.POST.get("block_select")
+        if block == "Other":
+            block = request.POST.get("block_other")
+
+        #  FLAT logic
+        flat = request.POST.get("flat_select")
+        if flat == "Other":
+            flat = request.POST.get("flat_other")
+
+        #  SAVE DATA
         CustomerQuery.objects.create(
             email=request.POST.get('email'),
             name=request.POST.get('name'),
             contact=request.POST.get('contact'),
             whatsapp=request.POST.get('whatsapp'),
 
-            block=request.POST.get('block'),
-            flat=request.POST.get('flat'),
+            block=block,
+            flat=flat,
 
             tower=request.POST.get('tower'),
             area=request.POST.get('area'),
