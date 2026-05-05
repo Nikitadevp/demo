@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Customer Query</title>
+    <title>Customer Query Form</title>
 
     <link rel="stylesheet" href="{% static 'css/customer_form.css' %}">
 
@@ -14,57 +14,87 @@
 
 <body>
 
-<div class="page-wrapper">
+<div class="container">
 
-    <div class="left-image-box">
-        <img src="{% static 'images/image1.JPG' %}">
+    <!-- LOGO (optional, hata bhi sakti ho) -->
+    <div class="logo-box">
+        <img src="{% static 'images/ticket_logo.JPG' %}" alt="Logo">
     </div>
 
-    <div class="container">
+    <h2>Customer Query Form</h2>
 
-        <form method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
+    <form method="POST" enctype="multipart/form-data" action="{% url 'customer_form' %}">
+        {% csrf_token %}
 
-            <input type="email" name="email" placeholder="Email" required>
-            <input type="text" name="name" placeholder="Customer Name" required>
-            <input type="text" name="contact" placeholder="Contact Number" required>
-            <input type="text" name="whatsapp" placeholder="WhatsApp Number">
+        <label>Email *</label>
+        <input type="email" name="email" required>
 
-            <input type="text" name="block" placeholder="Block" required>
-            <input type="text" name="flat" placeholder="Flat / Location" required>
+        <label>Customer Name *</label>
+        <input type="text" name="name" required>
 
-            <select name="tower" required>
-                <option value="">Tower</option>
-                <option>A</option><option>B</option><option>C</option>
-                <option>D</option><option>Non Tower</option><option>Amenities</option>
-            </select>
+        <label>Contact Number *</label>
+        <input type="text" name="contact" placeholder="Without +91" required>
 
-            <select name="area" required>
-                <option value="">Area</option>
-                <option>STP Area</option><option>Parking Area</option>
-                <option>Temple Area</option><option>Club House</option>
-            </select>
+        <label>WhatsApp Number</label>
+        <input type="text" name="whatsapp">
 
-            <select name="issue" required>
-                <option value="">Issue</option>
-                <option>Civil</option><option>Plumbing</option>
-                <option>Waterproofing</option><option>Door and Windows</option>
-                <option>Flooring</option><option>Maintenance Sampoorna</option>
-            </select>
+        <label>Block *</label>
+        <input type="text" name="block" required>
 
-            <textarea name="problem" placeholder="Problem"></textarea>
+        <label>Flat / Location *</label>
+        <input type="text" name="flat" required>
 
-            <input type="file" name="photo">
+        <label>Tower *</label>
+        <select name="tower" required>
+            <option value="">Select</option>
+            <option>A</option>
+            <option>B</option>
+            <option>C</option>
+            <option>D</option>
+            <option>Non Tower</option>
+            <option>Amenities</option>
+        </select>
 
-            <button type="submit">Submit</button>
+        <label>Area *</label>
+        <select name="area" required>
+            <option value="">Select</option>
+            <option>STP Area</option>
+            <option>Parking Area</option>
+            <option>Temple Area</option>
+            <option>Club House</option>
+        </select>
 
-        </form>
+        <label>Issue Related With *</label>
+        <select name="issue" required>
+            <option value="">Select</option>
+            <option>Civil</option>
+            <option>Plumbing</option>
+            <option>Waterproofing</option>
+            <option>Door and Windows</option>
+            <option>Flooring</option>
+            <option>Maintenance Sampoorna</option>
+        </select>
 
-    </div>
+        <label>Problem Facing *</label>
+        <textarea name="problem" required></textarea>
+
+        <!-- FILE OPTIONAL (agar nahi chahiye to hata do) -->
+        <label>Upload Photo</label>
+        <input type="file" name="photo">
+
+        <button type="submit">Submit</button>
+    </form>
+
 </div>
 
+<!-- SUCCESS POPUP -->
 {% if success %}
-<div class="popup">Submitted Successfully</div>
+<div class="popup-overlay">
+    <div class="popup-box">
+        <h3>Submitted Successfully!</h3>
+        <p>Your query has been received.</p>
+    </div>
+</div>
 {% endif %}
 
 </body>
