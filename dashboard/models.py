@@ -116,8 +116,11 @@ class LeaveRequest(models.Model):
 
 
 
-
 class CustomerQuery(models.Model):
+
+    # ====================================
+    # TOWER CHOICES
+    # ====================================
 
     TOWER_CHOICES = [
         ('A', 'A'),
@@ -126,41 +129,180 @@ class CustomerQuery(models.Model):
         ('D', 'D'),
         ('Non Tower', 'Non Tower'),
         ('Amenities', 'Amenities'),
+        ('Other', 'Other'),
     ]
+
+    # ====================================
+    # AREA CHOICES
+    # ====================================
 
     AREA_CHOICES = [
         ('STP Area', 'STP Area'),
         ('Parking Area', 'Parking Area'),
         ('Temple Area', 'Temple Area'),
         ('Club House', 'Club House'),
+        ('Other', 'Other'),
     ]
+
+    # ====================================
+    # ISSUE CHOICES
+    # ====================================
 
     ISSUE_CHOICES = [
-        ('Civil', 'Civil'),
-        ('Plumbing', 'Plumbing'),
-        ('Waterproofing', 'Waterproofing'),
+        ('Civil Work', 'Civil Work'),
+        ('Plumbing Work', 'Plumbing Work'),
+        ('Waterproofing Work', 'Waterproofing Work'),
         ('Door and Windows', 'Door and Windows'),
-        ('Flooring', 'Flooring'),
-        ('Maintenance Sampoorna', 'Maintenance Sampoorna'),
+        ('Flooring Work', 'Flooring Work'),
+        ('Painting Work', 'Painting Work'),
+        ('Electrical Work', 'Electrical Work'),
+        ('Other', 'Other'),
     ]
 
+    # ====================================
+    # STATUS CHOICES
+    # ====================================
+
+    STATUS_CHOICES = [
+        ('Open', 'Open'),
+        ('In Progress', 'In Progress'),
+        ('Resolved', 'Resolved'),
+        ('Closed', 'Closed'),
+    ]
+
+    # ====================================
+    # TICKET DETAILS
+    # ====================================
+
+    ticket_id = models.CharField(
+        max_length=20,
+        unique=True,
+        blank=True
+    )
+
+    status = models.CharField(
+        max_length=50,
+        choices=STATUS_CHOICES,
+        default='Open'
+    )
+
+    # ====================================
+    # CUSTOMER DETAILS
+    # ====================================
+
     email = models.EmailField()
-    name = models.CharField(max_length=100)
-    contact = models.CharField(max_length=15)
-    whatsapp = models.CharField(max_length=15, blank=True, null=True)
 
-    block = models.CharField(max_length=50)
-    flat = models.CharField(max_length=50)
+    name = models.CharField(
+        max_length=100
+    )
 
-    tower = models.CharField(max_length=50, choices=TOWER_CHOICES)
-    area = models.CharField(max_length=50, choices=AREA_CHOICES)
-    issue = models.CharField(max_length=100, choices=ISSUE_CHOICES)
+    contact = models.CharField(
+        max_length=15
+    )
+
+    whatsapp = models.CharField(
+        max_length=15,
+        blank=True,
+        null=True
+    )
+
+    # ====================================
+    # LOCATION DETAILS
+    # ====================================
+
+    tower = models.CharField(
+        max_length=50,
+        choices=TOWER_CHOICES
+    )
+
+    other_tower = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True
+    )
+
+    flat = models.CharField(
+        max_length=100
+    )
+
+    area = models.CharField(
+        max_length=50,
+        choices=AREA_CHOICES
+    )
+
+    other_area = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True
+    )
+
+    # ====================================
+    # ISSUE DETAILS
+    # ====================================
+
+    issue = models.CharField(
+        max_length=100,
+        choices=ISSUE_CHOICES
+    )
+
+    other_issue = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True
+    )
 
     problem = models.TextField()
 
-    photo = models.ImageField(upload_to='customer_photos/', blank=True, null=True)
+    # ====================================
+    # PHOTO UPLOAD
+    # ====================================
 
-    created_at = models.DateTimeField(auto_now_add=True)
+    photo = models.ImageField(
+        upload_to='customer_photos/',
+        blank=True,
+        null=True
+    )
+
+    # ====================================
+    # TIME
+    # ====================================
+
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    updated_at = models.DateTimeField(
+        auto_now=True
+    )
+
+    # ====================================
+    # AUTO TICKET ID
+    # ====================================
+
+    def save(self, *args, **kwargs):
+
+        if not self.ticket_id:
+
+            last_ticket = CustomerQuery.objects.all().order_by('id').last()
+
+            if last_ticket:
+
+                last_id = int(last_ticket.ticket_id[2:])
+
+                new_id = last_id + 1
+
+            else:
+
+                new_id = 1
+
+            self.ticket_id = f"MT{new_id:04d}"
+
+        super().save(*args, **kwargs)
+
+    # ====================================
+    # SHOW IN ADMIN PANEL
+    # ====================================
 
     def __str__(self):
-        return self.name
+
+        return f"{self.ticket_id} - {self.name}"
