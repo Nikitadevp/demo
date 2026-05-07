@@ -68,7 +68,7 @@
 
         <p class="info-text">
 
-            Please enter your WhatsApp number so that the updates can be sent through WhatsApp.
+            Please enter your WhatsApp number so that updates can be sent through WhatsApp.
             <br>
             Mobile number should be entered without country code.
             <br>
@@ -134,49 +134,97 @@
 
         <p class="info-text">
 
-            If the issue is inside flat then enter flat number.
-            <br>
+            Enter your flat number if the issue is inside the flat.
+            <br><br>
 
-            If the issue is outside flat then enter area name like:
-            parking, staircase, lift, common area etc.
+            If the issue is outside the flat,
+            select area below or enter custom area in Other.
 
         </p>
 
+        <!-- FLAT INPUT -->
+
         <input type="text"
                name="flat"
-               placeholder="Enter Flat Number / Area Name"
-               required>
+               placeholder="Enter Flat Number (Optional for Area Issues)">
 
-        <!-- AREA -->
+        <!-- AREA OPTIONS -->
 
-        <label>Area *</label>
+        <div class="area-box">
 
-        <select name="area"
-                id="area"
-                onchange="toggleAreaOther()"
-                required>
+            <!-- STP -->
 
-            <option value="">Select Area</option>
+            <label class="radio-label">
 
-            <option value="STP Area">STP Area</option>
+                <input type="radio"
+                       name="area"
+                       value="STP Area"
+                       required>
 
-            <option value="Parking Area">Parking Area</option>
+                STP Area
 
-            <option value="Temple Area">Temple Area</option>
+            </label>
 
-            <option value="Club House">Club House</option>
+            <!-- PARKING -->
 
-            <option value="Other">Other</option>
+            <label class="radio-label">
 
-        </select>
+                <input type="radio"
+                       name="area"
+                       value="Parking Area">
 
-        <!-- OTHER AREA -->
+                Parking Area
 
-        <input type="text"
-               name="other_area"
-               id="other_area"
-               placeholder="Enter Other Area"
-               style="display:none;">
+            </label>
+
+            <!-- TEMPLE -->
+
+            <label class="radio-label">
+
+                <input type="radio"
+                       name="area"
+                       value="Temple Area">
+
+                Temple Area
+
+            </label>
+
+            <!-- CLUB HOUSE -->
+
+            <label class="radio-label">
+
+                <input type="radio"
+                       name="area"
+                       value="Club House">
+
+                Club House
+
+            </label>
+
+            <!-- OTHER -->
+
+            <div class="other-area-div">
+
+                <label class="radio-label">
+
+                    <input type="radio"
+                           name="area"
+                           value="Other"
+                           onclick="toggleAreaOther()">
+
+                    Other
+
+                </label>
+
+                <input type="text"
+                       name="other_area"
+                       id="other_area"
+                       placeholder="Enter Other Area"
+                       style="display:none;">
+
+            </div>
+
+        </div>
 
         <!-- ISSUE -->
 
@@ -220,7 +268,9 @@
         <label>Problem Facing *</label>
 
         <p class="info-text">
+
             Enter the problem description below.
+
         </p>
 
         <textarea name="problem"
@@ -236,7 +286,7 @@
             You can upload photos of the problematic area.
             <br>
 
-            This is optional; if you don't want to upload a photo, leave it blank.
+            This is optional; if you don't want to upload photo, leave it blank.
             <br>
 
             Upload 1 supported file. Max 10 MB.
@@ -247,7 +297,7 @@
                name="photo"
                accept="image/*">
 
-        <!-- SUBMIT BUTTON -->
+        <!-- BUTTON -->
 
         <button type="submit">
 
@@ -259,7 +309,7 @@
 
 </div>
 
-<!-- SUCCESS POPUP -->
+<!-- SUCCESS MESSAGE -->
 
 {% if success %}
 
@@ -308,33 +358,6 @@
         }
     }
 
-    // AREA OTHER
-
-    function toggleAreaOther() {
-
-        let area = document.getElementById("area");
-
-        let otherArea = document.getElementById("other_area");
-
-        if (area.value === "Other") {
-
-            otherArea.style.display = "block";
-
-            otherArea.required = true;
-
-        }
-
-        else {
-
-            otherArea.style.display = "none";
-
-            otherArea.required = false;
-
-            otherArea.value = "";
-
-        }
-    }
-
     // ISSUE OTHER
 
     function toggleIssueOther() {
@@ -361,6 +384,59 @@
 
         }
     }
+
+    // AREA OTHER
+
+    function toggleAreaOther() {
+
+        let otherInput = document.getElementById("other_area");
+
+        let otherRadio = document.querySelector(
+            'input[name="area"][value="Other"]'
+        );
+
+        if (otherRadio.checked) {
+
+            otherInput.style.display = "block";
+
+            otherInput.required = true;
+
+        }
+
+        else {
+
+            otherInput.style.display = "none";
+
+            otherInput.required = false;
+
+            otherInput.value = "";
+
+        }
+    }
+
+    // HIDE OTHER AREA INPUT
+
+    let radios = document.querySelectorAll('input[name="area"]');
+
+    radios.forEach(function(radio) {
+
+        radio.addEventListener('change', function() {
+
+            if (this.value !== "Other") {
+
+                let otherInput = document.getElementById("other_area");
+
+                otherInput.style.display = "none";
+
+                otherInput.required = false;
+
+                otherInput.value = "";
+
+            }
+
+        });
+
+    });
 
 </script>
 
