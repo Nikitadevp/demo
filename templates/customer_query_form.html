@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Customer Query Form</title>
@@ -23,98 +24,209 @@
 
     <h2>Customer Query Form</h2>
 
-    <form method="POST" enctype="multipart/form-data" action="{% url 'customer_form' %}">
+    <form method="POST"
+          enctype="multipart/form-data"
+          action="{% url 'customer_form' %}">
+
         {% csrf_token %}
 
-        <!-- Email -->
+        <!-- EMAIL -->
         <label>Email *</label>
-        <input type="email" name="email" required>
+        <input type="email"
+               name="email"
+               required>
 
-        <!-- Name -->
+        <!-- CUSTOMER NAME -->
         <label>Customer Name *</label>
-        <input type="text" name="name" required>
+        <input type="text"
+               name="name"
+               required>
 
-        <!-- Contact -->
+        <!-- CONTACT -->
         <label>Contact Number *</label>
-        <input type="text" name="contact" placeholder="Without +91" required>
 
-        <!-- WhatsApp -->
+        <p class="info-text">
+            Please enter your WhatsApp number so that the updates can be sent through WhatsApp
+            <br>
+            Mobile number should be entered without the country code
+            <br>
+            Make sure there should not be any blank space in mobile number
+        </p>
+
+        <input type="text"
+               name="contact"
+               maxlength="10"
+               placeholder="Enter Mobile Number"
+               required>
+
+        <!-- WHATSAPP -->
         <label>WhatsApp Number</label>
-        <input type="text" name="whatsapp">
+
+        <input type="text"
+               name="whatsapp"
+               maxlength="10"
+               placeholder="Enter WhatsApp Number">
 
         <!-- BLOCK -->
         <label>Block *</label>
-        <select name="block_select" id="block_select" onchange="toggleBlockOther()" required>
-            <option value="">Select</option>
+
+        <select name="tower" id="tower" onchange="toggleTowerOther()" required>
+
+            <option value="">Select Block</option>
+
             <option value="A">A</option>
+
             <option value="B">B</option>
+
             <option value="C">C</option>
+
             <option value="D">D</option>
+
+            <option value="Non Tower">Non Tower</option>
+
+            <option value="Amenities">Amenities</option>
+
             <option value="Other">Other</option>
+
         </select>
 
-        <input type="text" name="block_other" id="block_other"
-               placeholder="Enter Block"
+        <!-- OTHER BLOCK -->
+        <input type="text"
+               name="other_tower"
+               id="other_tower"
+               placeholder="Enter Other Block"
                style="display:none;">
 
-        <!-- FLAT -->
+        <!-- FLAT / LOCATION -->
         <label>Flat / Location *</label>
-        <select name="flat_select" id="flat_select" onchange="toggleFlatOther()" required>
-            <option value="">Select</option>
+
+        <p class="info-text">
+            Enter your flat number using the Others Option , if the problem is found inside the flat,
+            <br>
+            If the problem is outside the flat, write down the area name,
+            such as parking, staircase, common area, lift, etc.
+        </p>
+
+        <select name="flat_select"
+                id="flat_select"
+                onchange="toggleFlatOther()"
+                required>
+
+            <option value="">Select Flat / Location</option>
+
             <option value="101">101</option>
+
             <option value="102">102</option>
+
             <option value="103">103</option>
+
+            <option value="104">104</option>
+
             <option value="Other">Other</option>
+
         </select>
 
-        <input type="text" name="flat_other" id="flat_other"
+        <!-- OTHER FLAT -->
+        <input type="text"
+               name="flat_other"
+               id="flat_other"
                placeholder="Enter Flat / Location"
                style="display:none;">
 
-        <!-- TOWER -->
-        <label>Tower *</label>
-        <select name="tower" required>
-            <option value="">Select</option>
-            <option>A</option>
-            <option>B</option>
-            <option>C</option>
-            <option>D</option>
-            <option>Non Tower</option>
-            <option>Amenities</option>
-        </select>
-
         <!-- AREA -->
         <label>Area *</label>
-        <select name="area" required>
-            <option value="">Select</option>
-            <option>STP Area</option>
-            <option>Parking Area</option>
-            <option>Temple Area</option>
-            <option>Club House</option>
+
+        <select name="area"
+                id="area"
+                onchange="toggleAreaOther()"
+                required>
+
+            <option value="">Select Area</option>
+
+            <option value="STP Area">STP Area</option>
+
+            <option value="Parking Area">Parking Area</option>
+
+            <option value="Temple Area">Temple Area</option>
+
+            <option value="Club House">Club House</option>
+
+            <option value="Other">Other</option>
+
         </select>
 
+        <!-- OTHER AREA -->
+        <input type="text"
+               name="other_area"
+               id="other_area"
+               placeholder="Enter Other Area"
+               style="display:none;">
+
         <!-- ISSUE -->
-        <label>Issue Related With *</label>
-        <select name="issue" required>
-            <option value="">Select</option>
-            <option>Civil Work</option>
-            <option>Plumbing Work</option>
-            <option>Waterproofing Work</option>
-            <option>Door and Windows</option>
-            <option>Flooring Work</option>
-            <option>Painting Work</option>
-            <option>Electrical Work</option>
+        <label>Issue related with *</label>
+
+        <select name="issue"
+                id="issue"
+                onchange="toggleIssueOther()"
+                required>
+
+            <option value="">Select Issue</option>
+
+            <option value="Civil Work">Civil Work</option>
+
+            <option value="Plumbing Work">Plumbing Work</option>
+
+            <option value="Waterproofing Work">Waterproofing Work</option>
+
+            <option value="Door and Windows">Door and Windows</option>
+
+            <option value="Flooring Work">Flooring Work</option>
+
+            <option value="Painting Work">Painting Work</option>
+
+            <option value="Electrical Work">Electrical Work</option>
+
+            <option value="Other">Other</option>
+
         </select>
+
+        <!-- OTHER ISSUE -->
+        <input type="text"
+               name="other_issue"
+               id="other_issue"
+               placeholder="Enter Other Issue"
+               style="display:none;">
 
         <!-- PROBLEM -->
         <label>Problem Facing *</label>
-        <textarea name="problem" required></textarea>
 
-        <!-- FILE -->
+        <p class="info-text">
+            Enter the problem description below
+        </p>
+
+        <textarea name="problem"
+                  rows="5"
+                  required></textarea>
+
+        <!-- PHOTO -->
         <label>Upload Photo</label>
-        <input type="file" name="photo">
 
-        <button type="submit">Submit</button>
+        <p class="info-text">
+            You can upload photos of the problematic area
+            <br>
+            This is optional; if you don't want to upload a photo, leave it blank.
+            <br>
+            Upload 1 supported file. Max 10 MB.
+        </p>
+
+        <input type="file"
+               name="photo"
+               accept="image/*">
+
+        <!-- BUTTON -->
+        <button type="submit">
+            Submit
+        </button>
 
     </form>
 
@@ -122,43 +234,116 @@
 
 <!-- SUCCESS POPUP -->
 {% if success %}
+
 <div class="popup-overlay">
+
     <div class="popup-box">
+
         <h3>Submitted Successfully!</h3>
+
         <p>Your query has been received.</p>
+
     </div>
+
 </div>
+
 {% endif %}
 
 <!-- JAVASCRIPT -->
 <script>
-function toggleBlockOther() {
-    let select = document.getElementById("block_select");
-    let input = document.getElementById("block_other");
 
-    if (select.value === "Other") {
-        input.style.display = "block";
-        input.required = true;
-    } else {
-        input.style.display = "none";
-        input.required = false;
-        input.value = "";
+    // BLOCK OTHER
+
+    function toggleTowerOther() {
+
+        let tower = document.getElementById("tower");
+        let otherTower = document.getElementById("other_tower");
+
+        if (tower.value === "Other") {
+
+            otherTower.style.display = "block";
+            otherTower.required = true;
+
+        }
+
+        else {
+
+            otherTower.style.display = "none";
+            otherTower.required = false;
+            otherTower.value = "";
+
+        }
     }
-}
 
-function toggleFlatOther() {
-    let select = document.getElementById("flat_select");
-    let input = document.getElementById("flat_other");
+    // FLAT OTHER
 
-    if (select.value === "Other") {
-        input.style.display = "block";
-        input.required = true;
-    } else {
-        input.style.display = "none";
-        input.required = false;
-        input.value = "";
+    function toggleFlatOther() {
+
+        let flat = document.getElementById("flat_select");
+        let otherFlat = document.getElementById("flat_other");
+
+        if (flat.value === "Other") {
+
+            otherFlat.style.display = "block";
+            otherFlat.required = true;
+
+        }
+
+        else {
+
+            otherFlat.style.display = "none";
+            otherFlat.required = false;
+            otherFlat.value = "";
+
+        }
     }
-}
+
+    // AREA OTHER
+
+    function toggleAreaOther() {
+
+        let area = document.getElementById("area");
+        let otherArea = document.getElementById("other_area");
+
+        if (area.value === "Other") {
+
+            otherArea.style.display = "block";
+            otherArea.required = true;
+
+        }
+
+        else {
+
+            otherArea.style.display = "none";
+            otherArea.required = false;
+            otherArea.value = "";
+
+        }
+    }
+
+    // ISSUE OTHER
+
+    function toggleIssueOther() {
+
+        let issue = document.getElementById("issue");
+        let otherIssue = document.getElementById("other_issue");
+
+        if (issue.value === "Other") {
+
+            otherIssue.style.display = "block";
+            otherIssue.required = true;
+
+        }
+
+        else {
+
+            otherIssue.style.display = "none";
+            otherIssue.required = false;
+            otherIssue.value = "";
+
+        }
+    }
+
 </script>
 
 </body>
