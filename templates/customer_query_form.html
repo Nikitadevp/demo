@@ -3,14 +3,22 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
     <title>Customer Query Form</title>
 
-    <link rel="stylesheet" href="{% static 'css/customer_form.css' %}">
+    <link rel="stylesheet"
+          href="{% static 'css/customer_form.css' %}">
 
     {% if success %}
-    <meta http-equiv="refresh" content="3;url=/customer-form/">
+    <meta http-equiv="refresh"
+          content="3;url=/customer-form/">
     {% endif %}
+
 </head>
 
 <body>
@@ -18,11 +26,19 @@
 <div class="container">
 
     <!-- LOGO -->
+
     <div class="logo-box">
-        <img src="{% static 'images/ticket_logo.JPG' %}" alt="Logo">
+
+        <img src="{% static 'images/ticket_logo.JPG' %}"
+             alt="Logo">
+
     </div>
 
+    <!-- HEADING -->
+
     <h2>Customer Query Form</h2>
+
+    <!-- FORM -->
 
     <form method="POST"
           enctype="multipart/form-data"
@@ -31,46 +47,60 @@
         {% csrf_token %}
 
         <!-- EMAIL -->
+
         <label>Email *</label>
+
         <input type="email"
                name="email"
                required>
 
         <!-- CUSTOMER NAME -->
+
         <label>Customer Name *</label>
+
         <input type="text"
                name="name"
                required>
 
-        <!-- CONTACT -->
+        <!-- CONTACT NUMBER -->
+
         <label>Contact Number *</label>
 
         <p class="info-text">
-            Please enter your WhatsApp number so that the updates can be sent through WhatsApp
+
+            Please enter your WhatsApp number so that the updates can be sent through WhatsApp.
             <br>
-            Mobile number should be entered without the country code
+            Mobile number should be entered without country code.
             <br>
-            Make sure there should not be any blank space in mobile number
+            Make sure there should not be any blank space in mobile number.
+
         </p>
 
         <input type="text"
                name="contact"
                maxlength="10"
+               pattern="[0-9]{10}"
                placeholder="Enter Mobile Number"
                required>
 
         <!-- WHATSAPP -->
+
         <label>WhatsApp Number</label>
 
         <input type="text"
                name="whatsapp"
                maxlength="10"
+               pattern="[0-9]{10}"
                placeholder="Enter WhatsApp Number">
 
         <!-- BLOCK -->
+
         <label>Block *</label>
 
-        <select name="tower" id="tower" onchange="toggleTowerOther()" required>
+        <select name="tower"
+                id="tower"
+                onchange="toggleTowerOther()"
+                required>
 
             <option value="">Select Block</option>
 
@@ -91,6 +121,7 @@
         </select>
 
         <!-- OTHER BLOCK -->
+
         <input type="text"
                name="other_tower"
                id="other_tower"
@@ -98,42 +129,26 @@
                style="display:none;">
 
         <!-- FLAT / LOCATION -->
+
         <label>Flat / Location *</label>
 
         <p class="info-text">
-            Enter your flat number using the Others Option , if the problem is found inside the flat,
+
+            If the issue is inside flat then enter flat number.
             <br>
-            If the problem is outside the flat, write down the area name,
-            such as parking, staircase, common area, lift, etc.
+
+            If the issue is outside flat then enter area name like:
+            parking, staircase, lift, common area etc.
+
         </p>
 
-        <select name="flat_select"
-                id="flat_select"
-                onchange="toggleFlatOther()"
-                required>
-
-            <option value="">Select Flat / Location</option>
-
-            <option value="101">101</option>
-
-            <option value="102">102</option>
-
-            <option value="103">103</option>
-
-            <option value="104">104</option>
-
-            <option value="Other">Other</option>
-
-        </select>
-
-        <!-- OTHER FLAT -->
         <input type="text"
-               name="flat_other"
-               id="flat_other"
-               placeholder="Enter Flat / Location"
-               style="display:none;">
+               name="flat"
+               placeholder="Enter Flat Number / Area Name"
+               required>
 
         <!-- AREA -->
+
         <label>Area *</label>
 
         <select name="area"
@@ -156,6 +171,7 @@
         </select>
 
         <!-- OTHER AREA -->
+
         <input type="text"
                name="other_area"
                id="other_area"
@@ -163,7 +179,8 @@
                style="display:none;">
 
         <!-- ISSUE -->
-        <label>Issue related with *</label>
+
+        <label>Issue Related With *</label>
 
         <select name="issue"
                 id="issue"
@@ -191,6 +208,7 @@
         </select>
 
         <!-- OTHER ISSUE -->
+
         <input type="text"
                name="other_issue"
                id="other_issue"
@@ -198,10 +216,11 @@
                style="display:none;">
 
         <!-- PROBLEM -->
+
         <label>Problem Facing *</label>
 
         <p class="info-text">
-            Enter the problem description below
+            Enter the problem description below.
         </p>
 
         <textarea name="problem"
@@ -209,23 +228,31 @@
                   required></textarea>
 
         <!-- PHOTO -->
+
         <label>Upload Photo</label>
 
         <p class="info-text">
-            You can upload photos of the problematic area
+
+            You can upload photos of the problematic area.
             <br>
+
             This is optional; if you don't want to upload a photo, leave it blank.
             <br>
+
             Upload 1 supported file. Max 10 MB.
+
         </p>
 
         <input type="file"
                name="photo"
                accept="image/*">
 
-        <!-- BUTTON -->
+        <!-- SUBMIT BUTTON -->
+
         <button type="submit">
+
             Submit
+
         </button>
 
     </form>
@@ -233,6 +260,7 @@
 </div>
 
 <!-- SUCCESS POPUP -->
+
 {% if success %}
 
 <div class="popup-overlay">
@@ -250,6 +278,7 @@
 {% endif %}
 
 <!-- JAVASCRIPT -->
+
 <script>
 
     // BLOCK OTHER
@@ -257,11 +286,13 @@
     function toggleTowerOther() {
 
         let tower = document.getElementById("tower");
+
         let otherTower = document.getElementById("other_tower");
 
         if (tower.value === "Other") {
 
             otherTower.style.display = "block";
+
             otherTower.required = true;
 
         }
@@ -269,31 +300,10 @@
         else {
 
             otherTower.style.display = "none";
+
             otherTower.required = false;
+
             otherTower.value = "";
-
-        }
-    }
-
-    // FLAT OTHER
-
-    function toggleFlatOther() {
-
-        let flat = document.getElementById("flat_select");
-        let otherFlat = document.getElementById("flat_other");
-
-        if (flat.value === "Other") {
-
-            otherFlat.style.display = "block";
-            otherFlat.required = true;
-
-        }
-
-        else {
-
-            otherFlat.style.display = "none";
-            otherFlat.required = false;
-            otherFlat.value = "";
 
         }
     }
@@ -303,11 +313,13 @@
     function toggleAreaOther() {
 
         let area = document.getElementById("area");
+
         let otherArea = document.getElementById("other_area");
 
         if (area.value === "Other") {
 
             otherArea.style.display = "block";
+
             otherArea.required = true;
 
         }
@@ -315,7 +327,9 @@
         else {
 
             otherArea.style.display = "none";
+
             otherArea.required = false;
+
             otherArea.value = "";
 
         }
@@ -326,11 +340,13 @@
     function toggleIssueOther() {
 
         let issue = document.getElementById("issue");
+
         let otherIssue = document.getElementById("other_issue");
 
         if (issue.value === "Other") {
 
             otherIssue.style.display = "block";
+
             otherIssue.required = true;
 
         }
@@ -338,7 +354,9 @@
         else {
 
             otherIssue.style.display = "none";
+
             otherIssue.required = false;
+
             otherIssue.value = "";
 
         }
