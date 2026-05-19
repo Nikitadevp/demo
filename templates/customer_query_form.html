@@ -1,4 +1,5 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,11 +14,6 @@
 
     <link rel="stylesheet"
           href="{% static 'css/customer_form.css' %}">
-
-    {% if success %}
-    <meta http-equiv="refresh"
-          content="3;url=/customer-form/">
-    {% endif %}
 
 </head>
 
@@ -34,15 +30,14 @@
 
     </div>
 
-    <!-- HEADING -->
+    <!-- TITLE -->
 
     <h2>Customer Query Form</h2>
 
     <!-- FORM -->
 
     <form method="POST"
-          enctype="multipart/form-data"
-          action="{% url 'customer_form' %}">
+          enctype="multipart/form-data">
 
         {% csrf_token %}
 
@@ -54,7 +49,7 @@
                name="email"
                required>
 
-        <!-- CUSTOMER NAME -->
+        <!-- NAME -->
 
         <label>Customer Name *</label>
 
@@ -82,7 +77,6 @@
                name="contact"
                maxlength="10"
                pattern="[0-9]{10}"
-               placeholder="Enter Mobile Number"
                required>
 
         <!-- WHATSAPP -->
@@ -92,8 +86,7 @@
         <input type="text"
                name="whatsapp"
                maxlength="10"
-               pattern="[0-9]{10}"
-               placeholder="Enter WhatsApp Number">
+               pattern="[0-9]{10}">
 
         <!-- BLOCK -->
 
@@ -122,7 +115,7 @@
 
         </select>
 
-        <!-- OTHER BLOCK -->
+        <!-- OTHER TOWER -->
 
         <input type="text"
                name="other_tower"
@@ -130,18 +123,9 @@
                placeholder="Enter Other Block"
                style="display:none;">
 
-        <!-- FLAT / LOCATION -->
+        <!-- AREA -->
 
         <label>Flat / Location *</label>
-
-        <p class="info-text">
-
-            If issue is outside flat then select area below
-            or write custom area in Other.
-
-        </p>
-
-        <!-- AREA DROPDOWN -->
 
         <select name="area"
                 id="area"
@@ -211,12 +195,6 @@
 
         <label>Problem Facing *</label>
 
-        <p class="info-text">
-
-            Enter the problem description below.
-
-        </p>
-
         <textarea name="problem"
                   rows="5"
                   required></textarea>
@@ -225,23 +203,11 @@
 
         <label>Upload Photo</label>
 
-        <p class="info-text">
-
-            You can upload photos of the problematic area.
-            <br>
-
-            This is optional; if you don't want to upload photo, leave it blank.
-            <br>
-
-            Upload 1 supported file. Max 10 MB.
-
-        </p>
-
         <input type="file"
                name="photo"
                accept="image/*">
 
-        <!-- SUBMIT -->
+        <!-- BUTTON -->
 
         <button type="submit">
 
@@ -253,29 +219,9 @@
 
 </div>
 
-<!-- SUCCESS POPUP -->
-
-{% if success %}
-
-<div class="popup-overlay">
-
-    <div class="popup-box">
-
-        <h3>Submitted Successfully!</h3>
-
-        <p>Your query has been received.</p>
-
-    </div>
-
-</div>
-
-{% endif %}
-
 <!-- JAVASCRIPT -->
 
 <script>
-
-    // BLOCK OTHER
 
     function toggleTowerOther() {
 
@@ -287,22 +233,16 @@
 
             otherTower.style.display = "block";
 
-            otherTower.required = true;
-
         }
 
         else {
 
             otherTower.style.display = "none";
 
-            otherTower.required = false;
-
             otherTower.value = "";
 
         }
     }
-
-    // AREA OTHER
 
     function toggleAreaOther() {
 
@@ -314,22 +254,16 @@
 
             otherArea.style.display = "block";
 
-            otherArea.required = true;
-
         }
 
         else {
 
             otherArea.style.display = "none";
 
-            otherArea.required = false;
-
             otherArea.value = "";
 
         }
     }
-
-    // ISSUE OTHER
 
     function toggleIssueOther() {
 
@@ -341,15 +275,11 @@
 
             otherIssue.style.display = "block";
 
-            otherIssue.required = true;
-
         }
 
         else {
 
             otherIssue.style.display = "none";
-
-            otherIssue.required = false;
 
             otherIssue.value = "";
 
