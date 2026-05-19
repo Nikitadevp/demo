@@ -1792,35 +1792,89 @@ def customer_query_form(request):
 
     if request.method == "POST":
 
-        #  BLOCK logic
-        block = request.POST.get("block_select")
-        if block == "Other":
-            block = request.POST.get("block_other")
+        # =========================
+        # TOWER LOGIC
+        # =========================
 
-        #  FLAT logic
-        flat = request.POST.get("flat_select")
-        if flat == "Other":
-            flat = request.POST.get("flat_other")
+        tower = request.POST.get("tower")
 
-        #  SAVE DATA
+        other_tower = request.POST.get("other_tower")
+
+        if tower == "Other":
+            tower = other_tower
+
+        # =========================
+        # AREA LOGIC
+        # =========================
+
+        area = request.POST.get("area")
+
+        other_area = request.POST.get("other_area")
+
+        if area == "Other":
+            area = other_area
+
+        # =========================
+        # ISSUE LOGIC
+        # =========================
+
+        issue = request.POST.get("issue")
+
+        other_issue = request.POST.get("other_issue")
+
+        if issue == "Other":
+            issue = other_issue
+
+        # =========================
+        # SAVE DATA
+        # =========================
+
         CustomerQuery.objects.create(
-            email=request.POST.get('email'),
-            name=request.POST.get('name'),
-            contact=request.POST.get('contact'),
-            whatsapp=request.POST.get('whatsapp'),
 
-            block=block,
-            flat=flat,
+            email=request.POST.get("email"),
 
-            tower=request.POST.get('tower'),
-            area=request.POST.get('area'),
-            issue=request.POST.get('issue'),
+            name=request.POST.get("name"),
 
-            problem=request.POST.get('problem'),
-            photo=request.FILES.get('photo')
+            contact=request.POST.get("contact"),
+
+            whatsapp=request.POST.get("whatsapp"),
+
+            tower=tower,
+
+            other_tower=other_tower,
+
+            flat="",
+
+            area=area,
+
+            other_area=other_area,
+
+            issue=issue,
+
+            other_issue=other_issue,
+
+            problem=request.POST.get("problem"),
+
+            photo=request.FILES.get("photo")
+
         )
 
-        return redirect('/customer-form/?success=1')
+        # =========================
+        # SUCCESS REDIRECT
+        # =========================
 
-    success = request.GET.get('success') == '1'
-    return render(request, 'customer_query_form.html', {"success": success})
+        return redirect("/customer-form/?success=1")
+
+    # =========================
+    # SUCCESS MESSAGE
+    # =========================
+
+    success = request.GET.get("success") == "1"
+
+    return render(
+        request,
+        "customer_query_form.html",
+        {
+            "success": success
+        }
+    )

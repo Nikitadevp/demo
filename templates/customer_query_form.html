@@ -15,6 +15,11 @@
     <link rel="stylesheet"
           href="{% static 'css/customer_form.css' %}">
 
+    {% if success %}
+    <meta http-equiv="refresh"
+          content="3;url=/customer-form/">
+    {% endif %}
+
 </head>
 
 <body>
@@ -49,7 +54,7 @@
                name="email"
                required>
 
-        <!-- NAME -->
+        <!-- CUSTOMER NAME -->
 
         <label>Customer Name *</label>
 
@@ -77,6 +82,7 @@
                name="contact"
                maxlength="10"
                pattern="[0-9]{10}"
+               placeholder="Enter Mobile Number"
                required>
 
         <!-- WHATSAPP -->
@@ -86,7 +92,8 @@
         <input type="text"
                name="whatsapp"
                maxlength="10"
-               pattern="[0-9]{10}">
+               pattern="[0-9]{10}"
+               placeholder="Enter WhatsApp Number">
 
         <!-- BLOCK -->
 
@@ -115,7 +122,7 @@
 
         </select>
 
-        <!-- OTHER TOWER -->
+        <!-- OTHER BLOCK -->
 
         <input type="text"
                name="other_tower"
@@ -195,6 +202,12 @@
 
         <label>Problem Facing *</label>
 
+        <p class="info-text">
+
+            Enter the problem description below.
+
+        </p>
+
         <textarea name="problem"
                   rows="5"
                   required></textarea>
@@ -203,11 +216,23 @@
 
         <label>Upload Photo</label>
 
+        <p class="info-text">
+
+            You can upload photos of the problematic area.
+            <br>
+
+            This is optional; if you don't want to upload photo, leave it blank.
+            <br>
+
+            Upload 1 supported file. Max 10 MB.
+
+        </p>
+
         <input type="file"
                name="photo"
                accept="image/*">
 
-        <!-- BUTTON -->
+        <!-- SUBMIT BUTTON -->
 
         <button type="submit">
 
@@ -219,9 +244,36 @@
 
 </div>
 
+<!-- SUCCESS POPUP -->
+
+{% if success %}
+
+<div class="popup-overlay">
+
+    <div class="popup-box">
+
+        <h3>Submitted Successfully</h3>
+
+        <p>
+
+            Thank You For Contacting Us.
+            <br><br>
+
+            We Will Get Back To You Soon.
+
+        </p>
+
+    </div>
+
+</div>
+
+{% endif %}
+
 <!-- JAVASCRIPT -->
 
 <script>
+
+    // TOWER OTHER
 
     function toggleTowerOther() {
 
@@ -233,16 +285,22 @@
 
             otherTower.style.display = "block";
 
+            otherTower.required = true;
+
         }
 
         else {
 
             otherTower.style.display = "none";
 
+            otherTower.required = false;
+
             otherTower.value = "";
 
         }
     }
+
+    // AREA OTHER
 
     function toggleAreaOther() {
 
@@ -254,16 +312,22 @@
 
             otherArea.style.display = "block";
 
+            otherArea.required = true;
+
         }
 
         else {
 
             otherArea.style.display = "none";
 
+            otherArea.required = false;
+
             otherArea.value = "";
 
         }
     }
+
+    // ISSUE OTHER
 
     function toggleIssueOther() {
 
@@ -275,11 +339,15 @@
 
             otherIssue.style.display = "block";
 
+            otherIssue.required = true;
+
         }
 
         else {
 
             otherIssue.style.display = "none";
+
+            otherIssue.required = false;
 
             otherIssue.value = "";
 
