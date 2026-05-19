@@ -24,14 +24,13 @@ body{
 /* LOGO */
 .logo-box{
     text-align:center;
-    margin-bottom:15px;
+    margin-bottom:25px;
 }
 
 .logo-box img{
     width:100%;
-    max-width:450px;
+    max-width:650px;
 }
-
 /* TITLE */
 h2{
     text-align:center;
