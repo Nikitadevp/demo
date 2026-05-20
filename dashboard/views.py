@@ -1794,36 +1794,40 @@ def customer_query_form(request):
     if request.method == "POST":
 
         # =========================
-        # BLOCK / TOWER
+        # TOWER LOGIC
         # =========================
 
         tower = request.POST.get("tower")
-
         other_tower = request.POST.get("other_tower")
 
+        if tower == "Other":
+            tower = other_tower
+
         # =========================
-        # FLAT / LOCATION
+        # AREA LOGIC
         # =========================
 
-        flat = request.POST.get("flat")
-
+        area = request.POST.get("area")
         other_area = request.POST.get("other_area")
 
+        if area == "Other":
+            area = other_area
+
         # =========================
-        # ISSUE
+        # ISSUE LOGIC
         # =========================
 
         issue = request.POST.get("issue")
-
         other_issue = request.POST.get("other_issue")
+
+        if issue == "Other":
+            issue = other_issue
 
         # =========================
         # SAVE DATA
         # =========================
 
         CustomerQuery.objects.create(
-
-            # CUSTOMER DETAILS
 
             email=request.POST.get("email"),
 
@@ -1833,52 +1837,42 @@ def customer_query_form(request):
 
             whatsapp=request.POST.get("whatsapp"),
 
-            # BLOCK
-
             tower=tower,
 
             other_tower=other_tower,
 
-            # FLAT / LOCATION
+            flat="",
 
-            flat=flat,
-
-            area=flat,
+            area=area,
 
             other_area=other_area,
-
-            # ISSUE
 
             issue=issue,
 
             other_issue=other_issue,
 
-            # PROBLEM
-
             problem=request.POST.get("problem"),
-
-            # IMAGE
 
             photo=request.FILES.get("photo")
 
         )
 
-        # SUCCESS POPUP
+        # =========================
+        # SUCCESS REDIRECT
+        # =========================
 
         return redirect("/customer-form/?success=1")
 
     # =========================
-    # GET REQUEST
+    # SUCCESS MESSAGE
     # =========================
 
     success = request.GET.get("success") == "1"
 
     return render(
-
         request,
-
         "customer_query_form.html",
-
         {
             "success": success
         }
+    )
