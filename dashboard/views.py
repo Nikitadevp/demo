@@ -1788,48 +1788,42 @@ def mdo_sales_leave_dashboard(request):
 
 #customer_query_form
 
+
 def customer_query_form(request):
 
     if request.method == "POST":
 
         # =========================
-        # TOWER LOGIC
+        # BLOCK / TOWER
         # =========================
 
         tower = request.POST.get("tower")
 
         other_tower = request.POST.get("other_tower")
 
-        if tower == "Other":
-            tower = other_tower
-
         # =========================
-        # AREA LOGIC
+        # FLAT / LOCATION
         # =========================
 
-        area = request.POST.get("area")
+        flat = request.POST.get("flat")
 
         other_area = request.POST.get("other_area")
 
-        if area == "Other":
-            area = other_area
-
         # =========================
-        # ISSUE LOGIC
+        # ISSUE
         # =========================
 
         issue = request.POST.get("issue")
 
         other_issue = request.POST.get("other_issue")
 
-        if issue == "Other":
-            issue = other_issue
-
         # =========================
         # SAVE DATA
         # =========================
 
         CustomerQuery.objects.create(
+
+            # CUSTOMER DETAILS
 
             email=request.POST.get("email"),
 
@@ -1839,42 +1833,52 @@ def customer_query_form(request):
 
             whatsapp=request.POST.get("whatsapp"),
 
+            # BLOCK
+
             tower=tower,
 
             other_tower=other_tower,
 
-            flat="",
+            # FLAT / LOCATION
 
-            area=area,
+            flat=flat,
+
+            area=flat,
 
             other_area=other_area,
+
+            # ISSUE
 
             issue=issue,
 
             other_issue=other_issue,
 
+            # PROBLEM
+
             problem=request.POST.get("problem"),
+
+            # IMAGE
 
             photo=request.FILES.get("photo")
 
         )
 
-        # =========================
-        # SUCCESS REDIRECT
-        # =========================
+        # SUCCESS POPUP
 
         return redirect("/customer-form/?success=1")
 
     # =========================
-    # SUCCESS MESSAGE
+    # GET REQUEST
     # =========================
 
     success = request.GET.get("success") == "1"
 
     return render(
+
         request,
+
         "customer_query_form.html",
+
         {
             "success": success
         }
-    )
