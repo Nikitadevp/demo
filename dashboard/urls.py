@@ -41,6 +41,7 @@ urlpatterns = [
     path("customer-form/", views.customer_query_form, name="customer_form"),
 
 
+
     
 ]
     
