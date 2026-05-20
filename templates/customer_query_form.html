@@ -230,7 +230,24 @@
 
         <input type="file"
                name="photo"
+               id="photoInput"
                accept="image/*">
+
+        <!-- IMAGE PREVIEW -->
+
+        <div id="previewBox"
+             style="display:none; margin-top:15px;">
+
+            <img id="previewImage"
+                 src=""
+                 alt="Preview"
+                 style="width:120px;
+                        height:120px;
+                        object-fit:cover;
+                        border-radius:10px;
+                        border:1px solid #ccc;">
+
+        </div>
 
         <!-- SUBMIT BUTTON -->
 
@@ -353,6 +370,28 @@
 
         }
     }
+
+    // IMAGE PREVIEW
+
+    const photoInput = document.getElementById("photoInput");
+
+    const previewBox = document.getElementById("previewBox");
+
+    const previewImage = document.getElementById("previewImage");
+
+    photoInput.addEventListener("change", function(event) {
+
+        const file = event.target.files[0];
+
+        if (file) {
+
+            previewImage.src = URL.createObjectURL(file);
+
+            previewBox.style.display = "block";
+
+        }
+
+    });
 
 </script>
 
