@@ -1876,3 +1876,43 @@ def customer_query_form(request):
             "success": success
         }
     )
+
+
+
+
+def export_customer_queries(request):
+
+    response = HttpResponse(content_type='text/csv')
+
+    response['Content-Disposition'] = 'attachment; filename="customer_queries.csv"'
+
+    writer = csv.writer(response)
+
+    # HEADER
+
+    writer.writerow([
+        'Ticket ID',
+        'Name',
+        'Contact',
+        'Photo URL'
+    ])
+
+    # DATA
+
+    queries = CustomerQuery.objects.all()
+
+    for obj in queries:
+
+        photo_url = ""
+
+        if obj.photo:
+            photo_url = request.build_absolute_uri(obj.photo.url)
+
+        writer.writerow([
+            obj.ticket_id,
+            obj.name,
+            obj.contact,
+            photo_url
+        ])
+
+    return response
