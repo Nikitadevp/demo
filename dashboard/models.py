@@ -201,7 +201,7 @@ class CustomerQuery(models.Model):
     )
 
     whatsapp = models.CharField(
-        max_length=15,
+        max_length=10,
         blank=True,
         null=True
     )
