@@ -1826,7 +1826,7 @@ def customer_query_form(request):
         # =========================
         # SAVE DATA
         # =========================
-
+        print("FILES DATA:", request.FILES)
         CustomerQuery.objects.create(
 
             email=request.POST.get("email"),
