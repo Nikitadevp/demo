@@ -1826,7 +1826,8 @@ def customer_query_form(request):
         # =========================
         # SAVE DATA
         # =========================
-        print("FILES DATA:", request.FILES)
+        print("FILES:", request.FILES)
+        print("PHOTO:", request.FILES.get("photo"))
         CustomerQuery.objects.create(
 
             email=request.POST.get("email"),
