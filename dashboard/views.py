@@ -1787,8 +1787,6 @@ def mdo_sales_leave_dashboard(request):
 
 
 #customer_query_form
-
-
 def customer_query_form(request):
 
     if request.method == "POST":
@@ -1798,6 +1796,7 @@ def customer_query_form(request):
         # =========================
 
         tower = request.POST.get("tower")
+
         other_tower = request.POST.get("other_tower")
 
         if tower == "Other":
@@ -1808,6 +1807,7 @@ def customer_query_form(request):
         # =========================
 
         area = request.POST.get("area")
+
         other_area = request.POST.get("other_area")
 
         if area == "Other":
@@ -1818,17 +1818,27 @@ def customer_query_form(request):
         # =========================
 
         issue = request.POST.get("issue")
+
         other_issue = request.POST.get("other_issue")
 
         if issue == "Other":
             issue = other_issue
 
         # =========================
+        # PHOTO
+        # =========================
+
+        photo_file = request.FILES.get("photo")
+
+        print("FILES:", request.FILES)
+
+        print("PHOTO FILE:", photo_file)
+
+        # =========================
         # SAVE DATA
         # =========================
-        print("FILES:", request.FILES)
-        print("PHOTO:", request.FILES.get("photo"))
-        CustomerQuery.objects.create(
+
+        obj = CustomerQuery.objects.create(
 
             email=request.POST.get("email"),
 
@@ -1854,9 +1864,23 @@ def customer_query_form(request):
 
             problem=request.POST.get("problem"),
 
-            photo=request.FILES.get("photo")
+            photo=photo_file
 
         )
+
+        # =========================
+        # DEBUG CHECK
+        # =========================
+
+        print("PHOTO PATH:", obj.photo)
+
+        if obj.photo:
+
+            print("PHOTO URL:", obj.photo.url)
+
+        else:
+
+            print("NO PHOTO SAVED")
 
         # =========================
         # SUCCESS REDIRECT
@@ -1871,14 +1895,16 @@ def customer_query_form(request):
     success = request.GET.get("success") == "1"
 
     return render(
+
         request,
+
         "customer_query_form.html",
+
         {
             "success": success
         }
+
     )
-
-
 
 
 def export_customer_queries(request):
