@@ -9,10 +9,12 @@ https://docs.djangoproject.com/en/6.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
-
 from pathlib import Path
 import os
 import dj_database_url
+from dotenv import load_dotenv
+load_dotenv()
+
 
 
 
@@ -127,6 +129,9 @@ WSGI_APPLICATION = 'demo.wsgi.application'
 
 
 
+
+# this my real data i  am working on it 
+
 if "DATABASE_URL" in os.environ:
 
     DATABASES = {
@@ -144,6 +149,33 @@ else:
             "NAME": BASE_DIR / "db.sqlite3",
         }
     }
+
+#for test
+
+# if "DATABASE_URL" in os.environ:
+
+#     DATABASES = {
+#         "default": dj_database_url.config(
+#             conn_max_age=600,
+#             ssl_require=True
+#         ) 
+#     }
+
+# else:
+#     DATABASES = {
+#         "default": {
+#             "ENGINE": "django.db.backends.postgresql",
+#             "NAME": "demo_db",
+#             "USER": "postgres",
+#             "PASSWORD": "1234",
+#             "HOST": "localhost",
+#             "PORT": "5432",
+#         }
+#     }
+
+
+
+
 
 # DATABASES = {
 #     'default': dj_database_url.parse(
