@@ -18,6 +18,7 @@ from django.db.models import Case, When, Value, IntegerField, Q
 from datetime import datetime
 from django.core.paginator import Paginator
 from .models import CustomerQuery
+import csv
 
 
 
