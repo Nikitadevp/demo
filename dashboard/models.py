@@ -312,6 +312,9 @@ class CustomerQuery(models.Model):
         return f"{self.ticket_id} - {self.name}"  
 
 
+#MaintenanceScope
+
+
 class MaintenanceScope(models.Model):
 
     SCOPE_CHOICES = [
