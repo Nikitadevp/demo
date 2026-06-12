@@ -1,0 +1,124 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Maintenance Scope Form</title>
+
+    <link rel="stylesheet"
+          href="{% static 'css/maintenance_scope.css' %}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>Maintenance Scope Form</h2>
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <label>Email</label>
+
+        <input type="email"
+               value="jrdme.rbpl@rajat-group.com"
+               readonly>
+
+        <label>UID</label>
+
+        <input type="text"
+               value="{{ customer.id }}"
+               readonly>
+
+        <label>Case ID</label>
+
+        <input type="text"
+               value="{{ customer.ticket_id }}"
+               readonly>
+
+        <label>Customer Name</label>
+
+        <input type="text"
+               value="{{ customer.name }}"
+               readonly>
+
+        <label>Customer Contact</label>
+
+        <input type="text"
+               value="{{ customer.contact }}"
+               readonly>
+
+        <label>Block</label>
+
+        <input type="text"
+               value="{{ customer.tower }}"
+               readonly>
+
+        <label>Location</label>
+
+        <input type="text"
+               value="{{ customer.area }}"
+               readonly>
+
+        <label>Issue Related With</label>
+
+        <input type="text"
+               value="{{ customer.issue }}"
+               readonly>
+
+        <label>Issue Description</label>
+
+        <textarea readonly>{{ customer.problem }}</textarea>
+
+        <h3>Update the Scope</h3>
+
+        <p>
+            Update whether the raised issue comes under our scope or not
+        </p>
+
+        <label>
+            Is it comes under maintenance Scope?
+        </label>
+
+        <div class="radio-group">
+
+            <label>
+
+                <input type="radio"
+                       name="scope_status"
+                       value="Yes"
+                       required>
+
+                Yes
+
+            </label>
+
+            <label>
+
+                <input type="radio"
+                       name="scope_status"
+                       value="No">
+
+                No
+
+            </label>
+
+        </div>
+
+        <button type="submit">
+
+            Submit
+
+        </button>
+
+    </form>
+
+</div>
+
+</body>
+
+</html>

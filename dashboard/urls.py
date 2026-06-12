@@ -39,6 +39,7 @@ urlpatterns = [
     path("project-planning-dashboard/", views.project_planning_dashboard, name="project_planning_dashboard"),
     path("purchase-security-dashboard/", views.purchase_security_dashboard, name="purchase_security_dashboard"),
     path("customer-form/", views.customer_query_form, name="customer_form"),
+    path('maintenance-scope/<int:query_id>/', views.maintenance_scope_form, name='maintenance_scope_form'),
 
 
 
