@@ -17,7 +17,7 @@ from django.http import HttpResponseForbidden
 from django.db.models import Case, When, Value, IntegerField, Q
 from datetime import datetime
 from django.core.paginator import Paginator
-from .models import CustomerQuery
+from .models import CustomerQuery, MaintenanceScope
 import csv
 
 
@@ -1944,5 +1944,44 @@ def export_customer_queries(request):
         ])
 
     return response
+
+
+
+def maintenance_scope_form(request, query_id):
+
+    customer = get_object_or_404(
+        CustomerQuery,
+        id=query_id
+    )
+
+    if request.method == "POST":
+
+        scope_status = request.POST.get("scope_status")
+
+        MaintenanceScope.objects.create(
+            customer_query=customer,
+            email="jrdme.rbpl@rajat-group.com",
+            scope_status=scope_status
+        )
+
+        if scope_status == "Yes":
+
+            customer.status = "In Progress"
+
+        else:
+
+            customer.status = "Closed"
+
+        customer.save()
+
+        return redirect("/")
+
+    return render(
+        request,
+        "maintenance_scope.html",
+        {
+            "customer": customer
+        }
+    )
 
     
