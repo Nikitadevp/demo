@@ -165,6 +165,7 @@ class CustomerQuery(models.Model):
 
     STATUS_CHOICES = [
         ('Open', 'Open'),
+        ('Pending', 'Pending'),
         ('In Progress', 'In Progress'),
         ('Resolved', 'Resolved'),
         ('Closed', 'Closed'),
@@ -308,4 +309,35 @@ class CustomerQuery(models.Model):
 
     def __str__(self):
 
-        return f"{self.ticket_id} - {self.name}"
+        return f"{self.ticket_id} - {self.name}"  
+
+
+class MaintenanceScope(models.Model):
+
+    SCOPE_CHOICES = [
+        ('Yes', 'Yes'),
+        ('No', 'No'),
+    ]
+
+    customer_query = models.OneToOneField(
+        CustomerQuery,
+        on_delete=models.CASCADE,
+        related_name='scope_form'
+    )
+
+    email = models.EmailField(
+        default='jrdme.rbpl@rajat-group.com'
+    )
+
+    scope_status = models.CharField(
+        max_length=10,
+        choices=SCOPE_CHOICES
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    def __str__(self):
+        return f"{self.customer_query.ticket_id} - {self.scope_status}"
+    
