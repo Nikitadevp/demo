@@ -1973,7 +1973,7 @@ def maintenance_scope_form(request, query_id):
 
             block=customer.tower,
 
-            location=customer.flat,
+            location=customer.area,
 
             issue_related=customer.issue,
 
