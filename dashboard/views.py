@@ -1946,7 +1946,6 @@ def export_customer_queries(request):
     return response
 
 
-
 def maintenance_scope_form(request, query_id):
 
     customer = get_object_or_404(
@@ -1959,8 +1958,27 @@ def maintenance_scope_form(request, query_id):
         scope_status = request.POST.get("scope_status")
 
         MaintenanceScope.objects.create(
+
             customer_query=customer,
-            email="jrdme.rbpl@rajat-group.com",
+
+            email=customer.email,
+
+            uid=customer.id,
+
+            case_id=customer.ticket_id,
+
+            customer_name=customer.name,
+
+            customer_contact=customer.contact,
+
+            block=customer.tower,
+
+            location=customer.flat,
+
+            issue_related=customer.issue,
+
+            issue_description=customer.problem,
+
             scope_status=scope_status
         )
 
@@ -1983,5 +2001,3 @@ def maintenance_scope_form(request, query_id):
             "customer": customer
         }
     )
-
-    

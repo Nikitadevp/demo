@@ -314,7 +314,6 @@ class CustomerQuery(models.Model):
 
 #MaintenanceScope
 
-
 class MaintenanceScope(models.Model):
 
     SCOPE_CHOICES = [
@@ -328,10 +327,59 @@ class MaintenanceScope(models.Model):
         related_name='scope_form'
     )
 
+    # Prefilled Data
     email = models.EmailField(
-        default='jrdme.rbpl@rajat-group.com'
+        blank=True,
+        null=True
     )
 
+    uid = models.IntegerField(
+        blank=True,
+        null=True
+    )
+
+    case_id = models.CharField(
+        max_length=20,
+        blank=True,
+        null=True
+    )
+
+    customer_name = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True
+    )
+
+    customer_contact = models.CharField(
+        max_length=15,
+        blank=True,
+        null=True
+    )
+
+    block = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True
+    )
+
+    location = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True
+    )
+
+    issue_related = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True
+    )
+
+    issue_description = models.TextField(
+        blank=True,
+        null=True
+    )
+
+    # Scope Decision
     scope_status = models.CharField(
         max_length=10,
         choices=SCOPE_CHOICES
@@ -342,5 +390,5 @@ class MaintenanceScope(models.Model):
     )
 
     def __str__(self):
-        return f"{self.customer_query.ticket_id} - {self.scope_status}"
+        return f"{self.case_id} - {self.scope_status}"
     
