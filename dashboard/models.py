@@ -328,6 +328,52 @@ class MaintenanceScope(models.Model):
         related_name='scope_form'
     )
 
+    # ==========================
+    # PREFILLED DATA
+    # ==========================
+
+    ticket_id = models.CharField(
+        max_length=20,
+        default='NA'
+    )
+
+    customer_name = models.CharField(
+        max_length=100,
+        default='NA'
+    )
+
+    customer_email = models.EmailField(
+        default='test@test.com'
+    )
+
+    customer_contact = models.CharField(
+        max_length=15,
+        default='NA'
+    )
+
+    block = models.CharField(
+        max_length=100,
+        default='NA'
+    )
+
+    location = models.CharField(
+        max_length=100,
+        default='NA'
+    )
+
+    issue_related = models.CharField(
+        max_length=100,
+        default='NA'
+    )
+
+    issue_description = models.TextField(
+        default='NA'
+    )
+
+    # ==========================
+    # SCOPE FORM DATA
+    # ==========================
+
     email = models.EmailField(
         default='jrdme.rbpl@rajat-group.com'
     )
@@ -342,5 +388,5 @@ class MaintenanceScope(models.Model):
     )
 
     def __str__(self):
-        return f"{self.customer_query.ticket_id} - {self.scope_status}"
-    
+
+        return f"{self.ticket_id} - {self.scope_status}"
