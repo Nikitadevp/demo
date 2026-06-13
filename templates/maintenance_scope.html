@@ -22,11 +22,15 @@
 
         {% csrf_token %}
 
+        <!-- EMAIL -->
+
         <label>Email</label>
 
         <input type="email"
                value="jrdme.rbpl@rajat-group.com"
                readonly>
+
+        <!-- UID -->
 
         <label>UID</label>
 
@@ -34,11 +38,15 @@
                value="{{ customer.id }}"
                readonly>
 
+        <!-- CASE ID -->
+
         <label>Case ID</label>
 
         <input type="text"
                value="{{ customer.ticket_id }}"
                readonly>
+
+        <!-- CUSTOMER NAME -->
 
         <label>Customer Name</label>
 
@@ -46,11 +54,15 @@
                value="{{ customer.name }}"
                readonly>
 
+        <!-- CUSTOMER CONTACT -->
+
         <label>Customer Contact</label>
 
         <input type="text"
                value="{{ customer.contact }}"
                readonly>
+
+        <!-- BLOCK -->
 
         <label>Block</label>
 
@@ -58,11 +70,15 @@
                value="{{ customer.tower }}"
                readonly>
 
+        <!-- LOCATION -->
+
         <label>Location</label>
 
         <input type="text"
-               value="{{ customer.area }}"
+               value="{{ customer.flat }}"
                readonly>
+
+        <!-- ISSUE RELATED -->
 
         <label>Issue Related With</label>
 
@@ -70,14 +86,34 @@
                value="{{ customer.issue }}"
                readonly>
 
+        <!-- ISSUE DESCRIPTION -->
+
         <label>Issue Description</label>
 
         <textarea readonly>{{ customer.problem }}</textarea>
 
+        <!-- PHOTO -->
+
+        {% if customer.photo %}
+
+        <label>Uploaded Photo</label>
+
+        <div class="photo-preview">
+
+            <img src="{{ customer.photo.url }}"
+                 alt="Customer Photo"
+                 style="max-width:250px; border-radius:8px;">
+
+        </div>
+
+        {% endif %}
+
+        <hr>
+
         <h3>Update the Scope</h3>
 
         <p>
-            Update whether the raised issue comes under our scope or not
+            Update whether the raised issue comes under our scope or not.
         </p>
 
         <label>
