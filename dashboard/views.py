@@ -1998,6 +1998,7 @@ def maintenance_scope_form(request, query_id):
         request,
         "maintenance_scope.html",
         {
-            "customer": customer
+            "customer": customer,
+            "success": True
         }
     )
