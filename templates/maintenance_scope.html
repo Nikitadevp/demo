@@ -14,6 +14,8 @@
 
 <body>
 
+{% if not popup_message %}
+
 <div class="container">
 
     <h2>PHM SH Scope Form</h2>
@@ -102,34 +104,16 @@
 
 </div>
 
+{% endif %}
 
-{% if success %}
+
+{% if popup_message %}
 
 <div class="popup-overlay">
 
     <div class="popup-box">
 
-        {% if scope_status == "No" %}
-
-            <h3>Ticket Closed</h3>
-
-            <p>
-                Maintenance Ticket / Form is Closed.
-                <br><br>
-                Thank You.
-            </p>
-
-        {% else %}
-
-            <h3>Submitted Successfully</h3>
-
-            <p>
-                Form Submitted Successfully.
-                <br><br>
-                We Will Get Back To You Soon.
-            </p>
-
-        {% endif %}
+        <h3>{{ popup_message }}</h3>
 
     </div>
 
@@ -137,16 +121,15 @@
 
 <script>
 
-    setTimeout(function(){
+setTimeout(function(){
 
-        window.location.href = "/";
+    window.location.href = "/";
 
-    },3000);
+},3000);
 
 </script>
 
 {% endif %}
 
 </body>
-
 </html>
