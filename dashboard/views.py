@@ -1993,7 +1993,7 @@ def maintenance_scope_form(request, query_id):
 
         return render(
             request,
-            "maintenance_scope.html",
+            "scope_success.html",
             {
                 "popup_message": popup_message
             }
