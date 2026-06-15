@@ -23,55 +23,46 @@
         {% csrf_token %}
 
         <label>Email</label>
-
         <input type="email"
                value="{{ customer.email }}"
                readonly>
 
         <label>UID</label>
-
         <input type="text"
                value="{{ customer.id }}"
                readonly>
 
         <label>Case ID</label>
-
         <input type="text"
                value="{{ customer.ticket_id }}"
                readonly>
 
         <label>Customer Name</label>
-
         <input type="text"
                value="{{ customer.name }}"
                readonly>
 
         <label>Customer Contact</label>
-
         <input type="text"
                value="{{ customer.contact }}"
                readonly>
 
         <label>Block</label>
-
         <input type="text"
                value="{{ customer.tower }}"
                readonly>
 
         <label>Location</label>
-
         <input type="text"
                value="{{ customer.area }}"
                readonly>
 
         <label>Issue Related With</label>
-
         <input type="text"
                value="{{ customer.issue }}"
                readonly>
 
         <label>Issue Description</label>
-
         <textarea readonly>{{ customer.problem }}</textarea>
 
         <h3>Update the Scope</h3>
@@ -87,37 +78,74 @@
         <div class="radio-group">
 
             <label>
-
                 <input type="radio"
                        name="scope_status"
                        value="Yes"
                        required>
-
                 Yes
-
             </label>
 
             <label>
-
                 <input type="radio"
                        name="scope_status"
                        value="No">
-
                 No
-
             </label>
 
         </div>
 
         <button type="submit">
-
             Submit
-
         </button>
 
     </form>
 
 </div>
+
+
+{% if success %}
+
+<div class="popup-overlay">
+
+    <div class="popup-box">
+
+        {% if scope_status == "No" %}
+
+            <h3>Ticket Closed</h3>
+
+            <p>
+                Maintenance Ticket / Form is Closed.
+                <br><br>
+                Thank You.
+            </p>
+
+        {% else %}
+
+            <h3>Submitted Successfully</h3>
+
+            <p>
+                Form Submitted Successfully.
+                <br><br>
+                We Will Get Back To You Soon.
+            </p>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+<script>
+
+    setTimeout(function(){
+
+        window.location.href = "/";
+
+    },3000);
+
+</script>
+
+{% endif %}
 
 </body>
 
