@@ -1945,7 +1945,6 @@ def export_customer_queries(request):
 
     return response
 
-
 def maintenance_scope_form(request, query_id):
 
     customer = get_object_or_404(
@@ -1958,47 +1957,49 @@ def maintenance_scope_form(request, query_id):
         scope_status = request.POST.get("scope_status")
 
         MaintenanceScope.objects.create(
-
             customer_query=customer,
-
             email=customer.email,
-
             uid=customer.id,
-
             case_id=customer.ticket_id,
-
             customer_name=customer.name,
-
             customer_contact=customer.contact,
-
             block=customer.tower,
-
             location=customer.area,
-
             issue_related=customer.issue,
-
             issue_description=customer.problem,
-
             scope_status=scope_status
         )
 
         if scope_status == "Yes":
-
             customer.status = "In Progress"
+            customer.save()
+
+            return render(
+                request,
+                "maintenance_scope.html",
+                {
+                    "customer": customer,
+                    "popup_message": "Form Submitted Successfully."
+                }
+            )
 
         else:
-
             customer.status = "Closed"
+            customer.save()
 
-        customer.save()
-
-        return redirect("/")
+            return render(
+                request,
+                "maintenance_scope.html",
+                {
+                    "customer": customer,
+                    "popup_message": "Maintenance Ticket And Form Is Closed. Thank You."
+                }
+            )
 
     return render(
         request,
         "maintenance_scope.html",
         {
-            "customer": customer,
-            "success": True
+            "customer": customer
         }
     )
