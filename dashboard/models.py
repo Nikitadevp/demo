@@ -2,6 +2,8 @@
 from django.db import models
 import uuid
 from django.utils import timezone
+import random
+import string
 
 
 def generate_ticket_no():
@@ -119,6 +121,7 @@ class LeaveRequest(models.Model):
 class CustomerQuery(models.Model):
 
     # ====================================
+    
     # TOWER CHOICES
     # ====================================
 
@@ -394,7 +397,6 @@ class MaintenanceScope(models.Model):
     
 
 
-
 class SiteInspection(models.Model):
 
     CATEGORY_CHOICES = [
@@ -406,6 +408,12 @@ class SiteInspection(models.Model):
         ('Yes', 'Yes'),
         ('No', 'No'),
     ]
+
+    unique_id = models.CharField(
+        max_length=20,
+        unique=True,
+        blank=True
+    )
 
     customer_query = models.OneToOneField(
         CustomerQuery,
@@ -465,7 +473,35 @@ class SiteInspection(models.Model):
         choices=YES_NO
     )
 
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    def generate_unique_id(self):
+
+        while True:
+
+            code = ''.join(
+                random.choices(
+                    string.ascii_letters + string.digits,
+                    k=8
+                )
+            )
+
+            if not SiteInspection.objects.filter(
+                unique_id=code
+            ).exists():
+
+                return code
+
+    def save(self, *args, **kwargs):
+
+        if not self.unique_id:
+
+            self.unique_id = self.generate_unique_id()
+
+        super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.case_id
+
+        return f"{self.unique_id} - {self.case_id}"
