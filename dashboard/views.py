@@ -1965,7 +1965,7 @@ def maintenance_scope_form(request, query_id):
             customer_name=customer.name,
             customer_contact=customer.contact,
             block=customer.tower,
-            flat=customer.flat,
+        
             location=customer.area,
             issue_related=customer.issue,
             issue_description=customer.problem,
