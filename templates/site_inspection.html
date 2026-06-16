@@ -1,0 +1,300 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Site Inspection Form</title>
+
+    <link rel="stylesheet"
+          href="{% static 'css/site_inspection.css' %}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>Site Inspection Form</h2>
+
+    <p>
+        Please enter your own Email ID and Name.
+        This form should be filled by the Site Engineer.
+    </p>
+
+    <form method="POST"
+          enctype="multipart/form-data">
+
+        {% csrf_token %}
+
+        <label>Email *</label>
+
+        <input type="email"
+               name="engineer_email"
+               required>
+
+        <label>Your Name *</label>
+
+        <input type="text"
+               name="engineer_name"
+               required>
+
+        <hr>
+
+        <p>
+            UID, Customer Name, Block,
+            Flat Number and Case ID are prefilled.
+            Do not edit.
+        </p>
+
+        <label>UID *</label>
+
+        <input type="text"
+               value="{{ customer.id }}"
+               readonly>
+
+        <label>Customer Name *</label>
+
+        <input type="text"
+               value="{{ customer.name }}"
+               readonly>
+
+        <label>Block *</label>
+
+        <input type="text"
+               value="{{ customer.tower }}"
+               readonly>
+
+        <label>Flat Number *</label>
+
+        <input type="text"
+               value="{{ customer.flat }}"
+               readonly>
+
+        <label>Case ID *</label>
+
+        <input type="text"
+               value="{{ customer.ticket_id }}"
+               readonly>
+
+        <hr>
+
+        <h3>Update the Issue Details</h3>
+
+        <label>Issue Found Remark *</label>
+
+        <textarea name="issue_found_remark"
+                  required></textarea>
+
+        <label>Issue Found Area *</label>
+
+        <p>
+            You can select multiple options if
+            problem is found in multiple areas.
+        </p>
+
+        <div class="checkbox-group">
+
+            <label>
+                <input type="checkbox"
+                       name="issue_found_area"
+                       value="Plumbing">
+                Plumbing
+            </label>
+
+            <label>
+                <input type="checkbox"
+                       name="issue_found_area"
+                       value="Electrical">
+                Electrical
+            </label>
+
+            <label>
+                <input type="checkbox"
+                       name="issue_found_area"
+                       value="Civil">
+                Civil
+            </label>
+
+            <label>
+                <input type="checkbox"
+                       name="issue_found_area"
+                       value="Windows">
+                Windows
+            </label>
+
+            <label>
+                <input type="checkbox"
+                       name="issue_found_area"
+                       value="Door">
+                Door
+            </label>
+
+            <label>
+                <input type="checkbox"
+                       name="issue_found_area"
+                       value="Waterproofing">
+                Waterproofing
+            </label>
+
+            <label>
+                <input type="checkbox"
+                       name="issue_found_area"
+                       value="Lift">
+                Lift
+            </label>
+
+            <label>
+                <input type="checkbox"
+                       name="issue_found_area"
+                       value="Other">
+                Other
+            </label>
+
+        </div>
+
+        <hr>
+
+        <label>Category *</label>
+
+        <div class="radio-group">
+
+            <label>
+                <input type="radio"
+                       name="category"
+                       value="Chargeable"
+                       required>
+                Chargeable
+            </label>
+
+            <label>
+                <input type="radio"
+                       name="category"
+                       value="Non Chargeable">
+                Non Chargeable
+            </label>
+
+        </div>
+
+        <label>
+            Comment on Chargeable Things
+        </label>
+
+        <textarea name="chargeable_comment"></textarea>
+
+        <label>
+            Comment on Non Chargeable Things
+        </label>
+
+        <textarea name="non_chargeable_comment"></textarea>
+
+        <hr>
+
+        <h3>Upload Issue Photos</h3>
+
+        <p>
+            You can upload up to 5 photos.
+        </p>
+
+        <label>Photo 1</label>
+        <input type="file"
+               name="photo1">
+
+        <label>Photo 2</label>
+        <input type="file"
+               name="photo2">
+
+        <label>Photo 3</label>
+        <input type="file"
+               name="photo3">
+
+        <label>Photo 4</label>
+        <input type="file"
+               name="photo4">
+
+        <label>Photo 5</label>
+        <input type="file"
+               name="photo5">
+
+        <hr>
+
+        <h3>Material Details</h3>
+
+        <label>
+            Material Required to Resolve the Issue *
+        </label>
+
+        <div class="radio-group">
+
+            <label>
+                <input type="radio"
+                       name="material_required"
+                       value="Yes"
+                       required>
+                Yes
+            </label>
+
+            <label>
+                <input type="radio"
+                       name="material_required"
+                       value="No">
+                No
+            </label>
+
+        </div>
+
+        <label>Vendor Side</label>
+
+        <input type="text"
+               name="vendor_side">
+
+        <label>
+            Days Required to Resolve this Case *
+        </label>
+
+        <input type="number"
+               name="days_required"
+               required>
+
+        <label>
+            Is this Case Under Our Scope? *
+        </label>
+
+        <div class="radio-group">
+
+            <label>
+                <input type="radio"
+                       name="under_scope"
+                       value="Yes"
+                       required>
+                Yes
+            </label>
+
+            <label>
+                <input type="radio"
+                       name="under_scope"
+                       value="No">
+                No
+            </label>
+
+        </div>
+
+        <button type="submit">
+
+            Submit
+
+        </button>
+
+    </form>
+
+</div>
+
+</body>
+
+</html>
