@@ -2008,3 +2008,104 @@ def maintenance_scope_form(request, query_id):
             "customer": customer
         }
     )
+
+
+
+
+def site_inspection_form(request, query_id):
+
+    customer = get_object_or_404(
+        CustomerQuery,
+        id=query_id
+    )
+
+    if request.method == "POST":
+
+        issue_found_area = ",".join(
+            request.POST.getlist("issue_found_area")
+        )
+
+        category = request.POST.get("category")
+
+        SiteInspection.objects.create(
+
+            customer_query=customer,
+
+            engineer_email=request.POST.get("engineer_email"),
+
+            engineer_name=request.POST.get("engineer_name"),
+
+            uid=customer.id,
+
+            case_id=customer.ticket_id,
+
+            customer_name=customer.name,
+
+            block=customer.tower,
+
+            flat_number=customer.flat,
+
+            issue_found_remark=request.POST.get(
+                "issue_found_remark"
+            ),
+
+            issue_found_area=issue_found_area,
+
+            category=category,
+
+            chargeable_comment=request.POST.get(
+                "chargeable_comment"
+            ),
+
+            non_chargeable_comment=request.POST.get(
+                "non_chargeable_comment"
+            ),
+
+            photo1=request.FILES.get("photo1"),
+            photo2=request.FILES.get("photo2"),
+            photo3=request.FILES.get("photo3"),
+            photo4=request.FILES.get("photo4"),
+            photo5=request.FILES.get("photo5"),
+
+            material_required=request.POST.get(
+                "material_required"
+            ),
+
+            vendor_side=request.POST.get(
+                "vendor_side"
+            ),
+
+            days_required=request.POST.get(
+                "days_required"
+            ),
+
+            under_scope=request.POST.get(
+                "under_scope"
+            )
+        )
+
+        if category == "Chargeable":
+
+            customer.status = "Estimate Pending"
+
+        else:
+
+            customer.status = "Closer Pending"
+
+        customer.save()
+
+        return render(
+            request,
+            "site_inspection_success.html",
+            {
+                "message":"Site Inspection Form Submitted Successfully"
+            }
+        )
+
+    return render(
+        request,
+        "site_inspection.html",
+        {
+            "customer":customer
+        }
+    )
