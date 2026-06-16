@@ -1848,6 +1848,8 @@ def customer_query_form(request):
             contact=request.POST.get("contact"),
 
             whatsapp=request.POST.get("whatsapp"),
+            
+            flat=request.POST.get('flat'),
 
             tower=tower,
 
