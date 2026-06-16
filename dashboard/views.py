@@ -19,6 +19,7 @@ from datetime import datetime
 from django.core.paginator import Paginator
 from .models import CustomerQuery, MaintenanceScope
 import csv
+from .models import SiteInspection
 
 
 
