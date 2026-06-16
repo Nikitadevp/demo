@@ -1855,8 +1855,6 @@ def customer_query_form(request):
 
             other_tower=other_tower,
 
-            flat="",
-
             area=area,
 
             other_area=other_area,
