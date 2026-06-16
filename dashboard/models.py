@@ -392,3 +392,80 @@ class MaintenanceScope(models.Model):
     def __str__(self):
         return f"{self.case_id} - {self.scope_status}"
     
+
+
+
+class SiteInspection(models.Model):
+
+    CATEGORY_CHOICES = [
+        ('Chargeable', 'Chargeable'),
+        ('Non Chargeable', 'Non Chargeable'),
+    ]
+
+    YES_NO = [
+        ('Yes', 'Yes'),
+        ('No', 'No'),
+    ]
+
+    customer_query = models.OneToOneField(
+        CustomerQuery,
+        on_delete=models.CASCADE
+    )
+
+    engineer_email = models.EmailField()
+    engineer_name = models.CharField(max_length=100)
+
+    uid = models.IntegerField()
+    case_id = models.CharField(max_length=50)
+
+    customer_name = models.CharField(max_length=100)
+    block = models.CharField(max_length=100)
+    flat_number = models.CharField(max_length=100)
+
+    issue_found_remark = models.TextField()
+
+    issue_found_area = models.TextField()
+
+    category = models.CharField(
+        max_length=50,
+        choices=CATEGORY_CHOICES
+    )
+
+    chargeable_comment = models.TextField(
+        blank=True,
+        null=True
+    )
+
+    non_chargeable_comment = models.TextField(
+        blank=True,
+        null=True
+    )
+
+    photo1 = models.ImageField(upload_to='inspection_photos/', blank=True, null=True)
+    photo2 = models.ImageField(upload_to='inspection_photos/', blank=True, null=True)
+    photo3 = models.ImageField(upload_to='inspection_photos/', blank=True, null=True)
+    photo4 = models.ImageField(upload_to='inspection_photos/', blank=True, null=True)
+    photo5 = models.ImageField(upload_to='inspection_photos/', blank=True, null=True)
+
+    material_required = models.CharField(
+        max_length=10,
+        choices=YES_NO
+    )
+
+    vendor_side = models.CharField(
+        max_length=200,
+        blank=True,
+        null=True
+    )
+
+    days_required = models.IntegerField()
+
+    under_scope = models.CharField(
+        max_length=10,
+        choices=YES_NO
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.case_id
