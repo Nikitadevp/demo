@@ -225,11 +225,7 @@ class CustomerQuery(models.Model):
         null=True
     )
 
-    flat = models.CharField(
-    max_length=100,
-    blank=True,
-    null=True
-    )
+    
 
 
     area = models.CharField(
