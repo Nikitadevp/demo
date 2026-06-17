@@ -10,11 +10,14 @@
     <link rel="stylesheet"
           href="{% static 'css/maintenance_scope.css' %}">
 
+    {% if popup_message %}
+    <meta http-equiv="refresh"
+          content="3;url=/">
+    {% endif %}
+
 </head>
 
 <body>
-
-{% if not popup_message %}
 
 <div class="container">
 
@@ -98,7 +101,8 @@
 
         <!-- REASON BOX -->
 
-        <div id="reasonBox" style="display:none; margin-top:15px;">
+        <div id="reasonBox"
+             style="display:none; margin-top:15px;">
 
             <label>Reason for No</label>
 
@@ -119,8 +123,7 @@
 
 </div>
 
-{% endif %}
-
+<!-- SUCCESS POPUP -->
 
 {% if popup_message %}
 
@@ -128,21 +131,21 @@
 
     <div class="popup-box">
 
-        <h3>{{ popup_message }}</h3>
+        <h3>Submitted Successfully</h3>
+
+        <p>
+
+            {{ popup_message }}
+
+            <br><br>
+
+            Redirecting...
+
+        </p>
 
     </div>
 
 </div>
-
-<script>
-
-setTimeout(function(){
-
-    window.location.href = "/";
-
-},3000);
-
-</script>
 
 {% endif %}
 
