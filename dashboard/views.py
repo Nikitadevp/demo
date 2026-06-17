@@ -2056,19 +2056,11 @@ def site_inspection_form(request, query_id):
 
             category=category,
 
-            chargeable_comment=request.POST.get(
-                "chargeable_comment"
-            ),
-
-            non_chargeable_comment=request.POST.get(
-                "non_chargeable_comment"
-            ),
+            
 
             photo1=request.FILES.get("photo1"),
             photo2=request.FILES.get("photo2"),
-            photo3=request.FILES.get("photo3"),
-            photo4=request.FILES.get("photo4"),
-            photo5=request.FILES.get("photo5"),
+            
 
             material_required=request.POST.get(
                 "material_required"
