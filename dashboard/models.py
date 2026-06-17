@@ -389,24 +389,22 @@ class MaintenanceScope(models.Model):
         return f"{self.case_id} - {self.scope_status}"
     
 
-
 class SiteInspection(models.Model):
 
     CATEGORY_CHOICES = [
         ('Chargeable', 'Chargeable'),
         ('Non Chargeable', 'Non Chargeable'),
     ]
-    
+
     YES_NO_VENDOR = [
-    ('Yes', 'Yes'),
-    ('No', 'No'),
-    ('Vendor Side', 'Vendor Side'),
+        ('Yes', 'Yes'),
+        ('No', 'No'),
+        ('Vendor Side', 'Vendor Side'),
     ]
 
     YES_NO = [
         ('Yes', 'Yes'),
         ('No', 'No'),
-        
     ]
 
     unique_id = models.CharField(
@@ -427,8 +425,16 @@ class SiteInspection(models.Model):
     case_id = models.CharField(max_length=50)
 
     customer_name = models.CharField(max_length=100)
-    block = models.CharField(max_length=100)
-    
+
+    block = models.CharField(
+        max_length=100
+    )
+
+    area = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True
+    )
 
     issue_found_remark = models.TextField()
 
@@ -438,7 +444,6 @@ class SiteInspection(models.Model):
         max_length=50,
         choices=CATEGORY_CHOICES
     )
-
     
 
     photo1 = models.ImageField(upload_to='inspection_photos/', blank=True, null=True)
