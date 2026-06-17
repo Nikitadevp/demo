@@ -428,7 +428,7 @@ class SiteInspection(models.Model):
 
     customer_name = models.CharField(max_length=100)
     block = models.CharField(max_length=100)
-    flat_number = models.CharField(max_length=100)
+    
 
     issue_found_remark = models.TextField()
 
