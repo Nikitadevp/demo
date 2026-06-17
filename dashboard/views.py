@@ -1850,7 +1850,7 @@ def customer_query_form(request):
 
             whatsapp=request.POST.get("whatsapp"),
             
-            flat=request.POST.get('flat'),
+            
 
             tower=tower,
 
