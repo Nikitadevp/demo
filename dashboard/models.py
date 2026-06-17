@@ -396,11 +396,17 @@ class SiteInspection(models.Model):
         ('Chargeable', 'Chargeable'),
         ('Non Chargeable', 'Non Chargeable'),
     ]
+    
+    YES_NO_VENDOR = [
+    ('Yes', 'Yes'),
+    ('No', 'No'),
+    ('Vendor Side', 'Vendor Side'),
+    ]
 
     YES_NO = [
         ('Yes', 'Yes'),
         ('No', 'No'),
-        ('Vendor Side', 'Vendor Side'),
+        
     ]
 
     unique_id = models.CharField(
@@ -440,15 +446,11 @@ class SiteInspection(models.Model):
     
 
     material_required = models.CharField(
-        max_length=10,
-        choices=YES_NO
+        max_length=20,
+        choices=YES_NO_VENDOR
     )
 
-    vendor_side = models.CharField(
-        max_length=200,
-        blank=True,
-        null=True
-    )
+    
 
     days_required = models.IntegerField()
 
