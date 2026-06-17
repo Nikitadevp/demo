@@ -1848,7 +1848,7 @@ def customer_query_form(request):
 
             contact=request.POST.get("contact"),
 
-            whatsapp=request.POST.get("whatsapp"),
+            
             
             
 
@@ -1862,7 +1862,7 @@ def customer_query_form(request):
 
             issue=issue,
 
-            other_issue=other_issue,
+            
 
             problem=request.POST.get("problem"),
 
