@@ -374,6 +374,12 @@ class MaintenanceScope(models.Model):
         max_length=10,
         choices=SCOPE_CHOICES
     )
+    
+    reason = models.TextField(
+    blank=True,
+    null=True
+    )
+
 
     created_at = models.DateTimeField(
         auto_now_add=True
