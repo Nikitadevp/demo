@@ -1970,7 +1970,9 @@ def maintenance_scope_form(request, query_id):
             location=customer.area,
             issue_related=customer.issue,
             issue_description=customer.problem,
-            scope_status=scope_status
+            scope_status=scope_status,
+            reason=request.POST.get("reason")
+            
             
         )
 
