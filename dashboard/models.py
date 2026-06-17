@@ -400,6 +400,7 @@ class SiteInspection(models.Model):
     YES_NO = [
         ('Yes', 'Yes'),
         ('No', 'No'),
+        ('Vendor Side', 'Vendor Side'),
     ]
 
     unique_id = models.CharField(
