@@ -201,15 +201,10 @@ class CustomerQuery(models.Model):
     )
 
     contact = models.CharField(
-        max_length=15
+        max_length=10
     )
 
-    whatsapp = models.CharField(
-        max_length=10,
-        blank=True,
-        null=True
-    )
-
+    
     # ====================================
     # LOCATION DETAILS
     # ====================================
@@ -248,11 +243,7 @@ class CustomerQuery(models.Model):
         choices=ISSUE_CHOICES
     )
 
-    other_issue = models.CharField(
-        max_length=100,
-        blank=True,
-        null=True
-    )
+    
 
     problem = models.TextField()
 
