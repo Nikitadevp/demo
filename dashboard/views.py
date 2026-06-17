@@ -1869,6 +1869,41 @@ def customer_query_form(request):
             photo=photo_file
 
         )
+        # =========================
+        # SEND MAIL TO CRM
+        # =========================
+
+        send_mail(
+            subject=f"New Customer Query Raised - {obj.ticket_id}",
+            
+            
+            message=f"""
+        New Customer Query Received
+     
+        Ticket ID: {obj.ticket_id}
+        Customer Name: {obj.name}
+        Email: {obj.email}
+        Contact: {obj.contact}
+        
+        Block: {obj.tower}
+        Location: {obj.area}
+
+        Issue Related With: {obj.issue}
+
+        Problem Description:
+        {obj.problem}
+
+        """,
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=[
+                
+                "jrdme.rbpl@rajat-group.com"    
+            ],
+            fail_silently=False,
+        )       
+
+        
+
 
         # =========================
         # DEBUG CHECK
