@@ -432,21 +432,11 @@ class SiteInspection(models.Model):
         choices=CATEGORY_CHOICES
     )
 
-    chargeable_comment = models.TextField(
-        blank=True,
-        null=True
-    )
-
-    non_chargeable_comment = models.TextField(
-        blank=True,
-        null=True
-    )
+    
 
     photo1 = models.ImageField(upload_to='inspection_photos/', blank=True, null=True)
     photo2 = models.ImageField(upload_to='inspection_photos/', blank=True, null=True)
-    photo3 = models.ImageField(upload_to='inspection_photos/', blank=True, null=True)
-    photo4 = models.ImageField(upload_to='inspection_photos/', blank=True, null=True)
-    photo5 = models.ImageField(upload_to='inspection_photos/', blank=True, null=True)
+    
 
     material_required = models.CharField(
         max_length=10,
