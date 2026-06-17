@@ -2046,7 +2046,7 @@ def site_inspection_form(request, query_id):
 
             block=customer.tower,
 
-            flat_number=customer.flat,
+            area=customer.area,
 
             issue_found_remark=request.POST.get(
                 "issue_found_remark"
