@@ -1886,7 +1886,7 @@ def customer_query_form(request):
         Contact: {obj.contact}
         
         Block: {obj.tower}
-        Location: {obj.area}
+        Location: {obj.area}                              
 
         Issue Related With: {obj.issue}
 
@@ -1894,7 +1894,7 @@ def customer_query_form(request):
         {obj.problem}
 
         """,
-            from_email=settings.EMAIL_HOST_USER,
+            from_email=settings.EMAIL_HOST_USER,          
             recipient_list=[
                 
                 "jrdme.rbpl@rajat-group.com"    
