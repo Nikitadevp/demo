@@ -3,7 +3,7 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.utils import timezone
 from datetime import timedelta, time
-from .models import Ticket
+from .models import EstimateForm, Ticket
 from django.urls import reverse
 import matplotlib.pyplot as plt
 import matplotlib
@@ -20,6 +20,7 @@ from django.core.paginator import Paginator
 from .models import CustomerQuery, MaintenanceScope
 import csv
 from .models import SiteInspection
+from .models import  EstimateForm
 
 
 
@@ -2135,5 +2136,72 @@ def site_inspection_form(request, query_id):
         "site_inspection.html",
         {
             "customer":customer
+        }
+    )
+
+
+
+
+def estimate_form(request, query_id):
+
+    customer = get_object_or_404(
+        CustomerQuery,
+        id=query_id
+    )
+
+    if request.method == "POST":
+
+        EstimateForm.objects.create(
+
+            customer_query=customer,
+
+            email=request.POST.get(
+                "email"
+            ),
+
+            your_name=request.POST.get(
+                "your_name"
+            ),
+
+            uid=customer.id,
+
+            customer_name=customer.name,
+
+            contact_number=customer.contact,
+
+            block=customer.tower,
+
+            area=customer.area,
+
+            case_id=customer.ticket_id,
+
+            advance_amount_mentioned=request.POST.get(
+                "advance_amount_mentioned"
+            ),
+
+            invoice_amount=request.POST.get(
+                "invoice_amount"
+            ),
+
+            proforma_invoice=request.FILES.get(
+                "proforma_invoice"
+            )
+        )
+
+        return render(
+            request,
+            "estimate_form.html",
+            {
+                "customer": customer,
+                "popup_message":
+                "Estimate Form Submitted Successfully"
+            }
+        )
+
+    return render(
+        request,
+        "estimate_form.html",
+        {
+            "customer": customer
         }
     )
