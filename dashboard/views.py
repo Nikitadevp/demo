@@ -26,6 +26,7 @@ from .models import  EstimateForm
 
 
 
+
 # Office Time
 OFFICE_START = time(9, 30)
 OFFICE_END = time(18, 30)
@@ -2142,6 +2143,7 @@ def site_inspection_form(request, query_id):
 
 
 
+
 def estimate_form(request, query_id):
 
     customer = get_object_or_404(
@@ -2151,52 +2153,48 @@ def estimate_form(request, query_id):
 
     if request.method == "POST":
 
-        EstimateForm.objects.create(
+        try:
 
-            customer_query=customer,
+            EstimateForm.objects.create(
 
-            email=request.POST.get(
-                "email"
-            ),
+                customer_query=customer,
 
-            your_name=request.POST.get(
-                "your_name"
-            ),
+                email=request.POST.get("email"),
 
-            uid=customer.id,
+                your_name=request.POST.get("your_name"),
 
-            customer_name=customer.name,
+                uid=customer.id,
 
-            contact_number=customer.contact,
+                customer_name=customer.name,
 
-            block=customer.tower,
+                contact_number=customer.contact,
 
-            area=customer.area,
+                block=customer.tower,
 
-            case_id=customer.ticket_id,
+                area=customer.area,
 
-            advance_amount_mentioned=request.POST.get(
-                "advance_amount_mentioned"
-            ),
+                case_id=customer.ticket_id,
 
-            invoice_amount=request.POST.get(
-                "invoice_amount"
-            ),
+                advance_amount_mentioned=request.POST.get(
+                    "advance_amount_mentioned"
+                ),
 
-            proforma_invoice=request.FILES.get(
-                "proforma_invoice"
+                invoice_amount=request.POST.get(
+                    "invoice_amount"
+                ),
+
+                proforma_invoice=request.FILES.get(
+                    "proforma_invoice"
+                )
             )
-        )
 
-        return render(
-            request,
-            "estimate_form.html",
-            {
-                "customer": customer,
-                "popup_message":
-                "Estimate Form Submitted Successfully"
-            }
-        )
+            return HttpResponse("DATA SAVED")
+
+        except Exception as e:
+
+            return HttpResponse(
+                f"ERROR = {e}"
+            )
 
     return render(
         request,
