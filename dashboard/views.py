@@ -2124,9 +2124,9 @@ def site_inspection_form(request, query_id):
 
         return render(
             request,
-            "site_inspection_success.html",
+            "site_inspection.html",
             {
-                "message":"Site Inspection Form Submitted Successfully"
+                "popup_message": "Site Inspection Form Submitted Successfully"
             }
         )
 
