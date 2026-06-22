@@ -1,0 +1,157 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Estimate Form</title>
+
+    <link rel="stylesheet"
+          href="{% static 'css/estimate_form.css' %}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>Estimate Form</h2>
+
+    <p>
+        Please enter your own Email ID and Name.
+    </p>
+
+    <form method="POST"
+          enctype="multipart/form-data">
+
+        {% csrf_token %}
+
+        <label>Email *</label>
+
+        <input type="email"
+               name="email"
+               required>
+
+        <label>Your Name *</label>
+
+        <input type="text"
+               name="name"
+               required>
+
+        <hr>
+
+        <p>
+            UID, Customer Name, Contact Number,
+            Block, Area and Case ID are prefilled.
+            Do not edit.
+        </p>
+
+        <label>UID *</label>
+
+        <input type="text"
+               value="{{ customer.id }}"
+               readonly>
+
+        <label>Customer *</label>
+
+        <input type="text"
+               value="{{ customer.name }}"
+               readonly>
+
+        <label>Contact Number *</label>
+
+        <input type="text"
+               value="{{ customer.contact }}"
+               readonly>
+
+        <label>Block *</label>
+
+        <input type="text"
+               value="{{ customer.tower }}"
+               readonly>
+
+        <label>Area *</label>
+
+        <input type="text"
+               value="{{ customer.area }}"
+               readonly>
+
+        <label>Case ID *</label>
+
+        <input type="text"
+               value="{{ customer.ticket_id }}"
+               readonly>
+
+        <hr>
+
+        <h3>Proforma Invoice Details</h3>
+
+        <label>
+            Check if Advance Amount is Mentioned
+            in Proforma Invoice *
+        </label>
+
+        <div class="radio-group">
+
+            <label>
+                <input type="radio"
+                       name="proforma_invoice"
+                       value="Yes"
+                       required>
+                Yes
+            </label>
+
+            <label>
+                <input type="radio"
+                       name="proforma_invoice"
+                       value="No">
+                No
+            </label>
+
+        </div>
+
+        <label>Invoice Amount *</label>
+
+        <input type="number"
+               name="invoice_amount"
+               required>
+
+        <label>
+            Attach Proforma Invoice *
+        </label>
+
+        <input type="file"
+               name="proforma_file"
+               required>
+
+        <button type="submit">
+
+            Submit
+
+        </button>
+
+    </form>
+
+</div>
+
+{% if popup_message %}
+
+<script>
+
+alert("{{ popup_message }}");
+
+window.location.href = "/";
+
+</script>
+
+{% endif %}
+
+</body>
+
+</html>
