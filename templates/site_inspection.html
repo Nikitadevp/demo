@@ -189,7 +189,7 @@
         <h3>Upload Issue Photos</h3>
 
         <p>
-            You can upload up to 5 photos.
+            You can upload up to 2 photos.
         </p>
 
         <label>Photo 1</label>
@@ -278,6 +278,18 @@
     </form>
 
 </div>
+
+{% if popup_message %}
+
+<script>
+
+alert("{{ popup_message }}");
+
+window.location.href = "https://demo-project-gkaa.onrender.com/";
+
+</script>
+
+{% endif %}
 
 </body>
 
