@@ -41,7 +41,7 @@
         <label>Your Name *</label>
 
         <input type="text"
-               name="name"
+               name="your_name"
                required>
 
         <hr>
@@ -101,7 +101,7 @@
 
             <label>
                 <input type="radio"
-                       name="proforma_invoice"
+                       name="advance_amount_mentioned"
                        value="Yes"
                        required>
                 Yes
@@ -109,7 +109,7 @@
 
             <label>
                 <input type="radio"
-                       name="proforma_invoice"
+                       name="advance_amount_mentioned"
                        value="No">
                 No
             </label>
@@ -120,6 +120,7 @@
 
         <input type="number"
                name="invoice_amount"
+               step="0.01"
                required>
 
         <label>
@@ -127,7 +128,7 @@
         </label>
 
         <input type="file"
-               name="proforma_file"
+               name="proforma_invoice"
                required>
 
         <button type="submit">
