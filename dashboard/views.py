@@ -2248,7 +2248,8 @@ def customer_approval_form(request, query_id):
             "customer_approval.html",
             {
                 "customer": customer,
-                "success": True
+                "success": True,
+                "popup_message": "Customer Approval Submitted Successfully"
             }
         )
 
