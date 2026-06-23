@@ -15,34 +15,18 @@
     <link rel="stylesheet"
           href="{% static 'css/customer_approval.css' %}">
 
-    {% if success %}
-    <meta http-equiv="refresh"
-          content="3;url=/">
-    {% endif %}
-
 </head>
 
 <body>
 
-{% if not success %}
-
 <div class="container">
-
-    <div class="logo-box">
-
-        <img src="{% static 'images/maintain.PNG' %}"
-             alt="Logo">
-
-    </div>
 
     <h2>Customer Approval Form</h2>
 
-    <p class="info-text">
-        Record jrdme.rbpl@rajat-group.com as the email to be included with my response.
-    </p>
-
-    <p class="time-text">
-        Estimated Time To Fill This Form : 6 Hours
+    <p>
+        UID, Customer Name, Block,
+        Area and Case ID are prefilled.
+        Do Not Edit.
     </p>
 
     <form method="POST">
@@ -54,7 +38,7 @@
         <input type="email"
                name="email"
                placeholder="Enter Email Address"
-               readonly>
+               required>
 
         <label>UID *</label>
 
@@ -74,7 +58,7 @@
                value="{{ customer.tower }}"
                readonly>
 
-        <label>Area / Flat *</label>
+        <label>Area *</label>
 
         <input type="text"
                value="{{ customer.area }}"
@@ -86,6 +70,8 @@
                value="{{ customer.ticket_id }}"
                readonly>
 
+        <hr>
+
         <label>
             Provide Customer's Decision Below
         </label>
@@ -93,24 +79,18 @@
         <div class="radio-group">
 
             <label>
-
                 <input type="radio"
                        name="approval_type"
                        value="Approve"
                        required>
-
                 Approve
-
             </label>
 
             <label>
-
                 <input type="radio"
                        name="approval_type"
                        value="Reject">
-
                 Reject
-
             </label>
 
         </div>
@@ -122,40 +102,22 @@
                   required></textarea>
 
         <button type="submit">
-
             Submit
-
         </button>
 
     </form>
 
 </div>
 
-{% endif %}
+{% if popup_message %}
 
-{% if success %}
+<script>
 
-<div class="popup-overlay">
+alert("{{ popup_message }}");
 
-    <div class="popup-box">
+window.location.href = "/";
 
-        <h3>
-            Submitted Successfully
-        </h3>
-
-        <p>
-
-            Thank You For Your Response.
-
-            <br><br>
-
-            Customer Approval Has Been Recorded Successfully.
-
-        </p>
-
-    </div>
-
-</div>
+</script>
 
 {% endif %}
 
