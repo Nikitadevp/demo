@@ -21,6 +21,8 @@ from .models import CustomerQuery, MaintenanceScope
 import csv
 from .models import SiteInspection
 from .models import  EstimateForm
+from .models import CustomerApproval
+
 
 
 
@@ -2203,3 +2205,76 @@ def estimate_form(request, query_id):
             "customer": customer
         }
     )
+
+
+#customer_approval_form
+
+
+def customer_approval_form(request, query_id):
+
+    customer = get_object_or_404(
+        CustomerQuery,
+        id=query_id
+    )
+
+    estimate = get_object_or_404(
+        EstimateForm,
+        customer_query=customer
+    )
+
+    expiry_time = estimate.created_at + timedelta(hours=6)
+
+    if timezone.now() > expiry_time:
+
+        return HttpResponse(
+            "Customer Approval Form Expired"
+        )
+
+    if request.method == "POST":
+
+        CustomerApproval.objects.create(
+
+            customer_query=customer,
+
+            email=request.POST.get(
+                "email"
+            ),
+
+            uid=customer.id,
+
+            customer_name=customer.name,
+
+            block=customer.tower,
+
+            area=customer.area,
+
+            case_id=customer.ticket_id,
+
+            approval_type=request.POST.get(
+                "approval_type"
+            ),
+
+            customer_remark=request.POST.get(
+                "customer_remark"
+            )
+        )
+
+        return render(
+            request,
+            "customer_approval.html",
+            {
+                "customer": customer,
+                "popup_message":
+                "Customer Approval Submitted Successfully"
+            }
+        )
+
+    return render(
+        request,
+        "customer_approval.html",
+        {
+            "customer": customer
+        }
+    )
+
+
