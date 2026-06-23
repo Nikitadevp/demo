@@ -2209,26 +2209,12 @@ def estimate_form(request, query_id):
 
 #customer_approval_form
 
-
 def customer_approval_form(request, query_id):
 
     customer = get_object_or_404(
         CustomerQuery,
         id=query_id
     )
-
-    estimate = get_object_or_404(
-        EstimateForm,
-        customer_query=customer
-    )
-
-    expiry_time = estimate.created_at + timedelta(hours=6)
-
-    if timezone.now() > expiry_time:
-
-        return HttpResponse(
-            "Customer Approval Form Expired"
-        )
 
     if request.method == "POST":
 
