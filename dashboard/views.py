@@ -2222,7 +2222,7 @@ def customer_approval_form(request, query_id):
 
             customer_query=customer,
 
-            email="jrdme.rbpl@rajat-group.com",
+            email=customer.email,
 
             uid=customer.id,
 
