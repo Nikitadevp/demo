@@ -2222,7 +2222,7 @@ def customer_approval_form(request, query_id):
 
             customer_query=customer,
 
-            email=customer.email,
+            email=request.POST.get("email"),
 
             uid=customer.id,
 

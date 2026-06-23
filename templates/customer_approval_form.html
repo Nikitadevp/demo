@@ -28,8 +28,6 @@
 
 <div class="container">
 
-    <!-- LOGO -->
-
     <div class="logo-box">
 
         <img src="{% static 'images/maintain.PNG' %}"
@@ -37,26 +35,15 @@
 
     </div>
 
-    <!-- TITLE -->
-
     <h2>Customer Approval Form</h2>
 
-    <!-- INFO -->
+    <p class="info-text">
+        Record jrdme.rbpl@rajat-group.com as the email to be included with my response.
+    </p>
 
-    <div class="info-box">
-
-        <p>
-            Please provide the customer's decision below.
-        </p>
-
-        <p>
-            Estimated Time To Fill This Form :
-            <strong>6 Hours</strong>
-        </p>
-
-    </div>
-
-    <!-- FORM -->
+    <p class="time-text">
+        Estimated Time To Fill This Form : 6 Hours
+    </p>
 
     <form method="POST">
 
@@ -65,7 +52,8 @@
         <label>Email *</label>
 
         <input type="email"
-               value="jrdme.rbpl@rajat-group.com"
+               name="email"
+               placeholder="Enter Email Address"
                readonly>
 
         <label>UID *</label>
@@ -105,34 +93,38 @@
         <div class="radio-group">
 
             <label>
+
                 <input type="radio"
                        name="approval_type"
                        value="Approve"
                        required>
+
                 Approve
+
             </label>
 
             <label>
+
                 <input type="radio"
                        name="approval_type"
                        value="Reject">
+
                 Reject
+
             </label>
 
         </div>
 
         <label>Customer Remark *</label>
 
-        <p class="info-text">
-            Please enter customer's approval or rejection remarks.
-        </p>
-
         <textarea name="customer_remark"
                   rows="5"
                   required></textarea>
 
         <button type="submit">
+
             Submit
+
         </button>
 
     </form>
@@ -141,15 +133,15 @@
 
 {% endif %}
 
-<!-- SUCCESS POPUP -->
-
 {% if success %}
 
 <div class="popup-overlay">
 
     <div class="popup-box">
 
-        <h3>Submitted Successfully</h3>
+        <h3>
+            Submitted Successfully
+        </h3>
 
         <p>
 
