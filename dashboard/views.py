@@ -2236,9 +2236,7 @@ def customer_approval_form(request, query_id):
 
             customer_query=customer,
 
-            email=request.POST.get(
-                "email"
-            ),
+            email="jrdme.rbpl@rajat-group.com",
 
             uid=customer.id,
 
@@ -2264,8 +2262,7 @@ def customer_approval_form(request, query_id):
             "customer_approval.html",
             {
                 "customer": customer,
-                "popup_message":
-                "Customer Approval Submitted Successfully"
+                "success": True
             }
         )
 
@@ -2273,8 +2270,7 @@ def customer_approval_form(request, query_id):
         request,
         "customer_approval.html",
         {
-            "customer": customer
+            "customer": customer,
+            "success": False
         }
     )
-
-
