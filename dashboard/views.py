@@ -22,6 +22,7 @@ import csv
 from .models import SiteInspection
 from .models import  EstimateForm
 from .models import CustomerApproval
+from .models import AdvanceCollection
 
 
 
@@ -2257,6 +2258,63 @@ def customer_approval_form(request, query_id):
     return render(
         request,
         "customer_approval.html",
+        {
+            "customer": customer,
+            "success": False
+        }
+    )
+
+
+def advance_collection_form(request, query_id):
+
+    customer = get_object_or_404(
+        CustomerQuery,
+        id=query_id
+    )
+
+    if request.method == "POST":
+
+        AdvanceCollection.objects.create(
+
+            customer_query=customer,
+
+            email=request.POST.get(
+                "email"
+            ),
+
+            uid=customer.id,
+
+            customer_name=customer.name,
+
+            block=customer.tower,
+
+            area=customer.area,
+
+            case_id=customer.ticket_id,
+
+            advance_collected=request.POST.get(
+                "advance_collected"
+            ),
+
+            collected_by=request.POST.get(
+                "collected_by"
+            )
+        )
+
+        return render(
+            request,
+            "advance_collection.html",
+            {
+                "customer": customer,
+                "success": True,
+                "popup_message":
+                "Advance Collection Form Submitted Successfully"
+            }
+        )
+
+    return render(
+        request,
+        "advance_collection.html",
         {
             "customer": customer,
             "success": False
