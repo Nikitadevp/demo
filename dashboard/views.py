@@ -23,7 +23,7 @@ from .models import SiteInspection
 from .models import  EstimateForm
 from .models import CustomerApproval
 from .models import AdvanceCollection
-
+from .models import MaterialAvailability
 
 
 
@@ -2329,5 +2329,68 @@ def advance_collection_form(request, query_id):
         {
             "customer": customer,
             "success": False
+        }
+    )
+
+
+
+
+def material_availability_form(request, query_id):
+
+    customer = get_object_or_404(
+        CustomerQuery,
+        id=query_id
+    )
+
+    if request.method == "POST":
+
+        material_available = request.POST.get(
+            "material_available"
+        )
+
+        MaterialAvailability.objects.create(
+
+            customer_query=customer,
+
+            email=request.POST.get("email"),
+
+            uid=customer.id,
+
+            customer_name=customer.name,
+
+            block=customer.tower,
+
+            area=customer.area,
+
+            case_id=customer.ticket_id,
+
+            material_available=material_available
+        )
+
+        if material_available == "No":
+
+            customer.status = "Pending"
+
+        else:
+
+            customer.status = "Material Available"
+
+        customer.save()
+
+        return render(
+            request,
+            "material_availability.html",
+            {
+                "customer": customer,
+                "popup_message":
+                "Material Availability Form Submitted Successfully"
+            }
+        )
+
+    return render(
+        request,
+        "material_availability.html",
+        {
+            "customer": customer
         }
     )
