@@ -15,22 +15,34 @@
     <link rel="stylesheet"
           href="{% static 'css/customer_approval.css' %}">
 
+    {% if success %}
+    <meta http-equiv="refresh"
+          content="3;url=/">
+    {% endif %}
+
 </head>
 
 <body>
 
+{% if not success %}
+
 <div class="container">
+
+    <div class="logo-box">
+
+        <img src="{% static 'images/maintain.PNG' %}"
+             alt="Logo">
+
+    </div>
 
     <h2>Customer Approval Form</h2>
 
-    <p>
-        Please provide the customer's decision below.
+    <p class="info-text">
+        Record jrdme.rbpl@rajat-group.com as the email to be included with my response.
     </p>
 
-    <p>
-        Note - UID, Customer Name, Email,
-        Block, Area and Case ID are prefilled.
-        Do Not Edit.
+    <p class="time-text">
+        Estimated Time To Fill This Form : 6 Hours
     </p>
 
     <form method="POST">
@@ -62,7 +74,7 @@
                value="{{ customer.tower }}"
                readonly>
 
-        <label>Area *</label>
+        <label>Area / Flat *</label>
 
         <input type="text"
                value="{{ customer.area }}"
@@ -74,25 +86,31 @@
                value="{{ customer.ticket_id }}"
                readonly>
 
-        <hr>
-
-        <label>Approval Type *</label>
+        <label>
+            Provide Customer's Decision Below
+        </label>
 
         <div class="radio-group">
 
             <label>
+
                 <input type="radio"
                        name="approval_type"
                        value="Approve"
                        required>
+
                 Approve
+
             </label>
 
             <label>
+
                 <input type="radio"
                        name="approval_type"
                        value="Reject">
+
                 Reject
+
             </label>
 
         </div>
@@ -104,7 +122,9 @@
                   required></textarea>
 
         <button type="submit">
+
             Submit
+
         </button>
 
     </form>
@@ -112,6 +132,7 @@
 </div>
 
 {% endif %}
+
 {% if success %}
 
 <div class="popup-overlay">
