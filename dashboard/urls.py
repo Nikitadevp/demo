@@ -42,7 +42,9 @@ urlpatterns = [
     path('maintenance-scope/<int:query_id>/', views.maintenance_scope_form, name='maintenance_scope_form'),
     path('site-inspection/<int:query_id>/', views.site_inspection_form, name='site_inspection_form'),
     path('estimate-form/<int:query_id>/', views.estimate_form, name='estimate_form'),
-    path('customer-approval/<int:query_id>/', views.customer_approval_form, name='customer_approval_form')
+    path('customer-approval/<int:query_id>/', views.customer_approval_form, name='customer_approval_form'),
+    path('advance-collection/<int:query_id>/', views.advance_collection_form, name='advance_collection_form'),
+
 
 
 
