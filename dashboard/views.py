@@ -2249,6 +2249,11 @@ def customer_approval_form(request, query_id):
         if approval_type == "Reject":
 
             customer.status = "Closed"
+            popup_message = "Customer Rejected. Form Closed Successfully."
+
+        else:
+
+            popup_message = "Customer Approved. Form Submitted Successfully."    
 
         customer.save()
 
@@ -2258,8 +2263,7 @@ def customer_approval_form(request, query_id):
             {
                 "customer": customer,
                 "success": True,
-                "popup_message":
-                "Customer  Form Submitted Successfully"
+                "popup_message": popup_message
             }
         )
 
