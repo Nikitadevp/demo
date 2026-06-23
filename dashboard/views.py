@@ -2208,7 +2208,7 @@ def estimate_form(request, query_id):
     )
 
 
-#customer_approval_form
+# customer_approval_form
 
 def customer_approval_form(request, query_id):
 
@@ -2218,6 +2218,10 @@ def customer_approval_form(request, query_id):
     )
 
     if request.method == "POST":
+
+        approval_type = request.POST.get(
+            "approval_type"
+        )
 
         CustomerApproval.objects.create(
 
@@ -2235,14 +2239,18 @@ def customer_approval_form(request, query_id):
 
             case_id=customer.ticket_id,
 
-            approval_type=request.POST.get(
-                "approval_type"
-            ),
+            approval_type=approval_type,
 
             customer_remark=request.POST.get(
                 "customer_remark"
             )
         )
+
+        if approval_type == "Reject":
+
+            customer.status = "Closed"
+
+        customer.save()
 
         return render(
             request,
@@ -2250,8 +2258,8 @@ def customer_approval_form(request, query_id):
             {
                 "customer": customer,
                 "success": True,
-                "popup_message": "Customer Approval Form Submitted Successfully"
-                
+                "popup_message":
+                "Customer  Form Submitted Successfully"
             }
         )
 
@@ -2263,7 +2271,6 @@ def customer_approval_form(request, query_id):
             "success": False
         }
     )
-
 
 def advance_collection_form(request, query_id):
 
