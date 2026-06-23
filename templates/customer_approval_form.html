@@ -1,0 +1,172 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Customer Approval Form</title>
+
+    <link rel="stylesheet"
+          href="{% static 'css/customer_approval.css' %}">
+
+    {% if success %}
+    <meta http-equiv="refresh"
+          content="3;url=/">
+    {% endif %}
+
+</head>
+
+<body>
+
+{% if not success %}
+
+<div class="container">
+
+    <!-- LOGO -->
+
+    <div class="logo-box">
+
+        <img src="{% static 'images/maintain.PNG' %}"
+             alt="Logo">
+
+    </div>
+
+    <!-- TITLE -->
+
+    <h2>Customer Approval Form</h2>
+
+    <!-- INFO -->
+
+    <div class="info-box">
+
+        <p>
+            Please provide the customer's decision below.
+        </p>
+
+        <p>
+            Estimated Time To Fill This Form :
+            <strong>6 Hours</strong>
+        </p>
+
+    </div>
+
+    <!-- FORM -->
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <label>Email *</label>
+
+        <input type="email"
+               value="jrdme.rbpl@rajat-group.com"
+               readonly>
+
+        <label>UID *</label>
+
+        <input type="text"
+               value="{{ customer.id }}"
+               readonly>
+
+        <label>Customer Name *</label>
+
+        <input type="text"
+               value="{{ customer.name }}"
+               readonly>
+
+        <label>Block *</label>
+
+        <input type="text"
+               value="{{ customer.tower }}"
+               readonly>
+
+        <label>Area / Flat *</label>
+
+        <input type="text"
+               value="{{ customer.area }}"
+               readonly>
+
+        <label>Case ID *</label>
+
+        <input type="text"
+               value="{{ customer.ticket_id }}"
+               readonly>
+
+        <label>
+            Provide Customer's Decision Below
+        </label>
+
+        <div class="radio-group">
+
+            <label>
+                <input type="radio"
+                       name="approval_type"
+                       value="Approve"
+                       required>
+                Approve
+            </label>
+
+            <label>
+                <input type="radio"
+                       name="approval_type"
+                       value="Reject">
+                Reject
+            </label>
+
+        </div>
+
+        <label>Customer Remark *</label>
+
+        <p class="info-text">
+            Please enter customer's approval or rejection remarks.
+        </p>
+
+        <textarea name="customer_remark"
+                  rows="5"
+                  required></textarea>
+
+        <button type="submit">
+            Submit
+        </button>
+
+    </form>
+
+</div>
+
+{% endif %}
+
+<!-- SUCCESS POPUP -->
+
+{% if success %}
+
+<div class="popup-overlay">
+
+    <div class="popup-box">
+
+        <h3>Submitted Successfully</h3>
+
+        <p>
+
+            Thank You For Your Response.
+
+            <br><br>
+
+            Customer Approval Has Been Recorded Successfully.
+
+        </p>
+
+    </div>
+
+</div>
+
+{% endif %}
+
+</body>
+
+</html>
