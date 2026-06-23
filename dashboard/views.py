@@ -2249,7 +2249,7 @@ def customer_approval_form(request, query_id):
             {
                 "customer": customer,
                 "success": True,
-                "popup_message": "Customer Approval Submitted Successfully"
+                
             }
         )
 
