@@ -1,0 +1,117 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Query Closer Form</title>
+
+    <link rel="stylesheet"
+          href="{% static 'css/query_closer.css' %}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>Query Closer Form</h2>
+
+    <p>
+        UID, Contact Number, Customer,
+        Block, Flat/Location and Case ID
+        are prefilled. Do Not Edit.
+    </p>
+
+    <form method="POST"
+          enctype="multipart/form-data">
+
+        {% csrf_token %}
+
+        <label>Email *</label>
+
+        <input type="email"
+               name="email"
+               required>
+
+        <label>UID *</label>
+
+        <input type="text"
+               value="{{ customer.id }}"
+               readonly>
+
+        <label>Contact Number *</label>
+
+        <input type="text"
+               value="{{ customer.contact }}"
+               readonly>
+
+        <label>Customer *</label>
+
+        <input type="text"
+               value="{{ customer.name }}"
+               readonly>
+
+        <label>Block *</label>
+
+        <input type="text"
+               value="{{ customer.tower }}"
+               readonly>
+
+        <label>Flat / Location *</label>
+
+        <input type="text"
+               value="{{ customer.area }}"
+               readonly>
+
+        <label>Case ID *</label>
+
+        <input type="text"
+               value="{{ customer.ticket_id }}"
+               readonly>
+
+        <hr>
+
+        <label>Solution Provided *</label>
+
+        <textarea name="solution_provided"
+                  rows="5"
+                  required></textarea>
+
+        <label>Closer Report *</label>
+
+        <input type="file"
+               name="closer_report"
+               required>
+
+        <button type="submit">
+
+            Submit
+
+        </button>
+
+    </form>
+
+</div>
+
+{% if popup_message %}
+
+<script>
+
+alert("{{ popup_message }}");
+
+window.location.href = window.location.pathname;
+
+</script>
+
+{% endif %}
+
+</body>
+
+</html>

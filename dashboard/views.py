@@ -3,7 +3,7 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.utils import timezone
 from datetime import timedelta, time
-from .models import EstimateForm, Ticket
+from .models import EstimateForm, QueryCloser, Ticket
 from django.urls import reverse
 import matplotlib.pyplot as plt
 import matplotlib
@@ -27,6 +27,7 @@ from .models import MaterialAvailability
 from .models import RaiseIndent
 from .models import IssueMaterial
 from .models import ReceiveMaterial
+from .models import QueryCloser
 
 
 
@@ -2568,6 +2569,67 @@ def receive_material_form(request, query_id):
     return render(
         request,
         "receive_material.html",
+        {
+            "customer": customer
+        }
+    )
+
+
+def query_closer_form(request, query_id):
+
+    customer = get_object_or_404(
+        CustomerQuery,
+        id=query_id
+    )
+
+    if request.method == "POST":
+
+        QueryCloser.objects.create(
+
+            customer_query=customer,
+
+            email=request.POST.get(
+                "email"
+            ),
+
+            uid=customer.id,
+
+            contact_number=customer.contact,
+
+            customer_name=customer.name,
+
+            block=customer.tower,
+
+            area=customer.area,
+
+            case_id=customer.ticket_id,
+
+            solution_provided=request.POST.get(
+                "solution_provided"
+            ),
+
+            closer_report=request.FILES.get(
+                "closer_report"
+            )
+        )
+
+        customer.status = "Closed"
+
+        customer.save()
+
+        return render(
+            request,
+            "query_closer.html",
+            {
+                "customer": customer,
+                "popup_message":
+                "Query Closed Successfully"
+            }
+        )
+
+    return render(
+        request,
+        "query_closer.html",
         {
             "customer": customer
         }
