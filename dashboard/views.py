@@ -2369,7 +2369,7 @@ def material_availability_form(request, query_id):
 
         if material_available == "No":
 
-            customer.status = "Pending"
+            customer.status = "Indent Pending"
 
         else:
 
