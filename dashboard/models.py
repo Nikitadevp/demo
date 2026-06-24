@@ -824,3 +824,74 @@ class MaterialAvailability(models.Model):
     def __str__(self):
 
         return self.unique_id
+    
+
+
+
+
+
+class RaiseIndent(models.Model):
+
+    unique_id = models.CharField(
+        max_length=20,
+        unique=True,
+        blank=True
+    )
+
+    customer_query = models.OneToOneField(
+        CustomerQuery,
+        on_delete=models.CASCADE
+    )
+
+    email = models.EmailField()
+
+    uid = models.IntegerField()
+
+    customer_name = models.CharField(
+        max_length=100
+    )
+
+    block = models.CharField(
+        max_length=100
+    )
+
+    area = models.CharField(
+        max_length=100
+    )
+
+    case_id = models.CharField(
+        max_length=50
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    def generate_unique_id(self):
+
+        while True:
+
+            code = "RI" + ''.join(
+                random.choices(
+                    string.ascii_letters + string.digits,
+                    k=10
+                )
+            )
+
+            if not RaiseIndent.objects.filter(
+                unique_id=code
+            ).exists():
+
+                return code
+
+    def save(self, *args, **kwargs):
+
+        if not self.unique_id:
+
+            self.unique_id = self.generate_unique_id()
+
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+
+        return self.unique_id
