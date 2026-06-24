@@ -45,6 +45,7 @@ urlpatterns = [
     path('customer-approval/<int:query_id>/', views.customer_approval_form, name='customer_approval_form'),
     path('advance-collection/<int:query_id>/', views.advance_collection_form, name='advance_collection_form'),
     path('material-availability/<int:query_id>/', views.material_availability_form, name='material_availability_form'),
+    path('raise-indent/<int:query_id>/', views.raise_indent_form, name='raise_indent_form'),
 
 
 

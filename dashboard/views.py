@@ -24,6 +24,7 @@ from .models import  EstimateForm
 from .models import CustomerApproval
 from .models import AdvanceCollection
 from .models import MaterialAvailability
+from .models import RaiseIndent
 
 
 
@@ -2390,6 +2391,57 @@ def material_availability_form(request, query_id):
     return render(
         request,
         "material_availability.html",
+        {
+            "customer": customer
+        }
+    )
+
+
+def raise_indent_form(request, query_id):
+
+    customer = get_object_or_404(
+        CustomerQuery,
+        id=query_id
+    )
+
+    if request.method == "POST":
+
+        RaiseIndent.objects.create(
+
+            customer_query=customer,
+
+            email=request.POST.get(
+                "email"
+            ),
+
+            uid=customer.id,
+
+            customer_name=customer.name,
+
+            block=customer.tower,
+
+            area=customer.area,
+
+            case_id=customer.ticket_id
+        )
+
+        customer.status = "Purchase Pending"
+
+        customer.save()
+
+        return render(
+            request,
+            "raise_indent.html",
+            {
+                "customer": customer,
+                "popup_message":
+                "Raise Indent Form Submitted Successfully"
+            }
+        )
+
+    return render(
+        request,
+        "raise_indent.html",
         {
             "customer": customer
         }
