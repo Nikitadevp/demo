@@ -1,0 +1,108 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Receive Material Form</title>
+
+    <link rel="stylesheet"
+          href="{% static 'css/receive_material.css' %}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>Receive Material Form</h2>
+
+    <p>
+        UID, Customer Name, Block,
+        Area and Case ID are prefilled.
+        Do Not Edit.
+    </p>
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <label>Email *</label>
+
+        <input type="email"
+               name="email"
+               required>
+
+        <label>UID *</label>
+
+        <input type="text"
+               value="{{ customer.id }}"
+               readonly>
+
+        <label>Customer Name *</label>
+
+        <input type="text"
+               value="{{ customer.name }}"
+               readonly>
+
+        <label>Block *</label>
+
+        <input type="text"
+               value="{{ customer.tower }}"
+               readonly>
+
+        <label>Area *</label>
+
+        <input type="text"
+               value="{{ customer.area }}"
+               readonly>
+
+        <label>Case ID *</label>
+
+        <input type="text"
+               value="{{ customer.ticket_id }}"
+               readonly>
+
+        <hr>
+
+        <label>Received By *</label>
+
+        <input type="text"
+               name="received_by"
+               required>
+
+        <label>Remark</label>
+
+        <textarea name="remark"></textarea>
+
+        <button type="submit">
+
+            Submit
+
+        </button>
+
+    </form>
+
+</div>
+
+{% if popup_message %}
+
+<script>
+
+alert("{{ popup_message }}");
+
+window.location.href = window.location.pathname;
+
+</script>
+
+{% endif %}
+
+</body>
+
+</html>

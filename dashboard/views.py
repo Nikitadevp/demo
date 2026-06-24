@@ -26,6 +26,7 @@ from .models import AdvanceCollection
 from .models import MaterialAvailability
 from .models import RaiseIndent
 from .models import IssueMaterial
+from .models import ReceiveMaterial
 
 
 
@@ -2504,6 +2505,69 @@ def issue_material_form(request, query_id):
     return render(
         request,
         "issue_material.html",
+        {
+            "customer": customer
+        }
+    )
+
+
+
+
+
+
+def receive_material_form(request, query_id):
+
+    customer = get_object_or_404(
+        CustomerQuery,
+        id=query_id
+    )
+
+    if request.method == "POST":
+
+        ReceiveMaterial.objects.create(
+
+            customer_query=customer,
+
+            email=request.POST.get(
+                "email"
+            ),
+
+            uid=customer.id,
+
+            customer_name=customer.name,
+
+            block=customer.tower,
+
+            area=customer.area,
+
+            case_id=customer.ticket_id,
+
+            received_by=request.POST.get(
+                "received_by"
+            ),
+
+            remark=request.POST.get(
+                "remark"
+            )
+        )
+
+        customer.status = "Material Received"
+
+        customer.save()
+
+        return render(
+            request,
+            "receive_material.html",
+            {
+                "customer": customer,
+                "popup_message":
+                "Receive Material Form Submitted Successfully"
+            }
+        )
+
+    return render(
+        request,
+        "receive_material.html",
         {
             "customer": customer
         }
