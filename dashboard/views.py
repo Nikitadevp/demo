@@ -28,6 +28,7 @@ from .models import RaiseIndent
 from .models import IssueMaterial
 from .models import ReceiveMaterial
 from .models import QueryCloser
+from .models import CustomerFeedback
 
 
 
@@ -2630,6 +2631,86 @@ def query_closer_form(request, query_id):
     return render(
         request,
         "query_closer.html",
+        {
+            "customer": customer
+        }
+    )
+
+
+
+def customer_feedback_form(request, query_id):
+
+    customer = get_object_or_404(
+        CustomerQuery,
+        id=query_id
+    )
+
+    if request.method == "POST":
+
+        issue_resolved = request.POST.get(
+            "issue_resolved"
+        )
+
+        service_satisfied = request.POST.get(
+            "service_satisfied"
+        )
+
+        CustomerFeedback.objects.create(
+
+            customer_query=customer,
+
+            email=request.POST.get(
+                "email"
+            ),
+
+            uid=customer.id,
+
+            customer_name=customer.name,
+
+            contact_number=customer.contact,
+
+            block=customer.tower,
+
+            area=customer.area,
+
+            case_id=customer.ticket_id,
+
+            issue_resolved=issue_resolved,
+
+            customer_remark=request.POST.get(
+                "customer_remark"
+            ),
+
+            service_satisfied=service_satisfied
+        )
+
+        if (
+            issue_resolved == "Yes"
+            and
+            service_satisfied == "Yes"
+        ):
+
+            customer.status = "Closed"
+
+        else:
+
+            customer.status = "Pending"
+
+        customer.save()
+
+        return render(
+            request,
+            "customer_feedback.html",
+            {
+                "customer": customer,
+                "popup_message":
+                "Customer Feedback Submitted Successfully"
+            }
+        )
+
+    return render(
+        request,
+        "customer_feedback.html",
         {
             "customer": customer
         }

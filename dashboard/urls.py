@@ -49,6 +49,7 @@ urlpatterns = [
     path('issue-material/<int:query_id>/', views.issue_material_form, name='issue_material_form'),
     path('receive-material/<int:query_id>/', views.receive_material_form, name='receive_material_form'),
     path('query-closer/<int:query_id>/', views.query_closer_form, name='query_closer_form'),
+    path('customer-feedback/<int:query_id>/', views.customer_feedback_form, name='customer_feedback_form'),
 
 
 

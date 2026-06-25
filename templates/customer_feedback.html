@@ -1,0 +1,152 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Customer Feedback Form</title>
+
+    <link rel="stylesheet"
+          href="{% static 'css/customer_feedback.css' %}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>Customer Feedback Form</h2>
+
+    <p>
+        UID, Customer, Contact Number,
+        Block, Area and Case ID are
+        prefilled. Do Not Edit.
+    </p>
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <label>Email *</label>
+
+        <input type="email"
+               name="email"
+               required>
+
+        <label>UID *</label>
+
+        <input type="text"
+               value="{{ customer.id }}"
+               readonly>
+
+        <label>Customer *</label>
+
+        <input type="text"
+               value="{{ customer.name }}"
+               readonly>
+
+        <label>Contact Number *</label>
+
+        <input type="text"
+               value="{{ customer.contact }}"
+               readonly>
+
+        <label>Block *</label>
+
+        <input type="text"
+               value="{{ customer.tower }}"
+               readonly>
+
+        <label>Area / Location *</label>
+
+        <input type="text"
+               value="{{ customer.area }}"
+               readonly>
+
+        <label>Case ID *</label>
+
+        <input type="text"
+               value="{{ customer.ticket_id }}"
+               readonly>
+
+        <hr>
+
+        <label>Issue Resolved ? *</label>
+
+        <div class="radio-group">
+
+            <label>
+                <input type="radio"
+                       name="issue_resolved"
+                       value="Yes"
+                       required>
+                Yes
+            </label>
+
+            <label>
+                <input type="radio"
+                       name="issue_resolved"
+                       value="No">
+                No
+            </label>
+
+        </div>
+
+        <label>Customer Remark *</label>
+
+        <textarea name="customer_remark"
+                  rows="5"
+                  required></textarea>
+
+        <label>Satisfied With Service ? *</label>
+
+        <div class="radio-group">
+
+            <label>
+                <input type="radio"
+                       name="service_satisfied"
+                       value="Yes"
+                       required>
+                Yes
+            </label>
+
+            <label>
+                <input type="radio"
+                       name="service_satisfied"
+                       value="No">
+                No
+            </label>
+
+        </div>
+
+        <button type="submit">
+
+            Submit
+
+        </button>
+
+    </form>
+
+</div>
+
+{% if popup_message %}
+
+<script>
+
+alert("{{ popup_message }}");
+
+window.location.href = window.location.pathname;
+
+</script>
+
+{% endif %}
+
+</body>
+
+</html>
