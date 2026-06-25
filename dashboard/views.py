@@ -2281,6 +2281,8 @@ def customer_approval_form(request, query_id):
         }
     )
 
+
+
 def advance_collection_form(request, query_id):
 
     customer = get_object_or_404(
