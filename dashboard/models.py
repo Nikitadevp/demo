@@ -1132,3 +1132,96 @@ class QueryCloser(models.Model):
     def __str__(self):
 
         return self.unique_id
+    
+
+
+import random
+import string
+
+class CustomerFeedback(models.Model):
+
+    unique_id = models.CharField(
+        max_length=20,
+        unique=True,
+        blank=True
+    )
+
+    customer_query = models.OneToOneField(
+        CustomerQuery,
+        on_delete=models.CASCADE
+    )
+
+    email = models.EmailField()
+
+    uid = models.IntegerField()
+
+    customer_name = models.CharField(
+        max_length=100
+    )
+
+    contact_number = models.CharField(
+        max_length=20
+    )
+
+    block = models.CharField(
+        max_length=100
+    )
+
+    area = models.CharField(
+        max_length=100
+    )
+
+    case_id = models.CharField(
+        max_length=50
+    )
+
+    issue_resolved = models.CharField(
+        max_length=10,
+        choices=[
+            ('Yes', 'Yes'),
+            ('No', 'No')
+        ]
+    )
+
+    customer_remark = models.TextField()
+
+    service_satisfied = models.CharField(
+        max_length=10,
+        choices=[
+            ('Yes', 'Yes'),
+            ('No', 'No')
+        ]
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    def generate_unique_id(self):
+
+        while True:
+
+            code = "CF" + ''.join(
+                random.choices(
+                    string.ascii_letters + string.digits,
+                    k=10
+                )
+            )
+
+            if not CustomerFeedback.objects.filter(
+                unique_id=code
+            ).exists():
+
+                return code
+
+    def save(self, *args, **kwargs):
+
+        if not self.unique_id:
+
+            self.unique_id = self.generate_unique_id()
+
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+
+        return self.unique_id
