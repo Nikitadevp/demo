@@ -1229,16 +1229,15 @@ class CustomerFeedback(models.Model):
 
 
 
-
 class AdminUser(models.Model):
 
-    ROLE_CHOICES = [
+    ROLE_CHOICES = (
         ("Admin", "Admin"),
         ("CRM", "CRM"),
         ("Site Engineer", "Site Engineer"),
         ("Store Keeper", "Store Keeper"),
         ("Maintenance", "Maintenance"),
-    ]
+    )
 
     username = models.CharField(
         max_length=50,
@@ -1246,7 +1245,7 @@ class AdminUser(models.Model):
     )
 
     full_name = models.CharField(
-        max_length=150
+        max_length=100
     )
 
     email = models.EmailField(
@@ -1275,19 +1274,16 @@ class AdminUser(models.Model):
         auto_now=True
     )
 
-    def set_password(self, raw_password):
-        self.password = make_password(raw_password)
-
-    def check_password(self, raw_password):
-        return check_password(raw_password, self.password)
-
     def save(self, *args, **kwargs):
 
-        # Hash only if not already hashed
-        if not self.password.startswith("pbkdf2_"):
+        # Password ko hash karega
+        if self.password and not self.password.startswith("pbkdf2_"):
             self.password = make_password(self.password)
 
         super().save(*args, **kwargs)
+
+    def verify_password(self, raw_password):
+        return check_password(raw_password, self.password)
 
     def __str__(self):
         return self.username
