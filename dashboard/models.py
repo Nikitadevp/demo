@@ -4,7 +4,7 @@ import uuid
 from django.utils import timezone
 import random
 import string
-
+from django.contrib.auth.hashers import make_password, check_password
 
 def generate_ticket_no():
     return "TCKT-" + uuid.uuid4().hex[:8].upper()
@@ -1225,3 +1225,69 @@ class CustomerFeedback(models.Model):
     def __str__(self):
 
         return self.unique_id
+    
+
+
+
+
+class AdminUser(models.Model):
+
+    ROLE_CHOICES = [
+        ("Admin", "Admin"),
+        ("CRM", "CRM"),
+        ("Site Engineer", "Site Engineer"),
+        ("Store Keeper", "Store Keeper"),
+        ("Maintenance", "Maintenance"),
+    ]
+
+    username = models.CharField(
+        max_length=50,
+        unique=True
+    )
+
+    full_name = models.CharField(
+        max_length=150
+    )
+
+    email = models.EmailField(
+        unique=True
+    )
+
+    password = models.CharField(
+        max_length=255
+    )
+
+    role = models.CharField(
+        max_length=30,
+        choices=ROLE_CHOICES,
+        default="Admin"
+    )
+
+    is_active = models.BooleanField(
+        default=True
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    updated_at = models.DateTimeField(
+        auto_now=True
+    )
+
+    def set_password(self, raw_password):
+        self.password = make_password(raw_password)
+
+    def check_password(self, raw_password):
+        return check_password(raw_password, self.password)
+
+    def save(self, *args, **kwargs):
+
+        # Hash only if not already hashed
+        if not self.password.startswith("pbkdf2_"):
+            self.password = make_password(self.password)
+
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.username
