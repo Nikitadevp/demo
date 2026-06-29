@@ -3,6 +3,8 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.utils import timezone
 from datetime import timedelta, time
+
+from dashboard.email_config import EMAILS
 from .models import EstimateForm, QueryCloser, Ticket
 from django.urls import reverse
 import matplotlib.pyplot as plt
@@ -1906,10 +1908,7 @@ def customer_query_form(request):
 
         """,
             from_email=settings.EMAIL_HOST_USER,          
-            recipient_list=[
-                
-                "jrdme.rbpl@rajat-group.com"    
-            ],
+            recipient_list=[EMAILS[ "test"]],
             fail_silently=False,
         )       
 
