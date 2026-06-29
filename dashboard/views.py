@@ -2064,7 +2064,7 @@ Thank You.
                 from_email=settings.EMAIL_HOST_USER,
 
                 recipient_list=[
-                    EMAILS["Site_Engineer"]
+                    EMAILS[ "test"]  #siteenginer ka mail aagyega baad me 
                 ],
 
                 fail_silently=False
