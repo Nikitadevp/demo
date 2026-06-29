@@ -2004,30 +2004,76 @@ def maintenance_scope_form(request, query_id):
         scope_status = request.POST.get("scope_status")
 
         MaintenanceScope.objects.create(
+
             customer_query=customer,
+
             email=customer.email,
+
             uid=customer.id,
+
             case_id=customer.ticket_id,
+
             customer_name=customer.name,
+
             customer_contact=customer.contact,
+
             block=customer.tower,
-        
+
             location=customer.area,
+
             issue_related=customer.issue,
+
             issue_description=customer.problem,
+
             scope_status=scope_status,
+
             reason=request.POST.get("reason")
-            
-            
+
         )
 
         if scope_status == "Yes":
 
             customer.status = "In Progress"
 
+            send_mail(
+
+                subject="New Site Inspection Assigned",
+
+                message=f"""
+Hello Site Engineer,
+
+A new Site Inspection has been assigned.
+
+Case ID : {customer.ticket_id}
+
+Customer : {customer.name}
+
+Contact : {customer.contact}
+
+Block : {customer.tower}
+
+Area : {customer.area}
+
+Issue : {customer.problem}
+
+Please complete the Site Inspection as soon as possible.
+
+Thank You.
+""",
+
+                from_email=settings.EMAIL_HOST_USER,
+
+                recipient_list=[
+                    EMAILS["Site_Engineer"]
+                ],
+
+                fail_silently=False
+
+            )
+
             popup_message = (
                 "Form Submitted Successfully. "
-                "We Will Get Back To You Soon."
+                "Site Engineer Has Been Notified."
             )
 
         else:
@@ -2056,8 +2102,6 @@ def maintenance_scope_form(request, query_id):
             "customer": customer
         }
     )
-
-
 
 
 def site_inspection_form(request, query_id):
