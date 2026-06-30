@@ -1,16 +1,108 @@
-const showPassword = document.getElementById("showPassword");
-const password = document.getElementById("password");
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
 
-if (showPassword && password) {
+<head>
 
-    showPassword.addEventListener("change", function () {
+    <meta charset="UTF-8">
 
-        if (this.checked) {
-            password.type = "text";
-        } else {
-            password.type = "password";
-        }
+    <title>Admin Login</title>
 
-    });
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
 
-}
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+</head>
+
+<body>
+
+<div class="login-box">
+
+    <div class="logo">
+
+        <h1>Sampoorna</h1>
+
+        <p>Maintenance Portal</p>
+
+    </div>
+
+    {% if messages %}
+
+        {% for message in messages %}
+
+            <div class="message">
+
+                {{ message }}
+
+            </div>
+
+        {% endfor %}
+
+    {% endif %}
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <div class="input-group">
+
+            <label>Username</label>
+
+            <input
+                type="text"
+                name="username"
+                placeholder="Enter Username"
+                required
+            >
+
+        </div>
+
+        <div class="input-group">
+
+            <label>Password</label>
+
+            <div class="password-box">
+
+                <input
+                    id="password"
+                    type="password"
+                    name="password"
+                    placeholder="Enter Password"
+                    required
+                >
+
+                <i class="fa-solid fa-eye" id="togglePassword"></i>
+
+            </div>
+
+        </div>
+
+        <div class="extra">
+
+            <a href="#" class="forgot-password">
+
+                Forgot Password?
+
+            </a>
+
+        </div>
+
+        <button type="submit">
+
+            Login
+
+        </button>
+
+    </form>
+
+</div>
+
+<script src="{% static 'js/login.js' %}"></script>
+
+</body>
+
+</html>
