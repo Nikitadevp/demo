@@ -1,0 +1,274 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Sampoorna Maintenance</title>
+
+    <link rel="stylesheet"
+          href="{% static 'css/master_dashboard.css' %}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+</head>
+
+<body>
+
+<div class="wrapper">
+
+    <!-- Sidebar -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <h2>Sampoorna</h2>
+
+            <span>Maintenance</span>
+
+        </div>
+
+        <ul class="menu">
+
+            <li>
+
+                <a href="{% url 'master_dashboard' %}">
+
+                    <i class="fa-solid fa-chart-line"></i>
+
+                    Dashboard
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="#">
+
+                    <i class="fa-solid fa-ticket"></i>
+
+                    All Tickets
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="#">
+
+                    <i class="fa-solid fa-building"></i>
+
+                    Site Inspection
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="#">
+
+                    <i class="fa-solid fa-file-invoice"></i>
+
+                    Estimate
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="#">
+
+                    <i class="fa-solid fa-circle-check"></i>
+
+                    Customer Approval
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="#">
+
+                    <i class="fa-solid fa-money-check-dollar"></i>
+
+                    Advance Collection
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="#">
+
+                    <i class="fa-solid fa-boxes-stacked"></i>
+
+                    Material
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="#">
+
+                    <i class="fa-solid fa-screwdriver-wrench"></i>
+
+                    Work Complete
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="#">
+
+                    <i class="fa-solid fa-star"></i>
+
+                    Customer Feedback
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="#">
+
+                    <i class="fa-solid fa-users"></i>
+
+                    Users
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="#">
+
+                    <i class="fa-solid fa-gear"></i>
+
+                    Settings
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="{% url 'logout' %}">
+
+                    <i class="fa-solid fa-right-from-bracket"></i>
+
+                    Logout
+
+                </a>
+
+            </li>
+
+        </ul>
+
+    </aside>
+
+
+
+    <!-- Main Content -->
+
+    <div class="main-content">
+
+        <!-- Top Navbar -->
+
+        <header class="topbar">
+
+            <div class="left">
+
+                <h2>
+
+                    Sampoorna Maintenance Dashboard
+
+                </h2>
+
+            </div>
+
+            <div class="right">
+
+                <div class="search-box">
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                    <input type="text"
+                           placeholder="Search Ticket">
+
+                </div>
+
+                <div class="notification">
+
+                    <i class="fa-solid fa-bell"></i>
+
+                </div>
+
+                <div class="profile">
+
+                    <div class="avatar">
+
+                        <i class="fa-solid fa-user"></i>
+
+                    </div>
+
+                    <div class="user-info">
+
+                        <h4>
+
+                            {{ request.user.username }}
+
+                        </h4>
+
+                        <span>
+
+                            Administrator
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- Dynamic Page Content -->
+
+        <main class="page-content">
+
+            {% block content %}
+
+            {% endblock %}
+
+        </main>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>
