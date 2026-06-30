@@ -1,0 +1,475 @@
+```html
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="dashboard-container">
+
+    <!-- =========================
+         Welcome Section
+    ========================== -->
+
+    <section class="welcome-section">
+
+        <div class="welcome-left">
+
+            <h1>Welcome Back, {{ request.user.first_name|default:request.user.username }} 👋</h1>
+
+            <p>
+                Monitor all maintenance activities, track project stages,
+                and manage customer queries from one place.
+            </p>
+
+        </div>
+
+        <div class="welcome-right">
+
+            <div class="date-card">
+
+                <i class="fa-solid fa-calendar-days"></i>
+
+                <div>
+
+                    <h4>Today's Date</h4>
+
+                    <p>{% now "l, d F Y" %}</p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+          Statistics Cards
+    ========================== -->
+
+    <section class="stats-grid">
+
+        <div class="stat-card total">
+
+            <div class="card-icon">
+                <i class="fa-solid fa-layer-group"></i>
+            </div>
+
+            <div class="card-content">
+                <h4>Total Queries</h4>
+                <h2>{{ total_queries|default:"0" }}</h2>
+                <span>All Registered Queries</span>
+            </div>
+
+        </div>
+
+        <div class="stat-card pending">
+
+            <div class="card-icon">
+                <i class="fa-solid fa-hourglass-half"></i>
+            </div>
+
+            <div class="card-content">
+                <h4>Pending</h4>
+                <h2>{{ pending_queries|default:"0" }}</h2>
+                <span>Waiting for Action</span>
+            </div>
+
+        </div>
+
+        <div class="stat-card progress">
+
+            <div class="card-icon">
+                <i class="fa-solid fa-spinner"></i>
+            </div>
+
+            <div class="card-content">
+                <h4>In Progress</h4>
+                <h2>{{ in_progress_queries|default:"0" }}</h2>
+                <span>Currently Processing</span>
+            </div>
+
+        </div>
+
+        <div class="stat-card completed">
+
+            <div class="card-icon">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+
+            <div class="card-content">
+                <h4>Completed</h4>
+                <h2>{{ completed_queries|default:"0" }}</h2>
+                <span>Finished Successfully</span>
+            </div>
+
+        </div>
+
+        <div class="stat-card closed">
+
+            <div class="card-icon">
+                <i class="fa-solid fa-lock"></i>
+            </div>
+
+            <div class="card-content">
+                <h4>Closed</h4>
+                <h2>{{ closed_queries|default:"0" }}</h2>
+                <span>Query Closed</span>
+            </div>
+
+        </div>
+
+        <div class="stat-card overdue">
+
+            <div class="card-icon">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+
+            <div class="card-content">
+                <h4>Overdue</h4>
+                <h2>{{ overdue_queries|default:"0" }}</h2>
+                <span>Needs Immediate Attention</span>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+          Stage Summary
+    ========================== -->
+
+    <section class="dashboard-card">
+
+        <div class="section-header">
+
+            <h2>
+                <i class="fa-solid fa-chart-simple"></i>
+                Maintenance Stage Summary
+            </h2>
+
+            <a href="#" class="view-all">
+                View Details
+            </a>
+
+        </div>
+
+        <div class="stage-grid">
+
+            <div class="stage-card">
+
+                <div class="stage-number">S0</div>
+
+                <h4>Customer Query</h4>
+
+                <h2>{{ s0_count|default:"0" }}</h2>
+
+            </div>
+
+            <div class="stage-card">
+
+                <div class="stage-number">S1</div>
+
+                <h4>Site Inspection</h4>
+
+                <h2>{{ s1_count|default:"0" }}</h2>
+
+            </div>
+
+            <div class="stage-card">
+
+                <div class="stage-number">S2</div>
+
+                <h4>Estimate</h4>
+
+                <h2>{{ s2_count|default:"0" }}</h2>
+
+            </div>
+
+            <div class="stage-card">
+
+                <div class="stage-number">S3</div>
+
+                <h4>Customer Approval</h4>
+
+                <h2>{{ s3_count|default:"0" }}</h2>
+
+            </div>
+
+            <div class="stage-card">
+
+                <div class="stage-number">S4</div>
+
+                <h4>Advance Collection</h4>
+
+                <h2>{{ s4_count|default:"0" }}</h2>
+
+            </div>
+
+            <div class="stage-card">
+
+                <div class="stage-number">S5</div>
+
+                <h4>Material Availability</h4>
+
+                <h2>{{ s5_count|default:"0" }}</h2>
+
+            </div>
+
+            <div class="stage-card">
+
+                <div class="stage-number">S6</div>
+
+                <h4>Raise Indent</h4>
+
+                <h2>{{ s6_count|default:"0" }}</h2>
+
+            </div>
+
+            <div class="stage-card">
+
+                <div class="stage-number">S7</div>
+
+                <h4>Issue Material</h4>
+
+                <h2>{{ s7_count|default:"0" }}</h2>
+
+            </div>
+
+            <div class="stage-card">
+
+                <div class="stage-number">S8</div>
+
+                <h4>Receive Material</h4>
+
+                <h2>{{ s8_count|default:"0" }}</h2>
+
+            </div>
+
+            <div class="stage-card">
+
+                <div class="stage-number">S9</div>
+
+                <h4>Work Started</h4>
+
+                <h2>{{ s9_count|default:"0" }}</h2>
+
+            </div>
+
+            <div class="stage-card">
+
+                <div class="stage-number">S10</div>
+
+                <h4>Work Completed</h4>
+
+                <h2>{{ s10_count|default:"0" }}</h2>
+
+            </div>
+
+            <div class="stage-card">
+
+                <div class="stage-number">S11</div>
+
+                <h4>Customer Feedback</h4>
+
+                <h2>{{ s11_count|default:"0" }}</h2>
+
+            </div>
+
+            <div class="stage-card">
+
+                <div class="stage-number">S12</div>
+
+                <h4>Query Closed</h4>
+
+                <h2>{{ s12_count|default:"0" }}</h2>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+          Charts
+    ========================== -->
+
+    <section class="chart-grid">
+
+        <div class="dashboard-card">
+
+            <div class="section-header">
+
+                <h2>Status Overview</h2>
+
+            </div>
+
+            <canvas id="statusChart"></canvas>
+
+        </div>
+
+        <div class="dashboard-card">
+
+            <div class="section-header">
+
+                <h2>Monthly Queries</h2>
+
+            </div>
+
+            <canvas id="monthlyChart"></canvas>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+          Recent Tickets
+    ========================== -->
+
+    <section class="dashboard-card">
+
+        <div class="section-header">
+
+            <h2>
+                <i class="fa-solid fa-ticket"></i>
+                Recent Tickets
+            </h2>
+
+        </div>
+
+        <div class="table-responsive">
+
+            <table class="ticket-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>UID</th>
+
+                        <th>Customer</th>
+
+                        <th>Block</th>
+
+                        <th>Flat</th>
+
+                        <th>Current Stage</th>
+
+                        <th>Status</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for ticket in recent_tickets %}
+
+                    <tr>
+
+                        <td>{{ ticket.unique_id }}</td>
+
+                        <td>{{ ticket.customer_name }}</td>
+
+                        <td>{{ ticket.block }}</td>
+
+                        <td>{{ ticket.flat }}</td>
+
+                        <td>{{ ticket.current_stage }}</td>
+
+                        <td>
+
+                            <span class="status-badge">
+                                {{ ticket.status }}
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td colspan="6" style="text-align:center;">
+                            No recent tickets available.
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+          Latest Activity
+    ========================== -->
+
+    <section class="dashboard-card">
+
+        <div class="section-header">
+
+            <h2>
+                <i class="fa-solid fa-clock-rotate-left"></i>
+                Latest Activities
+            </h2>
+
+        </div>
+
+        <div class="activity-list">
+
+            {% for activity in latest_activities %}
+
+                <div class="activity-item">
+
+                    <div class="activity-icon">
+
+                        <i class="fa-solid fa-check"></i>
+
+                    </div>
+
+                    <div class="activity-content">
+
+                        <h4>{{ activity.title }}</h4>
+
+                        <p>{{ activity.description }}</p>
+
+                        <small>{{ activity.created_at }}</small>
+
+                    </div>
+
+                </div>
+
+            {% empty %}
+
+                <div class="activity-item">
+
+                    <div class="activity-content">
+
+                        <p>No recent activities found.</p>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+</div>
+
+{% endblock %}
+```
