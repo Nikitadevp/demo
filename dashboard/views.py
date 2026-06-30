@@ -32,6 +32,8 @@ from .models import ReceiveMaterial
 from .models import QueryCloser
 from .models import CustomerFeedback
 
+from django.contrib import messages
+from .models import AdminUser
 
 
 
@@ -2761,3 +2763,86 @@ def customer_feedback_form(request, query_id):
             "customer": customer
         }
     )
+
+
+
+
+def login_view(request):
+
+    # Agar already login hai
+    if request.session.get("admin_id"):
+        return redirect("admin_dashboard")
+
+    if request.method == "POST":
+
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+
+        if not username or not password:
+            messages.error(request, "Please enter username and password.")
+            return render(request, "login.html")
+
+        try:
+
+            admin = AdminUser.objects.get(
+                username=username,
+                is_active=True
+            )
+
+            if admin.check_password(password):
+
+                # Session Create
+                request.session["admin_id"] = admin.id
+                request.session["admin_name"] = admin.full_name
+                request.session["admin_role"] = admin.role
+
+                return redirect("admin_dashboard")
+
+            else:
+
+                messages.error(request, "Invalid Password")
+
+        except AdminUser.DoesNotExist:
+
+            messages.error(request, "Invalid Username")
+
+    return render(request, "login.html")
+
+
+# ==========================
+# ADMIN DASHBOARD
+# ==========================
+
+def admin_dashboard(request):
+
+    if not request.session.get("admin_id"):
+        return redirect("login")
+
+    context = {
+
+        "admin_name": request.session.get("admin_name"),
+        "admin_role": request.session.get("admin_role"),
+
+    }
+
+    return render(
+        request,
+        "admin_dashboard.html",
+        context
+    )
+
+
+# ==========================
+# LOGOUT
+# ==========================
+
+def logout_view(request):
+
+    request.session.flush()
+
+    messages.success(
+        request,
+        "Logged out Successfully."
+    )
+
+    return redirect("login")
