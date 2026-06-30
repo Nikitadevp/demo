@@ -1,0 +1,363 @@
+/*=========================================================
+    Sampoorna Maintenance Master Dashboard
+    CSS Part 1
+    Global Styles + Layout + Welcome Section
+=========================================================*/
+
+/* Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+/* ===========================
+   Reset
+=========================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:'Poppins',sans-serif;
+    background:#f5f7fb;
+    color:#2d3748;
+}
+
+/* ===========================
+   Links
+=========================== */
+
+a{
+    text-decoration:none;
+    color:inherit;
+}
+
+ul{
+    list-style:none;
+}
+
+/* ===========================
+   Wrapper
+=========================== */
+
+.wrapper{
+    display:flex;
+    min-height:100vh;
+    background:#f5f7fb;
+}
+
+/* ===========================
+   Sidebar
+=========================== */
+
+.sidebar{
+    width:270px;
+    background:#1f2937;
+    color:#fff;
+    position:fixed;
+    top:0;
+    left:0;
+    bottom:0;
+    overflow-y:auto;
+    z-index:1000;
+    transition:.3s;
+}
+
+.logo{
+    padding:30px 25px;
+    border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.logo h2{
+    font-size:26px;
+    font-weight:700;
+    color:#ffffff;
+}
+
+.logo span{
+    color:#60a5fa;
+    font-size:14px;
+    letter-spacing:1px;
+}
+
+.menu{
+    padding:20px 0;
+}
+
+.menu li{
+    margin:6px 14px;
+}
+
+.menu li a{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:14px 18px;
+    border-radius:12px;
+    color:#d1d5db;
+    transition:.3s;
+    font-size:15px;
+    font-weight:500;
+}
+
+.menu li a i{
+    width:22px;
+    text-align:center;
+    font-size:17px;
+}
+
+.menu li a:hover{
+    background:#3b82f6;
+    color:#fff;
+    transform:translateX(5px);
+}
+
+.menu li.active a{
+    background:#2563eb;
+    color:#fff;
+}
+
+/* ===========================
+   Main Content
+=========================== */
+
+.main-content{
+    margin-left:270px;
+    width:calc(100% - 270px);
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+}
+
+/* ===========================
+   Top Navbar
+=========================== */
+
+.topbar{
+    height:80px;
+    background:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 35px;
+    border-bottom:1px solid #e5e7eb;
+    position:sticky;
+    top:0;
+    z-index:999;
+}
+
+.topbar .left h2{
+    font-size:24px;
+    font-weight:700;
+    color:#1e293b;
+}
+
+/* ===========================
+   Search Box
+=========================== */
+
+.search-box{
+    width:260px;
+    background:#f3f4f6;
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    padding:10px 15px;
+}
+
+.search-box i{
+    color:#6b7280;
+    margin-right:10px;
+}
+
+.search-box input{
+    border:none;
+    outline:none;
+    background:transparent;
+    width:100%;
+    font-size:14px;
+}
+
+/* ===========================
+   Navbar Right
+=========================== */
+
+.topbar .right{
+    display:flex;
+    align-items:center;
+    gap:20px;
+}
+
+.notification{
+    width:46px;
+    height:46px;
+    border-radius:50%;
+    background:#eef2ff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.notification:hover{
+    background:#3b82f6;
+    color:#fff;
+}
+
+.profile{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.avatar{
+    width:48px;
+    height:48px;
+    border-radius:50%;
+    background:#2563eb;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:18px;
+}
+
+.user-info h4{
+    font-size:15px;
+    font-weight:600;
+}
+
+.user-info span{
+    color:#64748b;
+    font-size:13px;
+}
+
+/* ===========================
+   Page Content
+=========================== */
+
+.page-content{
+    padding:30px;
+}
+
+/* ===========================
+   Dashboard Container
+=========================== */
+
+.dashboard-container{
+    display:flex;
+    flex-direction:column;
+    gap:30px;
+}
+
+/* ===========================
+   Welcome Section
+=========================== */
+
+.welcome-section{
+    background:linear-gradient(135deg,#4f46e5,#2563eb);
+    color:#fff;
+    border-radius:20px;
+    padding:35px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    box-shadow:0 15px 35px rgba(79,70,229,.18);
+}
+
+.welcome-left{
+    max-width:650px;
+}
+
+.welcome-left h1{
+    font-size:34px;
+    font-weight:700;
+    margin-bottom:12px;
+}
+
+.welcome-left p{
+    font-size:16px;
+    opacity:.95;
+    line-height:1.7;
+}
+
+.welcome-right{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.date-card{
+    min-width:230px;
+    background:rgba(255,255,255,.18);
+    backdrop-filter:blur(8px);
+    border:1px solid rgba(255,255,255,.15);
+    border-radius:18px;
+    padding:22px;
+    display:flex;
+    align-items:center;
+    gap:18px;
+}
+
+.date-card i{
+    font-size:34px;
+}
+
+.date-card h4{
+    font-size:17px;
+    margin-bottom:6px;
+    font-weight:600;
+}
+
+.date-card p{
+    font-size:14px;
+    opacity:.95;
+}
+
+/* ===========================
+   Common Dashboard Card
+=========================== */
+
+.dashboard-card{
+    background:#fff;
+    border-radius:18px;
+    padding:25px;
+    box-shadow:0 8px 25px rgba(15,23,42,.05);
+}
+
+.section-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:22px;
+}
+
+.section-header h2{
+    font-size:22px;
+    color:#1e293b;
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.section-header h2 i{
+    color:#2563eb;
+}
+
+.view-all{
+    color:#2563eb;
+    font-weight:600;
+    font-size:14px;
+    transition:.3s;
+}
+
+.view-all:hover{
+    color:#1d4ed8;
+}
