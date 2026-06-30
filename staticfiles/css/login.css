@@ -183,6 +183,62 @@ button:hover{
     box-shadow:0 12px 20px rgba(37,99,235,.35);
 
 }
+.password-box{
+
+    position: relative;
+
+}
+
+.password-box input{
+
+    width:100%;
+    padding-right:45px;
+
+}
+
+.password-box i{
+
+    position:absolute;
+
+    right:15px;
+
+    top:50%;
+
+    transform:translateY(-50%);
+
+    cursor:pointer;
+
+    color:#777;
+
+    font-size:18px;
+
+    transition:.3s;
+
+}
+
+.password-box i:hover{
+
+    color:#2d63ff;
+
+}
+
+#togglePassword{
+
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform:translateY(-50%);
+    cursor: pointer;
+    color: #777;
+    font-size: 18px;
+
+}
+
+#togglePassword:hover{
+
+    color: #2563eb;
+
+}
 
 @media(max-width:500px){
 
