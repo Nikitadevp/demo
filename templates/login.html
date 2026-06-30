@@ -1,0 +1,105 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Admin Login</title>
+
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="login-box">
+
+    <div class="logo">
+
+        <h1>Sampoorna</h1>
+
+        <p>Maintenance Portal</p>
+
+    </div>
+
+    {% if messages %}
+
+        {% for message in messages %}
+
+            <div class="message">
+
+                {{ message }}
+
+            </div>
+
+        {% endfor %}
+
+    {% endif %}
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <div class="input-group">
+
+            <label>Username</label>
+
+            <input
+                type="text"
+                name="username"
+                placeholder="Enter Username"
+                required
+            >
+
+        </div>
+
+        <div class="input-group">
+
+            <label>Password</label>
+
+            <input
+                id="password"
+                type="password"
+                name="password"
+                placeholder="Enter Password"
+                required
+            >
+
+        </div>
+
+        <div class="extra">
+
+            <label>
+
+                <input
+                    type="checkbox"
+                    id="showPassword"
+                >
+
+                Show Password
+
+            </label>
+
+            <a href="#">Forgot Password?</a>
+
+        </div>
+
+        <button type="submit">
+
+            Login
+
+        </button>
+
+    </form>
+
+</div>
+
+<script src="{% static 'js/login.js' %}"></script>
+
+</body>
+
+</html>
