@@ -2772,12 +2772,30 @@ def customer_feedback_form(request, query_id):
 
 
 
+from django.shortcuts import render, redirect
+from django.contrib import messages
 
 def login_view(request):
 
-    # Agar already login hai
+    # Already Login
     if request.session.get("admin_id"):
-        return redirect("admin_dashboard")
+
+        role = request.session.get("admin_role")
+
+        if role == "Admin":
+            return redirect("admin_dashboard")
+
+        elif role == "CRM":
+            return redirect("crm_dashboard")
+
+        elif role == "Site Engineer":
+            return redirect("engineer_dashboard")
+
+        elif role == "Store Keeper":
+            return redirect("store_dashboard")
+
+        elif role == "Maintenance In-charge":
+            return redirect("maintenance_dashboard")
 
     if request.method == "POST":
 
@@ -2785,32 +2803,72 @@ def login_view(request):
         password = request.POST.get("password")
 
         if not username or not password:
-            messages.error(request, "Please enter username and password.")
+
+            messages.error(
+                request,
+                "Please enter username and password."
+            )
+
             return render(request, "login.html")
 
         try:
 
             admin = AdminUser.objects.get(
+
                 username=username,
                 is_active=True
+
             )
 
             if admin.check_password(password):
 
                 # Session Create
+
                 request.session["admin_id"] = admin.id
                 request.session["admin_name"] = admin.full_name
                 request.session["admin_role"] = admin.role
 
-                return redirect("admin_dashboard")
+                # ===============================
+                # ROLE WISE DASHBOARD
+                # ===============================
+
+                if admin.role == "Admin":
+                    return redirect("admin_dashboard")
+
+                elif admin.role == "CRM":
+                    return redirect("crm_dashboard")
+
+                elif admin.role == "Site Engineer":
+                    return redirect("engineer_dashboard")
+
+                elif admin.role == "Store Keeper":
+                    return redirect("store_dashboard")
+
+                elif admin.role == "Maintenance In-charge":
+                    return redirect("maintenance_dashboard")
+
+                else:
+
+                    messages.error(
+                        request,
+                        "Role is not assigned."
+                    )
+
+                    return redirect("login")
 
             else:
 
-                messages.error(request, "Invalid Password")
+                messages.error(
+                    request,
+                    "Invalid Password"
+                )
 
         except AdminUser.DoesNotExist:
 
-            messages.error(request, "Invalid Username")
+            messages.error(
+                request,
+                "Invalid Username"
+            )
 
     return render(request, "login.html")
 
@@ -2873,9 +2931,12 @@ from .models import (
 )
 
 
-@login_required(login_url="login")
-def maintenance_dashboard(request):
 
+def maintenance_dashboard(request):
+    
+    if "admin_id" not in request.session:
+        return redirect("login")
+    
     # ==========================================
     # DASHBOARD SUMMARY
     # ==========================================
