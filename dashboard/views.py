@@ -36,6 +36,12 @@ from django.contrib import messages
 from .models import AdminUser
 
 
+from django.contrib.auth.decorators import login_required
+
+from django.db.models import Count
+
+
+
 
 
 
@@ -2846,3 +2852,349 @@ def logout_view(request):
     )
 
     return redirect("login")
+
+
+
+
+
+from .models import (
+    CustomerQuery,
+    MaintenanceScope,
+    SiteInspection,
+    EstimateForm,
+    CustomerApproval,
+    AdvanceCollection,
+    MaterialAvailability,
+    RaiseIndent,
+    IssueMaterial,
+    ReceiveMaterial,
+    QueryCloser,
+    CustomerFeedback,
+)
+
+
+@login_required(login_url="login")
+def maintenance_dashboard(request):
+
+    # ==========================================
+    # DASHBOARD SUMMARY
+    # ==========================================
+
+    total_queries = CustomerQuery.objects.count()
+
+    open_queries = CustomerQuery.objects.filter(
+        status="Open"
+    ).count()
+
+    pending_queries = CustomerQuery.objects.filter(
+        status="Pending"
+    ).count()
+
+    in_progress_queries = CustomerQuery.objects.filter(
+        status="In Progress"
+    ).count()
+
+    resolved_queries = CustomerQuery.objects.filter(
+        status="Resolved"
+    ).count()
+
+    closed_queries = CustomerQuery.objects.filter(
+        status="Closed"
+    ).count()
+
+    today_queries = CustomerQuery.objects.filter(
+        created_at__date=timezone.now().date()
+    ).count()
+
+
+    # ==========================================
+    # WORKFLOW COUNTS
+    # ==========================================
+
+    maintenance_scope = MaintenanceScope.objects.count()
+
+    site_inspection = SiteInspection.objects.count()
+
+    estimate_form = EstimateForm.objects.count()
+
+    customer_approval = CustomerApproval.objects.count()
+
+    advance_collection = AdvanceCollection.objects.count()
+
+    material_availability = MaterialAvailability.objects.count()
+
+    raise_indent = RaiseIndent.objects.count()
+
+    issue_material = IssueMaterial.objects.count()
+
+    receive_material = ReceiveMaterial.objects.count()
+
+    query_closer = QueryCloser.objects.count()
+
+    customer_feedback = CustomerFeedback.objects.count()
+
+
+    # ==========================================
+    # PENDING STAGE COUNTS
+    # ==========================================
+
+    scope_pending = max(
+        total_queries - maintenance_scope,
+        0
+    )
+
+    inspection_pending = max(
+        maintenance_scope - site_inspection,
+        0
+    )
+
+    estimate_pending = max(
+        site_inspection - estimate_form,
+        0
+    )
+
+    approval_pending = max(
+        estimate_form - customer_approval,
+        0
+    )
+
+    advance_pending = max(
+        customer_approval - advance_collection,
+        0
+    )
+
+    material_pending = max(
+        advance_collection - material_availability,
+        0
+    )
+
+    indent_pending = max(
+        material_availability - raise_indent,
+        0
+    )
+
+    issue_pending = max(
+        raise_indent - issue_material,
+        0
+    )
+
+    receive_pending = max(
+        issue_material - receive_material,
+        0
+    )
+
+    close_pending = max(
+        receive_material - query_closer,
+        0
+    )
+
+    feedback_pending = max(
+        query_closer - customer_feedback,
+        0
+    )
+
+
+    # ==========================================
+    # LATEST COMPLAINTS
+    # ==========================================
+
+    latest_complaints = CustomerQuery.objects.order_by(
+        "-created_at"
+    )[:10]
+
+
+    # ==========================================
+    # RECENT ESTIMATES
+    # ==========================================
+
+    recent_estimates = EstimateForm.objects.select_related(
+        "customer_query"
+    ).order_by("-id")[:5]
+
+
+    # ==========================================
+    # RECENT APPROVALS
+    # ==========================================
+
+    recent_approvals = CustomerApproval.objects.select_related(
+        "customer_query"
+    ).order_by("-id")[:5]
+    
+
+    # ==========================================
+    # MATERIAL STATISTICS
+    # ==========================================
+
+    material_available_yes = MaterialAvailability.objects.filter(
+        material_available="Yes"
+    ).count()
+
+    material_available_no = MaterialAvailability.objects.filter(
+        material_available="No"
+    ).count()
+
+    total_material = (
+        material_available_yes +
+        material_available_no
+    )
+
+    if total_material:
+
+        material_available_percent = round(
+            (material_available_yes / total_material) * 100
+        )
+
+        material_pending_percent = round(
+            (material_available_no / total_material) * 100
+        )
+
+    else:
+
+        material_available_percent = 0
+        material_pending_percent = 0
+
+
+    # ==========================================
+    # CHARGEABLE / NON CHARGEABLE
+    # ==========================================
+
+    chargeable = SiteInspection.objects.filter(
+        category="Chargeable"
+    ).count()
+
+    non_chargeable = SiteInspection.objects.filter(
+        category="Non Chargeable"
+    ).count()
+
+    total_category = chargeable + non_chargeable
+
+    if total_category:
+
+        chargeable_percent = round(
+            (chargeable / total_category) * 100
+        )
+
+        non_chargeable_percent = round(
+            (non_chargeable / total_category) * 100
+        )
+
+    else:
+
+        chargeable_percent = 0
+        non_chargeable_percent = 0
+
+
+    # ==========================================
+    # MONTHLY COMPLAINTS
+    # ==========================================
+
+    monthly_data = (
+        CustomerQuery.objects
+        .values("created_at__month")
+        .annotate(total=Count("id"))
+        .order_by("created_at__month")
+    )
+
+    month_names = {
+        1: "Jan",
+        2: "Feb",
+        3: "Mar",
+        4: "Apr",
+        5: "May",
+        6: "Jun",
+        7: "Jul",
+        8: "Aug",
+        9: "Sep",
+        10: "Oct",
+        11: "Nov",
+        12: "Dec",
+    }
+
+    months = []
+    monthly_counts = []
+
+    for item in monthly_data:
+
+        months.append(
+            month_names[item["created_at__month"]]
+        )
+
+        monthly_counts.append(
+            item["total"]
+        )
+
+
+    # ==========================================
+    # CONTEXT
+    # ==========================================
+
+    context = {
+
+        # SUMMARY
+
+        "total_queries": total_queries,
+        "open_queries": open_queries,
+        "pending_queries": pending_queries,
+        "in_progress_queries": in_progress_queries,
+        "resolved_queries": resolved_queries,
+        "closed_queries": closed_queries,
+        "today_queries": today_queries,
+
+        # WORKFLOW
+
+        "maintenance_scope": maintenance_scope,
+        "site_inspection": site_inspection,
+        "estimate_form": estimate_form,
+        "customer_approval": customer_approval,
+        "advance_collection": advance_collection,
+        "material_availability": material_availability,
+        "raise_indent": raise_indent,
+        "issue_material": issue_material,
+        "receive_material": receive_material,
+        "query_closer": query_closer,
+        "customer_feedback": customer_feedback,
+
+        # PENDING
+
+        "scope_pending": scope_pending,
+        "inspection_pending": inspection_pending,
+        "estimate_pending": estimate_pending,
+        "approval_pending": approval_pending,
+        "advance_pending": advance_pending,
+        "material_pending": material_pending,
+        "indent_pending": indent_pending,
+        "issue_pending": issue_pending,
+        "receive_pending": receive_pending,
+        "close_pending": close_pending,
+        "feedback_pending": feedback_pending,
+
+        # TABLES
+
+        "latest_complaints": latest_complaints,
+        "recent_estimates": recent_estimates,
+        "recent_approvals": recent_approvals,
+
+        # CHART DATA
+
+        "months": months,
+        "monthly_counts": monthly_counts,
+
+        # PERCENTAGES
+
+        "chargeable": chargeable,
+        "non_chargeable": non_chargeable,
+        "chargeable_percent": chargeable_percent,
+        "non_chargeable_percent": non_chargeable_percent,
+
+        "material_available_yes": material_available_yes,
+        "material_available_no": material_available_no,
+        "material_available_percent": material_available_percent,
+        "material_pending_percent": material_pending_percent,
+
+    }
+
+    return render(
+        request,
+        "maintenance_dashboard.html",
+        context
+    )

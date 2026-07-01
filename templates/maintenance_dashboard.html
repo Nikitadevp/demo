@@ -1,20 +1,22 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
 
     <meta charset="UTF-8">
-    <title>Sampoorna Maintenance Dashboard</title>
 
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
+
+    <title>Maintenance Dashboard</title>
 
     <link rel="stylesheet"
           href="{% static 'css/maintenance_dashboard.css' %}">
 
     <link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 </head>
 
@@ -22,487 +24,550 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 
 <div class="dashboard">
 
-    <!-- ========================= -->
-    <!-- SIDEBAR -->
-    <!-- ========================= -->
+    <!-- ===========================
+            SIDEBAR
+    ============================ -->
 
     <aside class="sidebar">
 
         <div class="logo">
 
             <h2>Sampoorna</h2>
-            <span>Maintenance Portal</span>
+
+            <p>Maintenance Portal</p>
 
         </div>
 
         <ul>
 
             <li class="active">
-                <a href="#">
+
+                <a href="{% url 'maintenance_dashboard' %}">
+
                     <i class="fa-solid fa-chart-line"></i>
+
                     Dashboard
+
                 </a>
+
             </li>
 
             <li>
+
                 <a href="#">
-                    <i class="fa-solid fa-plus"></i>
-                    New Complaint
+
+                    <i class="fa-solid fa-list-check"></i>
+
+                    Maintenance Scope
+
                 </a>
+
             </li>
 
             <li>
-                <a href="#">
-                    <i class="fa-solid fa-ticket"></i>
-                    All Tickets
-                </a>
-            </li>
 
-            <li>
                 <a href="#">
-                    <i class="fa-solid fa-house"></i>
+
+                    <i class="fa-solid fa-house-circle-check"></i>
+
                     Site Inspection
+
                 </a>
+
             </li>
 
             <li>
+
                 <a href="#">
+
                     <i class="fa-solid fa-file-invoice-dollar"></i>
+
                     Estimate
+
                 </a>
+
             </li>
 
             <li>
+
                 <a href="#">
+
                     <i class="fa-solid fa-user-check"></i>
+
                     Customer Approval
+
                 </a>
+
             </li>
 
             <li>
+
                 <a href="#">
+
+                    <i class="fa-solid fa-wallet"></i>
+
+                    Advance Collection
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="#">
+
                     <i class="fa-solid fa-boxes-stacked"></i>
+
                     Material
+
                 </a>
+
             </li>
 
             <li>
+
                 <a href="#">
-                    <i class="fa-solid fa-person-digging"></i>
-                    Work Progress
+
+                    <i class="fa-solid fa-truck"></i>
+
+                    Issue Material
+
                 </a>
+
             </li>
 
             <li>
+
                 <a href="#">
+
+                    <i class="fa-solid fa-box-open"></i>
+
+                    Receive Material
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="#">
+
                     <i class="fa-solid fa-circle-check"></i>
-                    Quality Check
-                </a>
-            </li>
 
-            <li>
-                <a href="#">
-                    <i class="fa-solid fa-key"></i>
-                    Handover
-                </a>
-            </li>
+                    Close Query
 
-            <li>
-                <a href="#">
-                    <i class="fa-solid fa-check-double"></i>
-                    Completed
                 </a>
-            </li>
 
-            <li>
-                <a href="#">
-                    <i class="fa-solid fa-chart-pie"></i>
-                    Reports
-                </a>
-            </li>
-
-            <li>
-                <a href="#">
-                    <i class="fa-solid fa-gear"></i>
-                    Settings
-                </a>
             </li>
 
         </ul>
 
-        <div class="profile">
-
-            <div class="avatar">
-
-                {{ request.user.first_name|first|default:"M" }}
-
-            </div>
-
-            <div>
-
-                <h4>{{ request.user.get_full_name }}</h4>
-
-                <p>Maintenance In-charge</p>
-
-            </div>
-
-        </div>
-
     </aside>
 
-    <!-- ========================= -->
-    <!-- MAIN -->
-    <!-- ========================= -->
+    <!-- ===========================
+             MAIN CONTENT
+    ============================ -->
 
     <main class="main-content">
 
         <!-- HEADER -->
 
-        <div class="topbar">
+        <div class="header">
 
             <div>
 
                 <h1>Maintenance Dashboard</h1>
 
-                <p>
-                    Welcome,
-                    {{ request.user.first_name }}
-                </p>
+                <span>
+                    Welcome Back
+                </span>
 
             </div>
 
-            <div class="top-right">
+            <div class="header-right">
 
-                <button class="btn">
+                <button class="new-btn">
 
                     <i class="fa-solid fa-plus"></i>
 
-                    Raise Complaint
+                    New Query
 
                 </button>
-
-                <i class="fa-regular fa-bell notification"></i>
-
-                <div class="user-circle">
-
-                    {{ request.user.first_name|first|default:"M" }}
-
-                </div>
 
             </div>
 
         </div>
 
-        <!-- WELCOME -->
+        <!-- WELCOME CARD -->
 
-        <section class="welcome-card">
+        <div class="welcome-card">
 
             <div>
 
                 <h2>
 
-                    Good Morning,
-                    {{ request.user.first_name }}
-
-                    👋
+                    Good Morning 👋
 
                 </h2>
 
                 <p>
 
-                    {{ total_pending }}
-
-                    tickets require your attention today.
+                    Total Maintenance Activities Overview
 
                 </p>
 
             </div>
 
-            <div class="resolve-box">
+            <div class="welcome-right">
 
-                <span>Resolve Rate</span>
+                <h1>
 
-                <h1>87%</h1>
+                    {{ total_queries }}
 
-                <small>↑ Better than last week</small>
+                </h1>
 
-            </div>
+                <span>
 
-        </section>
+                    Total Complaints
 
-        <!-- SUMMARY -->
-
-        <section class="summary-grid">
-
-            <div class="summary-card blue">
-
-                <i class="fa-solid fa-ticket"></i>
-
-                <h2>{{ total_tickets }}</h2>
-
-                <p>Total Tickets</p>
+                </span>
 
             </div>
 
-            <div class="summary-card orange">
+        </div>
+
+        <!-- SUMMARY CARDS -->
+
+        <div class="summary-grid">
+
+            <div class="card">
+
+                <i class="fa-solid fa-folder-open"></i>
+
+                <h2>
+
+                    {{ open_queries }}
+
+                </h2>
+
+                <p>
+
+                    Open Queries
+
+                </p>
+
+            </div>
+
+            <div class="card">
 
                 <i class="fa-solid fa-hourglass-half"></i>
 
-                <h2>{{ pending_tickets }}</h2>
+                <h2>
 
-                <p>Pending</p>
+                    {{ pending_queries }}
+
+                </h2>
+
+                <p>
+
+                    Pending
+
+                </p>
 
             </div>
 
-            <div class="summary-card green">
+            <div class="card">
+
+                <i class="fa-solid fa-spinner"></i>
+
+                <h2>
+
+                    {{ in_progress_queries }}
+
+                </h2>
+
+                <p>
+
+                    In Progress
+
+                </p>
+
+            </div>
+
+            <div class="card">
 
                 <i class="fa-solid fa-circle-check"></i>
 
-                <h2>{{ completed_tickets }}</h2>
+                <h2>
 
-                <p>Completed</p>
+                    {{ closed_queries }}
 
-            </div>
+                </h2>
 
-            <div class="summary-card red">
+                <p>
 
-                <i class="fa-solid fa-clock"></i>
+                    Closed
 
-                <h2>{{ overdue_tickets }}</h2>
-
-                <p>Overdue</p>
+                </p>
 
             </div>
 
-            <div class="summary-card purple">
+        </div>
 
-                <i class="fa-solid fa-user-check"></i>
+        <!-- WORKFLOW TITLE -->
 
-                <h2>{{ approval_pending }}</h2>
+        <div class="section-title">
 
-                <p>Approval Pending</p>
+            <h2>
 
+                Maintenance Workflow
+
+            </h2>
+
+        </div>
+
+        <!-- WORKFLOW GRID -->
+
+        <div class="workflow-grid">
+
+            <!-- =========================
+                 WORKFLOW CARDS
+            ========================== -->
+
+            <div class="workflow-card">
+                <div class="workflow-top">
+                    <i class="fa-solid fa-clipboard-list"></i>
+                    <span>Maintenance Scope</span>
+                </div>
+
+                <h2>{{ maintenance_scope }}</h2>
+
+                <small>
+                    Pending : {{ scope_pending }}
+                </small>
             </div>
 
-            <div class="summary-card teal">
+            <div class="workflow-card">
+                <div class="workflow-top">
+                    <i class="fa-solid fa-house-circle-check"></i>
+                    <span>Site Inspection</span>
+                </div>
 
-                <i class="fa-solid fa-box-open"></i>
+                <h2>{{ site_inspection }}</h2>
 
-                <h2>{{ material_pending }}</h2>
-
-                <p>Material Pending</p>
-
+                <small>
+                    Pending : {{ inspection_pending }}
+                </small>
             </div>
 
-            <div class="summary-card yellow">
+            <div class="workflow-card">
+                <div class="workflow-top">
+                    <i class="fa-solid fa-file-invoice-dollar"></i>
+                    <span>Estimate Form</span>
+                </div>
 
-                <i class="fa-solid fa-person-digging"></i>
+                <h2>{{ estimate_form }}</h2>
 
-                <h2>{{ work_running }}</h2>
-
-                <p>Work In Progress</p>
-
+                <small>
+                    Pending : {{ estimate_pending }}
+                </small>
             </div>
 
-            <div class="summary-card dark">
+            <div class="workflow-card">
+                <div class="workflow-top">
+                    <i class="fa-solid fa-user-check"></i>
+                    <span>Customer Approval</span>
+                </div>
 
-                <i class="fa-solid fa-house"></i>
+                <h2>{{ customer_approval }}</h2>
 
-                <h2>{{ inspection_pending }}</h2>
-
-                <p>Site Inspection</p>
-
+                <small>
+                    Pending : {{ approval_pending }}
+                </small>
             </div>
 
-        </section>
+            <div class="workflow-card">
+                <div class="workflow-top">
+                    <i class="fa-solid fa-wallet"></i>
+                    <span>Advance Collection</span>
+                </div>
 
-        <!-- Stage Progress section yahin se next part me continue hoga -->
-        <!-- ===================================== -->
-        <!-- STAGE WISE PROGRESS -->
-        <!-- ===================================== -->
+                <h2>{{ advance_collection }}</h2>
 
-        <section class="stage-section">
-
-            <div class="section-title">
-                <h2>Maintenance Workflow</h2>
+                <small>
+                    Pending : {{ advance_pending }}
+                </small>
             </div>
 
-            <div class="stage-grid">
-
-                <div class="stage-card">
-                    <span>S0</span>
-                    <h3>{{ s0_count }}</h3>
-                    <p>Complaint Raised</p>
+            <div class="workflow-card">
+                <div class="workflow-top">
+                    <i class="fa-solid fa-boxes-stacked"></i>
+                    <span>Material Availability</span>
                 </div>
 
-                <div class="stage-card">
-                    <span>S1</span>
-                    <h3>{{ s1_count }}</h3>
-                    <p>Call Customer</p>
-                </div>
+                <h2>{{ material_availability }}</h2>
 
-                <div class="stage-card">
-                    <span>S2</span>
-                    <h3>{{ s2_count }}</h3>
-                    <p>Site Inspection</p>
-                </div>
-
-                <div class="stage-card">
-                    <span>S3</span>
-                    <h3>{{ s3_count }}</h3>
-                    <p>Estimate Ready</p>
-                </div>
-
-                <div class="stage-card">
-                    <span>S4</span>
-                    <h3>{{ s4_count }}</h3>
-                    <p>Approval Pending</p>
-                </div>
-
-                <div class="stage-card">
-                    <span>S5</span>
-                    <h3>{{ s5_count }}</h3>
-                    <p>Indent Raised</p>
-                </div>
-
-                <div class="stage-card">
-                    <span>S6</span>
-                    <h3>{{ s6_count }}</h3>
-                    <p>Material Issued</p>
-                </div>
-
-                <div class="stage-card">
-                    <span>S7</span>
-                    <h3>{{ s7_count }}</h3>
-                    <p>Work Started</p>
-                </div>
-
-                <div class="stage-card">
-                    <span>S8</span>
-                    <h3>{{ s8_count }}</h3>
-                    <p>Work In Progress</p>
-                </div>
-
-                <div class="stage-card">
-                    <span>S9</span>
-                    <h3>{{ s9_count }}</h3>
-                    <p>Quality Check</p>
-                </div>
-
-                <div class="stage-card">
-                    <span>S10</span>
-                    <h3>{{ s10_count }}</h3>
-                    <p>Handover</p>
-                </div>
-
-                <div class="stage-card completed">
-                    <span>S11</span>
-                    <h3>{{ s11_count }}</h3>
-                    <p>Completed</p>
-                </div>
-
+                <small>
+                    Pending : {{ material_pending }}
+                </small>
             </div>
 
-        </section>
+            <div class="workflow-card">
+                <div class="workflow-top">
+                    <i class="fa-solid fa-list"></i>
+                    <span>Raise Indent</span>
+                </div>
 
+                <h2>{{ raise_indent }}</h2>
 
-        <!-- ===================================== -->
-        <!-- CHART SECTION -->
-        <!-- ===================================== -->
+                <small>
+                    Pending : {{ indent_pending }}
+                </small>
+            </div>
 
-        <section class="chart-row">
+            <div class="workflow-card">
+                <div class="workflow-top">
+                    <i class="fa-solid fa-truck"></i>
+                    <span>Issue Material</span>
+                </div>
 
-            <div class="chart-card">
+                <h2>{{ issue_material }}</h2>
+
+                <small>
+                    Pending : {{ issue_pending }}
+                </small>
+            </div>
+
+            <div class="workflow-card">
+                <div class="workflow-top">
+                    <i class="fa-solid fa-box-open"></i>
+                    <span>Receive Material</span>
+                </div>
+
+                <h2>{{ receive_material }}</h2>
+
+                <small>
+                    Pending : {{ receive_pending }}
+                </small>
+            </div>
+
+            <div class="workflow-card">
+                <div class="workflow-top">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <span>Query Closer</span>
+                </div>
+
+                <h2>{{ query_closer }}</h2>
+
+                <small>
+                    Pending : {{ close_pending }}
+                </small>
+            </div>
+
+            <div class="workflow-card">
+                <div class="workflow-top">
+                    <i class="fa-solid fa-star"></i>
+                    <span>Customer Feedback</span>
+                </div>
+
+                <h2>{{ customer_feedback }}</h2>
+
+                <small>
+                    Pending : {{ feedback_pending }}
+                </small>
+            </div>
+
+        </div>
+
+        <!-- =========================
+             ANALYTICS
+        ========================== -->
+
+        <div class="analytics-grid">
+
+            <div class="analytics-card">
 
                 <h3>Chargeable vs Non-Chargeable</h3>
 
-                <div class="progress-item">
+                <div class="percent-row">
 
-                    <label>Chargeable</label>
+                    <div>
 
-                    <div class="progress">
+                        <h2>{{ chargeable_percent }}%</h2>
 
-                        <div class="progress-fill blue"
-                             style="width:{{ chargeable_percent }}%;">
-                        </div>
+                        <span>Chargeable</span>
 
                     </div>
 
-                    <span>{{ chargeable_percent }}%</span>
+                    <div>
+
+                        <h2>{{ non_chargeable_percent }}%</h2>
+
+                        <span>Non-Chargeable</span>
+
+                    </div>
 
                 </div>
 
-                <div class="progress-item">
+                <div class="progress">
 
-                    <label>Non-Chargeable</label>
-
-                    <div class="progress">
-
-                        <div class="progress-fill green"
-                             style="width:{{ non_chargeable_percent }}%;">
-                        </div>
+                    <div class="progress-fill chargeable"
+                         style="width: {{ chargeable_percent }}%;">
 
                     </div>
-
-                    <span>{{ non_chargeable_percent }}%</span>
 
                 </div>
 
             </div>
 
-
-            <div class="chart-card">
+            <div class="analytics-card">
 
                 <h3>Material Availability</h3>
 
-                <div class="progress-item">
+                <h2>
 
-                    <label>Available</label>
+                    {{ material_available_percent }}%
 
-                    <div class="progress">
+                </h2>
 
-                        <div class="progress-fill orange"
-                             style="width:{{ material_available_percent }}%;">
-                        </div>
+                <div class="progress">
 
-                    </div>
-
-                    <span>{{ material_available_percent }}%</span>
-
-                </div>
-
-                <div class="progress-item">
-
-                    <label>Pending</label>
-
-                    <div class="progress">
-
-                        <div class="progress-fill red"
-                             style="width:{{ material_pending_percent }}%;">
-                        </div>
+                    <div class="progress-fill material"
+                         style="width: {{ material_available_percent }}%;">
 
                     </div>
 
-                    <span>{{ material_pending_percent }}%</span>
-
                 </div>
 
-            </div>
+                <p>
 
-        </section>
+                    Available : {{ material_available_yes }}
 
+                    &nbsp;&nbsp;&nbsp;
 
-        <!-- ===================================== -->
-        <!-- ENGINEER PERFORMANCE -->
-        <!-- ===================================== -->
+                    Pending : {{ material_available_no }}
 
-        <section class="engineer-table">
-
-            <div class="section-title">
-
-                <h2>Engineer Performance</h2>
+                </p>
 
             </div>
+
+        </div>
+
+        <!-- =========================
+             LATEST COMPLAINTS
+        ========================== -->
+
+        <div class="section-title">
+
+            <h2>
+
+                Latest Complaints
+
+            </h2>
+
+        </div>
+
+        <div class="table-box">
 
             <table>
 
@@ -510,13 +575,13 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 
                     <tr>
 
-                        <th>Engineer</th>
-
-                        <th>Assigned</th>
-
-                        <th>Completed</th>
-
-                        <th>Pending</th>
+                        <th>Ticket</th>
+                        <th>Customer</th>
+                        <th>Tower</th>
+                        <th>Area</th>
+                        <th>Issue</th>
+                        <th>Status</th>
+                        <th>Date</th>
 
                     </tr>
 
@@ -524,97 +589,57 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 
                 <tbody>
 
-                    {% for engineer in engineer_data %}
+                {% for complaint in latest_complaints %}
 
                     <tr>
 
-                        <td>{{ engineer.name }}</td>
+                        <td>{{ complaint.ticket_id }}</td>
 
-                        <td>{{ engineer.assigned }}</td>
+                        <td>{{ complaint.name }}</td>
 
-                        <td>{{ engineer.completed }}</td>
+                        <td>{{ complaint.tower }}</td>
 
-                        <td>{{ engineer.pending }}</td>
+                        <td>{{ complaint.area }}</td>
+
+                        <td>{{ complaint.issue }}</td>
+
+                        <td>{{ complaint.status }}</td>
+
+                        <td>{{ complaint.created_at|date:"d M Y" }}</td>
 
                     </tr>
 
-                    {% empty %}
+                {% empty %}
 
                     <tr>
 
-                        <td colspan="4">
+                        <td colspan="7">
 
-                            No engineer data found.
+                            No Complaints Found
 
                         </td>
 
                     </tr>
 
-                    {% endfor %}
+                {% endfor %}
 
                 </tbody>
 
             </table>
 
-        </section>
+        </div>
 
+        <!-- =========================
+             RECENT ESTIMATES
+        ========================== -->
 
-        <!-- ===================================== -->
-        <!-- RECENT ACTIVITIES -->
-        <!-- ===================================== -->
+        <div class="section-title">
 
-        <section class="activity-section">
+            <h2>Recent Estimates</h2>
 
-            <div class="section-title">
+        </div>
 
-                <h2>Recent Activities</h2>
-
-            </div>
-
-            <div class="activity-list">
-
-                {% for activity in recent_activities %}
-
-                <div class="activity-item">
-
-                    <i class="fa-solid fa-circle-check"></i>
-
-                    <div>
-
-                        <h4>{{ activity.title }}</h4>
-
-                        <small>{{ activity.time }}</small>
-
-                    </div>
-
-                </div>
-
-                {% empty %}
-
-                <div class="activity-item">
-
-                    No recent activity found.
-
-                </div>
-
-                {% endfor %}
-
-            </div>
-
-        </section>
-
-
-        <!-- ===================================== -->
-        <!-- RECENT TICKETS -->
-        <!-- ===================================== -->
-
-        <section class="ticket-table">
-
-            <div class="section-title">
-
-                <h2>Latest Tickets</h2>
-
-            </div>
+        <div class="table-box">
 
             <table>
 
@@ -624,11 +649,67 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 
                         <th>Ticket ID</th>
                         <th>Customer</th>
-                        <th>Block</th>
-                        <th>Flat</th>
-                        <th>Engineer</th>
-                        <th>Stage</th>
-                        <th>Priority</th>
+                        <th>Email</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                {% for estimate in recent_estimates %}
+
+                    <tr>
+
+                        <td>{{ estimate.customer_query.ticket_id }}</td>
+
+                        <td>{{ estimate.customer_query.name }}</td>
+
+                        <td>{{ estimate.email }}</td>
+
+                    </tr>
+
+                {% empty %}
+
+                    <tr>
+
+                        <td colspan="3">
+
+                            No Estimate Available
+
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <!-- =========================
+             RECENT APPROVALS
+        ========================== -->
+
+        <div class="section-title">
+
+            <h2>Recent Customer Approvals</h2>
+
+        </div>
+
+        <div class="table-box">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Ticket ID</th>
+                        <th>Customer</th>
                         <th>Status</th>
 
                     </tr>
@@ -637,37 +718,19 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 
                 <tbody>
 
-                    {% for ticket in latest_tickets %}
+                {% for approval in recent_approvals %}
 
                     <tr>
 
-                        <td>{{ ticket.unique_id }}</td>
+                        <td>{{ approval.customer_query.ticket_id }}</td>
 
-                        <td>{{ ticket.customer_name }}</td>
-
-                        <td>{{ ticket.block }}</td>
-
-                        <td>{{ ticket.flat }}</td>
-
-                        <td>{{ ticket.engineer }}</td>
-
-                        <td>{{ ticket.stage }}</td>
+                        <td>{{ approval.customer_query.name }}</td>
 
                         <td>
 
-                            <span class="priority {{ ticket.priority|lower }}">
+                            <span class="status approved">
 
-                                {{ ticket.priority }}
-
-                            </span>
-
-                        </td>
-
-                        <td>
-
-                            <span class="status {{ ticket.status|lower }}">
-
-                                {{ ticket.status }}
+                                Approved
 
                             </span>
 
@@ -675,29 +738,107 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 
                     </tr>
 
-                    {% empty %}
+                {% empty %}
 
                     <tr>
 
-                        <td colspan="8">
+                        <td colspan="3">
 
-                            No Ticket Found.
+                            No Approval Available
 
                         </td>
 
                     </tr>
 
-                    {% endfor %}
+                {% endfor %}
 
                 </tbody>
 
             </table>
 
-        </section>
+        </div>
+
+
+        <!-- =========================
+             MONTHLY REPORT
+        ========================== -->
+
+        <div class="section-title">
+
+            <h2>Monthly Complaint Statistics</h2>
+
+        </div>
+
+        <div class="analytics-card">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Month</th>
+                        <th>Total Complaints</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                {% for month,count in months|zip:monthly_counts %}
+
+                    <tr>
+
+                        <td>{{ month }}</td>
+
+                        <td>{{ count }}</td>
+
+                    </tr>
+
+                {% empty %}
+
+                    <tr>
+
+                        <td colspan="2">
+
+                            No Monthly Data
+
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <!-- =========================
+             FOOTER
+        ========================== -->
+
+        <footer class="footer">
+
+            <p>
+
+                © 2026 Rajat Buildtech Pvt. Ltd.
+
+                |
+
+                Sampoorna Maintenance Dashboard
+
+            </p>
+
+        </footer>
 
     </main>
 
 </div>
 
 </body>
+
 </html>
