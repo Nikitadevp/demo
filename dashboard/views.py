@@ -2772,12 +2772,15 @@ def customer_feedback_form(request, query_id):
 
 
 
-from django.shortcuts import render, redirect
-from django.contrib import messages
+
+
 
 def login_view(request):
 
-    # Already Login
+    # ==========================================
+    # ALREADY LOGIN
+    # ==========================================
+
     if request.session.get("admin_id"):
 
         role = request.session.get("admin_role")
@@ -2794,8 +2797,12 @@ def login_view(request):
         elif role == "Store Keeper":
             return redirect("store_dashboard")
 
-        elif role == "Maintenance In-charge":
+        elif role == "Maintenance":
             return redirect("maintenance_dashboard")
+
+    # ==========================================
+    # LOGIN
+    # ==========================================
 
     if request.method == "POST":
 
@@ -2806,7 +2813,7 @@ def login_view(request):
 
             messages.error(
                 request,
-                "Please enter username and password."
+                "Please enter Username and Password."
             )
 
             return render(request, "login.html")
@@ -2820,17 +2827,20 @@ def login_view(request):
 
             )
 
-            if admin.check_password(password):
+            # Password Verify
+            if admin.verify_password(password):
 
-                # Session Create
+                # =============================
+                # CREATE SESSION
+                # =============================
 
                 request.session["admin_id"] = admin.id
                 request.session["admin_name"] = admin.full_name
                 request.session["admin_role"] = admin.role
 
-                # ===============================
-                # ROLE WISE DASHBOARD
-                # ===============================
+                # =============================
+                # ROLE WISE REDIRECT
+                # =============================
 
                 if admin.role == "Admin":
                     return redirect("admin_dashboard")
@@ -2844,7 +2854,7 @@ def login_view(request):
                 elif admin.role == "Store Keeper":
                     return redirect("store_dashboard")
 
-                elif admin.role == "Maintenance In-charge":
+                elif admin.role == "Maintenance":
                     return redirect("maintenance_dashboard")
 
                 else:
@@ -2860,41 +2870,20 @@ def login_view(request):
 
                 messages.error(
                     request,
-                    "Invalid Password"
+                    "Invalid Password."
                 )
 
         except AdminUser.DoesNotExist:
 
             messages.error(
                 request,
-                "Invalid Username"
+                "Invalid Username."
             )
-
-    return render(request, "login.html")
-
-
-# ==========================
-# ADMIN DASHBOARD
-# ==========================
-
-def admin_dashboard(request):
-
-    if not request.session.get("admin_id"):
-        return redirect("login")
-
-    context = {
-
-        "admin_name": request.session.get("admin_name"),
-        "admin_role": request.session.get("admin_role"),
-
-    }
 
     return render(
         request,
-        "admin_dashboard.html",
-        context
+        "login.html"
     )
-
 
 # ==========================
 # LOGOUT
@@ -2936,7 +2925,7 @@ def maintenance_dashboard(request):
     
     if "admin_id" not in request.session:
         return redirect("login")
-    
+
     # ==========================================
     # DASHBOARD SUMMARY
     # ==========================================
