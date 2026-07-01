@@ -1,0 +1,703 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <title>Sampoorna Maintenance Dashboard</title>
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet"
+          href="{% static 'css/maintenance_dashboard.css' %}">
+
+    <link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <!-- ========================= -->
+    <!-- SIDEBAR -->
+    <!-- ========================= -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <h2>Sampoorna</h2>
+            <span>Maintenance Portal</span>
+
+        </div>
+
+        <ul>
+
+            <li class="active">
+                <a href="#">
+                    <i class="fa-solid fa-chart-line"></i>
+                    Dashboard
+                </a>
+            </li>
+
+            <li>
+                <a href="#">
+                    <i class="fa-solid fa-plus"></i>
+                    New Complaint
+                </a>
+            </li>
+
+            <li>
+                <a href="#">
+                    <i class="fa-solid fa-ticket"></i>
+                    All Tickets
+                </a>
+            </li>
+
+            <li>
+                <a href="#">
+                    <i class="fa-solid fa-house"></i>
+                    Site Inspection
+                </a>
+            </li>
+
+            <li>
+                <a href="#">
+                    <i class="fa-solid fa-file-invoice-dollar"></i>
+                    Estimate
+                </a>
+            </li>
+
+            <li>
+                <a href="#">
+                    <i class="fa-solid fa-user-check"></i>
+                    Customer Approval
+                </a>
+            </li>
+
+            <li>
+                <a href="#">
+                    <i class="fa-solid fa-boxes-stacked"></i>
+                    Material
+                </a>
+            </li>
+
+            <li>
+                <a href="#">
+                    <i class="fa-solid fa-person-digging"></i>
+                    Work Progress
+                </a>
+            </li>
+
+            <li>
+                <a href="#">
+                    <i class="fa-solid fa-circle-check"></i>
+                    Quality Check
+                </a>
+            </li>
+
+            <li>
+                <a href="#">
+                    <i class="fa-solid fa-key"></i>
+                    Handover
+                </a>
+            </li>
+
+            <li>
+                <a href="#">
+                    <i class="fa-solid fa-check-double"></i>
+                    Completed
+                </a>
+            </li>
+
+            <li>
+                <a href="#">
+                    <i class="fa-solid fa-chart-pie"></i>
+                    Reports
+                </a>
+            </li>
+
+            <li>
+                <a href="#">
+                    <i class="fa-solid fa-gear"></i>
+                    Settings
+                </a>
+            </li>
+
+        </ul>
+
+        <div class="profile">
+
+            <div class="avatar">
+
+                {{ request.user.first_name|first|default:"M" }}
+
+            </div>
+
+            <div>
+
+                <h4>{{ request.user.get_full_name }}</h4>
+
+                <p>Maintenance In-charge</p>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+    <!-- ========================= -->
+    <!-- MAIN -->
+    <!-- ========================= -->
+
+    <main class="main-content">
+
+        <!-- HEADER -->
+
+        <div class="topbar">
+
+            <div>
+
+                <h1>Maintenance Dashboard</h1>
+
+                <p>
+                    Welcome,
+                    {{ request.user.first_name }}
+                </p>
+
+            </div>
+
+            <div class="top-right">
+
+                <button class="btn">
+
+                    <i class="fa-solid fa-plus"></i>
+
+                    Raise Complaint
+
+                </button>
+
+                <i class="fa-regular fa-bell notification"></i>
+
+                <div class="user-circle">
+
+                    {{ request.user.first_name|first|default:"M" }}
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- WELCOME -->
+
+        <section class="welcome-card">
+
+            <div>
+
+                <h2>
+
+                    Good Morning,
+                    {{ request.user.first_name }}
+
+                    👋
+
+                </h2>
+
+                <p>
+
+                    {{ total_pending }}
+
+                    tickets require your attention today.
+
+                </p>
+
+            </div>
+
+            <div class="resolve-box">
+
+                <span>Resolve Rate</span>
+
+                <h1>87%</h1>
+
+                <small>↑ Better than last week</small>
+
+            </div>
+
+        </section>
+
+        <!-- SUMMARY -->
+
+        <section class="summary-grid">
+
+            <div class="summary-card blue">
+
+                <i class="fa-solid fa-ticket"></i>
+
+                <h2>{{ total_tickets }}</h2>
+
+                <p>Total Tickets</p>
+
+            </div>
+
+            <div class="summary-card orange">
+
+                <i class="fa-solid fa-hourglass-half"></i>
+
+                <h2>{{ pending_tickets }}</h2>
+
+                <p>Pending</p>
+
+            </div>
+
+            <div class="summary-card green">
+
+                <i class="fa-solid fa-circle-check"></i>
+
+                <h2>{{ completed_tickets }}</h2>
+
+                <p>Completed</p>
+
+            </div>
+
+            <div class="summary-card red">
+
+                <i class="fa-solid fa-clock"></i>
+
+                <h2>{{ overdue_tickets }}</h2>
+
+                <p>Overdue</p>
+
+            </div>
+
+            <div class="summary-card purple">
+
+                <i class="fa-solid fa-user-check"></i>
+
+                <h2>{{ approval_pending }}</h2>
+
+                <p>Approval Pending</p>
+
+            </div>
+
+            <div class="summary-card teal">
+
+                <i class="fa-solid fa-box-open"></i>
+
+                <h2>{{ material_pending }}</h2>
+
+                <p>Material Pending</p>
+
+            </div>
+
+            <div class="summary-card yellow">
+
+                <i class="fa-solid fa-person-digging"></i>
+
+                <h2>{{ work_running }}</h2>
+
+                <p>Work In Progress</p>
+
+            </div>
+
+            <div class="summary-card dark">
+
+                <i class="fa-solid fa-house"></i>
+
+                <h2>{{ inspection_pending }}</h2>
+
+                <p>Site Inspection</p>
+
+            </div>
+
+        </section>
+
+        <!-- Stage Progress section yahin se next part me continue hoga -->
+        <!-- ===================================== -->
+        <!-- STAGE WISE PROGRESS -->
+        <!-- ===================================== -->
+
+        <section class="stage-section">
+
+            <div class="section-title">
+                <h2>Maintenance Workflow</h2>
+            </div>
+
+            <div class="stage-grid">
+
+                <div class="stage-card">
+                    <span>S0</span>
+                    <h3>{{ s0_count }}</h3>
+                    <p>Complaint Raised</p>
+                </div>
+
+                <div class="stage-card">
+                    <span>S1</span>
+                    <h3>{{ s1_count }}</h3>
+                    <p>Call Customer</p>
+                </div>
+
+                <div class="stage-card">
+                    <span>S2</span>
+                    <h3>{{ s2_count }}</h3>
+                    <p>Site Inspection</p>
+                </div>
+
+                <div class="stage-card">
+                    <span>S3</span>
+                    <h3>{{ s3_count }}</h3>
+                    <p>Estimate Ready</p>
+                </div>
+
+                <div class="stage-card">
+                    <span>S4</span>
+                    <h3>{{ s4_count }}</h3>
+                    <p>Approval Pending</p>
+                </div>
+
+                <div class="stage-card">
+                    <span>S5</span>
+                    <h3>{{ s5_count }}</h3>
+                    <p>Indent Raised</p>
+                </div>
+
+                <div class="stage-card">
+                    <span>S6</span>
+                    <h3>{{ s6_count }}</h3>
+                    <p>Material Issued</p>
+                </div>
+
+                <div class="stage-card">
+                    <span>S7</span>
+                    <h3>{{ s7_count }}</h3>
+                    <p>Work Started</p>
+                </div>
+
+                <div class="stage-card">
+                    <span>S8</span>
+                    <h3>{{ s8_count }}</h3>
+                    <p>Work In Progress</p>
+                </div>
+
+                <div class="stage-card">
+                    <span>S9</span>
+                    <h3>{{ s9_count }}</h3>
+                    <p>Quality Check</p>
+                </div>
+
+                <div class="stage-card">
+                    <span>S10</span>
+                    <h3>{{ s10_count }}</h3>
+                    <p>Handover</p>
+                </div>
+
+                <div class="stage-card completed">
+                    <span>S11</span>
+                    <h3>{{ s11_count }}</h3>
+                    <p>Completed</p>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ===================================== -->
+        <!-- CHART SECTION -->
+        <!-- ===================================== -->
+
+        <section class="chart-row">
+
+            <div class="chart-card">
+
+                <h3>Chargeable vs Non-Chargeable</h3>
+
+                <div class="progress-item">
+
+                    <label>Chargeable</label>
+
+                    <div class="progress">
+
+                        <div class="progress-fill blue"
+                             style="width:{{ chargeable_percent }}%;">
+                        </div>
+
+                    </div>
+
+                    <span>{{ chargeable_percent }}%</span>
+
+                </div>
+
+                <div class="progress-item">
+
+                    <label>Non-Chargeable</label>
+
+                    <div class="progress">
+
+                        <div class="progress-fill green"
+                             style="width:{{ non_chargeable_percent }}%;">
+                        </div>
+
+                    </div>
+
+                    <span>{{ non_chargeable_percent }}%</span>
+
+                </div>
+
+            </div>
+
+
+            <div class="chart-card">
+
+                <h3>Material Availability</h3>
+
+                <div class="progress-item">
+
+                    <label>Available</label>
+
+                    <div class="progress">
+
+                        <div class="progress-fill orange"
+                             style="width:{{ material_available_percent }}%;">
+                        </div>
+
+                    </div>
+
+                    <span>{{ material_available_percent }}%</span>
+
+                </div>
+
+                <div class="progress-item">
+
+                    <label>Pending</label>
+
+                    <div class="progress">
+
+                        <div class="progress-fill red"
+                             style="width:{{ material_pending_percent }}%;">
+                        </div>
+
+                    </div>
+
+                    <span>{{ material_pending_percent }}%</span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ===================================== -->
+        <!-- ENGINEER PERFORMANCE -->
+        <!-- ===================================== -->
+
+        <section class="engineer-table">
+
+            <div class="section-title">
+
+                <h2>Engineer Performance</h2>
+
+            </div>
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Engineer</th>
+
+                        <th>Assigned</th>
+
+                        <th>Completed</th>
+
+                        <th>Pending</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for engineer in engineer_data %}
+
+                    <tr>
+
+                        <td>{{ engineer.name }}</td>
+
+                        <td>{{ engineer.assigned }}</td>
+
+                        <td>{{ engineer.completed }}</td>
+
+                        <td>{{ engineer.pending }}</td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td colspan="4">
+
+                            No engineer data found.
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </section>
+
+
+        <!-- ===================================== -->
+        <!-- RECENT ACTIVITIES -->
+        <!-- ===================================== -->
+
+        <section class="activity-section">
+
+            <div class="section-title">
+
+                <h2>Recent Activities</h2>
+
+            </div>
+
+            <div class="activity-list">
+
+                {% for activity in recent_activities %}
+
+                <div class="activity-item">
+
+                    <i class="fa-solid fa-circle-check"></i>
+
+                    <div>
+
+                        <h4>{{ activity.title }}</h4>
+
+                        <small>{{ activity.time }}</small>
+
+                    </div>
+
+                </div>
+
+                {% empty %}
+
+                <div class="activity-item">
+
+                    No recent activity found.
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        </section>
+
+
+        <!-- ===================================== -->
+        <!-- RECENT TICKETS -->
+        <!-- ===================================== -->
+
+        <section class="ticket-table">
+
+            <div class="section-title">
+
+                <h2>Latest Tickets</h2>
+
+            </div>
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Ticket ID</th>
+                        <th>Customer</th>
+                        <th>Block</th>
+                        <th>Flat</th>
+                        <th>Engineer</th>
+                        <th>Stage</th>
+                        <th>Priority</th>
+                        <th>Status</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for ticket in latest_tickets %}
+
+                    <tr>
+
+                        <td>{{ ticket.unique_id }}</td>
+
+                        <td>{{ ticket.customer_name }}</td>
+
+                        <td>{{ ticket.block }}</td>
+
+                        <td>{{ ticket.flat }}</td>
+
+                        <td>{{ ticket.engineer }}</td>
+
+                        <td>{{ ticket.stage }}</td>
+
+                        <td>
+
+                            <span class="priority {{ ticket.priority|lower }}">
+
+                                {{ ticket.priority }}
+
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <span class="status {{ ticket.status|lower }}">
+
+                                {{ ticket.status }}
+
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td colspan="8">
+
+                            No Ticket Found.
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </section>
+
+    </main>
+
+</div>
+
+</body>
+</html>

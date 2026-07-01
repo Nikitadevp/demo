@@ -1,0 +1,1779 @@
+/* ==========================================
+   GOOGLE FONT
+========================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:#f5f7fb;
+    color:#1f2937;
+}
+
+
+/* ==========================================
+   MAIN LAYOUT
+========================================== */
+
+.dashboard{
+    display:flex;
+    min-height:100vh;
+}
+
+
+/* ==========================================
+   SIDEBAR
+========================================== */
+
+.sidebar{
+
+    width:260px;
+    background:#111827;
+    color:#fff;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+
+    position:fixed;
+
+    top:0;
+    left:0;
+    bottom:0;
+
+}
+
+.logo{
+
+    padding:30px 25px;
+    border-bottom:1px solid rgba(255,255,255,.08);
+
+}
+
+.logo h2{
+
+    font-size:30px;
+    font-weight:700;
+
+}
+
+.logo span{
+
+    display:block;
+    margin-top:5px;
+
+    color:#9ca3af;
+
+    letter-spacing:2px;
+    font-size:12px;
+    text-transform:uppercase;
+
+}
+
+
+/* ==========================================
+   MENU
+========================================== */
+
+.sidebar ul{
+
+    list-style:none;
+    margin-top:20px;
+
+}
+
+.sidebar ul li{
+
+    margin:6px 12px;
+
+}
+
+.sidebar ul li a{
+
+    text-decoration:none;
+
+    color:#cbd5e1;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    padding:14px 18px;
+
+    border-radius:12px;
+
+    transition:.35s;
+
+    font-size:15px;
+
+}
+
+.sidebar ul li a i{
+
+    width:22px;
+    text-align:center;
+    font-size:16px;
+
+}
+
+.sidebar ul li:hover a{
+
+    background:#1f2937;
+    color:#fff;
+
+    transform:translateX(4px);
+
+}
+
+.sidebar ul li.active a{
+
+    background:#2563eb;
+
+    color:#fff;
+
+    box-shadow:0 10px 20px rgba(37,99,235,.35);
+
+}
+
+
+/* ==========================================
+   PROFILE
+========================================== */
+
+.profile{
+
+    border-top:1px solid rgba(255,255,255,.08);
+
+    padding:22px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+}
+
+.avatar{
+
+    width:52px;
+    height:52px;
+
+    border-radius:50%;
+
+    background:#2563eb;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-weight:700;
+    font-size:18px;
+
+}
+
+.profile h4{
+
+    color:#fff;
+    font-size:15px;
+
+}
+
+.profile p{
+
+    color:#9ca3af;
+    font-size:13px;
+
+}
+
+
+/* ==========================================
+   MAIN CONTENT
+========================================== */
+
+.main-content{
+
+    margin-left:260px;
+
+    flex:1;
+
+    padding:35px;
+
+}
+
+
+/* ==========================================
+   TOPBAR
+========================================== */
+
+.topbar{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:30px;
+
+}
+
+.topbar h1{
+
+    font-size:32px;
+    font-weight:700;
+
+    color:#111827;
+
+}
+
+.topbar p{
+
+    margin-top:6px;
+
+    color:#6b7280;
+
+}
+
+.top-right{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:20px;
+
+}
+
+.btn{
+
+    background:#f59e0b;
+
+    color:#fff;
+
+    border:none;
+
+    padding:13px 26px;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+.btn:hover{
+
+    background:#d97706;
+
+    transform:translateY(-2px);
+
+}
+
+.notification{
+
+    font-size:22px;
+
+    cursor:pointer;
+
+    color:#374151;
+
+}
+
+.user-circle{
+
+    width:48px;
+    height:48px;
+
+    background:#2563eb;
+
+    color:#fff;
+
+    border-radius:50%;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-weight:700;
+
+}
+
+
+/* ==========================================
+   WELCOME CARD
+========================================== */
+
+.welcome-card{
+
+    background:linear-gradient(135deg,#1e293b,#23395d);
+
+    color:#fff;
+
+    border-radius:22px;
+
+    padding:35px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:35px;
+
+}
+
+.welcome-card h2{
+
+    font-size:32px;
+
+    margin-bottom:10px;
+
+}
+
+.welcome-card p{
+
+    color:#d1d5db;
+
+    font-size:16px;
+
+}
+
+.resolve-box{
+
+    text-align:right;
+
+}
+
+.resolve-box span{
+
+    color:#cbd5e1;
+
+    text-transform:uppercase;
+
+    font-size:13px;
+
+}
+
+.resolve-box h1{
+
+    font-size:55px;
+
+    margin:8px 0;
+
+}
+
+.resolve-box small{
+
+    color:#22c55e;
+
+    font-weight:600;
+
+}
+
+
+/* ==========================================
+   SUMMARY GRID
+========================================== */
+
+.summary-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:25px;
+
+    margin-bottom:35px;
+
+}
+
+.summary-card{
+
+    background:#fff;
+
+    border-radius:18px;
+
+    padding:25px;
+
+    transition:.35s;
+
+    box-shadow:0 5px 20px rgba(0,0,0,.05);
+
+    position:relative;
+
+    overflow:hidden;
+
+}
+
+.summary-card:hover{
+
+    transform:translateY(-6px);
+
+}
+
+.summary-card i{
+
+    font-size:28px;
+
+    margin-bottom:18px;
+
+}
+
+.summary-card h2{
+
+    font-size:34px;
+
+    margin-bottom:8px;
+
+}
+
+.summary-card p{
+
+    color:#6b7280;
+
+    font-size:15px;
+
+}
+
+/* ==========================================
+   STAGE SECTION
+========================================== */
+
+.stage-section{
+
+    margin-bottom:35px;
+
+}
+
+.section-title{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    margin-bottom:20px;
+
+}
+
+.section-title h2{
+
+    font-size:24px;
+    color:#111827;
+    font-weight:700;
+
+}
+
+.stage-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:20px;
+
+}
+
+.stage-card{
+
+    background:#fff;
+
+    padding:22px;
+
+    border-radius:18px;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.05);
+
+    transition:.35s;
+
+    border-left:5px solid #2563eb;
+
+    position:relative;
+
+}
+
+.stage-card:hover{
+
+    transform:translateY(-6px);
+
+    box-shadow:0 15px 30px rgba(0,0,0,.08);
+
+}
+
+.stage-card span{
+
+    display:inline-block;
+
+    background:#2563eb;
+
+    color:#fff;
+
+    padding:5px 14px;
+
+    border-radius:50px;
+
+    font-size:13px;
+
+    font-weight:600;
+
+}
+
+.stage-card h3{
+
+    margin-top:18px;
+
+    font-size:34px;
+
+    color:#111827;
+
+}
+
+.stage-card p{
+
+    margin-top:10px;
+
+    color:#6b7280;
+
+    font-size:15px;
+
+}
+
+.stage-card.completed{
+
+    border-left:5px solid #22c55e;
+
+}
+
+.stage-card.completed span{
+
+    background:#22c55e;
+
+}
+
+
+/* ==========================================
+   CHART SECTION
+========================================== */
+
+.chart-row{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:25px;
+
+    margin-bottom:35px;
+
+}
+
+.chart-card{
+
+    background:#fff;
+
+    border-radius:18px;
+
+    padding:25px;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.05);
+
+}
+
+.chart-card h3{
+
+    margin-bottom:25px;
+
+    font-size:20px;
+
+    color:#111827;
+
+}
+
+
+/* ==========================================
+   PROGRESS BAR
+========================================== */
+
+.progress-item{
+
+    margin-bottom:22px;
+
+}
+
+.progress-item label{
+
+    display:block;
+
+    margin-bottom:10px;
+
+    font-weight:600;
+
+    color:#374151;
+
+}
+
+.progress{
+
+    width:100%;
+
+    height:12px;
+
+    background:#e5e7eb;
+
+    border-radius:50px;
+
+    overflow:hidden;
+
+}
+
+.progress-fill{
+
+    height:100%;
+
+    border-radius:50px;
+
+}
+
+.progress-item span{
+
+    display:block;
+
+    margin-top:8px;
+
+    font-weight:600;
+
+    color:#111827;
+
+}
+
+.progress-fill.blue{
+
+    background:#2563eb;
+
+}
+
+.progress-fill.green{
+
+    background:#22c55e;
+
+}
+
+.progress-fill.orange{
+
+    background:#f59e0b;
+
+}
+
+.progress-fill.red{
+
+    background:#ef4444;
+
+}
+
+
+/* ==========================================
+   ENGINEER TABLE
+========================================== */
+
+.engineer-table{
+
+    background:#fff;
+
+    border-radius:18px;
+
+    padding:25px;
+
+    margin-bottom:35px;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.05);
+
+}
+
+.engineer-table table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+}
+
+.engineer-table th{
+
+    background:#f3f4f6;
+
+    padding:15px;
+
+    text-align:left;
+
+    font-size:14px;
+
+    color:#374151;
+
+}
+
+.engineer-table td{
+
+    padding:16px;
+
+    border-bottom:1px solid #e5e7eb;
+
+    color:#4b5563;
+
+}
+
+.engineer-table tr:hover{
+
+    background:#f9fafb;
+
+}
+
+
+/* ==========================================
+   RECENT ACTIVITY
+========================================== */
+
+.activity-section{
+
+    background:#fff;
+
+    padding:25px;
+
+    border-radius:18px;
+
+    margin-bottom:35px;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.05);
+
+}
+
+.activity-list{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:18px;
+
+}
+
+.activity-item{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:18px;
+
+    padding:15px;
+
+    border-radius:12px;
+
+    background:#f9fafb;
+
+    transition:.3s;
+
+}
+
+.activity-item:hover{
+
+    background:#eef4ff;
+
+}
+
+.activity-item i{
+
+    font-size:22px;
+
+    color:#22c55e;
+
+}
+
+.activity-item h4{
+
+    font-size:15px;
+
+    color:#111827;
+
+}
+
+.activity-item small{
+
+    color:#6b7280;
+
+}
+
+
+/* ==========================================
+   LATEST TICKET TABLE
+========================================== */
+
+.ticket-table{
+
+    background:#fff;
+
+    border-radius:18px;
+
+    padding:25px;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.05);
+
+    margin-bottom:40px;
+
+}
+
+.ticket-table table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+}
+
+.ticket-table th{
+
+    background:#2563eb;
+
+    color:#fff;
+
+    padding:15px;
+
+    font-size:14px;
+
+    text-align:left;
+
+}
+
+.ticket-table td{
+
+    padding:15px;
+
+    border-bottom:1px solid #e5e7eb;
+
+    font-size:14px;
+
+    color:#374151;
+
+}
+
+.ticket-table tbody tr:hover{
+
+    background:#f8fafc;
+
+}
+
+
+/* ==========================================
+   STATUS BADGE
+========================================== */
+
+.status{
+
+    display:inline-block;
+
+    padding:6px 14px;
+
+    border-radius:30px;
+
+    color:#fff;
+
+    font-size:12px;
+
+    font-weight:600;
+
+}
+
+.status.pending{
+
+    background:#f59e0b;
+
+}
+
+.status.completed{
+
+    background:#22c55e;
+
+}
+
+.status.open{
+
+    background:#2563eb;
+
+}
+
+.status.closed{
+
+    background:#6b7280;
+
+}
+
+.status.overdue{
+
+    background:#ef4444;
+
+}
+
+
+/* ==========================================
+   PRIORITY BADGE
+========================================== */
+
+.priority{
+
+    display:inline-block;
+
+    padding:6px 14px;
+
+    border-radius:30px;
+
+    color:#fff;
+
+    font-size:12px;
+
+    font-weight:600;
+
+}
+
+.priority.high{
+
+    background:#ef4444;
+
+}
+
+.priority.medium{
+
+    background:#f59e0b;
+
+}
+
+.priority.low{
+
+    background:#22c55e;
+
+}
+
+
+/* ==========================================
+   SMOOTH HOVER EFFECTS
+========================================== */
+
+.summary-card,
+.stage-card,
+.chart-card,
+.engineer-table,
+.ticket-table,
+.activity-section{
+
+    transition:.35s;
+
+}
+
+.summary-card:hover,
+.chart-card:hover,
+.engineer-table:hover,
+.ticket-table:hover,
+.activity-section:hover{
+
+    box-shadow:0 18px 35px rgba(0,0,0,.08);
+
+}
+
+/* =====================================================
+   RESPONSIVE DESIGN
+===================================================== */
+
+@media (max-width:1400px){
+
+    .summary-grid{
+        grid-template-columns:repeat(3,1fr);
+    }
+
+    .stage-grid{
+        grid-template-columns:repeat(3,1fr);
+    }
+
+}
+
+@media (max-width:1100px){
+
+    .sidebar{
+        width:220px;
+    }
+
+    .main-content{
+        margin-left:220px;
+        padding:25px;
+    }
+
+    .summary-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .stage-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .chart-row{
+        grid-template-columns:1fr;
+    }
+
+}
+
+@media (max-width:768px){
+
+    .sidebar{
+        position:relative;
+        width:100%;
+        height:auto;
+    }
+
+    .dashboard{
+        flex-direction:column;
+    }
+
+    .main-content{
+        margin-left:0;
+        padding:20px;
+    }
+
+    .topbar{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:20px;
+    }
+
+    .welcome-card{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:25px;
+    }
+
+    .summary-grid{
+        grid-template-columns:1fr;
+    }
+
+    .stage-grid{
+        grid-template-columns:1fr;
+    }
+
+    .ticket-table,
+    .engineer-table{
+        overflow-x:auto;
+    }
+
+    table{
+        min-width:900px;
+    }
+
+}
+
+@media (max-width:480px){
+
+    .logo h2{
+        font-size:24px;
+    }
+
+    .topbar h1{
+        font-size:26px;
+    }
+
+    .welcome-card h2{
+        font-size:24px;
+    }
+
+    .resolve-box h1{
+        font-size:42px;
+    }
+
+    .summary-card h2{
+        font-size:28px;
+    }
+
+}
+
+
+/* =====================================================
+   CUSTOM SCROLLBAR
+===================================================== */
+
+::-webkit-scrollbar{
+
+    width:10px;
+    height:10px;
+
+}
+
+::-webkit-scrollbar-track{
+
+    background:#eef2f7;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:#2563eb;
+    border-radius:20px;
+
+}
+
+::-webkit-scrollbar-thumb:hover{
+
+    background:#1d4ed8;
+
+}
+
+
+/* =====================================================
+   ANIMATIONS
+===================================================== */
+
+@keyframes fadeUp{
+
+    from{
+
+        opacity:0;
+        transform:translateY(30px);
+
+    }
+
+    to{
+
+        opacity:1;
+        transform:translateY(0);
+
+    }
+
+}
+
+@keyframes fadeLeft{
+
+    from{
+
+        opacity:0;
+        transform:translateX(-30px);
+
+    }
+
+    to{
+
+        opacity:1;
+        transform:translateX(0);
+
+    }
+
+}
+
+@keyframes pulse{
+
+    0%{
+
+        transform:scale(1);
+
+    }
+
+    50%{
+
+        transform:scale(1.08);
+
+    }
+
+    100%{
+
+        transform:scale(1);
+
+    }
+
+}
+
+
+/* =====================================================
+   APPLY ANIMATIONS
+===================================================== */
+
+.sidebar{
+
+    animation:fadeLeft .8s ease;
+
+}
+
+.topbar,
+.welcome-card,
+.summary-card,
+.stage-card,
+.chart-card,
+.ticket-table,
+.engineer-table,
+.activity-section{
+
+    animation:fadeUp .8s ease;
+
+}
+
+
+/* =====================================================
+   GRADIENT SUMMARY CARDS
+===================================================== */
+
+.summary-card.blue{
+
+    background:linear-gradient(135deg,#2563eb,#3b82f6);
+    color:#fff;
+
+}
+
+.summary-card.orange{
+
+    background:linear-gradient(135deg,#f59e0b,#fbbf24);
+    color:#fff;
+
+}
+
+.summary-card.green{
+
+    background:linear-gradient(135deg,#22c55e,#4ade80);
+    color:#fff;
+
+}
+
+.summary-card.red{
+
+    background:linear-gradient(135deg,#ef4444,#f87171);
+    color:#fff;
+
+}
+
+.summary-card.purple{
+
+    background:linear-gradient(135deg,#7c3aed,#8b5cf6);
+    color:#fff;
+
+}
+
+.summary-card.teal{
+
+    background:linear-gradient(135deg,#0891b2,#06b6d4);
+    color:#fff;
+
+}
+
+.summary-card.yellow{
+
+    background:linear-gradient(135deg,#ca8a04,#eab308);
+    color:#fff;
+
+}
+
+.summary-card.dark{
+
+    background:linear-gradient(135deg,#111827,#374151);
+    color:#fff;
+
+}
+
+.summary-card p,
+.summary-card h2,
+.summary-card i{
+
+    color:#fff;
+
+}
+
+
+/* =====================================================
+   GLASS EFFECT
+===================================================== */
+
+.chart-card,
+.ticket-table,
+.engineer-table,
+.activity-section{
+
+    backdrop-filter:blur(12px);
+
+    background:rgba(255,255,255,.95);
+
+}
+
+
+/* =====================================================
+   NOTIFICATION ICON
+===================================================== */
+
+.notification{
+
+    position:relative;
+
+    animation:pulse 2s infinite;
+
+}
+
+.notification::after{
+
+    content:'';
+
+    position:absolute;
+
+    width:10px;
+    height:10px;
+
+    background:#ef4444;
+
+    border-radius:50%;
+
+    right:-2px;
+    top:-2px;
+
+}
+
+
+/* =====================================================
+   CARD GLOW
+===================================================== */
+
+.summary-card:hover{
+
+    box-shadow:0 15px 40px rgba(37,99,235,.25);
+
+}
+
+.stage-card:hover{
+
+    box-shadow:0 15px 35px rgba(0,0,0,.12);
+
+}
+
+.chart-card:hover{
+
+    transform:translateY(-5px);
+
+}
+
+.ticket-table:hover,
+.engineer-table:hover,
+.activity-section:hover{
+
+    transform:translateY(-3px);
+
+}
+
+
+/* =====================================================
+   BUTTON EFFECT
+===================================================== */
+
+.btn{
+
+    position:relative;
+    overflow:hidden;
+
+}
+
+.btn::before{
+
+    content:'';
+
+    position:absolute;
+
+    left:-120%;
+    top:0;
+
+    width:120%;
+    height:100%;
+
+    background:rgba(255,255,255,.25);
+
+    transform:skewX(-25deg);
+
+    transition:.7s;
+
+}
+
+.btn:hover::before{
+
+    left:130%;
+
+}
+
+
+/* =====================================================
+   TABLE ROW ANIMATION
+===================================================== */
+
+.ticket-table tbody tr,
+.engineer-table tbody tr{
+
+    transition:.25s;
+
+}
+
+.ticket-table tbody tr:hover,
+.engineer-table tbody tr:hover{
+
+    transform:scale(1.01);
+
+}
+
+
+/* =====================================================
+   FOOTER SPACE
+===================================================== */
+
+.main-content{
+
+    padding-bottom:60px;
+
+}
+
+/* ==========================================
+   STAGE COLORS (S0 - S11)
+========================================== */
+
+.stage-card:nth-child(1){border-left-color:#3b82f6;}
+.stage-card:nth-child(2){border-left-color:#06b6d4;}
+.stage-card:nth-child(3){border-left-color:#14b8a6;}
+.stage-card:nth-child(4){border-left-color:#22c55e;}
+.stage-card:nth-child(5){border-left-color:#84cc16;}
+.stage-card:nth-child(6){border-left-color:#eab308;}
+.stage-card:nth-child(7){border-left-color:#f59e0b;}
+.stage-card:nth-child(8){border-left-color:#f97316;}
+.stage-card:nth-child(9){border-left-color:#ef4444;}
+.stage-card:nth-child(10){border-left-color:#ec4899;}
+.stage-card:nth-child(11){border-left-color:#8b5cf6;}
+.stage-card:nth-child(12){border-left-color:#10b981;}
+
+
+/* ==========================================
+   DASHBOARD WIDGET
+========================================== */
+
+.widget{
+
+    background:#fff;
+
+    border-radius:18px;
+
+    padding:25px;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.06);
+
+    transition:.35s;
+
+}
+
+.widget:hover{
+
+    transform:translateY(-5px);
+
+}
+
+
+/* ==========================================
+   KPI CIRCLE
+========================================== */
+
+.kpi-circle{
+
+    width:120px;
+    height:120px;
+
+    border-radius:50%;
+
+    background:conic-gradient(
+        #2563eb 0deg,
+        #2563eb 260deg,
+        #e5e7eb 260deg
+    );
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    margin:auto;
+
+}
+
+.kpi-circle .inner{
+
+    width:90px;
+    height:90px;
+
+    background:#fff;
+
+    border-radius:50%;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-size:24px;
+    font-weight:700;
+
+    color:#2563eb;
+
+}
+
+
+/* ==========================================
+   SECTION SPACING
+========================================== */
+
+section{
+
+    margin-bottom:35px;
+
+}
+
+
+/* ==========================================
+   TABLE HEADER STICKY
+========================================== */
+
+.ticket-table{
+
+    overflow:auto;
+    max-height:600px;
+
+}
+
+.ticket-table thead th{
+
+    position:sticky;
+    top:0;
+
+    z-index:20;
+
+}
+
+
+/* ==========================================
+   SEARCH BOX
+========================================== */
+
+.search-box{
+
+    display:flex;
+
+    gap:15px;
+
+    margin-bottom:25px;
+
+}
+
+.search-box input{
+
+    flex:1;
+
+    padding:14px 18px;
+
+    border-radius:12px;
+
+    border:1px solid #d1d5db;
+
+    font-size:15px;
+
+    outline:none;
+
+    transition:.3s;
+
+}
+
+.search-box input:focus{
+
+    border-color:#2563eb;
+
+    box-shadow:0 0 0 4px rgba(37,99,235,.15);
+
+}
+
+.search-box button{
+
+    padding:14px 25px;
+
+    border:none;
+
+    background:#2563eb;
+
+    color:#fff;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.search-box button:hover{
+
+    background:#1d4ed8;
+
+}
+
+
+/* ==========================================
+   FILTERS
+========================================== */
+
+.filter-bar{
+
+    display:flex;
+
+    gap:15px;
+
+    flex-wrap:wrap;
+
+    margin-bottom:25px;
+
+}
+
+.filter-bar select{
+
+    padding:12px 16px;
+
+    border-radius:10px;
+
+    border:1px solid #d1d5db;
+
+    background:#fff;
+
+    min-width:180px;
+
+}
+
+
+/* ==========================================
+   LOADING SKELETON
+========================================== */
+
+.skeleton{
+
+    background:linear-gradient(
+        90deg,
+        #eeeeee 25%,
+        #f7f7f7 50%,
+        #eeeeee 75%
+    );
+
+    background-size:400% 100%;
+
+    animation:skeleton-loading 1.4s infinite;
+
+    border-radius:10px;
+
+}
+
+@keyframes skeleton-loading{
+
+    0%{
+
+        background-position:100% 0;
+
+    }
+
+    100%{
+
+        background-position:-100% 0;
+
+    }
+
+}
+
+
+/* ==========================================
+   DARK MODE READY
+========================================== */
+
+body.dark{
+
+    background:#0f172a;
+
+}
+
+body.dark .summary-card,
+body.dark .chart-card,
+body.dark .ticket-table,
+body.dark .engineer-table,
+body.dark .activity-section,
+body.dark .stage-card{
+
+    background:#1e293b;
+
+    color:#fff;
+
+}
+
+body.dark table td{
+
+    color:#d1d5db;
+
+}
+
+body.dark .section-title h2{
+
+    color:#fff;
+
+}
+
+
+/* ==========================================
+   FOOTER
+========================================== */
+
+.footer{
+
+    margin-top:50px;
+
+    text-align:center;
+
+    color:#6b7280;
+
+    font-size:14px;
+
+}
+
+
+/* ==========================================
+   PRINT MODE
+========================================== */
+
+@media print{
+
+.sidebar,
+.topbar .btn,
+.notification{
+
+display:none;
+
+}
+
+.main-content{
+
+margin-left:0;
+
+}
+
+body{
+
+background:#fff;
+
+}
+
+}
+
+
+/* ==========================================
+   END
+========================================== */
