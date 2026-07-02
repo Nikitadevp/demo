@@ -3162,6 +3162,7 @@ def maintenance_dashboard(request):
 
     months = []
     monthly_counts = []
+    
 
     for item in monthly_data:
 
@@ -3172,6 +3173,8 @@ def maintenance_dashboard(request):
         monthly_counts.append(
             item["total"]
         )
+
+    monthly_report = zip(months, monthly_counts)
 
 
     # ==========================================
@@ -3228,6 +3231,7 @@ def maintenance_dashboard(request):
 
         "months": months,
         "monthly_counts": monthly_counts,
+        "monthly_report": monthly_report,
 
         # PERCENTAGES
 
