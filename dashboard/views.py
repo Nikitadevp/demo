@@ -3243,4 +3243,8 @@ def maintenance_dashboard(request):
 
     }
 
-    return HttpResponse("Context Created Successfully")
+    return render(
+        request,
+        "maintenance_dashboard.html",
+        context
+    )
