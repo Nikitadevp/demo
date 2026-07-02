@@ -2931,7 +2931,7 @@ def maintenance_dashboard(request):
     # ==========================================
 
     total_queries = CustomerQuery.objects.count()
-    return HttpResponse(f"Total Queries = {total_queries}")
+
     open_queries = CustomerQuery.objects.filter(
         status="Open"
     ).count()
@@ -3243,8 +3243,4 @@ def maintenance_dashboard(request):
 
     }
 
-    return render(
-        request,
-        "maintenance_dashboard.html",
-        context
-    )
+    return HttpResponse("Context Created Successfully")
