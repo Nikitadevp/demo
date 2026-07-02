@@ -219,7 +219,7 @@ ul{
     width:48px;
     height:48px;
     border-radius:50%;
-    background:#2563eb;
+    background:#63b3a5;
     color:#fff;
     display:flex;
     align-items:center;
@@ -260,7 +260,7 @@ ul{
 =========================== */
 
 .welcome-section{
-    background:linear-gradient(135deg,#4f46e5,#2563eb);
+    background:linear-gradient(135deg,#63b3a5,#63b3a5);
     color:#fff;
     border-radius:20px;
     padding:35px;
@@ -348,16 +348,16 @@ ul{
 }
 
 .section-header h2 i{
-    color:#2563eb;
+    color:#63b3a5;
 }
 
 .view-all{
-    color:#2563eb;
+    color:#63b3a5;
     font-weight:600;
     font-size:14px;
     transition:.3s;
 }
 
 .view-all:hover{
-    color:#1d4ed8;
+    color:#63b3a5;
 }
