@@ -2923,14 +2923,15 @@ from .models import (
 
 def maintenance_dashboard(request):
     
-    return HttpResponse("Maintenance Dashboard Working")
+    if "admin_id" not in request.session:
+        return redirect("login")
 
     # ==========================================
     # DASHBOARD SUMMARY
     # ==========================================
 
     total_queries = CustomerQuery.objects.count()
-
+    return HttpResponse(f"Total Queries = {total_queries}")
     open_queries = CustomerQuery.objects.filter(
         status="Open"
     ).count()
