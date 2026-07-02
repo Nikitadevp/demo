@@ -2923,8 +2923,7 @@ from .models import (
 
 def maintenance_dashboard(request):
     
-    if "admin_id" not in request.session:
-        return redirect("login")
+    return HttpResponse("Maintenance Dashboard Working")
 
     # ==========================================
     # DASHBOARD SUMMARY
