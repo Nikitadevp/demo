@@ -79,7 +79,7 @@ ul{
 }
 
 .logo span{
-    color:#60a5fa;
+    color:#63b3a5;
     font-size:14px;
     letter-spacing:1px;
 }
@@ -111,13 +111,13 @@ ul{
 }
 
 .menu li a:hover{
-    background:#3b82f6;
+    background:#63b3a5;
     color:#fff;
     transform:translateX(5px);
 }
 
 .menu li.active a{
-    background:#2563eb;
+    background:#63b3a5;
     color:#fff;
 }
 
@@ -205,7 +205,7 @@ ul{
 }
 
 .notification:hover{
-    background:#3b82f6;
+    background:#63b3a5;
     color:#fff;
 }
 
