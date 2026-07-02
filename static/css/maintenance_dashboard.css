@@ -906,6 +906,24 @@ button:hover{
 }
 
 
+.logout-btn{
+    background:#e53935;
+    color:#fff;
+    padding:12px 22px;
+    border-radius:8px;
+    text-decoration:none;
+    font-weight:600;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    transition:.3s;
+}
+
+.logout-btn:hover{
+    background:#c62828;
+    color:#fff;
+}
+
 /* ==========================================
    RESPONSIVE
 ========================================== */
