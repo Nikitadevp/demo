@@ -3252,3 +3252,48 @@ def maintenance_dashboard(request):
         "maintenance_dashboard.html",
         context
     )
+
+
+
+def crm_dashboard(request):
+
+    if "admin_id" not in request.session:
+        return redirect("login")
+
+    if request.session.get("admin_role") != "CRM":
+        return redirect("login")
+
+    return render(request, "crm_dashboard.html")
+
+
+def site_engineer_dashboard(request):
+
+    if "admin_id" not in request.session:
+        return redirect("login")
+
+    if request.session.get("admin_role") != "Site Engineer":
+        return redirect("login")
+
+    return render(request, "site_engineer_dashboard.html")
+
+
+def store_keeper_dashboard(request):
+
+    if "admin_id" not in request.session:
+        return redirect("login")
+
+    if request.session.get("admin_role") != "Store Keeper":
+        return redirect("login")
+
+    return render(request, "store_keeper_dashboard.html")
+
+
+def admin_dashboard(request):
+
+    if "admin_id" not in request.session:
+        return redirect("login")
+
+    if request.session.get("admin_role") != "Admin":
+        return redirect("login")
+
+    return render(request, "admin_dashboard.html")

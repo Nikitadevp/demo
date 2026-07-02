@@ -61,11 +61,16 @@ urlpatterns = [
     path("logout/", views.logout_view, name="logout"),
     
     path("maintenance-dashboard/", views.maintenance_dashboard, name="maintenance_dashboard"),
+    
+    path("admin-dashboard/", views.admin_dashboard, name="admin_dashboard"),
 
+    path("crm-dashboard/", views.crm_dashboard, name="crm_dashboard"),
 
+    path("maintenance-dashboard/", views.maintenance_dashboard, name="maintenance_dashboard"),
 
+    path("site-engineer-dashboard/", views.site_engineer_dashboard, name="site_engineer_dashboard"),
 
-
+    path("store-keeper-dashboard/", views.store_keeper_dashboard, name="store_keeper_dashboard"),
     
 ]
     
