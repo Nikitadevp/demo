@@ -314,8 +314,6 @@ body{
     margin-bottom:35px;
 
 }
-
-
 .card{
 
     background:#fff;
@@ -332,24 +330,85 @@ body{
 
 }
 
-
 .card:hover{
 
     transform:translateY(-6px);
 
 }
 
+/* ==========================
+   Open Card
+========================== */
+
+.card.open-card{
+
+    border-left:6px solid #22c55e;
+
+}
+
+.card.open-card i{
+
+    color:#22c55e;
+
+}
+
+/* ==========================
+   Pending Card
+========================== */
+
+.card.pending-card{
+
+    border-left:6px solid #f59e0b;
+
+}
+
+.card.pending-card i{
+
+    color:#f59e0b;
+
+}
+
+/* ==========================
+   Progress Card
+========================== */
+
+.card.progress-card{
+
+    border-left:6px solid #3b82f6;
+
+}
+
+.card.progress-card i{
+
+    color:#3b82f6;
+
+}
+
+/* ==========================
+   Closed Card
+========================== */
+
+.card.closed-card{
+
+    border-left:6px solid #ef4444;
+
+}
+
+.card.closed-card i{
+
+    color:#ef4444;
+
+}
+
+/* Common */
 
 .card i{
 
     font-size:34px;
 
-    color:#6377b3;
-
     margin-bottom:18px;
 
 }
-
 
 .card h2{
 
@@ -360,7 +419,6 @@ body{
     color:#111827;
 
 }
-
 
 .card p{
 
