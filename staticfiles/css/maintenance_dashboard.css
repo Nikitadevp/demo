@@ -132,7 +132,7 @@ body{
 
 .sidebar ul li a:hover{
 
-    background:#2563eb;
+    background:#687ead;
 
     transform:translateX(6px);
 
@@ -141,7 +141,7 @@ body{
 
 .sidebar ul li.active a{
 
-    background:#2563eb;
+    background:#668ad7;
 
 }
 
