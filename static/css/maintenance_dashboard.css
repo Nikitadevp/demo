@@ -239,7 +239,7 @@ body{
 
 .welcome-card{
 
-    background:linear-gradient(120deg,#2563eb,#4f46e5);
+    background:linear-gradient(120deg,#63b3a5,#63b3a5);
 
     color:#fff;
 
@@ -344,7 +344,7 @@ body{
 
     font-size:34px;
 
-    color:#2563eb;
+    color:#63b3a5;
 
     margin-bottom:18px;
 
@@ -420,7 +420,7 @@ body{
 
     transition:.3s;
 
-    border-left:6px solid #2563eb;
+    border-left:6px solid#63b3a5;
 
 }
 
@@ -457,7 +457,7 @@ body{
 
     background:#dbeafe;
 
-    color:#2563eb;
+    color:#63b3a5;
 
     display:flex;
 
@@ -546,7 +546,7 @@ body{
 
     margin-bottom:15px;
 
-    color:#2563eb;
+    color:#63b3a5;
 
 }
 
@@ -623,7 +623,7 @@ body{
 
 .progress-fill.chargeable{
 
-    background:linear-gradient(90deg,#3b82f6,#2563eb);
+    background:linear-gradient(90deg,#63b3a5,#63b3a5);
 
 }
 
@@ -667,7 +667,7 @@ body{
 
 .table-box thead{
 
-    background:#2563eb;
+    background:#63b3a5;
 
     color:#fff;
 
@@ -801,7 +801,7 @@ body{
 
 ::-webkit-scrollbar-thumb{
 
-    background:#2563eb;
+    background:#63b3a5;
 
     border-radius:10px;
 
@@ -809,7 +809,7 @@ body{
 
 ::-webkit-scrollbar-thumb:hover{
 
-    background:#1d4ed8;
+    background:#529ea4;
 
 }
 
