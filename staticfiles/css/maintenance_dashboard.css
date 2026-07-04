@@ -892,6 +892,57 @@ body{
     color:#3b82f6;
 }
 
+/* Site Inspection */
+.inspection-card i{
+    color:#10b981;
+}
+
+/* Estimate */
+.estimate-card i{
+    color:#f59e0b;
+}
+
+/* Customer Approval */
+.approval-card i{
+    color:#8b5cf6;
+}
+
+/* Advance Collection */
+.advance-card i{
+    color:#ef4444;
+}
+
+/* Material Availability */
+.material-card i{
+    color:#06b6d4;
+}
+
+/* Raise Indent */
+.indent-card i{
+    color:#ec4899;
+}
+
+/* Issue Material */
+.issue-card i{
+    color:#6366f1;
+}
+
+/* Receive Material */
+.receive-card i{
+    color:#14b8a6;
+}
+
+/* Query Closer */
+.close-card i{
+    color:#22c55e;
+}
+
+/* Customer Feedback */
+.feedback-card i{
+    color:#f97316;
+}
+
+
 @keyframes fadeUp{
 
     from{
