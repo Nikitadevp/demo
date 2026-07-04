@@ -61,6 +61,7 @@ urlpatterns = [
     path("logout/", views.logout_view, name="logout"),
     
     path("maintenance-dashboard/", views.maintenance_dashboard, name="maintenance_dashboard"),
+    path("admin-dashboard/", views.admin_dashboard, name="admin_dashboard"),
     
 
     

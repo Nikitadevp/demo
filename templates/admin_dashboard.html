@@ -1,0 +1,851 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Maintenance Dashboard</title>
+
+    <link rel="stylesheet"
+          href="{% static 'css/maintenance_dashboard.css' %}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <!-- ===========================
+            SIDEBAR
+    ============================ -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <h2>Sampoorna</h2>
+
+            <p>Maintenance Portal</p>
+
+        </div>
+
+        <ul>
+
+            <li class="active">
+
+                <a href="{% url 'maintenance_dashboard' %}">
+
+                    <i class="fa-solid fa-chart-line"></i>
+
+                    Dashboard
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="#">
+
+                    <i class="fa-solid fa-list-check"></i>
+
+                    Maintenance Scope
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="#">
+
+                    <i class="fa-solid fa-house-circle-check"></i>
+
+                    Site Inspection
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="#">
+
+                    <i class="fa-solid fa-file-invoice-dollar"></i>
+
+                    Estimate
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="#">
+
+                    <i class="fa-solid fa-user-check"></i>
+
+                    Customer Approval
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="#">
+
+                    <i class="fa-solid fa-wallet"></i>
+
+                    Advance Collection
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="#">
+
+                    <i class="fa-solid fa-boxes-stacked"></i>
+
+                    Material
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="#">
+
+                    <i class="fa-solid fa-truck"></i>
+
+                    Issue Material
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="#">
+
+                    <i class="fa-solid fa-box-open"></i>
+
+                    Receive Material
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="#">
+
+                    <i class="fa-solid fa-circle-check"></i>
+
+                    Close Query
+
+                </a>
+
+            </li>
+
+        </ul>
+
+    </aside>
+
+    <!-- ===========================
+             MAIN CONTENT
+    ============================ -->
+
+    <main class="main-content">
+
+        <!-- HEADER -->
+
+        <div class="header">
+
+            <div>
+
+                <h1>Admin Dashboard</h1>
+
+                <span>
+                    Welcome Back
+                </span>
+
+            </div>
+
+            <div class="header-right">
+
+                <button class="new-btn">
+
+                    <i class="fa-solid fa-plus"></i>
+
+                    New Query
+
+                </button>
+                <a href="{% url 'logout' %}" class="logout-btn">
+
+                    <i class="fa-solid fa-right-from-bracket"></i>
+
+                    Logout
+                </a>
+
+            </div>
+
+        </div>
+
+        <!-- WELCOME CARD -->
+
+        <div class="welcome-card">
+
+            <div>
+
+                <h2>
+
+                    Hello Admin👋
+
+                </h2>
+
+                <p>
+
+                    Total Admin Activities Overview
+
+                </p>
+
+            </div>
+
+            <div class="welcome-right">
+
+                <h1>
+
+                    {{ total_queries }}
+
+                </h1>
+
+                <span>
+
+                    Total Complaints
+
+                </span>
+
+            </div>
+
+        </div>
+
+        <!-- SUMMARY CARDS -->
+
+        <div class="summary-grid">
+
+            <div class="card open-card">
+
+
+                <i class="fa-solid fa-folder-open"></i>
+
+                <h2>
+
+                    {{ open_queries }}
+
+                </h2>
+
+                <p>
+
+                    Open Queries
+
+                </p>
+
+            </div>
+
+            <div class="card pending-card">
+
+                <i class="fa-solid fa-hourglass-half"></i>
+
+                <h2>
+
+                    {{ pending_queries }}
+
+                </h2>
+
+                <p>
+
+                    Pending
+
+                </p>
+
+            </div>
+
+            <div class="card progress-card">
+
+                <i class="fa-solid fa-spinner"></i>
+
+                <h2>
+
+                    {{ in_progress_queries }}
+
+                </h2>
+
+                <p>
+
+                    In Progress
+
+                </p>
+
+            </div>
+
+            <div class="card closed-card">
+
+                <i class="fa-solid fa-circle-check"></i>
+
+                <h2>
+
+                    {{ closed_queries }}
+
+                </h2>
+
+                <p>
+
+                    Closed
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- WORKFLOW TITLE -->
+
+        <div class="section-title">
+
+            <h2>
+
+                Admin Workflow
+
+            </h2>
+
+        </div>
+
+        <!-- WORKFLOW GRID -->
+
+        <div class="workflow-grid">
+
+            <!-- =========================
+                 WORKFLOW CARDS
+            ========================== -->
+
+            <div class="workflow-card">
+                <div class="workflow-top">
+                    <i class="fa-solid fa-clipboard-list"></i>
+                    <span>Maintenance Scope</span>
+                </div>
+
+                <h2>{{ maintenance_scope }}</h2>
+
+                <small>
+                    Pending : {{ scope_pending }}
+                </small>
+            </div>
+
+            <div class="workflow-card">
+                <div class="workflow-top">
+                    <i class="fa-solid fa-house-circle-check"></i>
+                    <span>Site Inspection</span>
+                </div>
+
+                <h2>{{ site_inspection }}</h2>
+
+                <small>
+                    Pending : {{ inspection_pending }}
+                </small>
+            </div>
+
+            <div class="workflow-card">
+                <div class="workflow-top">
+                    <i class="fa-solid fa-file-invoice-dollar"></i>
+                    <span>Estimate Form</span>
+                </div>
+
+                <h2>{{ estimate_form }}</h2>
+
+                <small>
+                    Pending : {{ estimate_pending }}
+                </small>
+            </div>
+
+            <div class="workflow-card">
+                <div class="workflow-top">
+                    <i class="fa-solid fa-user-check"></i>
+                    <span>Customer Approval</span>
+                </div>
+
+                <h2>{{ customer_approval }}</h2>
+
+                <small>
+                    Pending : {{ approval_pending }}
+                </small>
+            </div>
+
+            <div class="workflow-card">
+                <div class="workflow-top">
+                    <i class="fa-solid fa-wallet"></i>
+                    <span>Advance Collection</span>
+                </div>
+
+                <h2>{{ advance_collection }}</h2>
+
+                <small>
+                    Pending : {{ advance_pending }}
+                </small>
+            </div>
+
+            <div class="workflow-card">
+                <div class="workflow-top">
+                    <i class="fa-solid fa-boxes-stacked"></i>
+                    <span>Material Availability</span>
+                </div>
+
+                <h2>{{ material_availability }}</h2>
+
+                <small>
+                    Pending : {{ material_pending }}
+                </small>
+            </div>
+
+            <div class="workflow-card">
+                <div class="workflow-top">
+                    <i class="fa-solid fa-list"></i>
+                    <span>Raise Indent</span>
+                </div>
+
+                <h2>{{ raise_indent }}</h2>
+
+                <small>
+                    Pending : {{ indent_pending }}
+                </small>
+            </div>
+
+            <div class="workflow-card">
+                <div class="workflow-top">
+                    <i class="fa-solid fa-truck"></i>
+                    <span>Issue Material</span>
+                </div>
+
+                <h2>{{ issue_material }}</h2>
+
+                <small>
+                    Pending : {{ issue_pending }}
+                </small>
+            </div>
+
+            <div class="workflow-card">
+                <div class="workflow-top">
+                    <i class="fa-solid fa-box-open"></i>
+                    <span>Receive Material</span>
+                </div>
+
+                <h2>{{ receive_material }}</h2>
+
+                <small>
+                    Pending : {{ receive_pending }}
+                </small>
+            </div>
+
+            <div class="workflow-card">
+                <div class="workflow-top">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <span>Query Closer</span>
+                </div>
+
+                <h2>{{ query_closer }}</h2>
+
+                <small>
+                    Pending : {{ close_pending }}
+                </small>
+            </div>
+
+            <div class="workflow-card">
+                <div class="workflow-top">
+                    <i class="fa-solid fa-star"></i>
+                    <span>Customer Feedback</span>
+                </div>
+
+                <h2>{{ customer_feedback }}</h2>
+
+                <small>
+                    Pending : {{ feedback_pending }}
+                </small>
+            </div>
+
+        </div>
+
+        <!-- =========================
+             ANALYTICS
+        ========================== -->
+
+        <div class="analytics-grid">
+
+            <div class="analytics-card">
+
+                <h3>Chargeable vs Non-Chargeable</h3>
+
+                <div class="percent-row">
+
+                    <div>
+
+                        <h2>{{ chargeable_percent }}%</h2>
+
+                        <span>Chargeable</span>
+
+                    </div>
+
+                    <div>
+
+                        <h2>{{ non_chargeable_percent }}%</h2>
+
+                        <span>Non-Chargeable</span>
+
+                    </div>
+
+                </div>
+
+                <div class="progress">
+
+                    <div class="progress-fill chargeable"
+                         style="width: {{ chargeable_percent }}%;">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="analytics-card">
+
+                <h3>Material Availability</h3>
+
+                <h2>
+
+                    {{ material_available_percent }}%
+
+                </h2>
+
+                <div class="progress">
+
+                    <div class="progress-fill material"
+                         style="width: {{ material_available_percent }}%;">
+
+                    </div>
+
+                </div>
+
+                <p>
+
+                    Available : {{ material_available_yes }}
+
+                    &nbsp;&nbsp;&nbsp;
+
+                    Pending : {{ material_available_no }}
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- =========================
+             LATEST COMPLAINTS
+        ========================== -->
+
+        <div class="section-title">
+
+            <h2>
+
+                Latest Complaints
+
+            </h2>
+
+        </div>
+
+        <div class="table-box">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Ticket</th>
+                        <th>Customer</th>
+                        <th>Tower</th>
+                        <th>Area</th>
+                        <th>Issue</th>
+                        <th>Status</th>
+                        <th>Date</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                {% for complaint in latest_complaints %}
+
+                    <tr>
+
+                        <td>{{ complaint.ticket_id }}</td>
+
+                        <td>{{ complaint.name }}</td>
+
+                        <td>{{ complaint.tower }}</td>
+
+                        <td>{{ complaint.area }}</td>
+
+                        <td>{{ complaint.issue }}</td>
+
+                        <td>{{ complaint.status }}</td>
+
+                        <td>{{ complaint.created_at|date:"d M Y" }}</td>
+
+                    </tr>
+
+                {% empty %}
+
+                    <tr>
+
+                        <td colspan="7">
+
+                            No Complaints Found
+
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <!-- =========================
+             RECENT ESTIMATES
+        ========================== -->
+
+        <div class="section-title">
+
+            <h2>Recent Estimates</h2>
+
+        </div>
+
+        <div class="table-box">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Ticket ID</th>
+                        <th>Customer</th>
+                        <th>Email</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                {% for estimate in recent_estimates %}
+
+                    <tr>
+
+                        <td>{{ estimate.customer_query.ticket_id }}</td>
+
+                        <td>{{ estimate.customer_query.name }}</td>
+
+                        <td>{{ estimate.email }}</td>
+
+                    </tr>
+
+                {% empty %}
+
+                    <tr>
+
+                        <td colspan="3">
+
+                            No Estimate Available
+
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <!-- =========================
+             RECENT APPROVALS
+        ========================== -->
+
+        <div class="section-title">
+
+            <h2>Recent Customer Approvals</h2>
+
+        </div>
+
+        <div class="table-box">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Ticket ID</th>
+                        <th>Customer</th>
+                        <th>Status</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                {% for approval in recent_approvals %}
+
+                    <tr>
+
+                        <td>{{ approval.customer_query.ticket_id }}</td>
+
+                        <td>{{ approval.customer_query.name }}</td>
+
+                        <td>
+
+                            <span class="status approved">
+
+                                Approved
+
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+                {% empty %}
+
+                    <tr>
+
+                        <td colspan="3">
+
+                            No Approval Available
+
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <!-- =========================
+             MONTHLY REPORT
+        ========================== -->
+
+        <div class="section-title">
+
+            <h2>Monthly Complaint Statistics</h2>
+
+        </div>
+
+        <div class="analytics-card">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Month</th>
+                        <th>Total Complaints</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                {% for month, count in monthly_report %}
+
+                    <tr>
+
+                        <td>{{ month }}</td>
+
+                        <td>{{ count }}</td>
+
+                    </tr>
+
+                {% empty %}
+
+                    <tr>
+
+                        <td colspan="2">
+
+                            No Monthly Data
+
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <!-- =========================
+             FOOTER
+        ========================== -->
+
+        <footer class="footer">
+
+            <p>
+
+                © 2026 Rajat Buildtech Pvt. Ltd.
+
+                |
+
+                Sampoorna Maintenance Dashboard
+
+            </p>
+
+        </footer>
+
+    </main>
+
+</div>
+
+</body>
+
+</html>
