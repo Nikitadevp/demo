@@ -886,6 +886,12 @@ body{
 
 }
 
+
+/* Maintenance Scope */
+.scope-card i{
+    color:#3b82f6;
+}
+
 @keyframes fadeUp{
 
     from{
