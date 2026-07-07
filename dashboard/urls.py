@@ -8,7 +8,7 @@ from .views import export_leave_csv
 
 urlpatterns = [
     #path('', views.dashboard, name='dashboard'),
-   # path("", views.ticket_form, name="home"),   # 👈 Ye line change karo
+    #path("", views.ticket_form, name="home"),   # 👈 Ye line change karo
     #path("dashboard/", views.dashboard, name="dashboard"),
     #path("raise-ticket/", views.raise_ticket, name="raise_ticket"),
     #path("", views.dashboard, name="home"),
