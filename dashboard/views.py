@@ -2006,6 +2006,9 @@ def maintenance_scope_form(request, query_id):
         CustomerQuery,
         id=query_id
     )
+    
+    sla_due_time = customer.created_at + timedelta(hours=3)
+    overdue = timezone.now() > sla_due_time
 
     if request.method == "POST":
 
