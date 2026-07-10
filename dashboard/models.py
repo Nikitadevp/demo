@@ -1,4 +1,6 @@
 
+from datetime import timedelta
+
 from django.db import models
 import uuid
 from django.utils import timezone
@@ -380,13 +382,20 @@ class MaintenanceScope(models.Model):
     null=True
     )
 
+created_at = models.DateTimeField(
+    auto_now_add=True
+)
 
-    created_at = models.DateTimeField(
-        auto_now_add=True
-    )
+@property
+def sla_due_time(self):
+    return self.customer_query.created_at + timedelta(hours=3)
 
-    def __str__(self):
-        return f"{self.case_id} - {self.scope_status}"
+@property
+def is_overdue(self):
+    return timezone.now() > self.sla_due_time
+
+def __str__(self):
+    return f"{self.case_id} - {self.scope_status}"
     
 
 class SiteInspection(models.Model):
