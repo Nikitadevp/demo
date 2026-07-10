@@ -270,6 +270,17 @@ class CustomerQuery(models.Model):
     updated_at = models.DateTimeField(
         auto_now=True
     )
+    
+    @property
+    def sla_due_time(self):
+        return self.created_at + timedelta(hours=3)
+    
+    @property
+    def is_overdue(self):
+        return (
+             self.status == "Open" and timezone.now() > self.sla_due_time
+        )
+
 
     # ====================================
     # AUTO TICKET ID
