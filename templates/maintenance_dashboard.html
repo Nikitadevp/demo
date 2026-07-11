@@ -588,9 +588,9 @@
                         <th>Area</th>
                         <th>Issue</th>
                         <th>Status</th>
+                        <th>Date</th>
                         <th>SLA Due Time</th>
                         <th>SLA Status</th>
-                        <th>Date</th>
 
                     </tr>
 
@@ -616,6 +616,7 @@
                         
 
                         <td>{{ complaint.created_at|date:"d M Y" }}</td>
+
                         <td>
                             {% if complaint.sla_status %}
                                 <span style="color:red; font-weight:bold;"> 
