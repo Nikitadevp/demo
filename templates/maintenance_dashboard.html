@@ -615,9 +615,9 @@
                         <td>{{ complaint.status }}</td>
                         
 
-                        <td>{{ complaint.created_at|date:"d M Y" }}</td>
+                        <td>{{ complaint.created_at|date:"d/m/y" }}</td>
                       
-                        <td>{{ complaint.sla_due_time|date:"d M Y h:i A" }}</td>
+                        <td>{{ complaint.sla_due_time|date:"d/m/y h:i A" }}</td>
 
                         <td>
                             {% if complaint.is_overdue %}
