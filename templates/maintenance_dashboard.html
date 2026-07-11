@@ -616,16 +616,14 @@
                         
 
                         <td>{{ complaint.created_at|date:"d M Y" }}</td>
+                      
+                        <td>{{ complaint.sla_due_time|date:"d M Y h:i A" }}</td>
 
                         <td>
-                            {% if complaint.sla_status %}
-                                <span style="color:red; font-weight:bold;"> 
-                                    Overdue
-                                </span>
+                            {% if complaint.is_overdue %}
+                                <span style="color:red;font-weight:bold;">Overdue</span>
                             {% else %}
-                                <span style="color:green; font-weight:bold;"> 
-                                   On Time
-                                </span>
+                                <span style="color:green;font-weight:bold;">On Time</span>
                             {% endif %}
                         </td>
 
