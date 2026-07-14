@@ -3596,7 +3596,6 @@ def admin_dashboard(request):
     context
 )
 
-
 def site_engineer_dashboard(request):
 
     # ==========================================
@@ -3608,85 +3607,88 @@ def site_engineer_dashboard(request):
 
     if request.session.get("admin_role") != "Site Engineer":
         return redirect("login")
+
+
     # ==========================================
     # DASHBOARD SUMMARY
+    # (Only Under Scope = Yes)
     # ==========================================
 
-    total_queries = CustomerQuery.objects.count()
-
-    open_queries = CustomerQuery.objects.filter(
-        status="Open"
+    total_site_inspection = SiteInspection.objects.filter(
+        under_scope="Yes"
     ).count()
 
-    pending_queries = CustomerQuery.objects.filter(
-        status="Pending"
+    chargeable = SiteInspection.objects.filter(
+        under_scope="Yes",
+        category="Chargeable"
     ).count()
 
-    in_progress_queries = CustomerQuery.objects.filter(
-        status="In Progress"
+    non_chargeable = SiteInspection.objects.filter(
+        under_scope="Yes",
+        category="Non Chargeable"
     ).count()
 
-    closed_queries = CustomerQuery.objects.filter(
-        status="Closed"
+    material_required = SiteInspection.objects.filter(
+        under_scope="Yes",
+        material_required="Yes"
     ).count()
 
-    today_queries = CustomerQuery.objects.filter(
+    material_not_required = SiteInspection.objects.filter(
+        under_scope="Yes",
+        material_required="No"
+    ).count()
+
+    vendor_side = SiteInspection.objects.filter(
+        under_scope="Yes",
+        material_required="Vendor Side"
+    ).count()
+
+    today_site_inspection = SiteInspection.objects.filter(
+        under_scope="Yes",
         created_at__date=timezone.now().date()
     ).count()
 
+
     # ==========================================
-    # WORKFLOW (S0 - S2)
+    # WORKFLOW (S1 - S2)
     # ==========================================
 
     maintenance_scope = MaintenanceScope.objects.count()
 
-    site_inspection = SiteInspection.objects.count()
+    site_inspection = SiteInspection.objects.filter(
+        under_scope="Yes"
+    ).count()
+
 
     # ==========================================
-    # PENDING
+    # PENDING INSPECTION
     # ==========================================
-
-    scope_pending = max(
-        total_queries - maintenance_scope,
-        0
-    )
 
     inspection_pending = max(
         maintenance_scope - site_inspection,
         0
     )
 
+
     # ==========================================
-    # LATEST COMPLAINTS
+    # RECENT SITE INSPECTION
     # ==========================================
 
-    latest_complaints = CustomerQuery.objects.order_by(
+    recent_site_inspections = SiteInspection.objects.filter(
+        under_scope="Yes"
+    ).select_related(
+        "customer_query"
+    ).order_by(
         "-created_at"
     )[:10]
-
+    
+       # ==========================================
+    # CHARGEABLE / NON CHARGEABLE %
     # ==========================================
-    # RECENT SITE INSPECTIONS
-    # ==========================================
-
-    recent_site_inspections = SiteInspection.objects.select_related(
-        "customer_query"
-    ).order_by("-id")[:10]
-
-    # ==========================================
-    # CHARGEABLE / NON CHARGEABLE
-    # ==========================================
-
-    chargeable = SiteInspection.objects.filter(
-        category="Chargeable"
-    ).count()
-
-    non_chargeable = SiteInspection.objects.filter(
-        category="Non Chargeable"
-    ).count()
 
     total_category = chargeable + non_chargeable
 
-    if total_category:
+    if total_category > 0:
 
         chargeable_percent = round(
             (chargeable / total_category) * 100
@@ -3699,20 +3701,64 @@ def site_engineer_dashboard(request):
     else:
 
         chargeable_percent = 0
+
         non_chargeable_percent = 0
 
+
     # ==========================================
-    # MONTHLY REPORT
+    # MATERIAL REQUIRED %
+    # ==========================================
+
+    total_material = (
+        material_required +
+        material_not_required +
+        vendor_side
+    )
+
+    if total_material > 0:
+
+        material_required_percent = round(
+            (material_required / total_material) * 100
+        )
+
+        material_not_required_percent = round(
+            (material_not_required / total_material) * 100
+        )
+
+        vendor_side_percent = round(
+            (vendor_side / total_material) * 100
+        )
+
+    else:
+
+        material_required_percent = 0
+
+        material_not_required_percent = 0
+
+        vendor_side_percent = 0
+
+
+    # ==========================================
+    # MONTHLY SITE INSPECTION REPORT
     # ==========================================
 
     monthly_data = (
-        CustomerQuery.objects
+
+        SiteInspection.objects.filter(
+            under_scope="Yes"
+        )
+
         .values("created_at__month")
+
         .annotate(total=Count("id"))
+
         .order_by("created_at__month")
+
     )
 
+
     month_names = {
+
         1: "Jan",
         2: "Feb",
         3: "Mar",
@@ -3725,23 +3771,40 @@ def site_engineer_dashboard(request):
         10: "Oct",
         11: "Nov",
         12: "Dec",
+
     }
 
+
     months = []
+
     monthly_counts = []
+
 
     for item in monthly_data:
 
         months.append(
-            month_names[item["created_at__month"]]
+
+            month_names[
+                item["created_at__month"]
+            ]
+
         )
 
         monthly_counts.append(
+
             item["total"]
+
         )
 
-    monthly_report = zip(months, monthly_counts)
 
+    monthly_report = zip(
+
+        months,
+
+        monthly_counts
+
+    )
+    
     # ==========================================
     # CONTEXT
     # ==========================================
@@ -3750,12 +3813,8 @@ def site_engineer_dashboard(request):
 
         # SUMMARY
 
-        "total_queries": total_queries,
-        "open_queries": open_queries,
-        "pending_queries": pending_queries,
-        "in_progress_queries": in_progress_queries,
-        "closed_queries": closed_queries,
-        "today_queries": today_queries,
+        "total_site_inspection": total_site_inspection,
+        "today_site_inspection": today_site_inspection,
 
         # WORKFLOW
 
@@ -3764,31 +3823,43 @@ def site_engineer_dashboard(request):
 
         # PENDING
 
-        "scope_pending": scope_pending,
         "inspection_pending": inspection_pending,
 
-        # TABLES
+        # TABLE
 
-        "latest_complaints": latest_complaints,
         "recent_site_inspections": recent_site_inspections,
 
-        # CHART
+        # MONTHLY REPORT
 
         "months": months,
         "monthly_counts": monthly_counts,
         "monthly_report": monthly_report,
 
-        # ANALYTICS
+        # CATEGORY
 
         "chargeable": chargeable,
         "non_chargeable": non_chargeable,
         "chargeable_percent": chargeable_percent,
         "non_chargeable_percent": non_chargeable_percent,
 
+        # MATERIAL
+
+        "material_required": material_required,
+        "material_not_required": material_not_required,
+        "vendor_side": vendor_side,
+
+        "material_required_percent": material_required_percent,
+        "material_not_required_percent": material_not_required_percent,
+        "vendor_side_percent": vendor_side_percent,
+
     }
 
     return render(
+
         request,
+
         "site_engineer_dashboard.html",
+
         context
+
     )
