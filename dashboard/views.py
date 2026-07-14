@@ -3606,9 +3606,8 @@ def site_engineer_dashboard(request):
     if "admin_id" not in request.session:
         return redirect("login")
 
-    if request.session.get("role") != "Site Engineer":
+    if request.session.get("admin_role") != "Site Engineer":
         return redirect("login")
-
     # ==========================================
     # DASHBOARD SUMMARY
     # ==========================================
