@@ -1,0 +1,287 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="dashboard-container">
+
+    <!-- ==========================
+            WELCOME CARD
+    ========================== -->
+
+    <div class="welcome-card">
+
+        <div>
+
+            <h2>Hello Site Engineer 👋</h2>
+
+            <p>Site Inspection Dashboard</p>
+
+        </div>
+
+        <div class="welcome-right">
+
+            <h1>{{ total_cases }}</h1>
+
+            <span>Total Assigned Cases</span>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==========================
+            SUMMARY CARDS
+    ========================== -->
+
+    <div class="summary-grid">
+
+        <div class="card total-card">
+
+            <i class="fa-solid fa-list-check"></i>
+
+            <h2>{{ total_cases }}</h2>
+
+            <p>Total Cases</p>
+
+        </div>
+
+        <div class="card open-card">
+
+            <i class="fa-solid fa-folder-open"></i>
+
+            <h2>{{ open_cases }}</h2>
+
+            <p>Open</p>
+
+        </div>
+
+        <div class="card pending-card">
+
+            <i class="fa-solid fa-hourglass-half"></i>
+
+            <h2>{{ pending_cases }}</h2>
+
+            <p>Pending</p>
+
+        </div>
+
+        <div class="card progress-card">
+
+            <i class="fa-solid fa-spinner"></i>
+
+            <h2>{{ in_progress_cases }}</h2>
+
+            <p>In Progress</p>
+
+        </div>
+
+        <div class="card overdue-card">
+
+            <i class="fa-solid fa-triangle-exclamation"></i>
+
+            <h2>{{ overdue_cases }}</h2>
+
+            <p>Overdue</p>
+
+        </div>
+
+        <div class="card closed-card">
+
+            <i class="fa-solid fa-circle-check"></i>
+
+            <h2>{{ closed_cases }}</h2>
+
+            <p>Closed</p>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ==========================
+            INSPECTION SUMMARY
+    ========================== -->
+
+    <div class="section-title">
+
+        <h2>Inspection Summary</h2>
+
+    </div>
+
+    <div class="summary-grid">
+
+        <div class="card">
+
+            <i class="fa-solid fa-house-circle-check"></i>
+
+            <h2>{{ pending_inspection }}</h2>
+
+            <p>Pending Inspection</p>
+
+        </div>
+
+        <div class="card">
+
+            <i class="fa-solid fa-money-bill-wave"></i>
+
+            <h2>{{ chargeable }}</h2>
+
+            <p>Chargeable</p>
+
+        </div>
+
+        <div class="card">
+
+            <i class="fa-solid fa-hand-holding-heart"></i>
+
+            <h2>{{ non_chargeable }}</h2>
+
+            <p>Non Chargeable</p>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ==========================
+            PENDING INSPECTIONS
+    ========================== -->
+
+    <div class="table-card">
+
+        <div class="table-header">
+
+            <h2>Pending Site Inspections</h2>
+
+        </div>
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Ticket ID</th>
+                    <th>Customer</th>
+                    <th>Tower</th>
+                    <th>Issue</th>
+                    <th>Status</th>
+                    <th>Created</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            {% for query in customer_queries %}
+
+                <tr>
+
+                    <td>{{ query.ticket_id }}</td>
+
+                    <td>{{ query.name }}</td>
+
+                    <td>{{ query.tower }}</td>
+
+                    <td>{{ query.issue }}</td>
+
+                    <td>{{ query.status }}</td>
+
+                    <td>{{ query.created_at|date:"d M Y" }}</td>
+
+                </tr>
+
+            {% empty %}
+
+                <tr>
+
+                    <td colspan="6">
+
+                        No Pending Cases
+
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+
+    <!-- ==========================
+            RECENT SITE INSPECTION
+    ========================== -->
+
+    <div class="table-card">
+
+        <div class="table-header">
+
+            <h2>Recent Site Inspections</h2>
+
+        </div>
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Ticket</th>
+                    <th>Customer</th>
+                    <th>Category</th>
+                    <th>Material</th>
+                    <th>Inspection Date</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            {% for inspection in site_inspections %}
+
+                <tr>
+
+                    <td>{{ inspection.customer_query.ticket_id }}</td>
+
+                    <td>{{ inspection.customer_query.name }}</td>
+
+                    <td>{{ inspection.category }}</td>
+
+                    <td>{{ inspection.material_required }}</td>
+
+                    <td>{{ inspection.created_at|date:"d M Y" }}</td>
+
+                </tr>
+
+            {% empty %}
+
+                <tr>
+
+                    <td colspan="5">
+
+                        No Inspection Found
+
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -3597,3 +3597,159 @@ def admin_dashboard(request):
 )
 
 
+
+
+def site_engineer_dashboard(request):
+
+    # ==========================================
+    # LOGIN CHECK
+    # ==========================================
+
+    if "site_engineer_id" not in request.session:
+        return redirect("site_engineer_login")
+
+    # ==========================================
+    # SUMMARY
+    # ==========================================
+
+    total_cases = CustomerQuery.objects.count()
+
+    open_cases = CustomerQuery.objects.filter(
+        status="Open"
+    ).count()
+
+    pending_cases = CustomerQuery.objects.filter(
+        status="Pending"
+    ).count()
+
+    in_progress_cases = CustomerQuery.objects.filter(
+        status="In Progress"
+    ).count()
+
+    closed_cases = CustomerQuery.objects.filter(
+        status="Closed"
+    ).count()
+
+    # ==========================================
+    # ACTIVE CASES
+    # ==========================================
+
+    active_cases = CustomerQuery.objects.exclude(
+        status="Closed"
+    ).count()
+
+    # ==========================================
+    # S0
+    # CUSTOMER COMPLAINTS
+    # ==========================================
+
+    customer_queries = CustomerQuery.objects.order_by(
+        "-created_at"
+    )
+
+    # ==========================================
+    # S1
+    # MAINTENANCE SCOPE
+    # ==========================================
+
+    maintenance_scope = MaintenanceScope.objects.select_related(
+        "customer_query"
+    ).order_by("-id")
+
+    # ==========================================
+    # S2
+    # SITE INSPECTION
+    # ==========================================
+
+    site_inspections = SiteInspection.objects.select_related(
+        "customer_query"
+    ).order_by("-id")
+
+    # ==========================================
+    # PENDING INSPECTION
+    # ==========================================
+
+    pending_inspection = max(
+        MaintenanceScope.objects.count() -
+        SiteInspection.objects.count(),
+        0
+    )
+
+    # ==========================================
+    # CHARGEABLE
+    # ==========================================
+
+    chargeable = SiteInspection.objects.filter(
+        category="Chargeable"
+    ).count()
+
+    # ==========================================
+    # NON CHARGEABLE
+    # ==========================================
+
+    non_chargeable = SiteInspection.objects.filter(
+        category="Non Chargeable"
+    ).count()
+
+    # ==========================================
+    # OVERDUE
+    # ==========================================
+
+    overdue_cases = CustomerQuery.objects.filter(
+        status__in=["Open", "Pending", "In Progress"],
+        created_at__lt=timezone.now() - timezone.timedelta(days=1)
+    ).count()
+
+    # ==========================================
+    # TODAY'S CASES
+    # ==========================================
+
+    today_cases = CustomerQuery.objects.filter(
+        created_at__date=timezone.now().date()
+    ).count()
+
+    # ==========================================
+    # CONTEXT
+    # ==========================================
+
+    context = {
+
+        # SUMMARY
+
+        "total_cases": total_cases,
+        "active_cases": active_cases,
+        "open_cases": open_cases,
+        "pending_cases": pending_cases,
+        "in_progress_cases": in_progress_cases,
+        "closed_cases": closed_cases,
+        "overdue_cases": overdue_cases,
+        "today_cases": today_cases,
+
+        # S0
+
+        "customer_queries": customer_queries,
+
+        # S1
+
+        "maintenance_scope": maintenance_scope,
+
+        # S2
+
+        "site_inspections": site_inspections,
+
+        # INSPECTION
+
+        "pending_inspection": pending_inspection,
+
+        # CATEGORY
+
+        "chargeable": chargeable,
+        "non_chargeable": non_chargeable,
+
+    }
+
+    return render(
+        request,
+        "site_engineer_dashboard.html",
+        context
+    )
