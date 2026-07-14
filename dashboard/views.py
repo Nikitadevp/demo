@@ -2935,8 +2935,9 @@ def maintenance_dashboard(request):
 
     total_queries = CustomerQuery.objects.count()
 
-    open_queries = CustomerQuery.objects.filter(
-        status="Open"
+    open_queries = SiteInspection.objects.filter(
+    under_scope="Yes",
+    customer_query__status="Open"
     ).count()
 
     pending_queries = CustomerQuery.objects.filter(
