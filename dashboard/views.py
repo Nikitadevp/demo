@@ -2795,7 +2795,7 @@ def login_view(request):
             return redirect("crm_dashboard")
 
         elif role == "Site Engineer":
-            return redirect("engineer_dashboard")
+            return redirect("site_engineer_dashboard")
 
         elif role == "Store Keeper":
             return redirect("store_dashboard")
@@ -2852,7 +2852,7 @@ def login_view(request):
                     return redirect("crm_dashboard")
 
                 elif admin.role == "Site Engineer":
-                    return redirect("engineer_dashboard")
+                     return redirect("site_engineer_dashboard")
 
                 elif admin.role == "Store Keeper":
                     return redirect("store_dashboard")
