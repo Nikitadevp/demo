@@ -164,7 +164,7 @@
 
                 <h1>
 
-                    {{ total_cases }}
+                    {{ total_queries }}
 
                 </h1>
 
@@ -188,7 +188,7 @@
 
                 <i class="fa-solid fa-folder-open"></i>
 
-                <h2>{{ open_cases }}</h2>
+                <h2>{{ open_queries }}</h2>
 
                 <p>Open Cases</p>
 
@@ -198,7 +198,7 @@
 
                 <i class="fa-solid fa-hourglass-half"></i>
 
-                <h2>{{ pending_cases }}</h2>
+                <h2>{{ pending_queries }}</h2>
 
                 <p>Pending Cases</p>
 
@@ -208,7 +208,7 @@
 
                 <i class="fa-solid fa-spinner"></i>
 
-                <h2>{{ in_progress_cases }}</h2>
+                <h2>{{ in_progress_queries }}</h2>
 
                 <p>In Progress</p>
 
@@ -218,7 +218,7 @@
 
                 <i class="fa-solid fa-circle-check"></i>
 
-                <h2>{{ closed_cases }}</h2>
+                <h2>{{ closed_queries }}</h2>
 
                 <p>Closed Cases</p>
 
@@ -228,7 +228,7 @@
 
                 <i class="fa-solid fa-list"></i>
 
-                <h2>{{ total_cases }}</h2>
+                <h2>{{ total_queries }}</h2>
 
                 <p>Total Cases</p>
 
@@ -265,13 +265,13 @@
 
                 <h2>
 
-                    {{ total_cases }}
+                    {{ total_queries }}
 
                 </h2>
 
                 <small>
 
-                    Open : {{ open_cases }}
+                    Open : {{ open_queries }}
 
                 </small>
 
@@ -291,7 +291,7 @@
 
                 <h2>
 
-                    {{ maintenance_scope.count }}
+                    {{ maintenance_scope }}
 
                 </h2>
 
@@ -317,13 +317,13 @@
 
                 <h2>
 
-                    {{ site_inspections.count }}
+                    {{ site_inspection }}
 
                 </h2>
 
                 <small>
 
-                    Pending : {{ pending_inspection }}
+                    {{ inspection_pending }}
 
                 </small>
 
@@ -457,7 +457,7 @@
 
                 <tbody>
 
-                {% for complaint in customer_queries|slice:":10" %}
+                {% for complaint in latest_complaints %}
 
                     <tr>
 
@@ -534,7 +534,7 @@
 
                 <tbody>
 
-                {% for inspection in site_inspections|slice:":10" %}
+                {% for inspection in recent_site_inspections %}
 
                     <tr>
 
