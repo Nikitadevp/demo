@@ -3597,116 +3597,151 @@ def admin_dashboard(request):
 )
 
 
-
-
 def site_engineer_dashboard(request):
 
     # ==========================================
     # LOGIN CHECK
     # ==========================================
 
-    if "site_engineer_id" not in request.session:
-        return redirect("site_engineer_login")
+    if "admin_id" not in request.session:
+        return redirect("login")
+
+    if request.session.get("role") != "Site Engineer":
+        return redirect("login")
 
     # ==========================================
-    # SUMMARY
+    # DASHBOARD SUMMARY
     # ==========================================
 
-    total_cases = CustomerQuery.objects.count()
+    total_queries = CustomerQuery.objects.count()
 
-    open_cases = CustomerQuery.objects.filter(
+    open_queries = CustomerQuery.objects.filter(
         status="Open"
     ).count()
 
-    pending_cases = CustomerQuery.objects.filter(
+    pending_queries = CustomerQuery.objects.filter(
         status="Pending"
     ).count()
 
-    in_progress_cases = CustomerQuery.objects.filter(
+    in_progress_queries = CustomerQuery.objects.filter(
         status="In Progress"
     ).count()
 
-    closed_cases = CustomerQuery.objects.filter(
+    closed_queries = CustomerQuery.objects.filter(
         status="Closed"
     ).count()
 
-    # ==========================================
-    # ACTIVE CASES
-    # ==========================================
-
-    active_cases = CustomerQuery.objects.exclude(
-        status="Closed"
+    today_queries = CustomerQuery.objects.filter(
+        created_at__date=timezone.now().date()
     ).count()
 
     # ==========================================
-    # S0
-    # CUSTOMER COMPLAINTS
+    # WORKFLOW (S0 - S2)
     # ==========================================
 
-    customer_queries = CustomerQuery.objects.order_by(
-        "-created_at"
+    maintenance_scope = MaintenanceScope.objects.count()
+
+    site_inspection = SiteInspection.objects.count()
+
+    # ==========================================
+    # PENDING
+    # ==========================================
+
+    scope_pending = max(
+        total_queries - maintenance_scope,
+        0
     )
 
-    # ==========================================
-    # S1
-    # MAINTENANCE SCOPE
-    # ==========================================
-
-    maintenance_scope = MaintenanceScope.objects.select_related(
-        "customer_query"
-    ).order_by("-id")
-
-    # ==========================================
-    # S2
-    # SITE INSPECTION
-    # ==========================================
-
-    site_inspections = SiteInspection.objects.select_related(
-        "customer_query"
-    ).order_by("-id")
-
-    # ==========================================
-    # PENDING INSPECTION
-    # ==========================================
-
-    pending_inspection = max(
-        MaintenanceScope.objects.count() -
-        SiteInspection.objects.count(),
+    inspection_pending = max(
+        maintenance_scope - site_inspection,
         0
     )
 
     # ==========================================
-    # CHARGEABLE
+    # LATEST COMPLAINTS
+    # ==========================================
+
+    latest_complaints = CustomerQuery.objects.order_by(
+        "-created_at"
+    )[:10]
+
+    # ==========================================
+    # RECENT SITE INSPECTIONS
+    # ==========================================
+
+    recent_site_inspections = SiteInspection.objects.select_related(
+        "customer_query"
+    ).order_by("-id")[:10]
+
+    # ==========================================
+    # CHARGEABLE / NON CHARGEABLE
     # ==========================================
 
     chargeable = SiteInspection.objects.filter(
         category="Chargeable"
     ).count()
 
-    # ==========================================
-    # NON CHARGEABLE
-    # ==========================================
-
     non_chargeable = SiteInspection.objects.filter(
         category="Non Chargeable"
     ).count()
 
+    total_category = chargeable + non_chargeable
+
+    if total_category:
+
+        chargeable_percent = round(
+            (chargeable / total_category) * 100
+        )
+
+        non_chargeable_percent = round(
+            (non_chargeable / total_category) * 100
+        )
+
+    else:
+
+        chargeable_percent = 0
+        non_chargeable_percent = 0
+
     # ==========================================
-    # OVERDUE
+    # MONTHLY REPORT
     # ==========================================
 
-    overdue_cases = CustomerQuery.objects.filter(
-        status__in=["Open", "Pending", "In Progress"],
-        created_at__lt=timezone.now() - timezone.timedelta(days=1)
-    ).count()
+    monthly_data = (
+        CustomerQuery.objects
+        .values("created_at__month")
+        .annotate(total=Count("id"))
+        .order_by("created_at__month")
+    )
 
-    # ==========================================
-    # TODAY'S CASES
-    # ==========================================
+    month_names = {
+        1: "Jan",
+        2: "Feb",
+        3: "Mar",
+        4: "Apr",
+        5: "May",
+        6: "Jun",
+        7: "Jul",
+        8: "Aug",
+        9: "Sep",
+        10: "Oct",
+        11: "Nov",
+        12: "Dec",
+    }
 
-    today_cases = CustomerQuery.objects.filter(
-        created_at__date=timezone.now().date()
-    ).count()
+    months = []
+    monthly_counts = []
+
+    for item in monthly_data:
+
+        months.append(
+            month_names[item["created_at__month"]]
+        )
+
+        monthly_counts.append(
+            item["total"]
+        )
+
+    monthly_report = zip(months, monthly_counts)
 
     # ==========================================
     # CONTEXT
@@ -3716,35 +3751,40 @@ def site_engineer_dashboard(request):
 
         # SUMMARY
 
-        "total_cases": total_cases,
-        "active_cases": active_cases,
-        "open_cases": open_cases,
-        "pending_cases": pending_cases,
-        "in_progress_cases": in_progress_cases,
-        "closed_cases": closed_cases,
-        "overdue_cases": overdue_cases,
-        "today_cases": today_cases,
+        "total_queries": total_queries,
+        "open_queries": open_queries,
+        "pending_queries": pending_queries,
+        "in_progress_queries": in_progress_queries,
+        "closed_queries": closed_queries,
+        "today_queries": today_queries,
 
-        # S0
-
-        "customer_queries": customer_queries,
-
-        # S1
+        # WORKFLOW
 
         "maintenance_scope": maintenance_scope,
+        "site_inspection": site_inspection,
 
-        # S2
+        # PENDING
 
-        "site_inspections": site_inspections,
+        "scope_pending": scope_pending,
+        "inspection_pending": inspection_pending,
 
-        # INSPECTION
+        # TABLES
 
-        "pending_inspection": pending_inspection,
+        "latest_complaints": latest_complaints,
+        "recent_site_inspections": recent_site_inspections,
 
-        # CATEGORY
+        # CHART
+
+        "months": months,
+        "monthly_counts": monthly_counts,
+        "monthly_report": monthly_report,
+
+        # ANALYTICS
 
         "chargeable": chargeable,
         "non_chargeable": non_chargeable,
+        "chargeable_percent": chargeable_percent,
+        "non_chargeable_percent": non_chargeable_percent,
 
     }
 

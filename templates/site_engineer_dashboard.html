@@ -1,287 +1,709 @@
-{% extends "base.html" %}
+{% load static %}
 
-{% block content %}
+<!DOCTYPE html>
+<html lang="en">
 
-<div class="dashboard-container">
+<head>
 
-    <!-- ==========================
-            WELCOME CARD
-    ========================== -->
+    <meta charset="UTF-8">
 
-    <div class="welcome-card">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-        <div>
+    <title>Site Engineer Dashboard</title>
 
-            <h2>Hello Site Engineer 👋</h2>
+    <link rel="stylesheet"
+          href="{% static 'css/site_engineer_dashboard.css' %}">
 
-            <p>Site Inspection Dashboard</p>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-        </div>
+</head>
 
-        <div class="welcome-right">
+<body>
 
-            <h1>{{ total_cases }}</h1>
+<div class="dashboard">
 
-            <span>Total Assigned Cases</span>
+    <!-- ===========================
+            SIDEBAR
+    ============================ -->
 
-        </div>
+    <aside class="sidebar">
 
-    </div>
+        <div class="logo">
 
+            <h2>Sampoorna</h2>
 
-    <!-- ==========================
-            SUMMARY CARDS
-    ========================== -->
-
-    <div class="summary-grid">
-
-        <div class="card total-card">
-
-            <i class="fa-solid fa-list-check"></i>
-
-            <h2>{{ total_cases }}</h2>
-
-            <p>Total Cases</p>
+            <p>Site Engineer Portal</p>
 
         </div>
 
-        <div class="card open-card">
+        <ul>
 
-            <i class="fa-solid fa-folder-open"></i>
+            <li class="active">
 
-            <h2>{{ open_cases }}</h2>
+                <a href="{% url 'site_engineer_dashboard' %}">
 
-            <p>Open</p>
+                    <i class="fa-solid fa-chart-line"></i>
 
-        </div>
+                    Dashboard
 
-        <div class="card pending-card">
+                </a>
 
-            <i class="fa-solid fa-hourglass-half"></i>
+            </li>
 
-            <h2>{{ pending_cases }}</h2>
+            <li>
 
-            <p>Pending</p>
+                <a href="#">
 
-        </div>
+                    <i class="fa-solid fa-list-check"></i>
 
-        <div class="card progress-card">
+                    Customer Complaints
 
-            <i class="fa-solid fa-spinner"></i>
+                </a>
 
-            <h2>{{ in_progress_cases }}</h2>
+            </li>
 
-            <p>In Progress</p>
+            <li>
 
-        </div>
+                <a href="#">
 
-        <div class="card overdue-card">
+                    <i class="fa-solid fa-clipboard-list"></i>
 
-            <i class="fa-solid fa-triangle-exclamation"></i>
+                    Maintenance Scope
 
-            <h2>{{ overdue_cases }}</h2>
+                </a>
 
-            <p>Overdue</p>
+            </li>
 
-        </div>
+            <li>
 
-        <div class="card closed-card">
+                <a href="#">
 
-            <i class="fa-solid fa-circle-check"></i>
+                    <i class="fa-solid fa-house-circle-check"></i>
 
-            <h2>{{ closed_cases }}</h2>
+                    Site Inspection
 
-            <p>Closed</p>
+                </a>
 
-        </div>
+            </li>
 
-    </div>
+            <li>
 
+                <a href="{% url 'logout' %}">
 
+                    <i class="fa-solid fa-right-from-bracket"></i>
 
-    <!-- ==========================
-            INSPECTION SUMMARY
-    ========================== -->
+                    Logout
 
-    <div class="section-title">
+                </a>
 
-        <h2>Inspection Summary</h2>
+            </li>
 
-    </div>
+        </ul>
 
-    <div class="summary-grid">
+    </aside>
 
-        <div class="card">
+    <!-- ===========================
+            MAIN CONTENT
+    ============================ -->
 
-            <i class="fa-solid fa-house-circle-check"></i>
+    <main class="main-content">
 
-            <h2>{{ pending_inspection }}</h2>
+        <!-- HEADER -->
 
-            <p>Pending Inspection</p>
+        <div class="header">
 
-        </div>
+            <div>
 
-        <div class="card">
+                <h1>Site Engineer Dashboard</h1>
 
-            <i class="fa-solid fa-money-bill-wave"></i>
+                <span>
 
-            <h2>{{ chargeable }}</h2>
+                    Welcome Back
 
-            <p>Chargeable</p>
+                </span>
 
-        </div>
+            </div>
 
-        <div class="card">
+            <div class="header-right">
 
-            <i class="fa-solid fa-hand-holding-heart"></i>
+                <button class="new-btn">
 
-            <h2>{{ non_chargeable }}</h2>
+                    <i class="fa-solid fa-plus"></i>
 
-            <p>Non Chargeable</p>
+                    Site Inspection
 
-        </div>
+                </button>
 
-    </div>
-
-
-
-    <!-- ==========================
-            PENDING INSPECTIONS
-    ========================== -->
-
-    <div class="table-card">
-
-        <div class="table-header">
-
-            <h2>Pending Site Inspections</h2>
+            </div>
 
         </div>
 
-        <table>
+        <!-- WELCOME CARD -->
 
-            <thead>
+        <div class="welcome-card">
 
-                <tr>
+            <div>
 
-                    <th>Ticket ID</th>
-                    <th>Customer</th>
-                    <th>Tower</th>
-                    <th>Issue</th>
-                    <th>Status</th>
-                    <th>Created</th>
+                <h2>
 
-                </tr>
+                    Hello Site Engineer 👋
 
-            </thead>
+                </h2>
 
-            <tbody>
+                <p>
 
-            {% for query in customer_queries %}
+                    Site Inspection & Maintenance Monitoring
 
-                <tr>
+                </p>
 
-                    <td>{{ query.ticket_id }}</td>
+            </div>
 
-                    <td>{{ query.name }}</td>
+            <div class="welcome-right">
 
-                    <td>{{ query.tower }}</td>
+                <h1>
 
-                    <td>{{ query.issue }}</td>
+                    {{ total_cases }}
 
-                    <td>{{ query.status }}</td>
+                </h1>
 
-                    <td>{{ query.created_at|date:"d M Y" }}</td>
+                <span>
 
-                </tr>
+                    Total Cases
 
-            {% empty %}
+                </span>
 
-                <tr>
-
-                    <td colspan="6">
-
-                        No Pending Cases
-
-                    </td>
-
-                </tr>
-
-            {% endfor %}
-
-            </tbody>
-
-        </table>
-
-    </div>
-
-
-
-    <!-- ==========================
-            RECENT SITE INSPECTION
-    ========================== -->
-
-    <div class="table-card">
-
-        <div class="table-header">
-
-            <h2>Recent Site Inspections</h2>
+            </div>
 
         </div>
 
-        <table>
+        <!-- ===========================
+                SUMMARY CARDS
+        ============================ -->
 
-            <thead>
+        <div class="summary-grid">
 
-                <tr>
+            <div class="card open-card">
 
-                    <th>Ticket</th>
-                    <th>Customer</th>
-                    <th>Category</th>
-                    <th>Material</th>
-                    <th>Inspection Date</th>
+                <i class="fa-solid fa-folder-open"></i>
 
-                </tr>
+                <h2>{{ open_cases }}</h2>
 
-            </thead>
+                <p>Open Cases</p>
 
-            <tbody>
+            </div>
 
-            {% for inspection in site_inspections %}
+            <div class="card pending-card">
 
-                <tr>
+                <i class="fa-solid fa-hourglass-half"></i>
 
-                    <td>{{ inspection.customer_query.ticket_id }}</td>
+                <h2>{{ pending_cases }}</h2>
 
-                    <td>{{ inspection.customer_query.name }}</td>
+                <p>Pending Cases</p>
 
-                    <td>{{ inspection.category }}</td>
+            </div>
 
-                    <td>{{ inspection.material_required }}</td>
+            <div class="card progress-card">
 
-                    <td>{{ inspection.created_at|date:"d M Y" }}</td>
+                <i class="fa-solid fa-spinner"></i>
 
-                </tr>
+                <h2>{{ in_progress_cases }}</h2>
 
-            {% empty %}
+                <p>In Progress</p>
 
-                <tr>
+            </div>
 
-                    <td colspan="5">
+            <div class="card closed-card">
 
-                        No Inspection Found
+                <i class="fa-solid fa-circle-check"></i>
 
-                    </td>
+                <h2>{{ closed_cases }}</h2>
 
-                </tr>
+                <p>Closed Cases</p>
 
-            {% endfor %}
+            </div>
 
-            </tbody>
+            <div class="card total-card">
 
-        </table>
+                <i class="fa-solid fa-list"></i>
 
-    </div>
+                <h2>{{ total_cases }}</h2>
+
+                <p>Total Cases</p>
+
+            </div>
+
+        </div>
+        <!-- =========================
+             WORKFLOW
+        ========================== -->
+
+        <div class="section-title">
+
+            <h2>
+
+                Site Engineer Workflow
+
+            </h2>
+
+        </div>
+
+        <div class="workflow-grid">
+
+            <!-- Customer Complaint -->
+
+            <div class="workflow-card scope-card">
+
+                <div class="workflow-top">
+
+                    <i class="fa-solid fa-list-check"></i>
+
+                    <span>Customer Complaints</span>
+
+                </div>
+
+                <h2>
+
+                    {{ total_cases }}
+
+                </h2>
+
+                <small>
+
+                    Open : {{ open_cases }}
+
+                </small>
+
+            </div>
+
+            <!-- Maintenance Scope -->
+
+            <div class="workflow-card inspection-card">
+
+                <div class="workflow-top">
+
+                    <i class="fa-solid fa-clipboard-list"></i>
+
+                    <span>Maintenance Scope</span>
+
+                </div>
+
+                <h2>
+
+                    {{ maintenance_scope.count }}
+
+                </h2>
+
+                <small>
+
+                    Ready For Inspection
+
+                </small>
+
+            </div>
+
+            <!-- Site Inspection -->
+
+            <div class="workflow-card estimate-card">
+
+                <div class="workflow-top">
+
+                    <i class="fa-solid fa-house-circle-check"></i>
+
+                    <span>Site Inspection</span>
+
+                </div>
+
+                <h2>
+
+                    {{ site_inspections.count }}
+
+                </h2>
+
+                <small>
+
+                    Pending : {{ pending_inspection }}
+
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             ANALYTICS
+        ========================== -->
+
+        <div class="analytics-grid">
+
+            <!-- Pending Inspection -->
+
+            <div class="analytics-card">
+
+                <h3>
+
+                    Pending Inspection
+
+                </h3>
+
+                <h2>
+
+                    {{ pending_inspection }}
+
+                </h2>
+
+                <p>
+
+                    Maintenance Scope Pending For Inspection
+
+                </p>
+
+            </div>
+
+
+            <!-- Chargeable -->
+
+            <div class="analytics-card">
+
+                <h3>
+
+                    Chargeable Cases
+
+                </h3>
+
+                <h2>
+
+                    {{ chargeable }}
+
+                </h2>
+
+                <p>
+
+                    Total Chargeable Site Inspections
+
+                </p>
+
+            </div>
+
+
+            <!-- Non Chargeable -->
+
+            <div class="analytics-card">
+
+                <h3>
+
+                    Non Chargeable Cases
+
+                </h3>
+
+                <h2>
+
+                    {{ non_chargeable }}
+
+                </h2>
+
+                <p>
+
+                    Total Non Chargeable Site Inspections
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             LATEST COMPLAINTS
+        ========================== -->
+
+        <div class="section-title">
+
+            <h2>
+
+                Latest Complaints
+
+            </h2>
+
+        </div>
+
+        <div class="table-box">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Ticket ID</th>
+
+                        <th>Customer</th>
+
+                        <th>Tower</th>
+
+                        <th>Area</th>
+
+                        <th>Issue</th>
+
+                        <th>Status</th>
+
+                        <th>Date</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                {% for complaint in customer_queries|slice:":10" %}
+
+                    <tr>
+
+                        <td>{{ complaint.ticket_id }}</td>
+
+                        <td>{{ complaint.name }}</td>
+
+                        <td>{{ complaint.tower }}</td>
+
+                        <td>{{ complaint.area }}</td>
+
+                        <td>{{ complaint.issue }}</td>
+
+                        <td>{{ complaint.status }}</td>
+
+                        <td>{{ complaint.created_at|date:"d M Y" }}</td>
+
+                    </tr>
+
+                {% empty %}
+
+                    <tr>
+
+                        <td colspan="7">
+
+                            No Complaints Found
+
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+        <!-- =========================
+             RECENT SITE INSPECTIONS
+        ========================== -->
+
+        <div class="section-title">
+
+            <h2>
+
+                Recent Site Inspections
+
+            </h2>
+
+        </div>
+
+        <div class="table-box">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Ticket ID</th>
+
+                        <th>Customer</th>
+
+                        <th>Category</th>
+
+                        <th>Block</th>
+
+                        <th>Inspection Date</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                {% for inspection in site_inspections|slice:":10" %}
+
+                    <tr>
+
+                        <td>
+
+                            {{ inspection.customer_query.ticket_id }}
+
+                        </td>
+
+                        <td>
+
+                            {{ inspection.customer_query.name }}
+
+                        </td>
+
+                        <td>
+
+                            {% if inspection.category == "Chargeable" %}
+
+                                <span class="status approved">
+
+                                    Chargeable
+
+                                </span>
+
+                            {% else %}
+
+                                <span class="status pending">
+
+                                    Non Chargeable
+
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+
+                            {{ inspection.customer_query.block }}
+
+                        </td>
+
+                        <td>
+
+                            {{ inspection.created_at|date:"d M Y" }}
+
+                        </td>
+
+                    </tr>
+
+                {% empty %}
+
+                    <tr>
+
+                        <td colspan="5">
+
+                            No Site Inspection Available
+
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <!-- =========================
+             QUICK SUMMARY
+        ========================== -->
+
+        <div class="analytics-grid">
+
+            <div class="analytics-card">
+
+                <h3>
+
+                    Today's Cases
+
+                </h3>
+
+                <h2>
+
+                    {{ today_cases }}
+
+                </h2>
+
+                <p>
+
+                    Complaints Received Today
+
+                </p>
+
+            </div>
+
+            <div class="analytics-card">
+
+                <h3>
+
+                    Active Cases
+
+                </h3>
+
+                <h2>
+
+                    {{ active_cases }}
+
+                </h2>
+
+                <p>
+
+                    Open + Pending + In Progress
+
+                </p>
+
+            </div>
+
+            <div class="analytics-card">
+
+                <h3>
+
+                    Overdue Cases
+
+                </h3>
+
+                <h2>
+
+                    {{ overdue_cases }}
+
+                </h2>
+
+                <p>
+
+                    Need Immediate Attention
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             FOOTER
+        ========================== -->
+
+        <footer class="footer">
+
+            <p>
+
+                © 2026 Rajat Buildtech Pvt. Ltd.
+
+                |
+
+                Site Engineer Dashboard
+
+            </p>
+
+        </footer>
+
+    </main>
 
 </div>
 
-{% endblock %}
+</body>
+
+</html>
