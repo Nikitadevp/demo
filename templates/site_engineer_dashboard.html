@@ -1,5 +1,4 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,7 +15,9 @@
           href="{% static 'css/site_engineer_dashboard.css' %}">
 
     <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </head>
 
@@ -24,9 +25,9 @@
 
 <div class="dashboard">
 
-    <!-- ===========================
-            SIDEBAR
-    ============================ -->
+    <!-- ==========================================
+                    SIDEBAR
+    =========================================== -->
 
     <aside class="sidebar">
 
@@ -54,9 +55,9 @@
 
             <li>
 
-                <a href="#">
+                <a href="#complaints">
 
-                    <i class="fa-solid fa-list-check"></i>
+                    <i class="fa-solid fa-users"></i>
 
                     Customer Complaints
 
@@ -66,11 +67,11 @@
 
             <li>
 
-                <a href="#">
+                <a href="#workflow">
 
-                    <i class="fa-solid fa-clipboard-list"></i>
+                    <i class="fa-solid fa-diagram-project"></i>
 
-                    Maintenance Scope
+                    Workflow
 
                 </a>
 
@@ -78,11 +79,23 @@
 
             <li>
 
-                <a href="#">
+                <a href="#inspection">
 
                     <i class="fa-solid fa-house-circle-check"></i>
 
                     Site Inspection
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="#reports">
+
+                    <i class="fa-solid fa-chart-column"></i>
+
+                    Reports
 
                 </a>
 
@@ -104,13 +117,14 @@
 
     </aside>
 
-    <!-- ===========================
-            MAIN CONTENT
-    ============================ -->
+
+    <!-- ==========================================
+                    MAIN CONTENT
+    =========================================== -->
 
     <main class="main-content">
 
-        <!-- HEADER -->
+        <!-- Header -->
 
         <div class="header">
 
@@ -120,7 +134,7 @@
 
                 <span>
 
-                    Welcome Back
+                    Welcome Back 👷
 
                 </span>
 
@@ -140,7 +154,10 @@
 
         </div>
 
-        <!-- WELCOME CARD -->
+
+        <!-- ==========================================
+                    WELCOME CARD
+        =========================================== -->
 
         <div class="welcome-card">
 
@@ -148,13 +165,13 @@
 
                 <h2>
 
-                    Hello Site Engineer 👋
+                    Hello {{ request.session.admin_name }}
 
                 </h2>
 
                 <p>
 
-                    Site Inspection & Maintenance Monitoring
+                    Monitor all Site Inspection activities from one dashboard.
 
                 </p>
 
@@ -164,13 +181,13 @@
 
                 <h1>
 
-                    {{ total_queries }}
+                    {{ total_site_inspection }}
 
                 </h1>
 
                 <span>
 
-                    Total Cases
+                    Total Site Inspection
 
                 </span>
 
@@ -178,11 +195,34 @@
 
         </div>
 
-        <!-- ===========================
-                SUMMARY CARDS
-        ============================ -->
+
+
+        <!-- ==========================================
+                    CUSTOMER SUMMARY
+        =========================================== -->
+
+        <div class="section-title">
+
+            <h2>
+
+                Customer Complaint Summary
+
+            </h2>
+
+        </div>
+
 
         <div class="summary-grid">
+
+            <div class="card total-card">
+
+                <i class="fa-solid fa-list"></i>
+
+                <h2>{{ total_queries }}</h2>
+
+                <p>Total Complaints</p>
+
+            </div>
 
             <div class="card open-card">
 
@@ -190,7 +230,7 @@
 
                 <h2>{{ open_queries }}</h2>
 
-                <p>Open Cases</p>
+                <p>Open</p>
 
             </div>
 
@@ -200,7 +240,7 @@
 
                 <h2>{{ pending_queries }}</h2>
 
-                <p>Pending Cases</p>
+                <p>Pending</p>
 
             </div>
 
@@ -220,26 +260,140 @@
 
                 <h2>{{ closed_queries }}</h2>
 
-                <p>Closed Cases</p>
-
-            </div>
-
-            <div class="card total-card">
-
-                <i class="fa-solid fa-list"></i>
-
-                <h2>{{ total_queries }}</h2>
-
-                <p>Total Cases</p>
+                <p>Closed</p>
 
             </div>
 
         </div>
-        <!-- =========================
-             WORKFLOW
-        ========================== -->
+
+
+
+        <!-- ==========================================
+                SITE INSPECTION SUMMARY
+        =========================================== -->
 
         <div class="section-title">
+
+            <h2>
+
+                Site Inspection Summary
+
+            </h2>
+
+        </div>
+
+
+        <div class="summary-grid">
+
+            <div class="card blue-card">
+
+                <i class="fa-solid fa-house-circle-check"></i>
+
+                <h2>{{ total_site_inspection }}</h2>
+
+                <p>Total Inspection</p>
+
+            </div>
+
+            <div class="card green-card">
+
+                <i class="fa-solid fa-circle-check"></i>
+
+                <h2>{{ under_scope }}</h2>
+
+                <p>Under Scope</p>
+
+            </div>
+
+            <div class="card red-card">
+
+                <i class="fa-solid fa-circle-xmark"></i>
+
+                <h2>{{ out_scope }}</h2>
+
+                <p>Out Of Scope</p>
+
+            </div>
+
+            <div class="card orange-card">
+
+                <i class="fa-solid fa-sack-dollar"></i>
+
+                <h2>{{ chargeable }}</h2>
+
+                <p>Chargeable</p>
+
+            </div>
+
+            <div class="card purple-card">
+
+                <i class="fa-solid fa-ban"></i>
+
+                <h2>{{ non_chargeable }}</h2>
+
+                <p>Non Chargeable</p>
+
+            </div>
+
+            <div class="card cyan-card">
+
+                <i class="fa-solid fa-box"></i>
+
+                <h2>{{ material_required }}</h2>
+
+                <p>Material Required</p>
+
+            </div>
+
+            <div class="card gray-card">
+
+                <i class="fa-solid fa-box-open"></i>
+
+                <h2>{{ material_not_required }}</h2>
+
+                <p>Material Not Required</p>
+
+            </div>
+
+            <div class="card yellow-card">
+
+                <i class="fa-solid fa-truck"></i>
+
+                <h2>{{ vendor_side }}</h2>
+
+                <p>Vendor Side</p>
+
+            </div>
+
+            <div class="card pink-card">
+
+                <i class="fa-solid fa-calendar-day"></i>
+
+                <h2>{{ today_site_inspection }}</h2>
+
+                <p>Today's Inspection</p>
+
+            </div>
+
+            <div class="card dark-card">
+
+                <i class="fa-solid fa-clock"></i>
+
+                <h2>{{ inspection_pending }}</h2>
+
+                <p>Pending Inspection</p>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ==========================================
+                    WORKFLOW
+        =========================================== -->
+
+        <div class="section-title" id="workflow">
 
             <h2>
 
@@ -251,183 +405,158 @@
 
         <div class="workflow-grid">
 
-            <!-- Customer Complaint -->
+            <div class="workflow-card">
 
-            <div class="workflow-card scope-card">
+                <span class="step">S0</span>
 
-                <div class="workflow-top">
+                <h3>Customer Query</h3>
 
-                    <i class="fa-solid fa-list-check"></i>
-
-                    <span>Customer Complaints</span>
-
-                </div>
-
-                <h2>
-
-                    {{ total_queries }}
-
-                </h2>
-
-                <small>
-
-                    Open : {{ open_queries }}
-
-                </small>
+                <h2>{{ total_queries }}</h2>
 
             </div>
 
-            <!-- Maintenance Scope -->
+            <div class="arrow">
 
-            <div class="workflow-card inspection-card">
-
-                <div class="workflow-top">
-
-                    <i class="fa-solid fa-clipboard-list"></i>
-
-                    <span>Maintenance Scope</span>
-
-                </div>
-
-                <h2>
-
-                    {{ maintenance_scope }}
-
-                </h2>
-
-                <small>
-
-                    Ready For Inspection
-
-                </small>
+                <i class="fa-solid fa-arrow-right"></i>
 
             </div>
 
-            <!-- Site Inspection -->
+            <div class="workflow-card">
 
-            <div class="workflow-card estimate-card">
+                <span class="step">S1</span>
 
-                <div class="workflow-top">
+                <h3>Maintenance Scope</h3>
 
-                    <i class="fa-solid fa-house-circle-check"></i>
+                <h2>{{ maintenance_scope }}</h2>
 
-                    <span>Site Inspection</span>
+            </div>
 
-                </div>
+            <div class="arrow">
 
-                <h2>
+                <i class="fa-solid fa-arrow-right"></i>
 
-                    {{ site_inspection }}
+            </div>
 
-                </h2>
+            <div class="workflow-card active-workflow">
 
-                <small>
+                <span class="step">S2</span>
 
-                    {{ inspection_pending }}
+                <h3>Site Inspection</h3>
 
-                </small>
+                <h2>{{ site_inspection }}</h2>
+
+            </div>
+
+            <div class="arrow">
+
+                <i class="fa-solid fa-arrow-right"></i>
+
+            </div>
+
+            <div class="workflow-card">
+
+                <span class="step">S3</span>
+
+                <h3>Estimate</h3>
+
+                <h2>Next Stage</h2>
 
             </div>
 
         </div>
 
-
-        <!-- =========================
-             ANALYTICS
-        ========================== -->
-
-        <div class="analytics-grid">
-
-            <!-- Pending Inspection -->
-
-            <div class="analytics-card">
-
-                <h3>
-
-                    Pending Inspection
-
-                </h3>
-
-                <h2>
-
-                    {{ pending_inspection }}
-
-                </h2>
-
-                <p>
-
-                    Maintenance Scope Pending For Inspection
-
-                </p>
-
-            </div>
-
-
-            <!-- Chargeable -->
-
-            <div class="analytics-card">
-
-                <h3>
-
-                    Chargeable Cases
-
-                </h3>
-
-                <h2>
-
-                    {{ chargeable }}
-
-                </h2>
-
-                <p>
-
-                    Total Chargeable Site Inspections
-
-                </p>
-
-            </div>
-
-
-            <!-- Non Chargeable -->
-
-            <div class="analytics-card">
-
-                <h3>
-
-                    Non Chargeable Cases
-
-                </h3>
-
-                <h2>
-
-                    {{ non_chargeable }}
-
-                </h2>
-
-                <p>
-
-                    Total Non Chargeable Site Inspections
-
-                </p>
-
-            </div>
-
-        </div>
-
-
-        <!-- =========================
-             LATEST COMPLAINTS
-        ========================== -->
+        <!-- Part-2 se Analytics aur Tables continue hongi -->
+        <!-- ==========================================
+                    ANALYTICS
+        =========================================== -->
 
         <div class="section-title">
 
             <h2>
 
-                Latest Complaints
+                Site Inspection Analytics
 
             </h2>
 
         </div>
+
+        <div class="analytics-grid">
+
+            <div class="analytics-card">
+
+                <i class="fa-solid fa-clock"></i>
+
+                <h2>{{ inspection_pending }}</h2>
+
+                <p>
+
+                    Pending Inspection
+
+                </p>
+
+            </div>
+
+            <div class="analytics-card">
+
+                <i class="fa-solid fa-circle-check"></i>
+
+                <h2>{{ chargeable }}</h2>
+
+                <p>
+
+                    Chargeable Cases
+
+                </p>
+
+            </div>
+
+            <div class="analytics-card">
+
+                <i class="fa-solid fa-circle-xmark"></i>
+
+                <h2>{{ non_chargeable }}</h2>
+
+                <p>
+
+                    Non Chargeable Cases
+
+                </p>
+
+            </div>
+
+            <div class="analytics-card">
+
+                <i class="fa-solid fa-box"></i>
+
+                <h2>{{ material_required }}</h2>
+
+                <p>
+
+                    Material Required
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ==========================================
+                LATEST CUSTOMER COMPLAINTS
+        =========================================== -->
+
+        <div class="section-title"
+             id="complaints">
+
+            <h2>
+
+                Latest Customer Complaints
+
+            </h2>
+
+        </div>
+
 
         <div class="table-box">
 
@@ -437,9 +566,11 @@
 
                     <tr>
 
-                        <th>Ticket ID</th>
+                        <th>Ticket</th>
 
                         <th>Customer</th>
+
+                        <th>Contact</th>
 
                         <th>Tower</th>
 
@@ -461,19 +592,57 @@
 
                     <tr>
 
-                        <td>{{ complaint.ticket_id }}</td>
+                        <td>
 
-                        <td>{{ complaint.name }}</td>
+                            {{ complaint.ticket_id }}
 
-                        <td>{{ complaint.tower }}</td>
+                        </td>
 
-                        <td>{{ complaint.area }}</td>
+                        <td>
 
-                        <td>{{ complaint.issue }}</td>
+                            {{ complaint.name }}
 
-                        <td>{{ complaint.status }}</td>
+                        </td>
 
-                        <td>{{ complaint.created_at|date:"d M Y" }}</td>
+                        <td>
+
+                            {{ complaint.contact }}
+
+                        </td>
+
+                        <td>
+
+                            {{ complaint.tower }}
+
+                        </td>
+
+                        <td>
+
+                            {{ complaint.area }}
+
+                        </td>
+
+                        <td>
+
+                            {{ complaint.issue }}
+
+                        </td>
+
+                        <td>
+
+                            <span class="status">
+
+                                {{ complaint.status }}
+
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            {{ complaint.created_at|date:"d M Y" }}
+
+                        </td>
 
                     </tr>
 
@@ -481,9 +650,9 @@
 
                     <tr>
 
-                        <td colspan="7">
+                        <td colspan="8">
 
-                            No Complaints Found
+                            No Complaint Found
 
                         </td>
 
@@ -496,19 +665,25 @@
             </table>
 
         </div>
-        <!-- =========================
-             RECENT SITE INSPECTIONS
-        ========================== -->
 
-        <div class="section-title">
+
+
+
+        <!-- ==========================================
+                RECENT SITE INSPECTION
+        =========================================== -->
+
+        <div class="section-title"
+             id="inspection">
 
             <h2>
 
-                Recent Site Inspections
+                Recent Site Inspection
 
             </h2>
 
         </div>
+
 
         <div class="table-box">
 
@@ -518,15 +693,25 @@
 
                     <tr>
 
-                        <th>Ticket ID</th>
+                        <th>Case ID</th>
 
                         <th>Customer</th>
 
-                        <th>Category</th>
+                        <th>Engineer</th>
 
                         <th>Block</th>
 
-                        <th>Inspection Date</th>
+                        <th>Area</th>
+
+                        <th>Category</th>
+
+                        <th>Material</th>
+
+                        <th>Scope</th>
+
+                        <th>Days</th>
+
+                        <th>Date</th>
 
                     </tr>
 
@@ -540,13 +725,31 @@
 
                         <td>
 
-                            {{ inspection.customer_query.ticket_id }}
+                            {{ inspection.case_id }}
 
                         </td>
 
                         <td>
 
-                            {{ inspection.customer_query.name }}
+                            {{ inspection.customer_name }}
+
+                        </td>
+
+                        <td>
+
+                            {{ inspection.engineer_name }}
+
+                        </td>
+
+                        <td>
+
+                            {{ inspection.block }}
+
+                        </td>
+
+                        <td>
+
+                            {{ inspection.area }}
 
                         </td>
 
@@ -574,7 +777,35 @@
 
                         <td>
 
-                            {{ inspection.customer_query.block }}
+                            {{ inspection.material_required }}
+
+                        </td>
+
+                        <td>
+
+                            {% if inspection.under_scope == "Yes" %}
+
+                                <span class="status approved">
+
+                                    Under Scope
+
+                                </span>
+
+                            {% else %}
+
+                                <span class="status rejected">
+
+                                    Out Of Scope
+
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+
+                            {{ inspection.days_required }}
 
                         </td>
 
@@ -590,7 +821,7 @@
 
                     <tr>
 
-                        <td colspan="5">
+                        <td colspan="10">
 
                             No Site Inspection Available
 
@@ -607,84 +838,254 @@
         </div>
 
 
-        <!-- =========================
-             QUICK SUMMARY
-        ========================== -->
 
-        <div class="analytics-grid">
 
-            <div class="analytics-card">
+        <!-- ==========================================
+                    CHARTS
+        =========================================== -->
+
+        <div class="section-title"
+             id="reports">
+
+            <h2>
+
+                Reports
+
+            </h2>
+
+        </div>
+
+        <div class="chart-grid">
+
+            <div class="chart-card">
 
                 <h3>
 
-                    Today's Cases
+                    Monthly Site Inspection
 
                 </h3>
 
-                <h2>
-
-                    {{ today_cases }}
-
-                </h2>
-
-                <p>
-
-                    Complaints Received Today
-
-                </p>
+                <canvas id="monthlyChart"></canvas>
 
             </div>
 
-            <div class="analytics-card">
+            <div class="chart-card">
 
                 <h3>
 
-                    Active Cases
+                    Chargeable Report
 
                 </h3>
 
-                <h2>
-
-                    {{ active_cases }}
-
-                </h2>
-
-                <p>
-
-                    Open + Pending + In Progress
-
-                </p>
+                <canvas id="categoryChart"></canvas>
 
             </div>
 
-            <div class="analytics-card">
+            <div class="chart-card">
 
                 <h3>
 
-                    Overdue Cases
+                    Material Required
 
                 </h3>
 
-                <h2>
-
-                    {{ overdue_cases }}
-
-                </h2>
-
-                <p>
-
-                    Need Immediate Attention
-
-                </p>
+                <canvas id="materialChart"></canvas>
 
             </div>
 
         </div>
+        <!-- ==========================================
+                    CHART JS
+        =========================================== -->
+
+        <script>
+
+            // ============================
+            // Monthly Site Inspection Chart
+            // ============================
+
+            const monthlyCtx = document.getElementById(
+                "monthlyChart"
+            );
+
+            new Chart(monthlyCtx, {
+
+                type: "bar",
+
+                data: {
+
+                    labels: [
+
+                        {% for month in months %}
+
+                            "{{ month }}",
+
+                        {% endfor %}
+
+                    ],
+
+                    datasets: [{
+
+                        label: "Site Inspection",
+
+                        data: [
+
+                            {% for value in monthly_counts %}
+
+                                {{ value }},
+
+                            {% endfor %}
+
+                        ],
+
+                        backgroundColor: "#3b82f6",
+
+                        borderRadius: 10
+
+                    }]
+
+                },
+
+                options: {
+
+                    responsive: true,
+
+                    plugins: {
+
+                        legend: {
+
+                            display: false
+
+                        }
+
+                    }
+
+                }
+
+            });
 
 
-        <!-- =========================
-             FOOTER
-        ========================== -->
+
+            // ============================
+            // Chargeable / Non Chargeable
+            // ============================
+
+            const categoryCtx = document.getElementById(
+                "categoryChart"
+            );
+
+            new Chart(categoryCtx, {
+
+                type: "doughnut",
+
+                data: {
+
+                    labels: [
+
+                        "Chargeable",
+
+                        "Non Chargeable"
+
+                    ],
+
+                    datasets: [{
+
+                        data: [
+
+                            {{ chargeable }},
+
+                            {{ non_chargeable }}
+
+                        ],
+
+                        backgroundColor: [
+
+                            "#22c55e",
+
+                            "#ef4444"
+
+                        ]
+
+                    }]
+
+                },
+
+                options: {
+
+                    responsive: true
+
+                }
+
+            });
+
+
+
+
+            // ============================
+            // Material Required
+            // ============================
+
+            const materialCtx = document.getElementById(
+                "materialChart"
+            );
+
+            new Chart(materialCtx, {
+
+                type: "pie",
+
+                data: {
+
+                    labels: [
+
+                        "Required",
+
+                        "Not Required",
+
+                        "Vendor Side"
+
+                    ],
+
+                    datasets: [{
+
+                        data: [
+
+                            {{ material_required }},
+
+                            {{ material_not_required }},
+
+                            {{ vendor_side }}
+
+                        ],
+
+                        backgroundColor: [
+
+                            "#2563eb",
+
+                            "#f59e0b",
+
+                            "#14b8a6"
+
+                        ]
+
+                    }]
+
+                },
+
+                options: {
+
+                    responsive: true
+
+                }
+
+            });
+
+        </script>
+
+
+
+        <!-- ==========================================
+                    FOOTER
+        =========================================== -->
 
         <footer class="footer">
 
@@ -694,11 +1095,16 @@
 
                 |
 
+                Sampoorna Maintenance
+
+                |
+
                 Site Engineer Dashboard
 
             </p>
 
         </footer>
+
 
     </main>
 
