@@ -3619,42 +3619,7 @@ def site_engineer_dashboard(request):
     # CUSTOMER QUERY SUMMARY
     # ==========================================
 
-    total_queries = CustomerQuery.objects.count()
-
-    open_queries = CustomerQuery.objects.filter(
-        status="Open"
-    ).count()
-
-    pending_queries = CustomerQuery.objects.filter(
-        status="Pending"
-    ).count()
-
-    in_progress_queries = CustomerQuery.objects.filter(
-        status="In Progress"
-    ).count()
-
-    resolved_queries = CustomerQuery.objects.filter(
-        status="Resolved"
-    ).count()
-
-    closed_queries = CustomerQuery.objects.filter(
-        status="Closed"
-    ).count()
-
-    today_cases = CustomerQuery.objects.filter(
-        created_at__date=timezone.now().date()
-    ).count()
-
-    active_cases = (
-        open_queries +
-        pending_queries +
-        in_progress_queries
-    )
-
-    overdue_cases = CustomerQuery.objects.filter(
-        status="Open"
-    ).count()
-
+    
 
     # ==========================================
     # MAINTENANCE SCOPE
@@ -3730,10 +3695,7 @@ def site_engineer_dashboard(request):
     # LATEST COMPLAINTS
     # ==========================================
 
-    latest_complaints = CustomerQuery.objects.order_by(
-        "-created_at"
-    )[:10]
-
+   
 
     # ==========================================
     # MONTHLY REPORT
@@ -3787,16 +3749,7 @@ def site_engineer_dashboard(request):
 
         # Complaint Summary
 
-        "total_queries": total_queries,
-        "open_queries": open_queries,
-        "pending_queries": pending_queries,
-        "in_progress_queries": in_progress_queries,
-        "resolved_queries": resolved_queries,
-        "closed_queries": closed_queries,
-
-        "today_cases": today_cases,
-        "active_cases": active_cases,
-        "overdue_cases": overdue_cases,
+        
 
         # Workflow
 
@@ -3821,7 +3774,7 @@ def site_engineer_dashboard(request):
 
         # Tables
 
-        "latest_complaints": latest_complaints,
+        
         "recent_site_inspections": recent_site_inspections,
 
         # Charts
