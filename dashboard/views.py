@@ -3684,11 +3684,11 @@ def site_engineer_dashboard(request):
     # RECENT SITE INSPECTION
     # ==========================================
 
-    recent_site_inspections = SiteInspection.objects.select_related(
-        "customer_query"
-    ).order_by(
-        "-created_at"
-    )[:10]
+    recent_site_inspections = SiteInspection.objects.filter(
+    under_scope="Yes"
+    ).select_related(
+    "customer_query"
+    ).order_by("-created_at")[:10]
 
 
     # ==========================================

@@ -570,7 +570,7 @@
 
                         <td>
 
-                           <td>{{ inspection.category }}</td>
+                            {% if inspection.category == "Chargeable" %}
 
                                 <span class="status approved">
 
@@ -598,7 +598,7 @@
 
                         <td>
 
-                            <td>{{ inspection.under_scope }}</td>
+                            {% if inspection.under_scope == "Yes" %}
 
                                 <span class="status approved">
 
