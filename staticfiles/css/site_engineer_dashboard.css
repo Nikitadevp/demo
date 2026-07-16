@@ -717,6 +717,65 @@ button:hover{
     cursor:pointer;
 }
 
+.category-header{
+
+    display:flex;
+    align-items:center;
+    gap:8px;
+    white-space:nowrap;
+
+}
+
+#categoryFilter{
+
+    border:none;
+    background:transparent;
+    color:#fff;
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+    outline:none;
+    width:22px;          /* sirf arrow dikhega */
+
+}
+
+#categoryFilter option{
+
+    color:#000;
+    background:#fff;
+
+}
+
+.category-header{
+
+    white-space: nowrap;
+
+}
+
+.category-header select{
+
+    border: none;
+
+    background: transparent;
+
+    color: white;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    outline: none;
+
+    margin-left: 5px;
+
+}
+
+.category-header option{
+
+    color: black;
+
+}
+
 
 
 

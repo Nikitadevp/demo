@@ -526,15 +526,16 @@
 
                         <th class="category-header">
                             Category
-                            <i class="fa-solid fa-chevron-down" id="categoryBtn"></i>
-                            <div class="category-dropdown" id="categoryMenu">
-                                <div data-value="All">All</div>
 
-                                <div data-value="Chargeable">Chargeable</div>
+                            <select id="categoryFilter">
 
-                                <div data-value="Non Chargeable">Non Chargeable</div>
+                                <option value="">All</option>
 
-                            </div>
+                                <option value="Chargeable">Chargeable</option>
+
+                                <option value="Non Chargeable">Non Chargeable</option>
+
+                            </select>
 
                         </th>
 
@@ -713,36 +714,31 @@ document.addEventListener("DOMContentLoaded", function () {
 // Category Filter
 // ===========================
 
-let categoryFilter = document.getElementById("categoryFilter");
+const categoryFilter = document.getElementById("categoryFilter");
 
-if (categoryFilter) {
+categoryFilter.addEventListener("change", function () {
 
-    categoryFilter.addEventListener("change", function () {
+    const selected = this.value;
 
-        let value = this.value;
+    const rows = document.querySelectorAll(".table-box tbody tr");
 
-        let rows = document.querySelectorAll(".table-box tbody tr");
+    rows.forEach(function (row) {
 
-        rows.forEach(function (row) {
+        const category = row.getAttribute("data-category");
 
-            let category = row.getAttribute("data-category");
+        if (selected === "" || category === selected) {
 
-            if (value === "All" || category === value) {
+            row.style.display = "";
 
-                row.style.display = "";
+        } else {
 
-            } else {
+            row.style.display = "none";
 
-                row.style.display = "none";
-
-            }
-
-        });
+        }
 
     });
 
-}
-</script>
+});
 
 
 
