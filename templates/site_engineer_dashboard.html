@@ -525,11 +525,13 @@
                         <th>Area</th>
 
                        <th>
+                          Category
+                          <br>
                           <select id="categoryFilter">
                             <option value="">All Category</option>
                             <option value="Chargeable">Chargeable</option>
                             <option value="Non Chargeable">Non Chargeable</option>
-                            <option value="Carpentry">Carpentry</option>
+                            
                           
                           </select> 
                        </th> 
@@ -551,6 +553,7 @@
                 {% for inspection in recent_site_inspections %}
 
                     <tr id="{{ inspection.case_id }}">
+                        data-category="{{ inspection.category }}">
 
                         <td>
 
