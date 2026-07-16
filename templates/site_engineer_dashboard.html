@@ -667,34 +667,83 @@
 
 document.addEventListener("DOMContentLoaded", function () {
 
-    let search = document.getElementById("searchInput").value.trim();
+    // ===========================
+    // Search Scroll
+    // ===========================
 
-    if(search){
+    let searchInput = document.getElementById("searchInput");
 
-        let row = document.getElementById(search);
+    if (searchInput) {
 
-        if(row){
+        let search = searchInput.value.trim();
 
-            row.scrollIntoView({
-                behavior:"smooth",
-                block:"center"
-            });
+        if (search) {
 
-            row.style.background="#fff3cd";
+            let row = document.getElementById(search);
 
-        }else{
+            if (row) {
 
-            document.getElementById("inspection").scrollIntoView({
-                behavior:"smooth"
-            });
+                row.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center"
+                });
+
+                row.style.background = "#fff3cd";
+
+            } else {
+
+                let inspection = document.getElementById("inspection");
+
+                if (inspection) {
+                    inspection.scrollIntoView({
+                        behavior: "smooth"
+                    });
+                }
+
+            }
 
         }
+
+    }
+
+    // ===========================
+    // Category Filter
+    // ===========================
+
+    let categoryFilter = document.getElementById("categoryFilter");
+
+    if (categoryFilter) {
+
+        categoryFilter.addEventListener("change", function () {
+
+            let value = this.value.toLowerCase();
+
+            let rows = document.querySelectorAll(".table-box tbody tr");
+
+            rows.forEach(function (row) {
+
+                let category = row.cells[5].innerText.toLowerCase();
+
+                if (value === "" || category === value) {
+
+                    row.style.display = "";
+
+                } else {
+
+                    row.style.display = "none";
+
+                }
+
+            });
+
+        });
 
     }
 
 });
 
 </script>
+
 
 
 </body>
