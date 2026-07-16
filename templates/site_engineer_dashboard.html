@@ -725,6 +725,8 @@ categoryFilter.addEventListener("change", function () {
     rows.forEach(function (row) {
 
         const category = row.getAttribute("data-category");
+        console.log(selected);
+        console.log(category);
 
         if (selected === "" || category === selected) {
 
