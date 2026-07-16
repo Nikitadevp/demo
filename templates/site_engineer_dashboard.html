@@ -525,13 +525,11 @@
                         <th>Area</th>
 
                        <th>
-                          Category
-                          <br>
-                          <select id="categoryFilter">
+                         <select id="categoryFilter">
                             <option value="">All Category</option>
                             <option value="Chargeable">Chargeable</option>
                             <option value="Non Chargeable">Non Chargeable</option>
-                            
+                            <option value="Carpentry">Carpentry</option>
                           
                           </select> 
                        </th> 
@@ -553,7 +551,6 @@
                 {% for inspection in recent_site_inspections %}
 
                     <tr id="{{ inspection.case_id }}">
-                        data-category="{{ inspection.category }}">
 
                         <td>
 
@@ -670,84 +667,34 @@
 
 document.addEventListener("DOMContentLoaded", function () {
 
-    // ===========================
-    // Search Scroll
-    // ===========================
+    let search = document.getElementById("searchInput").value.trim();
 
-    let searchInput = document.getElementById("searchInput");
+    if(search){
 
-    if (searchInput) {
+        let row = document.getElementById(search);
 
-        let search = searchInput.value.trim();
+        if(row){
 
-        if (search) {
-
-            let row = document.getElementById(search);
-
-            if (row) {
-
-                row.scrollIntoView({
-                    behavior: "smooth",
-                    block: "center"
-                });
-
-                row.style.background = "#fff3cd";
-
-            } else {
-
-                let inspection = document.getElementById("inspection");
-
-                if (inspection) {
-                    inspection.scrollIntoView({
-                        behavior: "smooth"
-                    });
-                }
-
-            }
-
-        }
-
-    }
-
-    // ===========================
-    // Category Filter
-    // ===========================
-
-    let categoryFilter = document.getElementById("categoryFilter");
-
-    if (categoryFilter) {
-
-        categoryFilter.addEventListener("change", function () {
-
-            let value = this.value.toLowerCase();
-
-            let rows = document.querySelectorAll(".table-box tbody tr");
-
-            rows.forEach(function (row) {
-
-                let category = row.cells[5].innerText.toLowerCase();
-
-                if (value === "" || category === value) {
-
-                    row.style.display = "";
-
-                } else {
-
-                    row.style.display = "none";
-
-                }
-
+            row.scrollIntoView({
+                behavior:"smooth",
+                block:"center"
             });
 
-        });
+            row.style.background="#fff3cd";
+
+        }else{
+
+            document.getElementById("inspection").scrollIntoView({
+                behavior:"smooth"
+            });
+
+        }
 
     }
 
 });
 
 </script>
-
-
 
 
 </body>
