@@ -195,7 +195,8 @@
 
             <form method="GET">
 
-                <input type="text"
+                <input id="searchInput"
+                       type="text"
                        name="search"
                        placeholder="Search by Case ID, Customer, Engineer, Block, Area"
                        value="{{ search }}">
@@ -551,7 +552,7 @@
 
                 {% for inspection in recent_site_inspections %}
 
-                    <tr>
+                    <tr id="{{ inspection.case_id }}">
 
                         <td>
 
@@ -668,18 +669,29 @@
 
 document.addEventListener("DOMContentLoaded", function () {
 
-    const params = new URLSearchParams(window.location.search);
+    let search = document.getElementById("searchInput").value.trim();
 
-    if (params.has("search")) {
+    if(search){
 
-        const inspection = document.getElementById("inspection");
+        let row = document.getElementById(search);
 
-        if (inspection) {
-            inspection.scrollIntoView({
-                behavior: "smooth",
-                block: "start"
+        if(row){
+
+            row.scrollIntoView({
+                behavior:"smooth",
+                block:"center"
             });
+
+            row.style.background="#fff3cd";
+
+        }else{
+
+            document.getElementById("inspection").scrollIntoView({
+                behavior:"smooth"
+            });
+
         }
+
     }
 
 });
