@@ -38,8 +38,7 @@ from .models import AdminUser
 
 from django.contrib.auth.decorators import login_required
 
-from django.db.models import Count
-
+from django.db.models import Count, Q
 
 
 
@@ -3684,14 +3683,37 @@ def site_engineer_dashboard(request):
     # ==========================================
     # RECENT SITE INSPECTION
     # ==========================================
+    # ==========================================
+    # RECENT SITE INSPECTION
+    # ==========================================
+
+    # ==========================================
+    # SEARCH
+    # ==========================================
+
+    search = request.GET.get("search", "")
 
     recent_site_inspections = SiteInspection.objects.filter(
-    under_scope="Yes"
-    ).select_related(
-    "customer_query"
+        under_scope="Yes"
+    )
+
+    if search:
+        recent_site_inspections = recent_site_inspections.filter(
+            Q(case_id__icontains=search) |
+            Q(customer_name__icontains=search) |
+            Q(engineer_name__icontains=search) |
+            Q(block__icontains=search) |
+            Q(area__icontains=search)
+        )
+
+    recent_site_inspections = recent_site_inspections.select_related(
+        "customer_query"
     ).order_by("-created_at")[:10]
 
 
+    # ==========================================
+    # LATEST COMPLAINTS
+    # ==========================================
     # ==========================================
     # LATEST COMPLAINTS
     # ==========================================
@@ -3777,6 +3799,7 @@ def site_engineer_dashboard(request):
 
         
         "recent_site_inspections": recent_site_inspections,
+        "search": search,
 
         # Charts
 
