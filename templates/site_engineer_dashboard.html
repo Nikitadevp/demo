@@ -203,7 +203,7 @@
   
         <div class="search-box">
 
-            <form method="GET">
+            <form method="GET" action="#inspection">
 
                 <input type="text"
                        name="search"
@@ -918,6 +918,23 @@
     </main>
 
 </div>
+
+<script>
+
+    {% if search %}
+
+    window.onload = function () {
+
+        document.getElementById("inspection").scrollIntoView({
+            behavior: "smooth"
+        });
+
+    };
+
+    {% endif %}
+
+</script>
+
 
 </body>
 
