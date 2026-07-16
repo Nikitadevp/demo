@@ -667,24 +667,23 @@
     </main>
 
 </div>
-
 <script>
 
 document.addEventListener("DOMContentLoaded", function () {
 
-    // ===========================
-    // Search Scroll
-    // ===========================
+    // =====================================
+    // SEARCH SCROLL
+    // =====================================
 
-    let searchInput = document.getElementById("searchInput");
+    const searchInput = document.getElementById("searchInput");
 
     if (searchInput) {
 
-        let search = searchInput.value.trim();
+        const search = searchInput.value.trim();
 
-        if (search) {
+        if (search !== "") {
 
-            let row = document.getElementById(search);
+            const row = document.getElementById(search);
 
             if (row) {
 
@@ -693,16 +692,18 @@ document.addEventListener("DOMContentLoaded", function () {
                     block: "center"
                 });
 
-                row.style.background = "#fff3cd";
+                row.style.backgroundColor = "#fff3cd";
 
             } else {
 
-                let inspection = document.getElementById("inspection");
+                const inspection = document.getElementById("inspection");
 
                 if (inspection) {
+
                     inspection.scrollIntoView({
                         behavior: "smooth"
                     });
+
                 }
 
             }
@@ -710,38 +711,52 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
     }
-// ===========================
-// Category Filter
-// ===========================
 
-const categoryFilter = document.getElementById("categoryFilter");
 
-categoryFilter.addEventListener("change", function () {
+    // =====================================
+    // CATEGORY FILTER
+    // =====================================
 
-    const selected = this.value;
+    const categoryFilter = document.getElementById("categoryFilter");
 
-    const rows = document.querySelectorAll(".table-box tbody tr");
+    if (categoryFilter) {
 
-    rows.forEach(function (row) {
+        categoryFilter.addEventListener("change", function () {
 
-        const category = row.dataset.category.trim();
-        console.log(selected);
-        console.log(category);
+            const selected = this.value.trim().toLowerCase();
 
-        if (selected === "" || category === selected) {
+            const rows = document.querySelectorAll(".table-box tbody tr");
 
-            row.style.display = "";
+            rows.forEach(function(row){
 
-        } else {
+                const category = row.getAttribute("data-category");
 
-            row.style.display = "none";
+                if(category){
 
-        }
+                    if(
+                        selected === "" ||
+                        category.trim().toLowerCase() === selected
+                    ){
 
-    });
+                        row.style.display = "";
+
+                    }else{
+
+                        row.style.display = "none";
+
+                    }
+
+                }
+
+            });
+
+        });
+
+    }
 
 });
 
+</script>
 
 
 </body>
