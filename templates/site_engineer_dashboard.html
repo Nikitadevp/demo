@@ -555,7 +555,7 @@
 
                 {% for inspection in recent_site_inspections %}
 
-                    <tr id="{{ inspection.case_id }}">
+                    <tr id="{{ inspection.case_id }}" data-category="{{ inspection.category }}">
 
                         <td>
 
@@ -710,43 +710,39 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
     }
+// ===========================
+// Category Filter
+// ===========================
 
-    // ===========================
-    // Category Filter
-    // ===========================
+let categoryFilter = document.getElementById("categoryFilter");
 
-    let categoryFilter = document.getElementById("categoryFilter");
+if (categoryFilter) {
 
-    if (categoryFilter) {
+    categoryFilter.addEventListener("change", function () {
 
-        categoryFilter.addEventListener("change", function () {
+        let value = this.value;
 
-            let value = this.value.toLowerCase();
+        let rows = document.querySelectorAll(".table-box tbody tr");
 
-            let rows = document.querySelectorAll(".table-box tbody tr");
+        rows.forEach(function (row) {
 
-            rows.forEach(function (row) {
+            let category = row.getAttribute("data-category");
 
-                let category = row.cells[5].innerText.toLowerCase();
+            if (value === "All" || category === value) {
 
-                if (value === "" || category === value) {
+                row.style.display = "";
 
-                    row.style.display = "";
+            } else {
 
-                } else {
+                row.style.display = "none";
 
-                    row.style.display = "none";
-
-                }
-
-            });
+            }
 
         });
 
-    }
+    });
 
-});
-
+}
 </script>
 
 
