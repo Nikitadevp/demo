@@ -203,7 +203,7 @@
   
         <div class="search-box">
 
-            <form method="GET" action="#inspection">
+            <form method="GET">
 
                 <input type="text"
                        name="search"
@@ -514,8 +514,7 @@
                 RECENT SITE INSPECTION
         =========================================== -->
 
-        <div class="section-title"
-             id="inspection">
+        <div class="section-title" id="inspection">
 
             <h2>
 
@@ -921,17 +920,23 @@
 
 <script>
 
-    {% if search %}
+document.addEventListener("DOMContentLoaded", function () {
 
-    window.onload = function () {
+    const params = new URLSearchParams(window.location.search);
 
-        document.getElementById("inspection").scrollIntoView({
-            behavior: "smooth"
-        });
+    if (params.has("search")) {
 
-    };
+        const inspection = document.getElementById("inspection");
 
-    {% endif %}
+        if (inspection) {
+            inspection.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+        }
+    }
+
+});
 
 </script>
 
