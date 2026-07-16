@@ -3692,7 +3692,6 @@ def site_engineer_dashboard(request):
     # ==========================================
 
     search = request.GET.get("search", "")
-    category_filter = request.GET.get("category", "")
 
     recent_site_inspections = SiteInspection.objects.filter(
         under_scope="Yes"
@@ -3706,10 +3705,7 @@ def site_engineer_dashboard(request):
             Q(block__icontains=search) |
             Q(area__icontains=search)
         )
-    if category_filter:
-        recent_site_inspections = recent_site_inspections.filter(
-            category=category_filter
-        )
+
     recent_site_inspections = recent_site_inspections.select_related(
         "customer_query"
     ).order_by("-created_at")[:10]
@@ -3761,7 +3757,7 @@ def site_engineer_dashboard(request):
         
         "recent_site_inspections": recent_site_inspections,
         "search": search,
-        "category_filter": category_filter,
+       
 
         # Charts
 

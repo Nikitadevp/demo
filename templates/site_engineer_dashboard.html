@@ -191,12 +191,6 @@
                        placeholder="Search by Case ID, Customer, Engineer, Block, Area"
                        value="{{ search }}">
 
-                <select name="category">
-                    <option value="">All Category</option>
-                    <option value="Chargeable" {% if category_filter == "Chargeable" %}selected{% endif %}>Chargeable</option>
-                    <option value="Non Chargeable" {% if category_filter == "Non Chargeable" %}selected{% endif %}>Non Chargeable</option>
-                </select>
-
                 <button type="submit">
 
                     <i class="fa-solid fa-magnifying-glass"></i>
