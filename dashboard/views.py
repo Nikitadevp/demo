@@ -3720,49 +3720,6 @@ def site_engineer_dashboard(request):
 
    
 
-    # ==========================================
-    # MONTHLY REPORT
-    # ==========================================
-
-    monthly_data = SiteInspection.objects.values(
-        "created_at__month"
-    ).annotate(
-        total=Count("id")
-    ).order_by(
-        "created_at__month"
-    )
-
-    month_names = {
-
-        1: "Jan",
-        2: "Feb",
-        3: "Mar",
-        4: "Apr",
-        5: "May",
-        6: "Jun",
-        7: "Jul",
-        8: "Aug",
-        9: "Sep",
-        10: "Oct",
-        11: "Nov",
-        12: "Dec",
-
-    }
-
-    months = []
-
-    monthly_counts = []
-
-    for item in monthly_data:
-
-        months.append(
-            month_names[item["created_at__month"]]
-        )
-
-        monthly_counts.append(
-            item["total"]
-        )
-
 
     # ==========================================
     # CONTEXT
@@ -3803,8 +3760,7 @@ def site_engineer_dashboard(request):
 
         # Charts
 
-        "months": months,
-        "monthly_counts": monthly_counts,
+       
 
     }
 
