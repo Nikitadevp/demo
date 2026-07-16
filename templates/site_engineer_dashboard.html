@@ -198,8 +198,26 @@
 
 
         <!-- ==========================================
-                    CUSTOMER SUMMARY
+                    search-box
         =========================================== -->
+  
+        <div class="search-box">
+
+            <form method="GET">
+
+                <input type="text"
+                       name="search"
+                       placeholder="Search by Case ID, Customer, Engineer, Block, Area"
+                       value="{{ search }}">
+
+                <button type="submit">
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                </button>
+
+            </form>
+        </div>
 
         
 
@@ -498,25 +516,7 @@
             </h2>
 
         </div>
-   
-        <div class="search-box">
-
-            <form method="GET">
-
-                <input type="text"
-                       name="search"
-                       placeholder="Search by Case ID, Customer, Engineer, Block, Area"
-                       value="{{ search }}">
-
-                <button type="submit">
-
-                    <i class="fa-solid fa-magnifying-glass"></i>
-
-                </button>
-
-            </form>
-        </div>
-
+ 
 
         <div class="table-box">
 
