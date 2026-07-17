@@ -589,6 +589,9 @@
                         <th>Issue</th>
                         <th>Status</th>
                         <th>Date</th>
+                        <th>Current Stage</th>
+                        <th>Pending With</th>
+                        <th>Over Due</th>
 
                     </tr>
 
@@ -596,7 +599,7 @@
 
                 <tbody>
 
-                {% for complaint in latest_complaints %}
+                {% for complaint in all_complaints %}
 
                     <tr>
 
@@ -613,6 +616,23 @@
                         <td>{{ complaint.status }}</td>
 
                         <td>{{ complaint.created_at|date:"d M Y" }}</td>
+      
+                        <td>{{ complaint.current_stage }}</td>
+
+
+                        <td>{{ complaint.pending_with }}</td>
+
+                        <td>
+
+                            {% if complaint.overdue %}
+                                <span class="badge bg-danger">Yes</span>
+
+                            {% else %}
+
+                                <span class="badge bg-success">No</span>
+
+                            {% endif %}
+                        </td>
 
                     </tr>
 
