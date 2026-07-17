@@ -4018,25 +4018,15 @@ def site_engineer_dashboard(request):
     # WORKFLOW
     # ==========================================
 
-    open_site_inspection = SiteInspection.objects.filter(
-    status="Open",
-    under_scope="Yes"
-    ).count()
-    
-    pending_site_inspection = SiteInspection.objects.filter(
-    status="Pending",
-    under_scope="Yes"
-    ).count()
+    site_inspection = total_site_inspection
 
-    in_progress_site_inspection = SiteInspection.objects.filter(
-    status="In Progress",
-    under_scope="Yes"
-    ).count()
+    inspection_pending = max(
+        maintenance_scope -
+        site_inspection,
+        0
+    )
 
-    closed_site_inspection = SiteInspection.objects.filter(
-    status="Closed",
-    under_scope="Yes"
-    ).count()
+
 
 
     # ==========================================
@@ -4086,12 +4076,8 @@ def site_engineer_dashboard(request):
         # Workflow
 
         "maintenance_scope": maintenance_scope,
-        "open_site_inspection": open_site_inspection,
-        "pending_site_inspection": pending_site_inspection,
-        "in_progress_site_inspection": in_progress_site_inspection,
-        "closed_site_inspection": closed_site_inspection,
-        
-      
+        "site_inspection": site_inspection,
+        "inspection_pending": inspection_pending,
 
         # Site Inspection Summary
 
