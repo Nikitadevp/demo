@@ -3258,9 +3258,11 @@ def maintenance_dashboard(request):
     )
 
 
-#admin_dashboard
-
 def admin_dashboard(request):
+
+    # ==========================================
+    # LOGIN CHECK
+    # ==========================================
 
     if "admin_id" not in request.session:
         return redirect("login")
@@ -3268,7 +3270,6 @@ def admin_dashboard(request):
     if request.session.get("admin_role") != "Admin":
         return redirect("login")
 
-    # Yaha maintenance_dashboard() wala sara code copy kar do
 
     # ==========================================
     # DASHBOARD SUMMARY
@@ -3326,8 +3327,6 @@ def admin_dashboard(request):
     query_closer = QueryCloser.objects.count()
 
     customer_feedback = CustomerFeedback.objects.count()
-
-
     # ==========================================
     # PENDING STAGE COUNTS
     # ==========================================
@@ -3389,12 +3388,121 @@ def admin_dashboard(request):
 
 
     # ==========================================
-    # LATEST COMPLAINTS
+    # ALL COMPLAINTS
+    # (Admin will see every complaint)
     # ==========================================
 
-    latest_complaints = CustomerQuery.objects.order_by(
+    all_complaints = CustomerQuery.objects.order_by(
         "-created_at"
-    )[:10]
+    )
+
+
+    # ==========================================
+    # CURRENT STAGE / PENDING WITH
+    # ==========================================
+
+    from datetime import timedelta
+
+    for complaint in all_complaints:
+
+        complaint.current_stage = "Completed"
+        complaint.pending_with = "-"
+        complaint.overdue = "No"
+
+        if not MaintenanceScope.objects.filter(
+            customer_query=complaint
+        ).exists():
+
+            complaint.current_stage = "Maintenance Scope"
+            complaint.pending_with = "Maintenance Incharge"
+
+        elif not SiteInspection.objects.filter(
+            customer_query=complaint
+        ).exists():
+
+            complaint.current_stage = "Site Inspection"
+            complaint.pending_with = "Site Engineer"
+
+        elif not EstimateForm.objects.filter(
+            customer_query=complaint
+        ).exists():
+
+            complaint.current_stage = "Estimate"
+            complaint.pending_with = "CRM"
+
+        elif not CustomerApproval.objects.filter(
+            customer_query=complaint
+        ).exists():
+
+            complaint.current_stage = "Customer Approval"
+            complaint.pending_with = "CRM"
+
+        elif not AdvanceCollection.objects.filter(
+            customer_query=complaint
+        ).exists():
+
+            complaint.current_stage = "Advance Collection"
+            complaint.pending_with = "CRM"
+
+        elif not MaterialAvailability.objects.filter(
+            customer_query=complaint
+        ).exists():
+
+            complaint.current_stage = "Material Availability"
+            complaint.pending_with = "Store Incharge"
+
+        elif not RaiseIndent.objects.filter(
+            customer_query=complaint
+        ).exists():
+
+            complaint.current_stage = "Raise Indent"
+            complaint.pending_with = "Store Incharge"
+
+        elif not IssueMaterial.objects.filter(
+            customer_query=complaint
+        ).exists():
+
+            complaint.current_stage = "Issue Material"
+            complaint.pending_with = "Store Incharge"
+
+        elif not ReceiveMaterial.objects.filter(
+            customer_query=complaint
+        ).exists():
+
+            complaint.current_stage = "Receive Material"
+            complaint.pending_with = "Maintenance Incharge"
+
+        elif not QueryCloser.objects.filter(
+            customer_query=complaint
+        ).exists():
+
+            complaint.current_stage = "Query Closure"
+            complaint.pending_with = "Maintenance Incharge"
+
+        elif not CustomerFeedback.objects.filter(
+            customer_query=complaint
+        ).exists():
+
+            complaint.current_stage = "Customer Feedback"
+            complaint.pending_with = "CRM"    
+    
+        # ==========================================
+        # OVER DUE CHECK
+        # (Example: 7 Days)
+        # ==========================================
+
+        if complaint.current_stage != "Completed":
+
+            days = (
+                timezone.now().date() -
+                complaint.created_at.date()
+            ).days
+
+            if days > 7:
+                complaint.overdue = "Yes"
+
+            else:
+                complaint.overdue = "No"
 
 
     # ==========================================
@@ -3403,7 +3511,9 @@ def admin_dashboard(request):
 
     recent_estimates = EstimateForm.objects.select_related(
         "customer_query"
-    ).order_by("-id")[:5]
+    ).order_by(
+        "-created_at"
+    )[:10]
 
 
     # ==========================================
@@ -3412,8 +3522,10 @@ def admin_dashboard(request):
 
     recent_approvals = CustomerApproval.objects.select_related(
         "customer_query"
-    ).order_by("-id")[:5]
-    
+    ).order_by(
+        "-created_at"
+    )[:10]
+
 
     # ==========================================
     # MATERIAL STATISTICS
@@ -3432,7 +3544,7 @@ def admin_dashboard(request):
         material_available_no
     )
 
-    if total_material:
+    if total_material > 0:
 
         material_available_percent = round(
             (material_available_yes / total_material) * 100
@@ -3462,7 +3574,7 @@ def admin_dashboard(request):
 
     total_category = chargeable + non_chargeable
 
-    if total_category:
+    if total_category > 0:
 
         chargeable_percent = round(
             (chargeable / total_category) * 100
@@ -3479,7 +3591,7 @@ def admin_dashboard(request):
 
 
     # ==========================================
-    # MONTHLY COMPLAINTS
+    # MONTHLY COMPLAINT REPORT
     # ==========================================
 
     monthly_data = (
@@ -3506,7 +3618,6 @@ def admin_dashboard(request):
 
     months = []
     monthly_counts = []
-    
 
     for item in monthly_data:
 
@@ -3518,16 +3629,20 @@ def admin_dashboard(request):
             item["total"]
         )
 
-    monthly_report = zip(months, monthly_counts)
-
-
+    monthly_report = zip(
+        months,
+        monthly_counts
+    )
+    
     # ==========================================
     # CONTEXT
     # ==========================================
 
     context = {
 
-        # SUMMARY
+        # ======================================
+        # DASHBOARD SUMMARY
+        # ======================================
 
         "total_queries": total_queries,
         "open_queries": open_queries,
@@ -3537,7 +3652,9 @@ def admin_dashboard(request):
         "closed_queries": closed_queries,
         "today_queries": today_queries,
 
-        # WORKFLOW
+        # ======================================
+        # WORKFLOW COUNTS
+        # ======================================
 
         "maintenance_scope": maintenance_scope,
         "site_inspection": site_inspection,
@@ -3551,7 +3668,9 @@ def admin_dashboard(request):
         "query_closer": query_closer,
         "customer_feedback": customer_feedback,
 
-        # PENDING
+        # ======================================
+        # PENDING STAGES
+        # ======================================
 
         "scope_pending": scope_pending,
         "inspection_pending": inspection_pending,
@@ -3565,24 +3684,34 @@ def admin_dashboard(request):
         "close_pending": close_pending,
         "feedback_pending": feedback_pending,
 
+        # ======================================
         # TABLES
+        # ======================================
 
-        "latest_complaints": latest_complaints,
+        "all_complaints": all_complaints,
         "recent_estimates": recent_estimates,
         "recent_approvals": recent_approvals,
 
-        # CHART DATA
+        # ======================================
+        # CHART
+        # ======================================
 
         "months": months,
         "monthly_counts": monthly_counts,
         "monthly_report": monthly_report,
 
-        # PERCENTAGES
+        # ======================================
+        # CHARGEABLE
+        # ======================================
 
         "chargeable": chargeable,
         "non_chargeable": non_chargeable,
         "chargeable_percent": chargeable_percent,
         "non_chargeable_percent": non_chargeable_percent,
+
+        # ======================================
+        # MATERIAL
+        # ======================================
 
         "material_available_yes": material_available_yes,
         "material_available_no": material_available_no,
@@ -3592,10 +3721,24 @@ def admin_dashboard(request):
     }
 
     return render(
-    request,
-    "admin_dashboard.html",
-    context
-)
+
+        request,
+
+        "admin_dashboard.html",
+
+        context
+
+    )
+
+
+
+
+
+
+
+
+
+
 
 
 
