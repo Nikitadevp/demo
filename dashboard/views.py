@@ -3402,6 +3402,25 @@ def admin_dashboard(request):
     # ==========================================
 
     from datetime import timedelta
+    
+    STAGE_TIME = {
+
+    "Maintenance Scope": 3,
+    "Site Inspection": 3,
+    "Estimate": 24,
+    "Customer Approval": 24,
+    "Advance Collection": 24,
+    "Material Availability": 24,
+    "Raise Indent": 24,
+    "Issue Material": 24,
+    "Receive Material": 24,
+    "Query Closure": 24,
+    "Customer Feedback": 24,
+
+}
+ 
+
+
 
     for complaint in all_complaints:
 
@@ -3492,47 +3511,47 @@ def admin_dashboard(request):
 
         if complaint.current_stage == "Maintenance Scope":
 
-            tat = timedelta(hours=2)
+            tat = timedelta(hours=STAGE_TIME[complaint.current_stage])
 
         elif complaint.current_stage == "Site Inspection":
 
-            tat = timedelta(hours=24)
+            tat = timedelta(hours=STAGE_TIME[complaint.current_stage])
 
         elif complaint.current_stage == "Estimate":
 
-            tat = timedelta(hours=48)
+            tat = timedelta(hours=STAGE_TIME[complaint.current_stage])
 
         elif complaint.current_stage == "Customer Approval":
 
-            tat = timedelta(hours=24)
+            tat = timedelta(hours=STAGE_TIME[complaint.current_stage])
 
         elif complaint.current_stage == "Advance Collection":
 
-            tat = timedelta(hours=24)
+            tat = timedelta(hours=STAGE_TIME[complaint.current_stage])
 
         elif complaint.current_stage == "Material Availability":
 
-            tat = timedelta(hours=24)
+            tat = timedelta(hours=STAGE_TIME[complaint.current_stage])
 
         elif complaint.current_stage == "Raise Indent":
 
-            tat = timedelta(hours=24)
+            tat = timedelta(hours=STAGE_TIME[complaint.current_stage])
 
         elif complaint.current_stage == "Issue Material":
 
-            tat = timedelta(hours=24)
+            tat = timedelta(hours=STAGE_TIME[complaint.current_stage])
 
         elif complaint.current_stage == "Receive Material":
 
-            tat = timedelta(hours=24)
+            tat = timedelta(hours=STAGE_TIME[complaint.current_stage])
 
         elif complaint.current_stage == "Query Closure":
 
-            tat = timedelta(hours=24)
+            tat = timedelta(hours=STAGE_TIME[complaint.current_stage])
 
         elif complaint.current_stage == "Customer Feedback":
 
-            tat = timedelta(hours=24)
+            tat = timedelta(hours=STAGE_TIME[complaint.current_stage])
 
         else:
 
