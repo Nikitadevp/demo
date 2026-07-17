@@ -3487,23 +3487,73 @@ def admin_dashboard(request):
             complaint.pending_with = "CRM"    
     
         # ==========================================
-        # OVER DUE CHECK
-        # (Example: 7 Days)
+        # OVERDUE CALCULATION
         # ==========================================
 
-        if complaint.current_stage != "Completed":
+        if complaint.current_stage == "Maintenance Scope":
 
-            days = (
-                timezone.now().date() -
-                complaint.created_at.date()
-            ).days
+            tat = timedelta(hours=2)
 
-            if days > 7:
+        elif complaint.current_stage == "Site Inspection":
+
+            tat = timedelta(hours=24)
+
+        elif complaint.current_stage == "Estimate":
+
+            tat = timedelta(hours=48)
+
+        elif complaint.current_stage == "Customer Approval":
+
+            tat = timedelta(hours=24)
+
+        elif complaint.current_stage == "Advance Collection":
+
+            tat = timedelta(hours=24)
+
+        elif complaint.current_stage == "Material Availability":
+
+            tat = timedelta(hours=24)
+
+        elif complaint.current_stage == "Raise Indent":
+
+            tat = timedelta(hours=24)
+
+        elif complaint.current_stage == "Issue Material":
+
+            tat = timedelta(hours=24)
+
+        elif complaint.current_stage == "Receive Material":
+
+            tat = timedelta(hours=24)
+
+        elif complaint.current_stage == "Query Closure":
+
+            tat = timedelta(hours=24)
+
+        elif complaint.current_stage == "Customer Feedback":
+
+            tat = timedelta(hours=24)
+
+        else:
+
+            tat = None
+
+
+        if tat:
+
+            due_date = complaint.created_at + tat
+
+            if timezone.now() > due_date:
+
                 complaint.overdue = "Yes"
 
             else:
+
                 complaint.overdue = "No"
 
+        else:
+
+            complaint.overdue = "No"
 
     # ==========================================
     # RECENT ESTIMATES
