@@ -3508,71 +3508,205 @@ def admin_dashboard(request):
         # ==========================================
         # OVERDUE CALCULATION
         # ==========================================
+        
+        
+    # ==========================================
+    # OVERDUE CALCULATION
+    # ==========================================
 
-        if complaint.current_stage == "Maintenance Scope":
+    if complaint.current_stage == "Completed":
 
-            tat = timedelta(hours=STAGE_TIME[complaint.current_stage])
+        complaint.overdue = "No"
 
-        elif complaint.current_stage == "Site Inspection":
+    elif complaint.current_stage == "Maintenance Scope":
 
-            tat = timedelta(hours=STAGE_TIME[complaint.current_stage])
+        due_time = complaint.created_at + timedelta(hours=2)
 
-        elif complaint.current_stage == "Estimate":
+        complaint.overdue = (
+            "Yes" if timezone.now() > due_time else "No"
+        )
 
-            tat = timedelta(hours=STAGE_TIME[complaint.current_stage])
+    elif complaint.current_stage == "Site Inspection":
 
-        elif complaint.current_stage == "Customer Approval":
+        scope = MaintenanceScope.objects.filter(
+            customer_query=complaint
+        ).first()
 
-            tat = timedelta(hours=STAGE_TIME[complaint.current_stage])
+        if scope:
 
-        elif complaint.current_stage == "Advance Collection":
+            due_time = scope.created_at + timedelta(hours=24)
 
-            tat = timedelta(hours=STAGE_TIME[complaint.current_stage])
-
-        elif complaint.current_stage == "Material Availability":
-
-            tat = timedelta(hours=STAGE_TIME[complaint.current_stage])
-
-        elif complaint.current_stage == "Raise Indent":
-
-            tat = timedelta(hours=STAGE_TIME[complaint.current_stage])
-
-        elif complaint.current_stage == "Issue Material":
-
-            tat = timedelta(hours=STAGE_TIME[complaint.current_stage])
-
-        elif complaint.current_stage == "Receive Material":
-
-            tat = timedelta(hours=STAGE_TIME[complaint.current_stage])
-
-        elif complaint.current_stage == "Query Closure":
-
-            tat = timedelta(hours=STAGE_TIME[complaint.current_stage])
-
-        elif complaint.current_stage == "Customer Feedback":
-
-            tat = timedelta(hours=STAGE_TIME[complaint.current_stage])
-
-        else:
-
-            tat = None
-
-
-        if tat:
-
-            due_date = complaint.created_at + tat
-
-            if timezone.now() > due_date:
-
-                complaint.overdue = "Yes"
-
-            else:
-
-                complaint.overdue = "No"
+            complaint.overdue = (
+                "Yes" if timezone.now() > due_time else "No"
+            )
 
         else:
 
             complaint.overdue = "No"
+
+    elif complaint.current_stage == "Estimate":
+
+        inspection = SiteInspection.objects.filter(
+            customer_query=complaint
+        ).first()
+
+        if inspection:
+
+            due_time = inspection.created_at + timedelta(hours=48)
+
+            complaint.overdue = (
+                "Yes" if timezone.now() > due_time else "No"
+            )
+
+        else:
+
+            complaint.overdue = "No"
+
+    elif complaint.current_stage == "Customer Approval":
+
+        estimate = EstimateForm.objects.filter(
+            customer_query=complaint
+        ).first()
+
+        if estimate:
+
+            due_time = estimate.created_at + timedelta(hours=24)
+
+            complaint.overdue = (
+                "Yes" if timezone.now() > due_time else "No"
+            )
+
+        else:
+
+            complaint.overdue = "No"
+
+    elif complaint.current_stage == "Advance Collection":
+
+        approval = CustomerApproval.objects.filter(
+            customer_query=complaint
+        ).first()
+
+        if approval:
+
+            due_time = approval.created_at + timedelta(hours=24)
+
+            complaint.overdue = (
+                "Yes" if timezone.now() > due_time else "No"
+            )
+
+        else:
+
+            complaint.overdue = "No"       
+ 
+    elif complaint.current_stage == "Material Availability":
+
+        advance = AdvanceCollection.objects.filter(
+            customer_query=complaint
+        ).first()
+
+        if advance:
+
+            due_time = advance.created_at + timedelta(hours=24)
+
+            complaint.overdue = (
+                "Yes" if timezone.now() > due_time else "No"
+            )
+
+        else:
+
+            complaint.overdue = "No"
+            
+    elif complaint.current_stage == "Raise Indent":
+
+        material = MaterialAvailability.objects.filter(
+            customer_query=complaint
+        ).first()
+
+        if material:
+
+            due_time = material.created_at + timedelta(hours=24)
+
+            complaint.overdue = (
+                "Yes" if timezone.now() > due_time else "No"
+            )
+
+        else:
+
+            complaint.overdue = "No"    
+            
+    elif complaint.current_stage == "Issue Material":
+
+        indent = RaiseIndent.objects.filter(
+            customer_query=complaint
+        ).first()
+
+        if indent:
+
+            due_time = indent.created_at + timedelta(hours=24)
+
+            complaint.overdue = (
+                "Yes" if timezone.now() > due_time else "No"
+            )
+
+        else:
+
+            complaint.overdue = "No"    
+            
+    elif complaint.current_stage == "Receive Material":
+
+        issue = IssueMaterial.objects.filter(
+            customer_query=complaint
+        ).first()
+
+        if issue:
+
+            due_time = issue.created_at + timedelta(hours=24)
+
+            complaint.overdue = (
+                "Yes" if timezone.now() > due_time else "No"
+            )
+
+        else:
+
+            complaint.overdue = "No"
+            
+    elif complaint.current_stage == "Query Closure":
+
+        receive = ReceiveMaterial.objects.filter(
+            customer_query=complaint
+        ).first()
+
+        if receive:
+
+            due_time = receive.created_at + timedelta(hours=24)
+
+            complaint.overdue = (
+                "Yes" if timezone.now() > due_time else "No"
+            )
+
+        else:
+
+            complaint.overdue = "No"
+            
+    # ==========================================
+    # COMPLETED CASE
+    # ==========================================
+
+    elif complaint.current_stage == "Completed":
+
+        complaint.pending_with = "-"
+
+        complaint.overdue = "No"
+
+    # ==========================================
+    # DEFAULT
+    # ==========================================
+
+    else:
+
+        complaint.pending_with = "-"
+
+        complaint.overdue = "No"
 
     # ==========================================
     # RECENT ESTIMATES
