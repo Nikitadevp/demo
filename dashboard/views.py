@@ -3052,9 +3052,9 @@ def maintenance_dashboard(request):
     # LATEST COMPLAINTS
     # ==========================================
 
-    latest_complaints = CustomerQuery.objects.order_by(
+    all_complaints = CustomerQuery.objects.order_by(
         "-created_at"
-    )[:10]
+    )
 
 
     # ==========================================
@@ -3227,7 +3227,7 @@ def maintenance_dashboard(request):
 
         # TABLES
 
-        "latest_complaints": latest_complaints,
+        "all_complaints": all_complaints,
         "recent_estimates": recent_estimates,
         "recent_approvals": recent_approvals,
 
@@ -3920,6 +3920,7 @@ def admin_dashboard(request):
         "material_available_no": material_available_no,
         "material_available_percent": material_available_percent,
         "material_pending_percent": material_pending_percent,
+        "all_complaints": all_complaints,
 
     }
 
