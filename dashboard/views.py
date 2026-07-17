@@ -3433,77 +3433,77 @@ def admin_dashboard(request):
         ).exists():
 
             complaint.current_stage = "Maintenance Scope"
-            complaint.pending_with = "Maintenance Incharge"
+            complaint.pending_with = "Dharmendra"
 
         elif not SiteInspection.objects.filter(
             customer_query=complaint
         ).exists():
 
             complaint.current_stage = "Site Inspection"
-            complaint.pending_with = "Site Engineer"
+            complaint.pending_with = "Dipesh Chaudhary"
 
         elif not EstimateForm.objects.filter(
             customer_query=complaint
         ).exists():
 
             complaint.current_stage = "Estimate"
-            complaint.pending_with = "CRM"
+            complaint.pending_with = "Varsha Sahu"
 
         elif not CustomerApproval.objects.filter(
             customer_query=complaint
         ).exists():
 
             complaint.current_stage = "Customer Approval"
-            complaint.pending_with = "CRM"
+            complaint.pending_with = "Varsha Sahu"
 
         elif not AdvanceCollection.objects.filter(
             customer_query=complaint
         ).exists():
 
             complaint.current_stage = "Advance Collection"
-            complaint.pending_with = "CRM"
+            complaint.pending_with = "Varsha Sahu"
 
         elif not MaterialAvailability.objects.filter(
             customer_query=complaint
         ).exists():
 
             complaint.current_stage = "Material Availability"
-            complaint.pending_with = "Store Incharge"
+            complaint.pending_with = "Bhola"
 
         elif not RaiseIndent.objects.filter(
             customer_query=complaint
         ).exists():
 
             complaint.current_stage = "Raise Indent"
-            complaint.pending_with = "Store Incharge"
+            complaint.pending_with = "Bhola"
 
         elif not IssueMaterial.objects.filter(
             customer_query=complaint
         ).exists():
 
             complaint.current_stage = "Issue Material"
-            complaint.pending_with = "Store Incharge"
+            complaint.pending_with = "Bhola"
 
         elif not ReceiveMaterial.objects.filter(
             customer_query=complaint
         ).exists():
 
             complaint.current_stage = "Receive Material"
-            complaint.pending_with = "Maintenance Incharge"
+            complaint.pending_with = "Dharmendra"
 
         elif not QueryCloser.objects.filter(
             customer_query=complaint
         ).exists():
 
             complaint.current_stage = "Query Closure"
-            complaint.pending_with = "Maintenance Incharge"
+            complaint.pending_with = "Dharmendra"
 
         elif not CustomerFeedback.objects.filter(
             customer_query=complaint
         ).exists():
 
             complaint.current_stage = "Customer Feedback"
-            complaint.pending_with = "CRM"    
+            complaint.pending_with = "Varsha Sahu"    
     
         # ==========================================
         # OVERDUE CALCULATION
