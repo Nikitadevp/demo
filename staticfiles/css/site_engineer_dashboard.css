@@ -135,21 +135,8 @@ Header
     color:#64748b;
 }
 
-.new-btn{
 
-    background:#0ea5e9;
-    color:#fff;
-    border:none;
-    padding:12px 22px;
-    border-radius:10px;
-    cursor:pointer;
-    transition:.3s;
-}
 
-.new-btn:hover{
-
-    background:#0284c7;
-}
 
 /*==========================================
     WELCOME CARD
@@ -778,6 +765,32 @@ button:hover{
         grid-template-columns:1fr;
 
     }
+
+}
+
+.logout-btn{
+
+    background:#dc3545;
+    color:white;
+    border:none;
+    padding:12px 22px;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:15px;
+    font-weight:600;
+    transition:0.3s;
+
+}
+
+.logout-btn:hover{
+
+    background:#bb2d3b;
+
+}
+
+.logout-btn i{
+
+    margin-right:8px;
 
 }
 
