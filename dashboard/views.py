@@ -2965,8 +2965,8 @@ def maintenance_dashboard(request):
     # WORKFLOW COUNTS
     # ==========================================
 
-  
-
+    
+    maintenance_scope = MaintenanceScope.objects.count()
     site_inspection = SiteInspection.objects.count()
 
     estimate_form = EstimateForm.objects.count()
@@ -2992,7 +2992,16 @@ def maintenance_dashboard(request):
     # PENDING STAGE COUNTS
     # ==========================================
 
-    
+    scope_pending = max(
+        total_queries - maintenance_scope,
+        0
+    )
+
+    inspection_pending = max(
+        maintenance_scope - site_inspection,
+        0
+    )
+
     estimate_pending = max(
         site_inspection - estimate_form,
         0
@@ -3191,7 +3200,6 @@ def maintenance_dashboard(request):
         # WORKFLOW
 
        
-        "site_inspection": site_inspection,
         "estimate_form": estimate_form,
         "customer_approval": customer_approval,
         "advance_collection": advance_collection,
@@ -3204,7 +3212,8 @@ def maintenance_dashboard(request):
 
         # PENDING
 
-     
+        "scope_pending": scope_pending,
+       
         "estimate_pending": estimate_pending,
         "approval_pending": approval_pending,
         "advance_pending": advance_pending,
@@ -3962,7 +3971,7 @@ def site_engineer_dashboard(request):
     # MAINTENANCE SCOPE
     # ==========================================
 
-    maintenance_scope = MaintenanceScope.objects.count()
+   
 
 
     # ==========================================
@@ -4001,13 +4010,7 @@ def site_engineer_dashboard(request):
     # WORKFLOW
     # ==========================================
 
-    site_inspection = total_site_inspection
-
-    inspection_pending = max(
-        maintenance_scope -
-        site_inspection,
-        0
-    )
+   
 
 
 
@@ -4036,13 +4039,7 @@ def site_engineer_dashboard(request):
     ).order_by("-created_at")[:10]
 
 
-    # ==========================================
-    # LATEST COMPLAINTS
-    # ==========================================
-    # ==========================================
-    # LATEST COMPLAINTS
-    # ==========================================
-
+   
    
 
 
@@ -4058,9 +4055,8 @@ def site_engineer_dashboard(request):
 
         # Workflow
 
-        "maintenance_scope": maintenance_scope,
-        "site_inspection": site_inspection,
-        "inspection_pending": inspection_pending,
+        
+       
 
         # Site Inspection Summary
 
