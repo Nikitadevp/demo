@@ -588,7 +588,7 @@
                         <th>Area</th>
                         <th>Issue</th>
                         <th>Status</th>
-                        <th>Date</th>
+                        <th>Query Raised On</th>
                         <th>Current Stage</th>
                         <th>Pending With</th>
                         <th>Over Due</th>
@@ -615,8 +615,8 @@
 
                         <td>{{ complaint.status }}</td>
 
-                        <td>{{ complaint.created_at|date:"d/m/y" }}</td>
-      
+                        <td>{{ complaint.created_at|date:"d/m/y h:i A" }}</td>
+
                         <td>{{ complaint.current_stage }}</td>
 
 
