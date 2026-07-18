@@ -81,8 +81,7 @@
 
            
 
-            
-
+           
         </ul>
 
     </aside>
@@ -112,14 +111,15 @@
 
             <div class="header-right">
 
-                <button class="new-btn">
+                <a href="{% url 'logout' %}">
 
-                    <i class="fa-solid fa-plus"></i>
+                     <button type="button" class="new-btn">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        Logout
 
-                    Site Inspection
-
-                </button>
-
+                
+                    </button>       
+               </a> 
             </div>
 
         </div>
@@ -187,12 +187,12 @@
 
                 </button>
 
-                <a href="{% url 'logout' %}">
+                <a href="{% url 'site_engineer_dashboard' %}">
 
-                     <button type="button" class="logout-btn">
+                    <button type="button">
 
-                        <i class="fa-solid fa-right-from-bracket"></i>
-                        Logout
+                        <i class="fa-solid fa-rotate"></i>
+
                     </button>
                 </a>    
             </form>
