@@ -4005,14 +4005,7 @@ def site_engineer_dashboard(request):
         material_required="Vendor Side"
     ).count()
 
-    under_scope = SiteInspection.objects.filter(
-        under_scope="Yes"
-    ).count()
-
-    out_scope = SiteInspection.objects.filter(
-        under_scope="No"
-    ).count()
-
+    
 
     # ==========================================
     # WORKFLOW
@@ -4091,8 +4084,7 @@ def site_engineer_dashboard(request):
         "material_not_required": material_not_required,
         "vendor_side": vendor_side,
 
-        "under_scope": under_scope,
-        "out_scope": out_scope,
+       
 
         # Tables
 
