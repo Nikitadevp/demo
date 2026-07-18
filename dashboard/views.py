@@ -3200,20 +3200,12 @@ def maintenance_dashboard(request):
         # WORKFLOW
 
        
-        "estimate_form": estimate_form,
-        "customer_approval": customer_approval,
-        "advance_collection": advance_collection,
-        "material_availability": material_availability,
-        "raise_indent": raise_indent,
-        "issue_material": issue_material,
-        "receive_material": receive_material,
-        "query_closer": query_closer,
-        "customer_feedback": customer_feedback,
+       
 
         # PENDING
 
         "scope_pending": scope_pending,
-       
+        "inspection_pending": inspection_pending,
         "estimate_pending": estimate_pending,
         "approval_pending": approval_pending,
         "advance_pending": advance_pending,
