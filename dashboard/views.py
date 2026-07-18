@@ -2965,8 +2965,8 @@ def maintenance_dashboard(request):
     # WORKFLOW COUNTS
     # ==========================================
 
-    
     maintenance_scope = MaintenanceScope.objects.count()
+
     site_inspection = SiteInspection.objects.count()
 
     estimate_form = EstimateForm.objects.count()
@@ -3972,7 +3972,7 @@ def site_engineer_dashboard(request):
     # MAINTENANCE SCOPE
     # ==========================================
 
-   
+    maintenance_scope = MaintenanceScope.objects.count()
 
 
     # ==========================================
@@ -4011,7 +4011,13 @@ def site_engineer_dashboard(request):
     # WORKFLOW
     # ==========================================
 
-   
+    site_inspection = total_site_inspection
+
+    inspection_pending = max(
+        maintenance_scope -
+        site_inspection,
+        0
+    )
 
 
 
@@ -4040,7 +4046,13 @@ def site_engineer_dashboard(request):
     ).order_by("-created_at")[:10]
 
 
-   
+    # ==========================================
+    # LATEST COMPLAINTS
+    # ==========================================
+    # ==========================================
+    # LATEST COMPLAINTS
+    # ==========================================
+
    
 
 
@@ -4056,8 +4068,9 @@ def site_engineer_dashboard(request):
 
         # Workflow
 
-        
-       
+        "maintenance_scope": maintenance_scope,
+        "site_inspection": site_inspection,
+        "inspection_pending": inspection_pending,
 
         # Site Inspection Summary
 
