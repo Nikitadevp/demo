@@ -286,13 +286,58 @@
 
 </div>
 
+<script>
+
+// =========================
+// Material Reason Show/Hide
+// =========================
+
+const radios = document.querySelectorAll(
+    'input[name="material_required"]'
+);
+
+const box = document.getElementById(
+    "materialReasonBox"
+);
+
+const textarea = document.getElementById(
+    "material_reason"
+);
+
+radios.forEach(function(radio){
+
+    radio.addEventListener("change", function(){
+
+        if(this.value == "Yes"){
+
+            box.style.display = "block";
+            textarea.required = true;
+
+        }
+
+        else{
+
+            box.style.display = "none";
+            textarea.required = false;
+            textarea.value = "";
+
+        }
+
+    });
+
+});
+
+</script>
+
+
 {% if popup_message %}
 
 <script>
 
 alert("{{ popup_message }}");
 
-window.location.href = "https://demo-project-gkaa.onrender.com/";
+// Redirect after clicking OK
+window.location.href = "{% url 'home' %}";
 
 </script>
 
