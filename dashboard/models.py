@@ -470,7 +470,10 @@ class SiteInspection(models.Model):
         choices=YES_NO_VENDOR
     )
 
-    
+    material_reason = models.TextField(
+    blank=True,
+    null=True
+    )
 
     days_required = models.IntegerField()
 
