@@ -4105,3 +4105,830 @@ def site_engineer_dashboard(request):
         "site_engineer_dashboard.html",
         context
     )
+
+
+
+
+
+
+def crm_dashboard(request):
+
+    # ==========================================
+    # LOGIN CHECK
+    # ==========================================
+
+    if "admin_id" not in request.session:
+        return redirect("login")
+
+    if request.session.get("admin_role") != "CRM":
+        return redirect("login")
+
+
+    # ==========================================
+    # CURRENT TIME
+    # ==========================================
+
+    now = timezone.now()
+   
+    # ==========================================
+    # SEARCH
+    # ==========================================
+
+    search = request.GET.get("search", "").strip()
+
+    tickets = CustomerQuery.objects.all()
+
+    if search:
+
+        tickets = tickets.filter(
+
+            Q(ticket_id__icontains=search) |
+
+            Q(name__icontains=search) |
+
+            Q(contact__icontains=search) |
+
+            Q(email__icontains=search) |
+
+            Q(tower__icontains=search) |
+
+            Q(area__icontains=search) |
+
+            Q(issue__icontains=search) |
+
+            Q(problem__icontains=search)
+
+        )
+   
+
+    # ==========================================
+    # DASHBOARD SUMMARY
+    # ==========================================
+
+    total_queries = tickets.count()
+
+    open_queries = tickets.filter(
+    status="Open"
+    ).count()
+    
+    pending_queries = tickets.filter(
+        status="Pending"
+    ).count()
+
+    inprogress_queries = tickets.filter(
+        status="In Progress"
+    ).count()
+
+    resolved_queries = tickets.filter(
+        status="Resolved"
+    ).count()
+
+    closed_queries = tickets.filter(
+        status="Closed"
+    ).count()
+
+
+    # ==========================================
+    # STAGE WISE COUNT
+    # ==========================================
+
+    total_scope = MaintenanceScope.objects.count()
+
+    total_inspection = SiteInspection.objects.count()
+
+    total_estimate = EstimateForm.objects.count()
+
+    total_approval = CustomerApproval.objects.count()
+
+    total_advance = AdvanceCollection.objects.count()
+
+    total_material = MaterialAvailability.objects.count()
+
+    total_indent = RaiseIndent.objects.count()
+
+    total_issue_material = IssueMaterial.objects.count()
+
+    total_receive_material = ReceiveMaterial.objects.count()
+
+    total_query_closer = QueryCloser.objects.count()
+
+    total_feedback = CustomerFeedback.objects.count()
+
+
+    # ==========================================
+    # PENDING STAGE COUNT
+    # ==========================================
+
+    scope_pending = CustomerQuery.objects.filter(
+        maintenancescope__isnull=True
+    ).count()
+
+    inspection_pending = MaintenanceScope.objects.filter(
+        siteinspection__isnull=True
+    ).count()
+
+    estimate_pending = SiteInspection.objects.filter(
+        estimateform__isnull=True
+    ).count()
+
+    approval_pending = EstimateForm.objects.filter(
+        customerapproval__isnull=True
+    ).count()
+
+    advance_pending = CustomerApproval.objects.filter(
+        advancecollection__isnull=True
+    ).count()
+
+    material_pending = AdvanceCollection.objects.filter(
+        materialavailability__isnull=True
+    ).count()
+
+    indent_pending = MaterialAvailability.objects.filter(
+        raiseindent__isnull=True
+    ).count()
+
+    issue_material_pending = RaiseIndent.objects.filter(
+        issuematerial__isnull=True
+    ).count()
+
+    receive_material_pending = IssueMaterial.objects.filter(
+        receivematerial__isnull=True
+    ).count()
+
+    closer_pending = ReceiveMaterial.objects.filter(
+        querycloser__isnull=True
+    ).count()
+
+    feedback_pending = QueryCloser.objects.filter(
+        customerfeedback__isnull=True
+    ).count()
+
+
+    # ==========================================
+    # OVERDUE COUNTER
+    # ==========================================
+
+    overdue_count = 0
+
+
+    # ==========================================
+    # DUE TODAY COUNTER
+    # ==========================================
+
+    due_today = 0
+
+
+    # ==========================================
+    # TODAY COMPLETED
+    # ==========================================
+
+    completed_today = CustomerFeedback.objects.filter(
+        created_at__date=now.date()
+    ).count()
+
+
+    # ==========================================
+    # MASTER CRM TABLE
+    # PART-2 ME YAHI SE START HOGA
+    # ==========================================
+
+    ticket_data = []
+    
+
+    tickets = tickets.order_by("-created_at")
+
+    for ticket in tickets:
+
+        # ==========================================
+        # DEFAULT VALUES
+        # ==========================================
+
+        current_stage = "S0"
+        current_stage_name = "Customer Query"
+
+        pending_with = "CRM"
+
+        stage_start = ticket.created_at
+
+        current_object = ticket
+
+
+        # ==========================================
+        # CUSTOMER DETAILS
+        # ==========================================
+
+        customer_name = ticket.name
+
+        customer_email = ticket.email
+
+        customer_contact = ticket.contact
+
+        ticket_id = ticket.ticket_id
+
+        tower = ticket.tower
+
+        area = ticket.area
+
+        issue = ticket.issue
+
+        problem = ticket.problem
+
+        status = ticket.status
+
+        photo = ticket.photo
+
+        query_date = ticket.created_at.date()
+
+        query_time = ticket.created_at.strftime("%I:%M %p")
+
+
+        # ==========================================
+        # CHECK S1
+        # ==========================================
+
+        try:
+
+            scope = MaintenanceScope.objects.get(
+                customer_query=ticket
+            )
+
+            current_stage = "S1"
+
+            current_stage_name = "Scope Check"
+
+            pending_with = "CRM"
+
+            stage_start = scope.created_at
+
+            current_object = scope
+
+        except MaintenanceScope.DoesNotExist:
+
+            pass
+
+
+        # ==========================================
+        # CHECK S2
+        # ==========================================
+
+        try:
+
+            inspection = SiteInspection.objects.get(
+                customer_query=ticket
+            )
+
+            current_stage = "S2"
+
+            current_stage_name = "Site Inspection"
+
+            pending_with = "Site Engineer"
+
+            stage_start = inspection.created_at
+
+            current_object = inspection
+
+        except SiteInspection.DoesNotExist:
+
+            pass
+
+
+        # ==========================================
+        # CHECK S3
+        # ==========================================
+
+        try:
+
+            estimate = EstimateForm.objects.get(
+                customer_query=ticket
+            )
+
+            current_stage = "S3"
+
+            current_stage_name = "Estimate"
+
+            pending_with = "CRM"
+
+            stage_start = estimate.created_at
+
+            current_object = estimate
+
+        except EstimateForm.DoesNotExist:
+
+            pass
+
+
+        # ==========================================
+        # CHECK S4
+        # ==========================================
+
+        try:
+
+            approval = CustomerApproval.objects.get(
+                customer_query=ticket
+            )
+
+            current_stage = "S4"
+
+            current_stage_name = "Customer Approval"
+
+            pending_with = "CRM"
+
+            stage_start = approval.created_at
+
+            current_object = approval
+
+        except CustomerApproval.DoesNotExist:
+
+            pass
+
+
+        # ==========================================
+        # CHECK S5
+        # ==========================================
+
+        try:
+
+            advance = AdvanceCollection.objects.get(
+                customer_query=ticket
+            )
+
+            current_stage = "S5"
+
+            current_stage_name = "Advance Collection"
+
+            pending_with = "CRM"
+
+            stage_start = advance.created_at
+
+            current_object = advance
+
+        except AdvanceCollection.DoesNotExist:
+
+            pass
+    
+
+            # ==========================================
+        # CHECK S6
+        # ==========================================
+
+        try:
+
+            material = MaterialAvailability.objects.get(
+                customer_query=ticket
+            )
+
+            current_stage = "S6"
+
+            current_stage_name = "Material Availability"
+
+            pending_with = "Store Keeper"
+
+            stage_start = material.created_at
+
+            current_object = material
+
+        except MaterialAvailability.DoesNotExist:
+
+            pass
+
+
+        # ==========================================
+        # CHECK S7
+        # ==========================================
+
+        try:
+
+            indent = RaiseIndent.objects.get(
+                customer_query=ticket
+            )
+
+            current_stage = "S7"
+
+            current_stage_name = "Raise Indent"
+
+            pending_with = "Store Keeper"
+
+            stage_start = indent.created_at
+
+            current_object = indent
+
+        except RaiseIndent.DoesNotExist:
+
+            pass
+
+
+        # ==========================================
+        # CHECK S8
+        # ==========================================
+
+        try:
+
+            issue_material = IssueMaterial.objects.get(
+                customer_query=ticket
+            )
+
+            current_stage = "S8"
+
+            current_stage_name = "Issue Material"
+
+            pending_with = "Store Keeper"
+
+            stage_start = issue_material.created_at
+
+            current_object = issue_material
+
+        except IssueMaterial.DoesNotExist:
+
+            pass
+
+
+        # ==========================================
+        # CHECK S9
+        # ==========================================
+
+        try:
+
+            receive = ReceiveMaterial.objects.get(
+                customer_query=ticket
+            )
+
+            current_stage = "S9"
+
+            current_stage_name = "Receive Material"
+
+            pending_with = "Maintenance"
+
+            stage_start = receive.created_at
+
+            current_object = receive
+
+        except ReceiveMaterial.DoesNotExist:
+
+            pass
+
+
+        # ==========================================
+        # CHECK S10
+        # ==========================================
+
+        try:
+
+            closer = QueryCloser.objects.get(
+                customer_query=ticket
+            )
+
+            current_stage = "S10"
+
+            current_stage_name = "Query Closure"
+
+            pending_with = "Maintenance"
+
+            stage_start = closer.created_at
+
+            current_object = closer
+
+        except QueryCloser.DoesNotExist:
+
+            pass
+
+
+        # ==========================================
+        # CHECK S11
+        # ==========================================
+
+        try:
+
+            feedback = CustomerFeedback.objects.get(
+                customer_query=ticket
+            )
+
+            current_stage = "S11"
+
+            current_stage_name = "Customer Feedback"
+
+            pending_with = "CRM"
+
+            stage_start = feedback.created_at
+
+            current_object = feedback
+
+        except CustomerFeedback.DoesNotExist:
+
+            pass
+
+
+        # ==========================================
+        # STAGE DUE TIME
+        # ==========================================
+
+        if current_stage == "S1":
+
+            due_time = stage_start + timedelta(hours=3)
+
+        elif current_stage == "S2":
+
+            due_time = stage_start + timedelta(days=1)
+
+        elif current_stage == "S3":
+
+            due_time = stage_start + timedelta(hours=6)
+
+        elif current_stage == "S4":
+
+            due_time = stage_start + timedelta(hours=6)
+
+        elif current_stage == "S5":
+
+            due_time = stage_start + timedelta(days=1)
+
+        elif current_stage == "S6":
+
+            due_time = stage_start + timedelta(hours=2)
+
+        elif current_stage == "S7":
+
+            due_time = stage_start + timedelta(days=2)
+
+        elif current_stage == "S8":
+
+            due_time = stage_start + timedelta(hours=1)
+
+        elif current_stage == "S9":
+
+            due_time = stage_start + timedelta(days=1)
+
+        elif current_stage == "S10":
+
+            due_time = stage_start + timedelta(days=4)
+
+        elif current_stage == "S11":
+
+            next_day = stage_start + timedelta(days=1)
+
+            due_time = next_day.replace(
+                hour=18,
+                minute=0,
+                second=0,
+                microsecond=0
+            )
+
+        else:
+
+            due_time = stage_start
+
+
+        # ==========================================
+        # REMAINING TIME
+        # ==========================================
+
+        if now > due_time:
+
+            overdue = True
+
+            overdue_count += 1
+
+            remaining_time = "Overdue"
+
+        else:
+
+            overdue = False
+
+            balance = due_time - now
+
+            days = balance.days
+
+            hours = balance.seconds // 3600
+
+            minutes = (balance.seconds % 3600) // 60
+
+            remaining_time = f"{days}D {hours}H {minutes}M"
+
+
+        # ==========================================
+        # DUE TODAY
+        # ==========================================
+
+        if due_time.date() == now.date():
+
+            due_today += 1
+            
+
+
+            # ==========================================
+        # STAGE COLOR
+        # ==========================================
+
+        if overdue:
+
+            stage_color = "danger"
+
+        elif due_time.date() == now.date():
+
+            stage_color = "warning"
+
+        else:
+
+            stage_color = "success"
+
+
+        # ==========================================
+        # STAGE PROGRESS
+        # ==========================================
+
+        progress = {
+
+            "S0": 0,
+            "S1": 10,
+            "S2": 20,
+            "S3": 30,
+            "S4": 40,
+            "S5": 50,
+            "S6": 60,
+            "S7": 70,
+            "S8": 80,
+            "S9": 90,
+            "S10": 95,
+            "S11": 100,
+
+        }.get(current_stage, 100)
+
+
+        # ==========================================
+        # TIMELINE
+        # ==========================================
+
+        timeline = {
+
+            "S0": current_stage != "S0",
+            "S1": current_stage not in ["S0", "S1"],
+            "S2": current_stage not in ["S0", "S1", "S2"],
+            "S3": current_stage not in ["S0", "S1", "S2", "S3"],
+            "S4": current_stage not in ["S0", "S1", "S2", "S3", "S4"],
+            "S5": current_stage not in ["S0", "S1", "S2", "S3", "S4", "S5"],
+            "S6": current_stage not in ["S0", "S1", "S2", "S3", "S4", "S5", "S6"],
+            "S7": current_stage not in ["S0", "S1", "S2", "S3", "S4", "S5", "S6", "S7"],
+            "S8": current_stage not in ["S0", "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8"],
+            "S9": current_stage not in ["S0", "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9"],
+            "S10": current_stage not in ["S0", "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10"],
+            "S11": current_stage == "Completed",
+
+        }
+
+
+        # ==========================================
+        # MASTER TABLE DATA
+        # ==========================================
+
+        ticket_data.append({
+
+            "ticket_id": ticket_id,
+
+            "customer_name": customer_name,
+
+            "customer_email": customer_email,
+
+            "customer_contact": customer_contact,
+
+            "tower": tower,
+
+            "area": area,
+
+            "issue": issue,
+
+            "problem": problem,
+
+            "photo": photo,
+
+            "status": status,
+
+            "query_date": query_date,
+
+            "query_time": query_time,
+
+            "current_stage": current_stage,
+
+            "current_stage_name": current_stage_name,
+
+            "pending_with": pending_with,
+
+            "stage_start": stage_start,
+
+            "due_time": due_time,
+
+            "remaining_time": remaining_time,
+
+            "overdue": overdue,
+
+            "stage_color": stage_color,
+
+            "progress": progress,
+
+            "timeline": timeline,
+
+        })
+
+
+    # ==========================================
+    # OVERDUE TICKETS
+    # ==========================================
+
+    overdue_tickets = [
+
+        ticket for ticket in ticket_data
+
+        if ticket["overdue"]
+
+    ]
+
+
+    # ==========================================
+    # DUE TODAY TICKETS
+    # ==========================================
+
+    due_today_tickets = [
+
+        ticket for ticket in ticket_data
+
+        if ticket["due_time"].date() == now.date()
+
+    ]
+
+
+    # ==========================================
+    # SORT MASTER TABLE
+    # ==========================================
+
+    ticket_data = sorted(
+
+        ticket_data,
+
+        key=lambda x: x["query_date"],
+
+        reverse=True
+
+    )
+
+
+    # ==========================================
+    # CONTEXT
+    # ==========================================
+
+    context = {
+
+        # Dashboard Summary
+
+        "total_queries": total_queries,
+        "open_queries": open_queries,
+        "pending_queries": pending_queries,
+        "inprogress_queries": inprogress_queries,
+        "resolved_queries": resolved_queries,
+        "closed_queries": closed_queries,
+
+
+        # Stage Count
+
+        "total_scope": total_scope,
+        "total_inspection": total_inspection,
+        "total_estimate": total_estimate,
+        "total_approval": total_approval,
+        "total_advance": total_advance,
+        "total_material": total_material,
+        "total_indent": total_indent,
+        "total_issue_material": total_issue_material,
+        "total_receive_material": total_receive_material,
+        "total_query_closer": total_query_closer,
+        "total_feedback": total_feedback,
+
+
+        # Pending Stage
+
+        "scope_pending": scope_pending,
+        "inspection_pending": inspection_pending,
+        "estimate_pending": estimate_pending,
+        "approval_pending": approval_pending,
+        "advance_pending": advance_pending,
+        "material_pending": material_pending,
+        "indent_pending": indent_pending,
+        "issue_material_pending": issue_material_pending,
+        "receive_material_pending": receive_material_pending,
+        "closer_pending": closer_pending,
+        "feedback_pending": feedback_pending,
+
+
+        # Dashboard
+
+        "overdue_count": overdue_count,
+        "due_today": due_today,
+        "completed_today": completed_today,
+
+        # Table
+
+        "ticket_data": ticket_data,
+
+    }
+
+    return render(
+        request,
+        "crm_dashboard.html",
+        context
+    )
