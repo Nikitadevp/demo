@@ -2166,7 +2166,9 @@ def site_inspection_form(request, query_id):
                 "material_required"
             ),
 
-            
+            material_reason=request.POST.get(
+                "material_reason"
+            ),
 
             days_required=request.POST.get(
                 "days_required"
