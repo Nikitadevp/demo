@@ -4220,7 +4220,7 @@ def crm_dashboard(request):
     # ==========================================
 
     scope_pending = CustomerQuery.objects.filter(
-        maintenancescope__isnull=True
+        scope_form__isnull=True
     ).count()
 
     inspection_pending = MaintenanceScope.objects.filter(
