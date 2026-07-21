@@ -4229,7 +4229,7 @@ def crm_dashboard(request):
     ).count()
 
     estimate_pending = SiteInspection.objects.filter(
-        estimateform__isnull=True
+        customer_query__estimateform__isnull=True
     ).count()
 
     approval_pending = EstimateForm.objects.filter(
