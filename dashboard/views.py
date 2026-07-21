@@ -4218,52 +4218,86 @@ def crm_dashboard(request):
     # ==========================================
     # PENDING STAGE COUNT
     # ==========================================
-
+    # S1 Pending (Customer Query -> Maintenance Scope)
     scope_pending = CustomerQuery.objects.filter(
         scope_form__isnull=True
     ).count()
 
-    inspection_pending = CustomerQuery.objects.filter(
-        scope_form__isnull=False,
-        siteinspection__isnull=True
-    ).count()
+    inspection_pending = 0
+    for scope in MaintenanceScope.objects.all():
+        if not SiteInspection.objects.filter(
+            customer_query=scope.customer_query
+        ).exists():
+            inspection_pending += 1
+            
+    # S3 Pending (Site Inspection -> Estimate)
 
-    estimate_pending = SiteInspection.objects.filter(
-        customer_query__estimateform__isnull=True
-    ).count()
+    estimate_pending = 0
+    for inspection in SiteInspection.objects.all():
+        if not EstimateForm.objects.filter(
+            customer_query=inspection.customer_query
+        ).exists():
+            estimate_pending += 1
+    
 
-    approval_pending = EstimateForm.objects.filter(
-        customerapproval__isnull=True
-    ).count()
+    approval_pending = 0
+    for estimate in EstimateForm.objects.all():
+        if not CustomerApproval.objects.filter(
+            customer_query=estimate.customer_query
+        ).exists():
+            approval_pending += 1   
+       
+    advance_pending = 0
+    for approval in CustomerApproval.objects.all():
+        if not AdvanceCollection.objects.filter(
+            customer_query=approval.customer_query
+        ).exists():
+            advance_pending += 1
 
-    advance_pending = CustomerApproval.objects.filter(
-        advancecollection__isnull=True
-    ).count()
+    material_pending = 0
+    for advance in AdvanceCollection.objects.all():
+        if not MaterialAvailability.objects.filter(
+            customer_query=advance.customer_query
+        ).exists():
+            material_pending += 1
+    
 
-    material_pending = AdvanceCollection.objects.filter(
-        materialavailability__isnull=True
-    ).count()
+    indent_pending = 0
+    for material in MaterialAvailability.objects.all():
+        if not RaiseIndent.objects.filter(
+            customer_query=material.customer_query
+        ).exists():
+            indent_pending += 1
 
-    indent_pending = MaterialAvailability.objects.filter(
-        raiseindent__isnull=True
-    ).count()
+    issue_material_pending = 0
+    for indent in RaiseIndent.objects.all():
+        if not IssueMaterial.objects.filter(
+            customer_query=indent.customer_query
+        ).exists():
+            issue_material_pending += 1
 
-    issue_material_pending = RaiseIndent.objects.filter(
-        issuematerial__isnull=True
-    ).count()
+    receive_material_pending = 0
+    for issue_material in IssueMaterial.objects.all():
+        if not ReceiveMaterial.objects.filter(
+            customer_query=issue_material.customer_query
+        ).exists():
+            receive_material_pending += 1
 
-    receive_material_pending = IssueMaterial.objects.filter(
-        receivematerial__isnull=True
-    ).count()
+    closer_pending = 0
+    for receive_material in ReceiveMaterial.objects.all():
+        if not QueryCloser.objects.filter(
+            customer_query=receive_material.customer_query
+        ).exists():
+            closer_pending += 1
 
-    closer_pending = ReceiveMaterial.objects.filter(
-        querycloser__isnull=True
-    ).count()
+    # S11 Pending (Query Closer -> Customer Feedback)
+    feedback_pending = 0
 
-    feedback_pending = QueryCloser.objects.filter(
-        customerfeedback__isnull=True
-    ).count()
-
+    for closer in QueryCloser.objects.all():
+        if not CustomerFeedback.objects.filter(
+            customer_query=closer.customer_query
+        ).exists():
+            feedback_pending += 1       
 
     # ==========================================
     # OVERDUE COUNT
