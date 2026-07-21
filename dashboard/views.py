@@ -4110,7 +4110,6 @@ def site_engineer_dashboard(request):
 
 
 
-
 def crm_dashboard(request):
 
     # ==========================================
@@ -4129,7 +4128,8 @@ def crm_dashboard(request):
     # ==========================================
 
     now = timezone.now()
-   
+
+
     # ==========================================
     # SEARCH
     # ==========================================
@@ -4159,7 +4159,7 @@ def crm_dashboard(request):
             Q(problem__icontains=search)
 
         )
-   
+
 
     # ==========================================
     # DASHBOARD SUMMARY
@@ -4168,9 +4168,9 @@ def crm_dashboard(request):
     total_queries = tickets.count()
 
     open_queries = tickets.filter(
-    status="Open"
+        status="Open"
     ).count()
-    
+
     pending_queries = tickets.filter(
         status="Pending"
     ).count()
@@ -4265,14 +4265,14 @@ def crm_dashboard(request):
 
 
     # ==========================================
-    # OVERDUE COUNTER
+    # OVERDUE COUNT
     # ==========================================
 
     overdue_count = 0
 
 
     # ==========================================
-    # DUE TODAY COUNTER
+    # DUE TODAY COUNT
     # ==========================================
 
     due_today = 0
@@ -4288,22 +4288,26 @@ def crm_dashboard(request):
 
 
     # ==========================================
-    # MASTER CRM TABLE
-    # PART-2 ME YAHI SE START HOGA
+    # MASTER TABLE LIST
     # ==========================================
 
     ticket_data = []
-    
 
     tickets = tickets.order_by("-created_at")
 
+    # ==========================================
+    # LOOP THROUGH ALL TICKETS
+    # ==========================================
+
     for ticket in tickets:
+
 
         # ==========================================
         # DEFAULT VALUES
         # ==========================================
 
         current_stage = "S0"
+
         current_stage_name = "Customer Query"
 
         pending_with = "CRM"
@@ -4339,11 +4343,28 @@ def crm_dashboard(request):
 
         query_date = ticket.created_at.date()
 
-        query_time = ticket.created_at.strftime("%I:%M %p")
+        query_time = ticket.created_at.strftime("%d-%m-%Y %I:%M %p")
 
 
         # ==========================================
-        # CHECK S1
+        # DEFAULT STAGE VALUES
+        # ==========================================
+
+        due_time = ticket.created_at
+
+        remaining_time = ""
+
+        overdue = False
+
+        stage_color = "success"
+
+        progress = 0
+
+        timeline = {}
+        
+
+        # ==========================================
+        # CHECK S1 - MAINTENANCE SCOPE
         # ==========================================
 
         try:
@@ -4354,7 +4375,7 @@ def crm_dashboard(request):
 
             current_stage = "S1"
 
-            current_stage_name = "Scope Check"
+            current_stage_name = "Maintenance Scope"
 
             pending_with = "CRM"
 
@@ -4364,11 +4385,11 @@ def crm_dashboard(request):
 
         except MaintenanceScope.DoesNotExist:
 
-            pass
+            scope = None
 
 
         # ==========================================
-        # CHECK S2
+        # CHECK S2 - SITE INSPECTION
         # ==========================================
 
         try:
@@ -4389,11 +4410,11 @@ def crm_dashboard(request):
 
         except SiteInspection.DoesNotExist:
 
-            pass
+            inspection = None
 
 
         # ==========================================
-        # CHECK S3
+        # CHECK S3 - ESTIMATE FORM
         # ==========================================
 
         try:
@@ -4404,7 +4425,7 @@ def crm_dashboard(request):
 
             current_stage = "S3"
 
-            current_stage_name = "Estimate"
+            current_stage_name = "Estimate Form"
 
             pending_with = "CRM"
 
@@ -4414,11 +4435,11 @@ def crm_dashboard(request):
 
         except EstimateForm.DoesNotExist:
 
-            pass
+            estimate = None
 
 
         # ==========================================
-        # CHECK S4
+        # CHECK S4 - CUSTOMER APPROVAL
         # ==========================================
 
         try:
@@ -4431,7 +4452,7 @@ def crm_dashboard(request):
 
             current_stage_name = "Customer Approval"
 
-            pending_with = "CRM"
+            pending_with = "Customer"
 
             stage_start = approval.created_at
 
@@ -4439,11 +4460,11 @@ def crm_dashboard(request):
 
         except CustomerApproval.DoesNotExist:
 
-            pass
+            approval = None
 
 
         # ==========================================
-        # CHECK S5
+        # CHECK S5 - ADVANCE COLLECTION
         # ==========================================
 
         try:
@@ -4456,7 +4477,7 @@ def crm_dashboard(request):
 
             current_stage_name = "Advance Collection"
 
-            pending_with = "CRM"
+            pending_with = "Accounts"
 
             stage_start = advance.created_at
 
@@ -4464,11 +4485,11 @@ def crm_dashboard(request):
 
         except AdvanceCollection.DoesNotExist:
 
-            pass
-    
+            advance = None
+            
 
-            # ==========================================
-        # CHECK S6
+        # ==========================================
+        # CHECK S6 - MATERIAL AVAILABILITY
         # ==========================================
 
         try:
@@ -4489,11 +4510,11 @@ def crm_dashboard(request):
 
         except MaterialAvailability.DoesNotExist:
 
-            pass
+            material = None
 
 
         # ==========================================
-        # CHECK S7
+        # CHECK S7 - RAISE INDENT
         # ==========================================
 
         try:
@@ -4514,11 +4535,11 @@ def crm_dashboard(request):
 
         except RaiseIndent.DoesNotExist:
 
-            pass
+            indent = None
 
 
         # ==========================================
-        # CHECK S8
+        # CHECK S8 - ISSUE MATERIAL
         # ==========================================
 
         try:
@@ -4539,11 +4560,11 @@ def crm_dashboard(request):
 
         except IssueMaterial.DoesNotExist:
 
-            pass
+            issue_material = None
 
 
         # ==========================================
-        # CHECK S9
+        # CHECK S9 - RECEIVE MATERIAL
         # ==========================================
 
         try:
@@ -4564,11 +4585,11 @@ def crm_dashboard(request):
 
         except ReceiveMaterial.DoesNotExist:
 
-            pass
+            receive = None
 
 
         # ==========================================
-        # CHECK S10
+        # CHECK S10 - QUERY CLOSER
         # ==========================================
 
         try:
@@ -4589,11 +4610,11 @@ def crm_dashboard(request):
 
         except QueryCloser.DoesNotExist:
 
-            pass
+            closer = None
 
 
         # ==========================================
-        # CHECK S11
+        # CHECK S11 - CUSTOMER FEEDBACK
         # ==========================================
 
         try:
@@ -4614,14 +4635,17 @@ def crm_dashboard(request):
 
         except CustomerFeedback.DoesNotExist:
 
-            pass
-
-
+            feedback = None
+            
         # ==========================================
         # STAGE DUE TIME
         # ==========================================
 
-        if current_stage == "S1":
+        if current_stage == "S0":
+
+            due_time = stage_start + timedelta(hours=3)
+
+        elif current_stage == "S1":
 
             due_time = stage_start + timedelta(hours=3)
 
@@ -4663,14 +4687,7 @@ def crm_dashboard(request):
 
         elif current_stage == "S11":
 
-            next_day = stage_start + timedelta(days=1)
-
-            due_time = next_day.replace(
-                hour=18,
-                minute=0,
-                second=0,
-                microsecond=0
-            )
+            due_time = stage_start + timedelta(days=1)
 
         else:
 
@@ -4711,10 +4728,9 @@ def crm_dashboard(request):
         if due_time.date() == now.date():
 
             due_today += 1
-            
 
 
-            # ==========================================
+        # ==========================================
         # STAGE COLOR
         # ==========================================
 
@@ -4750,27 +4766,113 @@ def crm_dashboard(request):
             "S10": 95,
             "S11": 100,
 
-        }.get(current_stage, 100)
-
+        }.get(current_stage, 0)
+        
 
         # ==========================================
-        # TIMELINE
+        # STAGE TIMELINE
         # ==========================================
 
         timeline = {
 
             "S0": current_stage != "S0",
-            "S1": current_stage not in ["S0", "S1"],
-            "S2": current_stage not in ["S0", "S1", "S2"],
-            "S3": current_stage not in ["S0", "S1", "S2", "S3"],
-            "S4": current_stage not in ["S0", "S1", "S2", "S3", "S4"],
-            "S5": current_stage not in ["S0", "S1", "S2", "S3", "S4", "S5"],
-            "S6": current_stage not in ["S0", "S1", "S2", "S3", "S4", "S5", "S6"],
-            "S7": current_stage not in ["S0", "S1", "S2", "S3", "S4", "S5", "S6", "S7"],
-            "S8": current_stage not in ["S0", "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8"],
-            "S9": current_stage not in ["S0", "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9"],
-            "S10": current_stage not in ["S0", "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10"],
-            "S11": current_stage == "Completed",
+
+            "S1": current_stage not in [
+                "S0",
+                "S1"
+            ],
+
+            "S2": current_stage not in [
+                "S0",
+                "S1",
+                "S2"
+            ],
+
+            "S3": current_stage not in [
+                "S0",
+                "S1",
+                "S2",
+                "S3"
+            ],
+
+            "S4": current_stage not in [
+                "S0",
+                "S1",
+                "S2",
+                "S3",
+                "S4"
+            ],
+
+            "S5": current_stage not in [
+                "S0",
+                "S1",
+                "S2",
+                "S3",
+                "S4",
+                "S5"
+            ],
+
+            "S6": current_stage not in [
+                "S0",
+                "S1",
+                "S2",
+                "S3",
+                "S4",
+                "S5",
+                "S6"
+            ],
+
+            "S7": current_stage not in [
+                "S0",
+                "S1",
+                "S2",
+                "S3",
+                "S4",
+                "S5",
+                "S6",
+                "S7"
+            ],
+
+            "S8": current_stage not in [
+                "S0",
+                "S1",
+                "S2",
+                "S3",
+                "S4",
+                "S5",
+                "S6",
+                "S7",
+                "S8"
+            ],
+
+            "S9": current_stage not in [
+                "S0",
+                "S1",
+                "S2",
+                "S3",
+                "S4",
+                "S5",
+                "S6",
+                "S7",
+                "S8",
+                "S9"
+            ],
+
+            "S10": current_stage not in [
+                "S0",
+                "S1",
+                "S2",
+                "S3",
+                "S4",
+                "S5",
+                "S6",
+                "S7",
+                "S8",
+                "S9",
+                "S10"
+            ],
+
+            "S11": current_stage == "S11",
 
         }
 
@@ -4834,7 +4936,9 @@ def crm_dashboard(request):
 
     overdue_tickets = [
 
-        ticket for ticket in ticket_data
+        ticket
+
+        for ticket in ticket_data
 
         if ticket["overdue"]
 
@@ -4847,7 +4951,9 @@ def crm_dashboard(request):
 
     due_today_tickets = [
 
-        ticket for ticket in ticket_data
+        ticket
+
+        for ticket in ticket_data
 
         if ticket["due_time"].date() == now.date()
 
@@ -4855,19 +4961,19 @@ def crm_dashboard(request):
 
 
     # ==========================================
-    # SORT MASTER TABLE
+    # SORT TABLE
     # ==========================================
 
     ticket_data = sorted(
 
         ticket_data,
 
-        key=lambda x: x["query_date"],
+        key=lambda x: x["stage_start"],
 
         reverse=True
 
     )
-
+    
 
     # ==========================================
     # CONTEXT
@@ -4875,60 +4981,118 @@ def crm_dashboard(request):
 
     context = {
 
-        # Dashboard Summary
+        # ==========================================
+        # SEARCH
+        # ==========================================
+
+        "search": search,
+
+
+        # ==========================================
+        # DASHBOARD SUMMARY
+        # ==========================================
 
         "total_queries": total_queries,
+
         "open_queries": open_queries,
+
         "pending_queries": pending_queries,
+
         "inprogress_queries": inprogress_queries,
+
         "resolved_queries": resolved_queries,
+
         "closed_queries": closed_queries,
 
 
-        # Stage Count
+        # ==========================================
+        # STAGE COUNT
+        # ==========================================
 
         "total_scope": total_scope,
+
         "total_inspection": total_inspection,
+
         "total_estimate": total_estimate,
+
         "total_approval": total_approval,
+
         "total_advance": total_advance,
+
         "total_material": total_material,
+
         "total_indent": total_indent,
+
         "total_issue_material": total_issue_material,
+
         "total_receive_material": total_receive_material,
+
         "total_query_closer": total_query_closer,
+
         "total_feedback": total_feedback,
 
 
-        # Pending Stage
+        # ==========================================
+        # PENDING STAGE COUNT
+        # ==========================================
 
         "scope_pending": scope_pending,
+
         "inspection_pending": inspection_pending,
+
         "estimate_pending": estimate_pending,
+
         "approval_pending": approval_pending,
+
         "advance_pending": advance_pending,
+
         "material_pending": material_pending,
+
         "indent_pending": indent_pending,
+
         "issue_material_pending": issue_material_pending,
+
         "receive_material_pending": receive_material_pending,
+
         "closer_pending": closer_pending,
+
         "feedback_pending": feedback_pending,
 
 
-        # Dashboard
+        # ==========================================
+        # DASHBOARD CARDS
+        # ==========================================
 
         "overdue_count": overdue_count,
+
         "due_today": due_today,
+
         "completed_today": completed_today,
 
-        # Table
+
+        # ==========================================
+        # TABLE DATA
+        # ==========================================
 
         "ticket_data": ticket_data,
 
+        "overdue_tickets": overdue_tickets,
+
+        "due_today_tickets": due_today_tickets,
+
     }
 
+
+    # ==========================================
+    # RENDER PAGE
+    # ==========================================
+
     return render(
+
         request,
+
         "crm_dashboard.html",
+
         context
+
     )
