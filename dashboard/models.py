@@ -314,8 +314,6 @@ class CustomerQuery(models.Model):
 
         return f"{self.ticket_id} - {self.name}"  
 
-
-
 class MaintenanceScope(models.Model):
 
     SCOPE_CHOICES = [
@@ -390,6 +388,18 @@ class MaintenanceScope(models.Model):
     reason = models.TextField(
         blank=True,
         null=True
+    )
+
+    # ====================================
+    # TIME
+    # ====================================
+
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    updated_at = models.DateTimeField(
+        auto_now=True
     )
 
     @property
