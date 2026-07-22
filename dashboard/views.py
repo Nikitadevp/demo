@@ -4881,7 +4881,7 @@ def crm_dashboard(request):
 
         request,
 
-        "crm/crm_dashboard.html",
+        "crm_dashboard.html",
 
         context,
 
