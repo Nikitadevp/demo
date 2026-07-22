@@ -5,702 +5,1137 @@
 <head>
 
     <!-- ========================================================= -->
-    <!-- PAGE TITLE -->
+    <!-- META -->
     <!-- ========================================================= -->
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <!-- ========================================================= -->
+    <!-- TITLE -->
+    <!-- ========================================================= -->
+
     <title>CRM Dashboard</title>
 
     <!-- ========================================================= -->
-    <!-- Bootstrap Icons -->
+    <!-- BOOTSTRAP -->
+    <!-- ========================================================= -->
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- ========================================================= -->
+    <!-- FONT AWESOME -->
     <!-- ========================================================= -->
 
     <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
     <!-- ========================================================= -->
-    <!-- CSS FILE -->
-    <!-- Is CSS file ko baad me banayenge -->
+    <!-- CSS -->
     <!-- ========================================================= -->
 
-    <link rel="stylesheet" href="{% static 'css/crm_dashboard.css' %}">
+    <link rel="stylesheet"
+          href="{% static 'css/crm_dashboard.css' %}">
 
 </head>
 
 <body>
 
 <!-- ========================================================= -->
-<!-- MAIN CONTAINER START -->
+<!-- DASHBOARD CONTAINER -->
 <!-- ========================================================= -->
 
-<div class="container">
+<div class="container-fluid py-4">
 
     <!-- ========================================================= -->
-    <!-- PAGE HEADING -->
+    <!-- PAGE HEADER -->
     <!-- ========================================================= -->
 
-    <div class="page-header">
+    <div class="row align-items-center mb-4">
 
-        <h1>CRM Master Dashboard</h1>
+        <div class="col-md-6">
+
+            <h2 class="fw-bold mb-1">
+
+                <i class="fas fa-chart-line text-primary"></i>
+
+                CRM Dashboard
+
+            </h2>
+
+            <p class="text-muted mb-0">
+
+                Customer Query Tracking Dashboard
+
+            </p>
+
+        </div>
+
+        <div class="col-md-6">
+
+            <form method="GET">
+
+                <div class="input-group">
+
+                    <input
+                        type="text"
+                        name="search"
+                        value="{{ search }}"
+                        class="form-control"
+                        placeholder="Search Ticket, Customer, Contact, Email...">
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary">
+
+                        <i class="fas fa-search"></i>
+
+                        Search
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
 
     </div>
 
-
-
     <!-- ========================================================= -->
-    <!-- SEARCH BAR START -->
-    <!-- View.py me search variable use ho raha hai -->
+    <!-- DASHBOARD CARDS -->
     <!-- ========================================================= -->
 
-    <form method="GET" class="search-box">
+    <div class="row g-4 mb-4">
 
-        <input
-            type="text"
-            name="search"
-            placeholder="Search Ticket / Customer / Mobile / Email"
-            value="{{ search }}">
+        <!-- Total -->
 
-        <button type="submit">
+        <div class="col-xl-3 col-lg-3 col-md-6">
 
-            <i class="bi bi-search"></i>
+            <div class="card shadow border-0 h-100">
 
-            Search
+                <div class="card-body">
 
-        </button>
+                    <div class="d-flex justify-content-between">
 
-    </form>
+                        <div>
 
-    <!-- ========================================================= -->
-    <!-- SEARCH BAR END -->
-    <!-- ========================================================= -->
+                            <h6 class="text-muted">
 
+                                Total Queries
 
+                            </h6>
 
+                            <h2 class="fw-bold">
 
-    <!-- ========================================================= -->
-    <!-- SUMMARY CARDS START -->
-    <!-- Ye values context se aa rahi hain -->
-    <!-- ========================================================= -->
+                                {{ total_queries }}
 
-    <div class="summary-grid">
+                            </h2>
 
-        <!-- Total Queries -->
+                        </div>
 
-        <div class="card">
+                        <div>
 
-            <i class="bi bi-ticket-perforated-fill"></i>
+                            <i class="fas fa-users fa-2x text-primary"></i>
 
-            <h2>{{ total_queries }}</h2>
+                        </div>
 
-            <p>Total Queries</p>
+                    </div>
+
+                </div>
+
+            </div>
 
         </div>
 
         <!-- Open -->
 
-        <div class="card">
+        <div class="col-xl-3 col-lg-3 col-md-6">
 
-            <i class="bi bi-folder2-open"></i>
+            <div class="card shadow border-0 h-100">
 
-            <h2>{{ open_count }}</h2>
+                <div class="card-body">
 
-            <p>Open</p>
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <h6 class="text-muted">
+
+                                Open
+
+                            </h6>
+
+                            <h2 class="text-primary fw-bold">
+
+                                {{ open_count }}
+
+                            </h2>
+
+                        </div>
+
+                        <div>
+
+                            <i class="fas fa-folder-open fa-2x text-primary"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Pending -->
+
+        <div class="col-xl-3 col-lg-3 col-md-6">
+
+            <div class="card shadow border-0 h-100">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <h6 class="text-muted">
+
+                                Pending
+
+                            </h6>
+
+                            <h2 class="text-warning fw-bold">
+
+                                {{ pending_count }}
+
+                            </h2>
+
+                        </div>
+
+                        <div>
+
+                            <i class="fas fa-clock fa-2x text-warning"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
 
         </div>
 
         <!-- In Progress -->
 
-        <div class="card">
+        <div class="col-xl-3 col-lg-3 col-md-6">
 
-            <i class="bi bi-arrow-repeat"></i>
+            <div class="card shadow border-0 h-100">
 
-            <h2>{{ in_progress_count }}</h2>
+                <div class="card-body">
 
-            <p>In Progress</p>
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <h6 class="text-muted">
+
+                                In Progress
+
+                            </h6>
+
+                            <h2 class="text-info fw-bold">
+
+                                {{ in_progress_count }}
+
+                            </h2>
+
+                        </div>
+
+                        <div>
+
+                            <i class="fas fa-spinner fa-2x text-info"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    <!-- ========================================================= -->
+    <!-- SECOND ROW DASHBOARD CARDS -->
+    <!-- ========================================================= -->
+
+    <div class="row g-4 mb-4">
+
+        <!-- Resolved -->
+
+        <div class="col-xl-3 col-lg-3 col-md-6">
+
+            <div class="card shadow border-0 h-100">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <div>
+
+                            <h6 class="text-muted">Resolved</h6>
+
+                            <h2 class="fw-bold text-success">
+
+                                {{ resolved_count }}
+
+                            </h2>
+
+                        </div>
+
+                        <div>
+
+                            <i class="fas fa-check-circle fa-2x text-success"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
 
         </div>
 
         <!-- Closed -->
 
-        <div class="card">
+        <div class="col-xl-3 col-lg-3 col-md-6">
 
-            <i class="bi bi-check-circle-fill"></i>
+            <div class="card shadow border-0 h-100">
 
-            <h2>{{ closed_count }}</h2>
+                <div class="card-body">
 
-            <p>Closed</p>
+                    <div class="d-flex justify-content-between align-items-center">
 
-        </div>
+                        <div>
 
-        <!-- Overdue -->
+                            <h6 class="text-muted">Closed</h6>
 
-        <div class="card">
+                            <h2 class="fw-bold text-dark">
 
-            <i class="bi bi-exclamation-triangle-fill"></i>
+                                {{ closed_count }}
 
-            <h2>{{ overdue_count }}</h2>
+                            </h2>
 
-            <p>Overdue</p>
+                        </div>
+
+                        <div>
+
+                            <i class="fas fa-lock fa-2x text-dark"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
 
         </div>
 
         <!-- Due Today -->
 
-        <div class="card">
+        <div class="col-xl-3 col-lg-3 col-md-6">
 
-            <i class="bi bi-calendar-event-fill"></i>
+            <div class="card shadow border-0 h-100 border-warning">
 
-            <h2>{{ due_today_count }}</h2>
+                <div class="card-body">
 
-            <p>Due Today</p>
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <div>
+
+                            <h6 class="text-muted">
+
+                                Due Today
+
+                            </h6>
+
+                            <h2 class="fw-bold text-warning">
+
+                                {{ due_today_count }}
+
+                            </h2>
+
+                        </div>
+
+                        <div>
+
+                            <i class="fas fa-calendar-day fa-2x text-warning"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Overdue -->
+
+        <div class="col-xl-3 col-lg-3 col-md-6">
+
+            <div class="card shadow border-0 h-100 border-danger">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <div>
+
+                            <h6 class="text-muted">
+
+                                Overdue
+
+                            </h6>
+
+                            <h2 class="fw-bold text-danger">
+
+                                {{ overdue_count }}
+
+                            </h2>
+
+                        </div>
+
+                        <div>
+
+                            <i class="fas fa-triangle-exclamation fa-2x text-danger"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
 
         </div>
 
     </div>
 
     <!-- ========================================================= -->
-    <!-- SUMMARY CARDS END -->
+    <!-- MAIN CUSTOMER TABLE -->
     <!-- ========================================================= -->
 
+    <div class="card shadow border-0">
 
+        <div class="card-header bg-primary text-white">
 
+            <div class="d-flex justify-content-between align-items-center">
 
-    <!-- ========================================================= -->
-    <!-- OVERDUE CUSTOMER LIST START -->
-    <!-- overdue_customers -->
-    <!-- ========================================================= -->
+                <h5 class="mb-0">
 
-    <div class="section">
+                    <i class="fas fa-users me-2"></i>
 
-        <h2>
+                    Customer Query Details
 
-            <i class="bi bi-exclamation-circle-fill"></i>
+                </h5>
 
-            Overdue Customers
+                <span class="badge bg-light text-dark">
 
-        </h2>
+                    {{ total_queries }} Records
 
-        {% if overdue_customers %}
+                </span>
 
-        <table>
+            </div>
 
-            <thead>
+        </div>
 
-            <tr>
+        <div class="card-body p-0">
 
-                <th>Ticket</th>
+            <div class="table-responsive">
 
-                <th>Customer</th>
+                <table class="table table-hover table-bordered align-middle mb-0">
 
-                <th>Stage</th>
+                    <!-- ============================================= -->
+                    <!-- TABLE HEADER -->
+                    <!-- ============================================= -->
 
-                <th>Pending With</th>
+                    <thead class="table-dark">
 
-                <th>Remaining Time</th>
+                        <tr>
 
-            </tr>
+                            <th>Ticket ID</th>
 
-            </thead>
+                            <th>Customer</th>
 
-            <tbody>
+                            <th>Contact</th>
 
-            {% for customer in overdue_customers %}
+                            <th>Email</th>
 
-            <tr>
+                            <th>Tower</th>
 
-                <td>{{ customer.ticket }}</td>
+                            <th>Area</th>
 
-                <td>{{ customer.customer }}</td>
+                            <th>Issue</th>
 
-                <td>{{ customer.stage_name }}</td>
+                            <th>Status</th>
 
-                <td>{{ customer.pending_with }}</td>
+                            <th>Stage</th>
 
-                <td>
+                            <th>Pending With</th>
 
-                    <span class="badge-red">
+                            <th>Progress</th>
 
-                        {{ customer.remaining }}
+                            <th>Due Time</th>
 
-                    </span>
+                            <th>Remaining</th>
 
-                </td>
+                            <th>Query Raised</th>
 
-            </tr>
+                            <th>Timeline</th>
 
-            {% endfor %}
+                            <th>Photo</th>
 
-            </tbody>
+                        </tr>
 
-        </table>
+                    </thead>
 
-        {% else %}
+                    <tbody>
+                    <!-- ========================================================= -->
+                    <!-- CUSTOMER TABLE DATA -->
+                    <!-- ========================================================= -->
 
-        <p>No overdue customer found.</p>
+                    {% for customer in customer_data %}
 
-        {% endif %}
+                    <tr>
+
+                        <!-- Ticket -->
+
+                        <td>
+
+                            <strong class="text-primary">
+
+                                {{ customer.ticket }}
+
+                            </strong>
+
+                        </td>
+
+                        <!-- Customer -->
+
+                        <td>
+
+                            {{ customer.customer }}
+
+                        </td>
+
+                        <!-- Contact -->
+
+                        <td>
+
+                            {{ customer.contact }}
+
+                        </td>
+
+                        <!-- Email -->
+
+                        <td>
+
+                            {{ customer.email }}
+
+                        </td>
+
+                        <!-- Tower -->
+
+                        <td>
+
+                            {{ customer.tower }}
+
+                        </td>
+
+                        <!-- Area -->
+
+                        <td>
+
+                            {{ customer.area }}
+
+                        </td>
+
+                        <!-- Issue -->
+
+                        <td>
+
+                            {{ customer.issue }}
+
+                        </td>
+
+                        <!-- Status -->
+
+                        <td>
+
+                            {% if customer.status == "Open" %}
+
+                                <span class="badge bg-primary">
+
+                                    {{ customer.status }}
+
+                                </span>
+
+                            {% elif customer.status == "Pending" %}
+
+                                <span class="badge bg-warning text-dark">
+
+                                    {{ customer.status }}
+
+                                </span>
+
+                            {% elif customer.status == "Resolved" %}
+
+                                <span class="badge bg-success">
+
+                                    {{ customer.status }}
+
+                                </span>
+
+                            {% elif customer.status == "Closed" %}
+
+                                <span class="badge bg-dark">
+
+                                    {{ customer.status }}
+
+                                </span>
+
+                            {% else %}
+
+                                <span class="badge bg-info">
+
+                                    {{ customer.status }}
+
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <!-- Current Stage -->
+
+                        <td>
+
+                            <span class="badge bg-secondary">
+
+                                {{ customer.current_stage }}
+
+                            </span>
+
+                            <br>
+
+                            <small class="text-muted">
+
+                                {{ customer.stage_name }}
+
+                            </small>
+
+                        </td>
+
+                        <!-- Pending With -->
+
+                        <td>
+
+                            {{ customer.pending_with }}
+
+                        </td>
+
+                        <!-- Progress -->
+
+                        <td>
+
+                            {% if customer.progress == "Closed" %}
+
+                                <span class="badge bg-success">
+
+                                    {{ customer.progress }}
+
+                                </span>
+
+                            {% elif customer.progress == "Open" %}
+
+                                <span class="badge bg-primary">
+
+                                    {{ customer.progress }}
+
+                                </span>
+
+                            {% else %}
+
+                                <span class="badge bg-warning text-dark">
+
+                                    {{ customer.progress }}
+
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <!-- Due Time -->
+
+                        <td>
+
+                            {{ customer.due_time }}
+
+                        </td>
+
+                        <!-- Remaining -->
+
+                        <td>
+
+                            {% if customer.is_overdue %}
+
+                                <span class="fw-bold text-danger">
+
+                                    {{ customer.remaining }}
+
+                                </span>
+
+                            {% else %}
+
+                                <span class="text-success">
+
+                                    {{ customer.remaining }}
+
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+                        <!-- ============================================== -->
+                        <!-- QUERY RAISED -->
+                        <!-- ============================================== -->
+
+                        <td>
+
+                            {{ customer.query_raised }}
+
+                        </td>
+
+                        <!-- ============================================== -->
+                        <!-- TIMELINE -->
+                        <!-- ============================================== -->
+
+                        <td>
+
+                            {{ customer.timeline }}
+
+                        </td>
+
+                        <!-- ============================================== -->
+                        <!-- PHOTO -->
+                        <!-- ============================================== -->
+
+                        <td class="text-center">
+
+                            {% if customer.photo %}
+
+                                <a href="{{ customer.photo.url }}"
+                                   target="_blank">
+
+                                    <img src="{{ customer.photo.url }}"
+                                         class="img-thumbnail"
+                                         width="70"
+                                         height="70"
+                                         style="object-fit:cover;">
+
+                                </a>
+
+                            {% else %}
+
+                                <span class="text-muted">
+
+                                    No Photo
+
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td colspan="16"
+                            class="text-center py-5">
+
+                            <h5 class="text-muted">
+
+                                No Customer Queries Found
+
+                            </h5>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
 
     </div>
-
-    <!-- ========================================================= -->
-    <!-- OVERDUE CUSTOMER LIST END -->
-    <!-- ========================================================= -->
-
-
-
-
-    <!-- ========================================================= -->
-    <!-- DUE TODAY CUSTOMER LIST START -->
-    <!-- due_today_customers -->
-    <!-- ========================================================= -->
-
-    <div class="section">
-
-        <h2>
-
-            <i class="bi bi-clock-history"></i>
-
-            Due Today
-
-        </h2>
-
-        {% if due_today_customers %}
-
-        <table>
-
-            <thead>
-
-            <tr>
-
-                <th>Ticket</th>
-
-                <th>Customer</th>
-
-                <th>Stage</th>
-
-                <th>Pending With</th>
-
-                <th>Due Time</th>
-
-            </tr>
-
-            </thead>
-
-            <tbody>
-
-            {% for customer in due_today_customers %}
-
-            <tr>
-
-                <td>{{ customer.ticket }}</td>
-
-                <td>{{ customer.customer }}</td>
-
-                <td>{{ customer.stage_name }}</td>
-
-                <td>{{ customer.pending_with }}</td>
-
-                <td>{{ customer.due_time }}</td>
-
-            </tr>
-
-            {% endfor %}
-
-            </tbody>
-
-        </table>
-
-        {% else %}
-
-        <p>No due today customer.</p>
-
-        {% endif %}
-
-    </div>
-
-    <!-- ========================================================= -->
-    <!-- DUE TODAY CUSTOMER LIST END -->
-    <!-- ========================================================= -->
-
-
-
-    <!-- ========================================================= -->
-    <!-- NEXT PART YAHAN SE START HOGA -->
-    <!-- Iske niche main complete Customer Table dunga -->
-    <!-- ========================================================= -->
-     <!-- ========================================================= -->
-<!-- CUSTOMER LIST START -->
-<!-- customer_data View.py se aa raha hai -->
-<!-- ========================================================= -->
-
-<div class="section">
-
-    <h2>
-        <i class="bi bi-people-fill"></i>
-        Customer Query List
-    </h2>
-
-    {% if customer_data %}
-
-    <div class="table-responsive">
-
-        <table>
-
-            <!-- ================================================= -->
-            <!-- TABLE HEADER -->
-            <!-- ================================================= -->
-
-            <thead>
-
-            <tr>
-
-                <th>Ticket</th>
-
-                <th>Customer</th>
-
-                <th>Contact</th>
-
-                <th>Email</th>
-
-                <th>Tower</th>
-
-                <th>Area</th>
-
-                <th>Issue</th>
-
-                <th>Status</th>
-
-                <th>Progress</th>
-
-                <th>Current Stage</th>
-
-                <th>Pending With</th>
-
-                <th>Due Time</th>
-
-                <th>Remaining</th>
-
-                <th>Query Raised</th>
-
-                <th>Photo</th>
-
-                <th>Timeline</th>
-
-            </tr>
-
-            </thead>
-
-
-            <!-- ================================================= -->
-            <!-- TABLE BODY -->
-            <!-- ================================================= -->
-
-            <tbody>
-
-            {% for customer in customer_data %}
-
-            <tr>
-
-                <!-- Ticket -->
-
-                <td>
-
-                    {{ customer.ticket }}
-
-                </td>
-
-
-                <!-- Customer Name -->
-
-                <td>
-
-                    {{ customer.customer }}
-
-                </td>
-
-
-                <!-- Contact -->
-
-                <td>
-
-                    {{ customer.contact }}
-
-                </td>
-
-
-                <!-- Email -->
-
-                <td>
-
-                    {{ customer.email }}
-
-                </td>
-
-
-                <!-- Tower -->
-
-                <td>
-
-                    {{ customer.tower }}
-
-                </td>
-
-
-                <!-- Area -->
-
-                <td>
-
-                    {{ customer.area }}
-
-                </td>
-
-
-                <!-- Issue -->
-
-                <td>
-
-                    {{ customer.issue }}
-
-                </td>
-
-
-                <!-- ================================================= -->
-                <!-- STATUS -->
-                <!-- ================================================= -->
-
-                <td>
-
-                    {% if customer.status == "Open" %}
-
-                        <span class="badge-open">
-
-                            {{ customer.status }}
-
-                        </span>
-
-                    {% elif customer.status == "In Progress" %}
-
-                        <span class="badge-progress">
-
-                            {{ customer.status }}
-
-                        </span>
-
-                    {% else %}
-
-                        <span class="badge-close">
-
-                            {{ customer.status }}
-
-                        </span>
-
-                    {% endif %}
-
-                </td>
-
-
-
-                <!-- ================================================= -->
-                <!-- PROGRESS -->
-                <!-- ================================================= -->
-
-                <td>
-
-                    {% if customer.progress == "Open" %}
-
-                        <span class="badge-open">
-
-                            {{ customer.progress }}
-
-                        </span>
-
-                    {% elif customer.progress == "In Progress" %}
-
-                        <span class="badge-progress">
-
-                            {{ customer.progress }}
-
-                        </span>
-
-                    {% else %}
-
-                        <span class="badge-close">
-
-                            {{ customer.progress }}
-
-                        </span>
-
-                    {% endif %}
-
-                </td>
-
-
-
-                <!-- ================================================= -->
-                <!-- CURRENT STAGE -->
-                <!-- ================================================= -->
-
-                <td>
-
-                    <strong>{{ customer.current_stage }}</strong>
-
-                    <br>
-
-                    {{ customer.stage_name }}
-
-                </td>
-
-
-
-                <!-- Pending With -->
-
-                <td>
-
-                    {{ customer.pending_with }}
-
-                </td>
-
-
-
-                <!-- Due Time -->
-
-                <td>
-
-                    {{ customer.due_time }}
-
-                </td>
-
-
-
-                <!-- ================================================= -->
-                <!-- REMAINING -->
-                <!-- ================================================= -->
-
-                <td>
-
-                    {% if customer.is_overdue %}
-
-                        <span class="badge-red">
-
-                            {{ customer.remaining }}
-
-                        </span>
-
-                    {% else %}
-
-                        <span class="badge-green">
-
-                            {{ customer.remaining }}
-
-                        </span>
-
-                    {% endif %}
-
-                </td>
-
-
-
-                <!-- Query Raised -->
-
-                <td>
-
-                    {{ customer.query_raised }}
-
-                </td>
-
-
-
-                <!-- ================================================= -->
-                <!-- PHOTO -->
-                <!-- ================================================= -->
-
-                <td>
-
-                    {% if customer.photo %}
-
-                        <a href="{{ customer.photo.url }}" target="_blank">
-
-                            View
-
-                        </a>
-
-                    {% else %}
-
-                        -
-
-                    {% endif %}
-
-                </td>
-
-
-
-                <!-- ================================================= -->
-                <!-- TIMELINE -->
-                <!-- ================================================= -->
-
-                <td>
-
-                    <div class="timeline">
-
-                        <span class="{% if customer.timeline.S1 %}done{% endif %}">S1</span>
-
-                        <span class="{% if customer.timeline.S2 %}done{% endif %}">S2</span>
-
-                        <span class="{% if customer.timeline.S3 %}done{% endif %}">S3</span>
-
-                        <span class="{% if customer.timeline.S4 %}done{% endif %}">S4</span>
-
-                        <span class="{% if customer.timeline.S5 %}done{% endif %}">S5</span>
-
-                        <span class="{% if customer.timeline.S6 %}done{% endif %}">S6</span>
-
-                        <span class="{% if customer.timeline.S7 %}done{% endif %}">S7</span>
-
-                        <span class="{% if customer.timeline.S8 %}done{% endif %}">S8</span>
-
-                        <span class="{% if customer.timeline.S9 %}done{% endif %}">S9</span>
-
-                        <span class="{% if customer.timeline.S10 %}done{% endif %}">S10</span>
-
-                        <span class="{% if customer.timeline.S11 %}done{% endif %}">S11</span>
-
-                    </div>
-
-                </td>
-
-            </tr>
-
-            {% endfor %}
-
-            </tbody>
-
-        </table>
-
-    </div>
-
-    {% else %}
-
-    <div class="no-data">
-
-        No customer records found.
-
-    </div>
-
-    {% endif %}
 
 </div>
 
 <!-- ========================================================= -->
-<!-- CUSTOMER LIST END -->
+<!-- OVERDUE CUSTOMER TABLE -->
 <!-- ========================================================= -->
+
+<div class="card shadow border-0 mt-4">
+
+    <div class="card-header bg-danger text-white">
+
+        <div class="d-flex justify-content-between align-items-center">
+
+            <h5 class="mb-0">
+
+                <i class="fas fa-triangle-exclamation me-2"></i>
+
+                Overdue Customers
+
+            </h5>
+
+            <span class="badge bg-light text-danger">
+
+                {{ overdue_count }}
+
+            </span>
+
+        </div>
+
+    </div>
+
+    <div class="card-body p-0">
+
+        <div class="table-responsive">
+
+            <table class="table table-bordered table-hover mb-0">
+
+                <thead class="table-danger">
+
+                    <tr>
+
+                        <th>Ticket</th>
+
+                        <th>Customer</th>
+
+                        <th>Contact</th>
+
+                        <th>Stage</th>
+
+                        <th>Pending With</th>
+
+                        <th>Due Time</th>
+
+                        <th>Remaining</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for customer in overdue_customers %}
+                    <!-- ========================================================= -->
+                    <!-- OVERDUE CUSTOMER DATA -->
+                    <!-- ========================================================= -->
+
+                    <tr>
+
+                        <td>
+
+                            <strong class="text-danger">
+
+                                {{ customer.ticket }}
+
+                            </strong>
+
+                        </td>
+
+                        <td>
+
+                            {{ customer.customer }}
+
+                        </td>
+
+                        <td>
+
+                            {{ customer.contact }}
+
+                        </td>
+
+                        <td>
+
+                            {{ customer.current_stage }}
+
+                            <br>
+
+                            <small class="text-muted">
+
+                                {{ customer.stage_name }}
+
+                            </small>
+
+                        </td>
+
+                        <td>
+
+                            {{ customer.pending_with }}
+
+                        </td>
+
+                        <td>
+
+                            {{ customer.due_time }}
+
+                        </td>
+
+                        <td>
+
+                            <span class="fw-bold text-danger">
+
+                                {{ customer.remaining }}
+
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td colspan="7" class="text-center py-4">
+
+                            <span class="text-muted">
+
+                                No Overdue Customers
+
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
 
 </div>
 
 <!-- ========================================================= -->
-<!-- MAIN CONTAINER END -->
+<!-- DUE TODAY TABLE -->
 <!-- ========================================================= -->
+
+<div class="card shadow border-0 mt-4">
+
+    <div class="card-header bg-warning">
+
+        <div class="d-flex justify-content-between align-items-center">
+
+            <h5 class="mb-0 text-dark">
+
+                <i class="fas fa-calendar-day me-2"></i>
+
+                Due Today
+
+            </h5>
+
+            <span class="badge bg-dark">
+
+                {{ due_today_count }}
+
+            </span>
+
+        </div>
+
+    </div>
+
+    <div class="card-body p-0">
+
+        <div class="table-responsive">
+
+            <table class="table table-bordered table-hover mb-0">
+
+                <thead class="table-warning">
+
+                    <tr>
+
+                        <th>Ticket</th>
+
+                        <th>Customer</th>
+
+                        <th>Contact</th>
+
+                        <th>Stage</th>
+
+                        <th>Pending With</th>
+
+                        <th>Due Time</th>
+
+                        <th>Remaining</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for customer in due_today_customers %}
+                    <!-- ========================================================= -->
+                    <!-- DUE TODAY CUSTOMER DATA -->
+                    <!-- ========================================================= -->
+
+                    <tr>
+
+                        <td>
+
+                            <strong class="text-warning">
+
+                                {{ customer.ticket }}
+
+                            </strong>
+
+                        </td>
+
+                        <td>
+
+                            {{ customer.customer }}
+
+                        </td>
+
+                        <td>
+
+                            {{ customer.contact }}
+
+                        </td>
+
+                        <td>
+
+                            {{ customer.current_stage }}
+
+                            <br>
+
+                            <small class="text-muted">
+
+                                {{ customer.stage_name }}
+
+                            </small>
+
+                        </td>
+
+                        <td>
+
+                            {{ customer.pending_with }}
+
+                        </td>
+
+                        <td>
+
+                            {{ customer.due_time }}
+
+                        </td>
+
+                        <td>
+
+                            {% if customer.is_overdue %}
+
+                                <span class="fw-bold text-danger">
+
+                                    {{ customer.remaining }}
+
+                                </span>
+
+                            {% else %}
+
+                                <span class="fw-bold text-success">
+
+                                    {{ customer.remaining }}
+
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td colspan="7" class="text-center py-4">
+
+                            <span class="text-muted">
+
+                                No Due Today Customers
+
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ========================================================= -->
+<!-- FOOTER -->
+<!-- ========================================================= -->
+
+<div class="text-center mt-4 mb-2">
+
+    <small class="text-muted">
+
+        CRM Dashboard | Powered by Sampoorna Maintenance
+
+    </small>
+
+</div>
+
+</div>
+
+<!-- ========================================================= -->
+<!-- BOOTSTRAP JS -->
+<!-- ========================================================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 
