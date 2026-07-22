@@ -4523,13 +4523,11 @@ def crm_dashboard(request):
     if request.session.get("admin_role") != "CRM":
         return redirect("login")
 
-
     # ======================================================
     # SEARCH
     # ======================================================
 
     search = request.GET.get("search", "").strip()
-
 
     # ======================================================
     # CUSTOMER QUERY
@@ -4538,9 +4536,7 @@ def crm_dashboard(request):
     queries = CustomerQuery.objects.all().order_by("-created_at")
 
     if search:
-
         queries = queries.filter(
-
             Q(ticket_id__icontains=search) |
             Q(name__icontains=search) |
             Q(contact__icontains=search) |
@@ -4548,53 +4544,42 @@ def crm_dashboard(request):
             Q(tower__icontains=search) |
             Q(area__icontains=search) |
             Q(issue__icontains=search)
-
         )
 
-
     # ======================================================
-    # DASHBOARD SUMMARY
+    # DASHBOARD COUNTS
     # ======================================================
 
     total_queries = queries.count()
 
     open_count = 0
-
+    pending_count = 0
     in_progress_count = 0
-
+    resolved_count = 0
     closed_count = 0
 
     overdue_count = 0
-
     due_today_count = 0
 
-
     # ======================================================
-    # LISTS
+    # TABLE DATA
     # ======================================================
 
     customer_data = []
-
     overdue_customers = []
-
     due_today_customers = []
 
-
-    # ======================================================
-    # TODAY
-    # ======================================================
-
     today = timezone.localdate()
-    
+
     # ======================================================
     # CUSTOMER LOOP
     # ======================================================
 
     for query in queries:
 
-        # ==================================================
-        # SAFE RELATED OBJECTS
-        # ==================================================
+        # ==============================================
+        # RELATED OBJECTS
+        # ==============================================
 
         scope = safe_related(query, "scope_form")
 
@@ -4638,10 +4623,9 @@ def crm_dashboard(request):
             customer_query=query
         ).first()
 
-
-        # ==================================================
+        # ==============================================
         # CURRENT STAGE
-        # ==================================================
+        # ==============================================
 
         current_stage = "S1"
         stage_start = query.created_at
@@ -4690,37 +4674,30 @@ def crm_dashboard(request):
             current_stage = "Completed"
             stage_start = feedback.created_at
 
-
-        # ==================================================
+        # ==============================================
         # STAGE DETAILS
-        # ==================================================
-
-        pending_with = get_pending_with(current_stage)
-
-        progress = get_progress(current_stage)
+        # ==============================================
 
         stage_name = get_stage_name(current_stage)
-
+        pending_with = get_pending_with(current_stage)
+        progress = get_progress(current_stage)
         timeline = get_timeline(current_stage)
-    
-        # ==================================================
+
+        # ==============================================
         # DUE TIME
-        # ==================================================
+        # ==============================================
 
         due_time = calculate_due_time(
             current_stage,
             stage_start
         )
-
-
+        
         # ==================================================
-        # REMAINING TIME / OVERDUE
+        # DUE TIME DISPLAY
         # ==================================================
-
-        remaining_time = "-"
 
         due_time_display = "-"
-
+        remaining_time = "-"
         is_overdue = False
 
         if due_time:
@@ -4733,7 +4710,6 @@ def crm_dashboard(request):
                 due_time
             )
 
-
         # ==================================================
         # QUERY RAISED
         # ==================================================
@@ -4742,54 +4718,53 @@ def crm_dashboard(request):
             query.created_at
         ).strftime("%d-%m-%Y %I:%M %p")
 
-
         # ==================================================
         # DUE TODAY
         # ==================================================
 
         is_due_today = False
 
-        if due_time:
+        if due_time and current_stage != "Completed":
 
             if timezone.localtime(due_time).date() == today:
 
                 is_due_today = True
-
                 due_today_count += 1
 
-
         # ==================================================
-        # OVERDUE COUNT
+        # OVERDUE
         # ==================================================
 
-        if is_overdue:
+        if is_overdue and current_stage != "Completed":
 
             overdue_count += 1
 
-
         # ==================================================
-        # DASHBOARD STATUS COUNT
+        # STATUS COUNT
         # ==================================================
 
         if query.status == "Open":
 
             open_count += 1
 
+        elif query.status == "Pending":
+
+            pending_count += 1
+
         elif query.status == "In Progress":
 
             in_progress_count += 1
+
+        elif query.status == "Resolved":
+
+            resolved_count += 1
 
         elif query.status == "Closed":
 
             closed_count += 1
 
-        elif query.status == "Resolved":
-
-            closed_count += 1
-
-
         # ==================================================
-        # PROGRESS STATUS
+        # PROGRESS
         # ==================================================
 
         if current_stage == "Completed":
@@ -4803,10 +4778,9 @@ def crm_dashboard(request):
         else:
 
             progress = "In Progress"
-            
 
         # ==================================================
-        # CUSTOMER DICTIONARY
+        # CUSTOMER DATA
         # ==================================================
 
         customer = {
@@ -4851,35 +4825,25 @@ def crm_dashboard(request):
 
         }
 
-
-        # ==================================================
-        # CUSTOMER LIST
-        # ==================================================
-
         customer_data.append(customer)
 
-
         # ==================================================
-        # OVERDUE LIST
+        # OVERDUE TABLE
         # ==================================================
 
         if is_overdue and current_stage != "Completed":
 
             overdue_customers.append(customer)
 
-
         # ==================================================
-        # DUE TODAY LIST
+        # DUE TODAY TABLE
         # ==================================================
 
         if is_due_today and current_stage != "Completed":
 
             due_today_customers.append(customer)
-
+            
     # ======================================================
-    # CUSTOMER LOOP END
-    # ======================================================
-        # ======================================================
     # CONTEXT
     # ======================================================
 
@@ -4888,25 +4852,26 @@ def crm_dashboard(request):
         # Search
         "search": search,
 
-        # Dashboard Summary
+        # Dashboard Counts
         "total_queries": total_queries,
         "open_count": open_count,
+        "pending_count": pending_count,
         "in_progress_count": in_progress_count,
+        "resolved_count": resolved_count,
         "closed_count": closed_count,
         "overdue_count": overdue_count,
         "due_today_count": due_today_count,
 
-        # Customer Data
+        # Main Table
         "customer_data": customer_data,
 
-        # Overdue Customers
+        # Overdue Table
         "overdue_customers": overdue_customers,
 
-        # Due Today Customers
+        # Due Today Table
         "due_today_customers": due_today_customers,
 
     }
-
 
     # ======================================================
     # RENDER
@@ -4916,8 +4881,8 @@ def crm_dashboard(request):
 
         request,
 
-         "crm/crm_dashboard.html",
+        "crm/crm_dashboard.html",
 
-        context
+        context,
 
     )
