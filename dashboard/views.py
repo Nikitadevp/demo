@@ -4110,11 +4110,412 @@ def site_engineer_dashboard(request):
 
 
 
-def crm_dashboard(request):
+# ==========================================================
+# View dashbaoed 
+# ==========================================================
 
-    # ==========================================
+
+# ==========================================================
+# OFFICE TIMING
+# ==========================================================
+
+OFFICE_START = time(9, 30)     # 09:30 AM
+
+OFFICE_END = time(18, 30)      # 06:30 PM
+
+
+# ==========================================================
+# STAGE TAT
+# ==========================================================
+
+STAGE_TAT = {
+
+    "S1": ("hours", 3),
+
+    "S2": ("days", 1),
+
+    "S3": ("hours", 6),
+
+    "S4": ("hours", 6),
+
+    "S5": ("days", 1),
+
+    "S6": ("hours", 2),
+
+    "S7": ("days", 2),
+
+    "S8": ("hours", 1),
+
+    "S9": ("days", 1),
+
+    "S10": ("days", 4),
+
+    "S11": ("next_day_6pm", 1),
+
+}
+
+
+# ==========================================================
+# SAFE RELATED OBJECT
+# ==========================================================
+
+def safe_related(obj, relation):
+
+    try:
+
+        return getattr(obj, relation)
+
+    except:
+
+        return None
+
+
+# ==========================================================
+# IS WORKING DAY
+# Sunday = Holiday
+# ==========================================================
+
+def is_working_day(dt):
+
+    return dt.weekday() != 6
+
+
+# ==========================================================
+# MOVE TO NEXT WORKING DAY
+# ==========================================================
+
+def next_working_day(dt):
+
+    while not is_working_day(dt):
+
+        dt += timedelta(days=1)
+
+    return dt
+
+
+# ==========================================================
+# WORKING HOURS
+# ==========================================================
+
+def adjust_to_working_hours(dt):
+
+    dt = timezone.localtime(dt)
+
+    if dt.time() < OFFICE_START:
+
+        dt = dt.replace(
+
+            hour=OFFICE_START.hour,
+
+            minute=OFFICE_START.minute,
+
+            second=0,
+
+            microsecond=0
+
+        )
+
+    elif dt.time() >= OFFICE_END:
+
+        dt = dt + timedelta(days=1)
+
+        dt = next_working_day(dt)
+
+        dt = dt.replace(
+
+            hour=OFFICE_START.hour,
+
+            minute=OFFICE_START.minute,
+
+            second=0,
+
+            microsecond=0
+
+        )
+
+    dt = next_working_day(dt)
+
+    return dt
+
+
+# ==========================================================
+# ADD WORKING HOURS
+# ==========================================================
+
+def add_working_hours(start_time, hours):
+
+    current = adjust_to_working_hours(start_time)
+
+    remaining = hours
+
+    while remaining > 0:
+
+        end_today = current.replace(
+
+            hour=OFFICE_END.hour,
+
+            minute=OFFICE_END.minute,
+
+            second=0,
+
+            microsecond=0
+
+        )
+
+        available = (end_today - current).total_seconds() / 3600
+
+        if remaining <= available:
+
+            current += timedelta(hours=remaining)
+
+            remaining = 0
+
+        else:
+
+            remaining -= available
+
+            current = current + timedelta(days=1)
+
+            current = next_working_day(current)
+
+            current = current.replace(
+
+                hour=OFFICE_START.hour,
+
+                minute=OFFICE_START.minute,
+
+                second=0,
+
+                microsecond=0
+
+            )
+
+    return current
+
+
+# ==========================================================
+# ADD WORKING DAYS
+# ==========================================================
+
+def add_working_days(start_time, days):
+
+    current = adjust_to_working_hours(start_time)
+
+    count = 0
+
+    while count < days:
+
+        current += timedelta(days=1)
+
+        if is_working_day(current):
+
+            count += 1
+
+    return current
+
+
+# ==========================================================
+# NEXT WORKING DAY 6 PM
+# ==========================================================
+
+def next_day_6pm(start_time):
+
+    current = adjust_to_working_hours(start_time)
+
+    current += timedelta(days=1)
+
+    current = next_working_day(current)
+
+    return current.replace(
+
+        hour=18,
+
+        minute=0,
+
+        second=0,
+
+        microsecond=0
+
+    )
+
+# ==========================================================
+# CALCULATE DUE TIME
+# ==========================================================
+
+def calculate_due_time(current_stage, stage_start):
+
+    if not stage_start:
+        return None
+
+    if current_stage == "Completed":
+        return None
+
+    tat = STAGE_TAT.get(current_stage)
+
+    if not tat:
+        return None
+
+    tat_type, tat_value = tat
+
+    if tat_type == "hours":
+        return add_working_hours(stage_start, tat_value)
+
+    elif tat_type == "days":
+        return add_working_days(stage_start, tat_value)
+
+    elif tat_type == "next_day_6pm":
+        return next_day_6pm(stage_start)
+
+    return None
+
+
+# ==========================================================
+# REMAINING TIME / OVERDUE
+# ==========================================================
+
+def calculate_remaining_time(due_time):
+
+    if not due_time:
+        return "-", False
+
+    now = timezone.localtime(timezone.now())
+
+    due_time = timezone.localtime(due_time)
+
+    diff = due_time - now
+
+    seconds = int(diff.total_seconds())
+
+    if seconds >= 0:
+
+        days = seconds // 86400
+        hours = (seconds % 86400) // 3600
+        minutes = (seconds % 3600) // 60
+
+        if days > 0:
+            return f"{days}D {hours}H Left", False
+
+        elif hours > 0:
+            return f"{hours}H {minutes}M Left", False
+
+        else:
+            return f"{minutes} Minutes Left", False
+
+    seconds = abs(seconds)
+
+    days = seconds // 86400
+    hours = (seconds % 86400) // 3600
+    minutes = (seconds % 3600) // 60
+
+    if days > 0:
+        return f"Overdue by {days}D {hours}H", True
+
+    elif hours > 0:
+        return f"Overdue by {hours}H {minutes}M", True
+
+    else:
+        return f"Overdue by {minutes} Minutes", True
+
+
+# ==========================================================
+# PROGRESS
+# ==========================================================
+
+def get_progress(current_stage):
+
+    if current_stage == "Completed":
+        return "Closed"
+
+    elif current_stage == "S1":
+        return "Open"
+
+    return "In Progress"
+
+
+# ==========================================================
+# PENDING WITH
+# ==========================================================
+
+def get_pending_with(current_stage):
+
+    pending = {
+
+        "S1": "CRM",
+        "S2": "Site Engineer",
+        "S3": "CRM",
+        "S4": "CRM",
+        "S5": "CRM",
+        "S6": "Store Keeper",
+        "S7": "Store Keeper",
+        "S8": "Store Keeper",
+        "S9": "Maintenance Incharge",
+        "S10": "Maintenance Incharge",
+        "S11": "CRM",
+        "Completed": "-",
+
+    }
+
+    return pending.get(current_stage, "-")
+
+
+# ==========================================================
+# STAGE NAME
+# ==========================================================
+
+def get_stage_name(current_stage):
+
+    names = {
+
+        "S1": "Scope Check",
+        "S2": "Site Inspection",
+        "S3": "Estimate",
+        "S4": "Customer Approval",
+        "S5": "Advance Collection",
+        "S6": "Material Availability",
+        "S7": "Raise Indent",
+        "S8": "Issue Material",
+        "S9": "Receive Material",
+        "S10": "Resolve Issue",
+        "S11": "Customer Feedback",
+        "Completed": "Completed",
+
+    }
+
+    return names.get(current_stage, "-")
+
+
+# ==========================================================
+# TIMELINE
+# ==========================================================
+
+def get_timeline(current_stage):
+
+    return {
+
+        "S0": current_stage != "S0",
+        "S1": current_stage not in ["S0", "S1"],
+        "S2": current_stage not in ["S0", "S1", "S2"],
+        "S3": current_stage not in ["S0", "S1", "S2", "S3"],
+        "S4": current_stage not in ["S0", "S1", "S2", "S3", "S4"],
+        "S5": current_stage not in ["S0", "S1", "S2", "S3", "S4", "S5"],
+        "S6": current_stage not in ["S0", "S1", "S2", "S3", "S4", "S5", "S6"],
+        "S7": current_stage not in ["S0", "S1", "S2", "S3", "S4", "S5", "S6", "S7"],
+        "S8": current_stage not in ["S0", "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8"],
+        "S9": current_stage not in ["S0", "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9"],
+        "S10": current_stage not in ["S0", "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10"],
+        "S11": current_stage == "Completed",
+
+    }
+
+# ==========================================================
+# CRM MASTER DASHBOARD
+# ==========================================================
+
+def crm_master_dashboard(request):
+
+    # ======================================================
     # LOGIN CHECK
-    # ==========================================
+    # ======================================================
 
     if "admin_id" not in request.session:
         return redirect("login")
@@ -4123,1010 +4524,399 @@ def crm_dashboard(request):
         return redirect("login")
 
 
-    # ==========================================
-    # CURRENT TIME
-    # ==========================================
-
-    now = timezone.now()
-
-
-    # ==========================================
+    # ======================================================
     # SEARCH
-    # ==========================================
+    # ======================================================
 
     search = request.GET.get("search", "").strip()
 
-    tickets = CustomerQuery.objects.all()
+
+    # ======================================================
+    # CUSTOMER QUERY
+    # ======================================================
+
+    queries = CustomerQuery.objects.all().order_by("-created_at")
 
     if search:
 
-        tickets = tickets.filter(
+        queries = queries.filter(
 
             Q(ticket_id__icontains=search) |
-
             Q(name__icontains=search) |
-
             Q(contact__icontains=search) |
-
             Q(email__icontains=search) |
-
             Q(tower__icontains=search) |
-
             Q(area__icontains=search) |
-
-            Q(issue__icontains=search) |
-
-            Q(problem__icontains=search)
+            Q(issue__icontains=search)
 
         )
 
 
-    # ==========================================
+    # ======================================================
     # DASHBOARD SUMMARY
-    # ==========================================
+    # ======================================================
 
-    total_queries = tickets.count()
+    total_queries = queries.count()
 
-    open_queries = tickets.filter(
-        status="Open"
-    ).count()
+    open_count = 0
 
-    pending_queries = tickets.filter(
-        status="Pending"
-    ).count()
+    in_progress_count = 0
 
-    inprogress_queries = tickets.filter(
-        status="In Progress"
-    ).count()
-
-    resolved_queries = tickets.filter(
-        status="Resolved"
-    ).count()
-
-    closed_queries = tickets.filter(
-        status="Closed"
-    ).count()
-
-
-    # ==========================================
-    # STAGE WISE COUNT
-    # ==========================================
-
-    total_scope = MaintenanceScope.objects.count()
-
-    total_inspection = SiteInspection.objects.count()
-
-    total_estimate = EstimateForm.objects.count()
-
-    total_approval = CustomerApproval.objects.count()
-
-    total_advance = AdvanceCollection.objects.count()
-
-    total_material = MaterialAvailability.objects.count()
-
-    total_indent = RaiseIndent.objects.count()
-
-    total_issue_material = IssueMaterial.objects.count()
-
-    total_receive_material = ReceiveMaterial.objects.count()
-
-    total_query_closer = QueryCloser.objects.count()
-
-    total_feedback = CustomerFeedback.objects.count()
-
-
-    # ==========================================
-    # PENDING STAGE COUNT
-    # ==========================================
-    # S1 Pending (Customer Query -> Maintenance Scope)
-    scope_pending = CustomerQuery.objects.filter(
-        scope_form__isnull=True
-    ).count()
-
-    inspection_pending = 0
-    for scope in MaintenanceScope.objects.all():
-        if not SiteInspection.objects.filter(
-            customer_query=scope.customer_query
-        ).exists():
-            inspection_pending += 1
-            
-    # S3 Pending (Site Inspection -> Estimate)
-
-    estimate_pending = 0
-    for inspection in SiteInspection.objects.all():
-        if not EstimateForm.objects.filter(
-            customer_query=inspection.customer_query
-        ).exists():
-            estimate_pending += 1
-    
-
-    approval_pending = 0
-    for estimate in EstimateForm.objects.all():
-        if not CustomerApproval.objects.filter(
-            customer_query=estimate.customer_query
-        ).exists():
-            approval_pending += 1   
-       
-    advance_pending = 0
-    for approval in CustomerApproval.objects.all():
-        if not AdvanceCollection.objects.filter(
-            customer_query=approval.customer_query
-        ).exists():
-            advance_pending += 1
-
-    material_pending = 0
-    for advance in AdvanceCollection.objects.all():
-        if not MaterialAvailability.objects.filter(
-            customer_query=advance.customer_query
-        ).exists():
-            material_pending += 1
-    
-
-    indent_pending = 0
-    for material in MaterialAvailability.objects.all():
-        if not RaiseIndent.objects.filter(
-            customer_query=material.customer_query
-        ).exists():
-            indent_pending += 1
-
-    issue_material_pending = 0
-    for indent in RaiseIndent.objects.all():
-        if not IssueMaterial.objects.filter(
-            customer_query=indent.customer_query
-        ).exists():
-            issue_material_pending += 1
-
-    receive_material_pending = 0
-    for issue_material in IssueMaterial.objects.all():
-        if not ReceiveMaterial.objects.filter(
-            customer_query=issue_material.customer_query
-        ).exists():
-            receive_material_pending += 1
-
-    closer_pending = 0
-    for receive_material in ReceiveMaterial.objects.all():
-        if not QueryCloser.objects.filter(
-            customer_query=receive_material.customer_query
-        ).exists():
-            closer_pending += 1
-
-    # S11 Pending (Query Closer -> Customer Feedback)
-    feedback_pending = 0
-
-    for closer in QueryCloser.objects.all():
-        if not CustomerFeedback.objects.filter(
-            customer_query=closer.customer_query
-        ).exists():
-            feedback_pending += 1       
-
-    # ==========================================
-    # OVERDUE COUNT
-    # ==========================================
+    closed_count = 0
 
     overdue_count = 0
 
-
-    # ==========================================
-    # DUE TODAY COUNT
-    # ==========================================
-
-    due_today = 0
+    due_today_count = 0
 
 
-    # ==========================================
-    # TODAY COMPLETED
-    # ==========================================
+    # ======================================================
+    # LISTS
+    # ======================================================
 
-    completed_today = CustomerFeedback.objects.filter(
-        created_at__date=now.date()
-    ).count()
+    customer_data = []
 
+    overdue_customers = []
 
-    # ==========================================
-    # MASTER TABLE LIST
-    # ==========================================
-
-    ticket_data = []
-
-    tickets = tickets.order_by("-created_at")
-
-    # ==========================================
-    # LOOP THROUGH ALL TICKETS
-    # ==========================================
-
-    for ticket in tickets:
+    due_today_customers = []
 
 
-        # ==========================================
-        # DEFAULT VALUES
-        # ==========================================
+    # ======================================================
+    # TODAY
+    # ======================================================
 
-        current_stage = "S0"
+    today = timezone.localdate()
+    
+    # ======================================================
+    # CUSTOMER LOOP
+    # ======================================================
 
-        current_stage_name = "Customer Query"
+    for query in queries:
 
-        pending_with = "CRM"
+        # ==================================================
+        # SAFE RELATED OBJECTS
+        # ==================================================
 
-        stage_start = ticket.created_at
+        scope = safe_related(query, "scope_form")
 
-        current_object = ticket
+        inspection = SiteInspection.objects.filter(
+            customer_query=query
+        ).first()
+
+        estimate = EstimateForm.objects.filter(
+            customer_query=query
+        ).first()
+
+        approval = CustomerApproval.objects.filter(
+            customer_query=query
+        ).first()
+
+        advance = AdvanceCollection.objects.filter(
+            customer_query=query
+        ).first()
+
+        material = MaterialAvailability.objects.filter(
+            customer_query=query
+        ).first()
+
+        indent = RaiseIndent.objects.filter(
+            customer_query=query
+        ).first()
+
+        issue_material = IssueMaterial.objects.filter(
+            customer_query=query
+        ).first()
+
+        receive_material = ReceiveMaterial.objects.filter(
+            customer_query=query
+        ).first()
+
+        closer = QueryCloser.objects.filter(
+            customer_query=query
+        ).first()
+
+        feedback = CustomerFeedback.objects.filter(
+            customer_query=query
+        ).first()
 
 
-        # ==========================================
-        # CUSTOMER DETAILS
-        # ==========================================
+        # ==================================================
+        # CURRENT STAGE
+        # ==================================================
 
-        customer_name = ticket.name
+        current_stage = "S1"
+        stage_start = query.created_at
 
-        customer_email = ticket.email
-
-        customer_contact = ticket.contact
-
-        ticket_id = ticket.ticket_id
-
-        tower = ticket.tower
-
-        area = ticket.area
-
-        issue = ticket.issue
-
-        problem = ticket.problem
-
-        status = ticket.status
-
-        photo = ticket.photo
-
-        query_date = ticket.created_at.date()
-
-        query_time = ticket.created_at.strftime("%d-%m-%Y %I:%M %p")
-
-
-        # ==========================================
-        # DEFAULT STAGE VALUES
-        # ==========================================
-
-        due_time = ticket.created_at
-
-        remaining_time = ""
-
-        overdue = False
-
-        stage_color = "success"
-
-        progress = 0
-
-        timeline = {}
-        
-
-        # ==========================================
-        # CHECK S1 - MAINTENANCE SCOPE
-        # ==========================================
-
-        try:
-
-            scope = MaintenanceScope.objects.get(
-                customer_query=ticket
-            )
-
-            current_stage = "S1"
-
-            current_stage_name = "Maintenance Scope"
-
-            pending_with = "CRM"
-
+        if scope:
+            current_stage = "S2"
             stage_start = scope.created_at
 
-            current_object = scope
-
-        except MaintenanceScope.DoesNotExist:
-
-            scope = None
-
-
-        # ==========================================
-        # CHECK S2 - SITE INSPECTION
-        # ==========================================
-
-        try:
-
-            inspection = SiteInspection.objects.get(
-                customer_query=ticket
-            )
-
-            current_stage = "S2"
-
-            current_stage_name = "Site Inspection"
-
-            pending_with = "Site Engineer"
-
+        if inspection:
+            current_stage = "S3"
             stage_start = inspection.created_at
 
-            current_object = inspection
-
-        except SiteInspection.DoesNotExist:
-
-            inspection = None
-
-
-        # ==========================================
-        # CHECK S3 - ESTIMATE FORM
-        # ==========================================
-
-        try:
-
-            estimate = EstimateForm.objects.get(
-                customer_query=ticket
-            )
-
-            current_stage = "S3"
-
-            current_stage_name = "Estimate Form"
-
-            pending_with = "CRM"
-
+        if estimate:
+            current_stage = "S4"
             stage_start = estimate.created_at
 
-            current_object = estimate
-
-        except EstimateForm.DoesNotExist:
-
-            estimate = None
-
-
-        # ==========================================
-        # CHECK S4 - CUSTOMER APPROVAL
-        # ==========================================
-
-        try:
-
-            approval = CustomerApproval.objects.get(
-                customer_query=ticket
-            )
-
-            current_stage = "S4"
-
-            current_stage_name = "Customer Approval"
-
-            pending_with = "Customer"
-
+        if approval:
+            current_stage = "S5"
             stage_start = approval.created_at
 
-            current_object = approval
-
-        except CustomerApproval.DoesNotExist:
-
-            approval = None
-
-
-        # ==========================================
-        # CHECK S5 - ADVANCE COLLECTION
-        # ==========================================
-
-        try:
-
-            advance = AdvanceCollection.objects.get(
-                customer_query=ticket
-            )
-
-            current_stage = "S5"
-
-            current_stage_name = "Advance Collection"
-
-            pending_with = "Accounts"
-
+        if advance:
+            current_stage = "S6"
             stage_start = advance.created_at
 
-            current_object = advance
-
-        except AdvanceCollection.DoesNotExist:
-
-            advance = None
-            
-
-        # ==========================================
-        # CHECK S6 - MATERIAL AVAILABILITY
-        # ==========================================
-
-        try:
-
-            material = MaterialAvailability.objects.get(
-                customer_query=ticket
-            )
-
-            current_stage = "S6"
-
-            current_stage_name = "Material Availability"
-
-            pending_with = "Store Keeper"
-
+        if material:
+            current_stage = "S7"
             stage_start = material.created_at
 
-            current_object = material
-
-        except MaterialAvailability.DoesNotExist:
-
-            material = None
-
-
-        # ==========================================
-        # CHECK S7 - RAISE INDENT
-        # ==========================================
-
-        try:
-
-            indent = RaiseIndent.objects.get(
-                customer_query=ticket
-            )
-
-            current_stage = "S7"
-
-            current_stage_name = "Raise Indent"
-
-            pending_with = "Store Keeper"
-
+        if indent:
+            current_stage = "S8"
             stage_start = indent.created_at
 
-            current_object = indent
-
-        except RaiseIndent.DoesNotExist:
-
-            indent = None
-
-
-        # ==========================================
-        # CHECK S8 - ISSUE MATERIAL
-        # ==========================================
-
-        try:
-
-            issue_material = IssueMaterial.objects.get(
-                customer_query=ticket
-            )
-
-            current_stage = "S8"
-
-            current_stage_name = "Issue Material"
-
-            pending_with = "Store Keeper"
-
+        if issue_material:
+            current_stage = "S9"
             stage_start = issue_material.created_at
 
-            current_object = issue_material
-
-        except IssueMaterial.DoesNotExist:
-
-            issue_material = None
-
-
-        # ==========================================
-        # CHECK S9 - RECEIVE MATERIAL
-        # ==========================================
-
-        try:
-
-            receive = ReceiveMaterial.objects.get(
-                customer_query=ticket
-            )
-
-            current_stage = "S9"
-
-            current_stage_name = "Receive Material"
-
-            pending_with = "Maintenance"
-
-            stage_start = receive.created_at
-
-            current_object = receive
-
-        except ReceiveMaterial.DoesNotExist:
-
-            receive = None
-
-
-        # ==========================================
-        # CHECK S10 - QUERY CLOSER
-        # ==========================================
-
-        try:
-
-            closer = QueryCloser.objects.get(
-                customer_query=ticket
-            )
-
+        if receive_material:
             current_stage = "S10"
+            stage_start = receive_material.created_at
 
-            current_stage_name = "Query Closure"
-
-            pending_with = "Maintenance"
-
+        if closer:
+            current_stage = "S11"
             stage_start = closer.created_at
 
-            current_object = closer
-
-        except QueryCloser.DoesNotExist:
-
-            closer = None
-
-
-        # ==========================================
-        # CHECK S11 - CUSTOMER FEEDBACK
-        # ==========================================
-
-        try:
-
-            feedback = CustomerFeedback.objects.get(
-                customer_query=ticket
-            )
-
-            current_stage = "S11"
-
-            current_stage_name = "Customer Feedback"
-
-            pending_with = "CRM"
-
+        if feedback:
+            current_stage = "Completed"
             stage_start = feedback.created_at
 
-            current_object = feedback
 
-        except CustomerFeedback.DoesNotExist:
+        # ==================================================
+        # STAGE DETAILS
+        # ==================================================
 
-            feedback = None
-            
-        # ==========================================
-        # STAGE DUE TIME
-        # ==========================================
+        pending_with = get_pending_with(current_stage)
 
-        if current_stage == "S0":
+        progress = get_progress(current_stage)
 
-            due_time = stage_start + timedelta(hours=3)
+        stage_name = get_stage_name(current_stage)
 
-        elif current_stage == "S1":
+        timeline = get_timeline(current_stage)
+    
+        # ==================================================
+        # DUE TIME
+        # ==================================================
 
-            due_time = stage_start + timedelta(hours=3)
-
-        elif current_stage == "S2":
-
-            due_time = stage_start + timedelta(days=1)
-
-        elif current_stage == "S3":
-
-            due_time = stage_start + timedelta(hours=6)
-
-        elif current_stage == "S4":
-
-            due_time = stage_start + timedelta(hours=6)
-
-        elif current_stage == "S5":
-
-            due_time = stage_start + timedelta(days=1)
-
-        elif current_stage == "S6":
-
-            due_time = stage_start + timedelta(hours=2)
-
-        elif current_stage == "S7":
-
-            due_time = stage_start + timedelta(days=2)
-
-        elif current_stage == "S8":
-
-            due_time = stage_start + timedelta(hours=1)
-
-        elif current_stage == "S9":
-
-            due_time = stage_start + timedelta(days=1)
-
-        elif current_stage == "S10":
-
-            due_time = stage_start + timedelta(days=4)
-
-        elif current_stage == "S11":
-
-            due_time = stage_start + timedelta(days=1)
-
-        else:
-
-            due_time = stage_start
+        due_time = calculate_due_time(
+            current_stage,
+            stage_start
+        )
 
 
-        # ==========================================
-        # REMAINING TIME
-        # ==========================================
+        # ==================================================
+        # REMAINING TIME / OVERDUE
+        # ==================================================
 
-        if now > due_time:
+        remaining_time = "-"
 
-            overdue = True
+        due_time_display = "-"
+
+        is_overdue = False
+
+        if due_time:
+
+            due_time_display = timezone.localtime(
+                due_time
+            ).strftime("%d-%m-%Y %I:%M %p")
+
+            remaining_time, is_overdue = calculate_remaining_time(
+                due_time
+            )
+
+
+        # ==================================================
+        # QUERY RAISED
+        # ==================================================
+
+        query_raised = timezone.localtime(
+            query.created_at
+        ).strftime("%d-%m-%Y %I:%M %p")
+
+
+        # ==================================================
+        # DUE TODAY
+        # ==================================================
+
+        is_due_today = False
+
+        if due_time:
+
+            if timezone.localtime(due_time).date() == today:
+
+                is_due_today = True
+
+                due_today_count += 1
+
+
+        # ==================================================
+        # OVERDUE COUNT
+        # ==================================================
+
+        if is_overdue:
 
             overdue_count += 1
 
-            remaining_time = "Overdue"
+
+        # ==================================================
+        # DASHBOARD STATUS COUNT
+        # ==================================================
+
+        if query.status == "Open":
+
+            open_count += 1
+
+        elif query.status == "In Progress":
+
+            in_progress_count += 1
+
+        elif query.status == "Closed":
+
+            closed_count += 1
+
+        elif query.status == "Resolved":
+
+            closed_count += 1
+
+
+        # ==================================================
+        # PROGRESS STATUS
+        # ==================================================
+
+        if current_stage == "Completed":
+
+            progress = "Closed"
+
+        elif current_stage == "S1":
+
+            progress = "Open"
 
         else:
 
-            overdue = False
+            progress = "In Progress"
+            
 
-            balance = due_time - now
+        # ==================================================
+        # CUSTOMER DICTIONARY
+        # ==================================================
 
-            days = balance.days
+        customer = {
 
-            hours = balance.seconds // 3600
+            "id": query.id,
 
-            minutes = (balance.seconds % 3600) // 60
+            "ticket": query.ticket_id,
 
-            remaining_time = f"{days}D {hours}H {minutes}M"
+            "customer": query.name,
 
+            "contact": query.contact,
 
-        # ==========================================
-        # DUE TODAY
-        # ==========================================
+            "email": query.email,
 
-        if due_time.date() == now.date():
+            "tower": query.tower,
 
-            due_today += 1
+            "area": query.area,
 
+            "issue": query.issue,
 
-        # ==========================================
-        # STAGE COLOR
-        # ==========================================
+            "status": query.status,
 
-        if overdue:
+            "query_raised": query_raised,
 
-            stage_color = "danger"
+            "current_stage": current_stage,
 
-        elif due_time.date() == now.date():
+            "stage_name": stage_name,
 
-            stage_color = "warning"
+            "pending_with": pending_with,
 
-        else:
+            "progress": progress,
 
-            stage_color = "success"
+            "due_time": due_time_display,
 
+            "remaining": remaining_time,
 
-        # ==========================================
-        # STAGE PROGRESS
-        # ==========================================
+            "is_overdue": is_overdue,
 
-        progress = {
+            "timeline": timeline,
 
-            "S0": 0,
-            "S1": 10,
-            "S2": 20,
-            "S3": 30,
-            "S4": 40,
-            "S5": 50,
-            "S6": 60,
-            "S7": 70,
-            "S8": 80,
-            "S9": 90,
-            "S10": 95,
-            "S11": 100,
-
-        }.get(current_stage, 0)
-        
-
-        # ==========================================
-        # STAGE TIMELINE
-        # ==========================================
-
-        timeline = {
-
-            "S0": current_stage != "S0",
-
-            "S1": current_stage not in [
-                "S0",
-                "S1"
-            ],
-
-            "S2": current_stage not in [
-                "S0",
-                "S1",
-                "S2"
-            ],
-
-            "S3": current_stage not in [
-                "S0",
-                "S1",
-                "S2",
-                "S3"
-            ],
-
-            "S4": current_stage not in [
-                "S0",
-                "S1",
-                "S2",
-                "S3",
-                "S4"
-            ],
-
-            "S5": current_stage not in [
-                "S0",
-                "S1",
-                "S2",
-                "S3",
-                "S4",
-                "S5"
-            ],
-
-            "S6": current_stage not in [
-                "S0",
-                "S1",
-                "S2",
-                "S3",
-                "S4",
-                "S5",
-                "S6"
-            ],
-
-            "S7": current_stage not in [
-                "S0",
-                "S1",
-                "S2",
-                "S3",
-                "S4",
-                "S5",
-                "S6",
-                "S7"
-            ],
-
-            "S8": current_stage not in [
-                "S0",
-                "S1",
-                "S2",
-                "S3",
-                "S4",
-                "S5",
-                "S6",
-                "S7",
-                "S8"
-            ],
-
-            "S9": current_stage not in [
-                "S0",
-                "S1",
-                "S2",
-                "S3",
-                "S4",
-                "S5",
-                "S6",
-                "S7",
-                "S8",
-                "S9"
-            ],
-
-            "S10": current_stage not in [
-                "S0",
-                "S1",
-                "S2",
-                "S3",
-                "S4",
-                "S5",
-                "S6",
-                "S7",
-                "S8",
-                "S9",
-                "S10"
-            ],
-
-            "S11": current_stage == "S11",
+            "photo": query.photo,
 
         }
 
 
-        # ==========================================
-        # MASTER TABLE DATA
-        # ==========================================
+        # ==================================================
+        # CUSTOMER LIST
+        # ==================================================
 
-        ticket_data.append({
-
-            "ticket_id": ticket_id,
-
-            "customer_name": customer_name,
-
-            "customer_email": customer_email,
-
-            "customer_contact": customer_contact,
-
-            "tower": tower,
-
-            "area": area,
-
-            "issue": issue,
-
-            "problem": problem,
-
-            "photo": photo,
-
-            "status": status,
-
-            "query_date": query_date,
-
-            "query_time": query_time,
-
-            "current_stage": current_stage,
-
-            "current_stage_name": current_stage_name,
-
-            "pending_with": pending_with,
-
-            "stage_start": stage_start,
-
-            "due_time": due_time,
-
-            "remaining_time": remaining_time,
-
-            "overdue": overdue,
-
-            "stage_color": stage_color,
-
-            "progress": progress,
-
-            "timeline": timeline,
-
-        })
+        customer_data.append(customer)
 
 
-    # ==========================================
-    # OVERDUE TICKETS
-    # ==========================================
+        # ==================================================
+        # OVERDUE LIST
+        # ==================================================
 
-    overdue_tickets = [
+        if is_overdue and current_stage != "Completed":
 
-        ticket
-
-        for ticket in ticket_data
-
-        if ticket["overdue"]
-
-    ]
+            overdue_customers.append(customer)
 
 
-    # ==========================================
-    # DUE TODAY TICKETS
-    # ==========================================
+        # ==================================================
+        # DUE TODAY LIST
+        # ==================================================
 
-    due_today_tickets = [
+        if is_due_today and current_stage != "Completed":
 
-        ticket
+            due_today_customers.append(customer)
 
-        for ticket in ticket_data
-
-        if ticket["due_time"].date() == now.date()
-
-    ]
-
-
-    # ==========================================
-    # SORT TABLE
-    # ==========================================
-
-    ticket_data = sorted(
-
-        ticket_data,
-
-        key=lambda x: x["stage_start"],
-
-        reverse=True
-
-    )
-    
-
-    # ==========================================
+    # ======================================================
+    # CUSTOMER LOOP END
+    # ======================================================
+        # ======================================================
     # CONTEXT
-    # ==========================================
+    # ======================================================
 
     context = {
 
-        # ==========================================
-        # SEARCH
-        # ==========================================
-
+        # Search
         "search": search,
 
-
-        # ==========================================
-        # DASHBOARD SUMMARY
-        # ==========================================
-
+        # Dashboard Summary
         "total_queries": total_queries,
-
-        "open_queries": open_queries,
-
-        "pending_queries": pending_queries,
-
-        "inprogress_queries": inprogress_queries,
-
-        "resolved_queries": resolved_queries,
-
-        "closed_queries": closed_queries,
-
-
-        # ==========================================
-        # STAGE COUNT
-        # ==========================================
-
-        "total_scope": total_scope,
-
-        "total_inspection": total_inspection,
-
-        "total_estimate": total_estimate,
-
-        "total_approval": total_approval,
-
-        "total_advance": total_advance,
-
-        "total_material": total_material,
-
-        "total_indent": total_indent,
-
-        "total_issue_material": total_issue_material,
-
-        "total_receive_material": total_receive_material,
-
-        "total_query_closer": total_query_closer,
-
-        "total_feedback": total_feedback,
-
-
-        # ==========================================
-        # PENDING STAGE COUNT
-        # ==========================================
-
-        "scope_pending": scope_pending,
-
-        "inspection_pending": inspection_pending,
-
-        "estimate_pending": estimate_pending,
-
-        "approval_pending": approval_pending,
-
-        "advance_pending": advance_pending,
-
-        "material_pending": material_pending,
-
-        "indent_pending": indent_pending,
-
-        "issue_material_pending": issue_material_pending,
-
-        "receive_material_pending": receive_material_pending,
-
-        "closer_pending": closer_pending,
-
-        "feedback_pending": feedback_pending,
-
-
-        # ==========================================
-        # DASHBOARD CARDS
-        # ==========================================
-
+        "open_count": open_count,
+        "in_progress_count": in_progress_count,
+        "closed_count": closed_count,
         "overdue_count": overdue_count,
+        "due_today_count": due_today_count,
 
-        "due_today": due_today,
+        # Customer Data
+        "customer_data": customer_data,
 
-        "completed_today": completed_today,
+        # Overdue Customers
+        "overdue_customers": overdue_customers,
 
-
-        # ==========================================
-        # TABLE DATA
-        # ==========================================
-
-        "ticket_data": ticket_data,
-
-        "overdue_tickets": overdue_tickets,
-
-        "due_today_tickets": due_today_tickets,
+        # Due Today Customers
+        "due_today_customers": due_today_customers,
 
     }
 
 
-    # ==========================================
-    # RENDER PAGE
-    # ==========================================
+    # ======================================================
+    # RENDER
+    # ======================================================
 
     return render(
 
         request,
 
-        "crm_dashboard.html",
+        "crm/crm_master_dashboard.html",
 
         context
 
