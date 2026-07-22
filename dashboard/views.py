@@ -4511,7 +4511,7 @@ def get_timeline(current_stage):
 # CRM MASTER DASHBOARD
 # ==========================================================
 
-def crm_master_dashboard(request):
+def crm_dashboard(request):
 
     # ======================================================
     # LOGIN CHECK
@@ -4916,7 +4916,7 @@ def crm_master_dashboard(request):
 
         request,
 
-        "crm/crm_master_dashboard.html",
+         "crm/crm_dashboard.html",
 
         context
 
