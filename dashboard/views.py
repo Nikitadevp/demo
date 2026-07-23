@@ -4488,24 +4488,6 @@ def get_stage_name(current_stage):
 # TIMELINE
 # ==========================================================
 
-def get_timeline(current_stage):
-
-    return {
-
-        "S0": current_stage != "S0",
-        "S1": current_stage not in ["S0", "S1"],
-        "S2": current_stage not in ["S0", "S1", "S2"],
-        "S3": current_stage not in ["S0", "S1", "S2", "S3"],
-        "S4": current_stage not in ["S0", "S1", "S2", "S3", "S4"],
-        "S5": current_stage not in ["S0", "S1", "S2", "S3", "S4", "S5"],
-        "S6": current_stage not in ["S0", "S1", "S2", "S3", "S4", "S5", "S6"],
-        "S7": current_stage not in ["S0", "S1", "S2", "S3", "S4", "S5", "S6", "S7"],
-        "S8": current_stage not in ["S0", "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8"],
-        "S9": current_stage not in ["S0", "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9"],
-        "S10": current_stage not in ["S0", "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10"],
-        "S11": current_stage == "Completed",
-
-    }
 
 # ==========================================================
 # CRM MASTER DASHBOARD
@@ -4681,7 +4663,7 @@ def crm_dashboard(request):
         stage_name = get_stage_name(current_stage)
         pending_with = get_pending_with(current_stage)
         progress = get_progress(current_stage)
-        timeline = get_timeline(current_stage)
+       
 
         # ==============================================
         # DUE TIME
@@ -4819,7 +4801,7 @@ def crm_dashboard(request):
 
             "is_overdue": is_overdue,
 
-            "timeline": timeline,
+            
 
            
 
