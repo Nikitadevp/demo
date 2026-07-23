@@ -4535,7 +4535,7 @@ def crm_dashboard(request):
     total_queries = queries.count()
 
     open_count = 0
-    pending_count = 0
+    
     in_progress_count = 0
     resolved_count = 0
     closed_count = 0
@@ -4729,10 +4729,6 @@ def crm_dashboard(request):
 
             open_count += 1
 
-        elif query.status == "Pending":
-
-            pending_count += 1
-
         elif query.status == "In Progress":
 
             in_progress_count += 1
@@ -4837,7 +4833,7 @@ def crm_dashboard(request):
         # Dashboard Counts
         "total_queries": total_queries,
         "open_count": open_count,
-        "pending_count": pending_count,
+        
         "in_progress_count": in_progress_count,
         "resolved_count": resolved_count,
         "closed_count": closed_count,
