@@ -415,7 +415,7 @@
 
                             <th>Issue</th>
 
-                            <th>Status</th>
+                            
 
                             <th>Stage</th>
 
@@ -508,51 +508,7 @@
 
                         <!-- Status -->
 
-                        <td>
-
-                            {% if customer.status == "Open" %}
-
-                                <span class="badge bg-primary">
-
-                                    {{ customer.status }}
-
-                                </span>
-
-                            {% elif customer.status == "Pending" %}
-
-                                <span class="badge bg-warning text-dark">
-
-                                    {{ customer.status }}
-
-                                </span>
-
-                            {% elif customer.status == "Resolved" %}
-
-                                <span class="badge bg-success">
-
-                                    {{ customer.status }}
-
-                                </span>
-
-                            {% elif customer.status == "Closed" %}
-
-                                <span class="badge bg-dark">
-
-                                    {{ customer.status }}
-
-                                </span>
-
-                            {% else %}
-
-                                <span class="badge bg-info">
-
-                                    {{ customer.status }}
-
-                                </span>
-
-                            {% endif %}
-
-                        </td>
+                        
 
                         <!-- Current Stage -->
 
@@ -668,7 +624,7 @@
 
                     <tr>
 
-                        <td colspan="14" class="text-center py-5">
+                        <td colspan="13" class="text-center py-5">
 
                             <h5 class="text-muted">
 

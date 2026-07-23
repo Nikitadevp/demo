@@ -4776,7 +4776,7 @@ def crm_dashboard(request):
 
             "issue": query.issue,
 
-            "status": query.status,
+            
 
             "query_raised": query_raised,
 
