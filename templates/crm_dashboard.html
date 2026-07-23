@@ -501,7 +501,7 @@
 
                             <th>Timeline</th>
 
-                            <th>Photo</th>
+                            
 
                         </tr>
 
@@ -735,36 +735,7 @@
 
                         </td>
 
-                        <!-- ============================================== -->
-                        <!-- PHOTO -->
-                        <!-- ============================================== -->
-
-                        <td class="text-center">
-
-                            {% if customer.photo %}
-
-                                <a href="{{ customer.photo.url }}"
-                                   target="_blank">
-
-                                    <img src="{{ customer.photo.url }}"
-                                         class="img-thumbnail"
-                                         width="70"
-                                         height="70"
-                                         style="object-fit:cover;">
-
-                                </a>
-
-                            {% else %}
-
-                                <span class="text-muted">
-
-                                    No Photo
-
-                                </span>
-
-                            {% endif %}
-
-                        </td>
+                        
 
                     </tr>
 
@@ -772,8 +743,7 @@
 
                     <tr>
 
-                        <td colspan="16"
-                            class="text-center py-5">
+                        <td colspan="15" class="text-center py-5">
 
                             <h5 class="text-muted">
 
