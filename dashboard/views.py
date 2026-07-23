@@ -4537,7 +4537,7 @@ def crm_dashboard(request):
     open_count = 0
     
     in_progress_count = 0
-    resolved_count = 0
+   
     closed_count = 0
 
     overdue_count = 0
@@ -4733,9 +4733,6 @@ def crm_dashboard(request):
 
             in_progress_count += 1
 
-        elif query.status == "Resolved":
-
-            resolved_count += 1
 
         elif query.status == "Closed":
 
@@ -4835,7 +4832,7 @@ def crm_dashboard(request):
         "open_count": open_count,
         
         "in_progress_count": in_progress_count,
-        "resolved_count": resolved_count,
+        
         "closed_count": closed_count,
         "overdue_count": overdue_count,
         "due_today_count": due_today_count,
