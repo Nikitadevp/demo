@@ -4821,7 +4821,7 @@ def crm_dashboard(request):
 
             "timeline": timeline,
 
-            "photo": query.photo,
+           
 
         }
 

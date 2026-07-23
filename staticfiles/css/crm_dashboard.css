@@ -419,29 +419,7 @@ p{
    TABLE IMAGE
 ========================================================== */
 
-.table img{
 
-    width:65px;
-
-    height:65px;
-
-    object-fit:cover;
-
-    border-radius:10px;
-
-    border:2px solid #dee2e6;
-
-    transition:.35s;
-
-}
-
-.table img:hover{
-
-    transform:scale(1.15);
-
-    border-color:#0d6efd;
-
-}
 
 /* ==========================================================
    NO DATA
@@ -1491,13 +1469,7 @@ a:hover{
    IMAGE STYLE
 ========================================================== */
 
-.img-thumbnail{
 
-    background:#fff;
-
-    border-radius:10px;
-
-}
 
 /* ==========================================================
    EMPTY TABLE MESSAGE
