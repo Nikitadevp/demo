@@ -368,31 +368,6 @@ p{
 }
 
 
-/* ==========================================================
-   CUSTOMER QUERY CARD
-========================================================== */
-
-.card{
-
-    border:none;
-
-    border-radius:15px;
-
-    background:#ffffff;
-
-    overflow:hidden;
-
-    transition:.3s ease;
-
-}
-
-.card:hover{
-
-    transform:translateY(-5px);
-
-    box-shadow:0 12px 25px rgba(0,0,0,.12);
-
-}
 
 
 /* ==========================================================
