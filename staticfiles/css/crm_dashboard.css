@@ -552,11 +552,15 @@ p{
 
 .btn-secondary{
 
-    background:#6c757d;
+    display:flex;
 
-    border:none;
+    align-items:center;
 
-    color:#fff;
+    justify-content:center;
+
+    gap:6px;
+
+    min-width:90px;
 
 }
 
