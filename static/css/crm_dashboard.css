@@ -573,7 +573,19 @@ p{
 }
 
 
-.btn-danger{
+/* ==========================================================
+   LOGOUT BUTTON
+========================================================== */
+
+.logout-btn{
+
+    background:#dc3545;
+
+    color:#ffffff;
+
+    border:none;
+
+    border-radius:8px;
 
     height:42px;
 
@@ -587,7 +599,33 @@ p{
 
     gap:6px;
 
+    font-size:15px;
+
+    font-weight:600;
+
+    text-decoration:none;
+
+    transition:all .3s ease;
+
     white-space:nowrap;
+
+}
+
+.logout-btn:hover{
+
+    background:#bb2d3b;
+
+    color:#ffffff;
+
+    transform:translateY(-2px);
+
+    box-shadow:0 8px 18px rgba(220,53,69,.25);
+
+}
+
+.logout-btn i{
+
+    font-size:14px;
 
 }
 
