@@ -583,20 +583,9 @@ p{
 
     gap:6px;
 
-    min-width:100px;
-
-    height:38px;
-
-    background:#dc3545;
-
-    color:#fff;
-
-    border:none;
-
-    font-weight:600;
+    min-width:90px;
 
 }
-
 .btn-danger:hover{
 
     background:#bb2d3b;
