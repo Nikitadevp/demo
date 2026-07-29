@@ -39,15 +39,90 @@
 
 </head>
 
+
+
 <body>
 
+<div class="dashboard">
+
+    <!-- ===========================
+            SIDEBAR
+    ============================ -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <h2>CRM</h2>
+
+            <p>Dashboard</p>
+
+        </div>
+
+        <ul>
+
+            <li class="active">
+
+                <a href="{% url 'crm_dashboard' %}">
+
+                    <i class="fa-solid fa-chart-line"></i>
+
+                    Dashboard
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="#customer-table">
+
+                    <i class="fa-solid fa-users"></i>
+
+                    Customer Queries
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="#overdue-table">
+
+                    <i class="fa-solid fa-clock"></i>
+
+                    Overdue Customers
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="#due-today-table">
+
+                    <i class="fa-solid fa-calendar-day"></i>
+
+                    Due Today
+
+                </a>
+
+            </li>
+
+        </ul>
+
+    </aside>
+
+    
 
 
+</div>
 <!-- ========================================================= -->
 <!-- DASHBOARD CONTAINER -->
 <!-- ========================================================= -->
 
 <div class="container-fluid py-4">
+
       
      
 
