@@ -4048,13 +4048,21 @@ def site_engineer_dashboard(request):
     ).order_by("-created_at")[:10]
 
 
-    # ==========================================
-    # LATEST COMPLAINTS
-    # ==========================================
-    # ==========================================
-    # LATEST COMPLAINTS
-    # ==========================================
+    maintenance_scope_list = MaintenanceScope.objects.filter(
+        under_scope="Yes"
+    )
+    if search:
+      
+      maintenance_scope_list = maintenance_scope_list.filter(    
+      Q(case_id__icontains=search) |
+      Q(customer_name__icontains=search) |
+      Q(block__icontains=search) |
+      Q(area__icontains=search)
+    )
 
+    maintenance_scope_list = maintenance_scope_list.select_related(
+    "customer_query"
+    ).order_by("-created_at")[:10]
    
 
 
@@ -4091,10 +4099,12 @@ def site_engineer_dashboard(request):
 
         
         "recent_site_inspections": recent_site_inspections,
+        "maintenance_scope_list": maintenance_scope_list,
         "search": search,
        
 
         # Charts
+        
 
        
 
