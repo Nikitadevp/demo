@@ -4048,7 +4048,10 @@ def site_engineer_dashboard(request):
     ).order_by("-created_at")[:10]
 
 
-    maintenance_scope_list = MaintenanceScope.objects.all()
+    maintenance_scope_list = MaintenanceScope.objects.filter(
+    scope_status="Yes"
+    )
+
     if search:
       
       maintenance_scope_list = maintenance_scope_list.filter(    
@@ -4058,7 +4061,9 @@ def site_engineer_dashboard(request):
       Q(location__icontains=search)
     )
 
-    maintenance_scope_list = maintenance_scope_list.order_by("-created_at")[:10]
+    maintenance_scope_list = maintenance_scope_list.select_related(
+    "customer_query"
+    ).order_by("-created_at")[:10]
    
 
 
