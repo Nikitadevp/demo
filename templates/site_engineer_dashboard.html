@@ -396,6 +396,7 @@
                         <th>Block</th>
                         <th>Area</th>
                         <th>Issue</th>
+                        <th>Scope Status</th>
                         <th>Date</th>
 
                     </tr>
@@ -412,6 +413,8 @@
                          <td>{{ scope.location }}</td>
 
                          <td>{{ scope.issue_related }}</td>
+   
+                         <td>{{ scope.scope_status }}</td>
 
                          <td>{{ scope.created_at|date:"d/m/y h:i A" }}</td>
                     </tr>
