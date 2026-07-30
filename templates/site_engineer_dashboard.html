@@ -379,10 +379,57 @@
                 </a>    
             </form>
         </div>
+ 
+        <div class="section-title">
+          
+            <h2>
+                Maintenance Scope
+            </h2>
+        </div>
+        <div class="table-box">
+            <table>
+                <thead>
+                    <tr>
 
+                        <th>Case ID</th>
+                        <th>Customer</th>
+                        <th>Block</th>
+                        <th>Area</th>
+                        <th>Issue</th>
+                        <th>Date</th>
 
+                    </tr>
+                </thead>
+                <tbody>
+                {% for scope in maintenance_scope_list %}
+                    <tr>    
+                        <td>{{ scope.case_id }}</td>
 
+                         <td>{{ scope.customer_name }}</td>
 
+                         <td>{{ scope.block }}</td>
+
+                         <td>{{ scope.area }}</td>
+
+                         <td>{{ scope.issue_related }}</td>
+
+                         <td>{{ scope.created_at|date:"d/m/y h:i A" }}</td>
+                    </tr>
+               {% empty %}
+                     <tr>
+
+                       <td colspan="6">
+
+                         No Maintenance Scope Available
+
+                        </td>
+
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
         <!-- ==========================================
                 RECENT SITE INSPECTION
         =========================================== -->
