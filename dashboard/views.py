@@ -4055,7 +4055,7 @@ def site_engineer_dashboard(request):
       Q(case_id__icontains=search) |
       Q(customer_name__icontains=search) |
       Q(block__icontains=search) |
-      Q(area__icontains=search)
+      Q(location__icontains=search)
     )
 
     maintenance_scope_list = maintenance_scope_list.order_by("-created_at")[:10]
