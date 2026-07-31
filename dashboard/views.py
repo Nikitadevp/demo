@@ -4075,15 +4075,16 @@ def site_engineer_dashboard(request):
         ).first()   
 
         if not inspection:
-            scope.pending = ""
-            scope.overdue = ""
+            continue
             
         due_date = scope.created_at + timedelta(days=1)
 
         if timezone.now() > due_date:
+            scope.pending = ""
             scope.overdue = "Over Due"      
         else:
             scope.pending = "Pending"
+            scope.overdue = ""
         pending_overdue_list.append(scope)
 
 
