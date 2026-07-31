@@ -396,6 +396,7 @@
                         <th>Block</th>
                         <th>Area</th>
                         <th>Issue</th>
+                        <th>Issue Description</th>
                         <th>Scope Status</th>
                         <th>Date</th>
 
@@ -413,6 +414,8 @@
                          <td>{{ scope.location }}</td>
 
                          <td>{{ scope.issue_related }}</td>
+
+                         <td>{{ scope.issue_description }}</td>
    
                          <td>{{ scope.scope_status }}</td>
 
@@ -421,7 +424,7 @@
                {% empty %}
                      <tr>
 
-                       <td colspan="6">
+                       <td colspan="8">
 
                          No Maintenance Scope Available
 
