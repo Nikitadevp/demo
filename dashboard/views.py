@@ -4064,7 +4064,31 @@ def site_engineer_dashboard(request):
     maintenance_scope_list = maintenance_scope_list.select_related(
     "customer_query"
     ).order_by("-created_at")[:10]
+
+    
+
+    pending_overdue_list = []
    
+    for scope in maintenance_scope_list:
+        inspection = SiteInspection.objects.filter(
+            customer_query=scope.customer_query
+        ).first()   
+
+        if not inspection:
+            scope.pending = ""
+            scope.overdue = ""
+            
+        due_date = scope.created_at + timedelta(days=1)
+
+        if timezone.now() > due_date:
+            scope.overdue = "Over Due"      
+        else:
+            scope.pending = "Pending"
+        pending_overdue_list.append(scope)
+
+
+
+
 
 
     # ==========================================
@@ -4102,7 +4126,8 @@ def site_engineer_dashboard(request):
         "recent_site_inspections": recent_site_inspections,
         "maintenance_scope_list": maintenance_scope_list,
         "search": search,
-       
+
+        "pending_overdue_list": pending_overdue_list,
 
         # Charts
         

@@ -383,7 +383,7 @@
         <div class="section-title">
           
             <h2>
-                Maintenance Scope
+                Pending / Over Due Site Inspection
             </h2>
         </div>
         <div class="table-box">
@@ -397,13 +397,15 @@
                         <th>Area</th>
                         <th>Issue</th>
                         <th>Issue Description</th>
-                        <th>Scope Status</th>
+                        <th>Pending</th>
+                        <th>Over Due</th>
+                        
                         <th>Date</th>
 
                     </tr>
                 </thead>
                 <tbody>
-                {% for scope in maintenance_scope_list %}
+                 {% for scope in pending_overdue_list %}
                     <tr>    
                         <td>{{ scope.case_id }}</td>
 
@@ -417,7 +419,9 @@
 
                          <td>{{ scope.issue_description }}</td>
    
-                         <td>{{ scope.scope_status }}</td>
+                         <td>{{ scope.pending }}</td>
+
+                         <td>{{ scope.overdue }}</td>
 
                          <td>{{ scope.created_at|date:"d/m/y h:i A" }}</td>
                     </tr>
@@ -426,7 +430,7 @@
 
                        <td colspan="8">
 
-                         No Maintenance Scope Available
+                         No Pending Site Inspection
 
                         </td>
 
