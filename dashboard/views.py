@@ -4022,7 +4022,11 @@ def site_engineer_dashboard(request):
     )
 
 
-
+    pending_site_inspection = MaintenanceScope.objects.filter(
+        scope_status="Yes"
+    ).exclude(
+        customer_query__siteinspection__isnull=False
+    )
 
     # ==========================================
     # SEARCH
@@ -4051,6 +4055,19 @@ def site_engineer_dashboard(request):
     maintenance_scope_list = MaintenanceScope.objects.filter(
     scope_status="Yes"
     )
+
+    if search:
+        pending_site_inspection = pending_site_inspection.filter(
+            Q(case_id__icontains=search) |
+            Q(customer_name__icontains=search) |
+            Q(block__icontains=search) |
+            Q(location__icontains=search)
+        )
+    pending_site_inspection = pending_site_inspection.select_related(
+        "customer_query"
+    ).order_by("-created_at")
+
+
 
     if search:
       
@@ -4129,6 +4146,7 @@ def site_engineer_dashboard(request):
         "search": search,
 
         "pending_overdue_list": pending_overdue_list,
+        "pending_site_inspection": pending_site_inspection,
 
         # Charts
         
