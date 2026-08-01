@@ -4023,7 +4023,7 @@ def site_engineer_dashboard(request):
 
 
     pending_site_inspection = MaintenanceScope.objects.filter(
-        "customer_query"
+        scope_status="Yes"
     ).exclude(
         customer_query__siteinspection__isnull=False
     )
@@ -4065,9 +4065,7 @@ def site_engineer_dashboard(request):
         )
         
     pending_site_inspection = pending_site_inspection.select_related(
-        scope_status="Yes"
-    ).exclude(
-        customer_query__siteinspection__isnull=False
+        "customer_query"
     ).order_by("-created_at")    
 
 
