@@ -4063,9 +4063,12 @@ def site_engineer_dashboard(request):
             Q(block__icontains=search) |
             Q(location__icontains=search)
         )
+        
     pending_site_inspection = pending_site_inspection.select_related(
-        "customer_query"
-    ).order_by("-created_at")
+        scope_status="Yes"
+    ).exclude(
+        customer_query__siteinspection__isnull=False
+    ).order_by("-created_at")    
 
 
 
