@@ -4089,19 +4089,16 @@ def site_engineer_dashboard(request):
 
     pending_overdue_list = []
    
-    for scope in maintenance_scope_list:
-        inspection = SiteInspection.objects.filter(
-            customer_query=scope.customer_query
-        ).first()   
+    for scope in pending_site_inspection:  
 
-        if not inspection:
-            continue
+        
             
         due_date = add_working_days(
             scope.created_at,
             1
         )
-
+        scope.due_date = due_date
+        
         if timezone.now() > due_date:
             
             scope.overdue = "Over Due"      
