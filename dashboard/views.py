@@ -4023,7 +4023,7 @@ def site_engineer_dashboard(request):
 
 
     pending_site_inspection = MaintenanceScope.objects.filter(
-        scope_status="Yes"
+        "customer_query"
     ).exclude(
         customer_query__siteinspection__isnull=False
     )
