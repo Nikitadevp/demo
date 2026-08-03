@@ -598,91 +598,300 @@ p{
    SIDEBAR
 ========================================================== */
 
+/* ==========================
+   SIDEBAR
+========================== */
+
 .sidebar{
-
-    width:250px;
-
-    min-height:100vh;
-
-    background:#1f2937;
-
-    color:#ffffff;
-
-    position:sticky;
-
+    position:fixed;
     top:0;
-
+    left:0;
+    width:270px;
+    height:100vh;
+    background:#1f2937;
+    color:#fff;
+    overflow-y:auto;
+    z-index:1000;
 }
 
-.sidebar-header{
-
-    padding:22px;
-
+.sidebar .logo{
+    padding:30px 20px;
     text-align:center;
-
-    border-bottom:1px solid rgba(255,255,255,.1);
-
 }
 
-.sidebar-header h4{
-
-    margin:0;
-
-    font-size:22px;
-
-    font-weight:700;
-
-}
-
-.sidebar-menu{
-
+.sidebar ul{
     list-style:none;
-
     margin:0;
-
-    padding:20px 0;
-
+    padding:0;
 }
 
-.sidebar-menu li{
-
-    margin-bottom:6px;
-
+.sidebar ul li{
+    margin:6px 0;
 }
 
-.sidebar-menu li a{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:12px;
-
-    padding:14px 22px;
-
-    color:#d1d5db;
-
+.sidebar ul li a{
+    display:block;
+    color:#fff;
     text-decoration:none;
-
+    padding:15px 25px;
     transition:.3s;
-
+    font-size:17px;
 }
 
-.sidebar-menu li a:hover,
+.sidebar ul li a:hover,
+.sidebar ul li a.active{
+    background:#2196f3;
+}
+/* ==========================
+   MAIN CONTENT
+========================== */
 
-.sidebar-menu li a.active{
-
-    background:#2563eb;
-
-    color:#ffffff;
-
+.main-content{
+    margin-left:270px;
+    padding:30px;
+    min-height:100vh;
 }
 
-.sidebar-menu li a i{
+/* ==========================
+   CONTAINER
+========================== */
 
-    width:20px;
+.container-fluid{
+    max-width:100%;
+}
 
+/* ==========================
+   CARDS
+========================== */
+
+.card{
+    border:none;
+    border-radius:18px;
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+}
+
+.card:hover{
+    transform:translateY(-4px);
+    transition:.3s;
+}
+
+/* ==========================
+   TABLE
+========================== */
+
+.table-responsive{
+    overflow-x:auto;
+}
+
+.table{
+    min-width:1300px;
+}
+
+.table th{
+    white-space:nowrap;
+}
+
+.table td{
+    vertical-align:middle;
+}
+
+/* ==========================
+   HEADER
+========================== */
+
+.card-header{
+    border-radius:18px 18px 0 0 !important;
+}
+
+/* ==========================
+   SEARCH
+========================== */
+
+.input-group{
+    justify-content:flex-end;
+}
+
+.input-group input{
+    height:48px;
+}
+
+.input-group .btn{
+    height:48px;
+}
+/* ==========================
+   BODY
+========================== */
+
+body{
+    margin:0;
+    background:#f4f7fc;
+    font-family:Segoe UI, sans-serif;
+}
+
+/* ==========================
+   SIDEBAR
+========================== */
+
+.sidebar{
+    position:fixed;
+    top:0;
+    left:0;
+    width:270px;
+    height:100vh;
+    background:#1f2937;
+    color:#fff;
+    overflow-y:auto;
+    z-index:1000;
+}
+
+.sidebar .logo{
+    padding:30px 20px;
     text-align:center;
+}
+
+.sidebar ul{
+    list-style:none;
+    margin:0;
+    padding:0;
+}
+
+.sidebar ul li{
+    margin:6px 0;
+}
+
+.sidebar ul li a{
+    display:block;
+    color:#fff;
+    text-decoration:none;
+    padding:15px 25px;
+    transition:.3s;
+    font-size:17px;
+}
+
+.sidebar ul li a:hover,
+.sidebar ul li a.active{
+    background:#2196f3;
+}
+
+/* ==========================
+   MAIN CONTENT
+========================== */
+
+.main-content{
+    margin-left:270px;
+    padding:30px;
+    min-height:100vh;
+}
+
+/* ==========================
+   CONTAINER
+========================== */
+
+.container-fluid{
+    max-width:100%;
+}
+
+/* ==========================
+   CARDS
+========================== */
+
+.card{
+    border:none;
+    border-radius:18px;
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+}
+
+.card:hover{
+    transform:translateY(-4px);
+    transition:.3s;
+}
+
+/* ==========================
+   TABLE
+========================== */
+
+.table-responsive{
+    overflow-x:auto;
+}
+
+.table{
+    min-width:1300px;
+}
+
+.table th{
+    white-space:nowrap;
+}
+
+.table td{
+    vertical-align:middle;
+}
+
+/* ==========================
+   HEADER
+========================== */
+
+.card-header{
+    border-radius:18px 18px 0 0 !important;
+}
+
+/* ==========================
+   SEARCH
+========================== */
+
+.input-group{
+    justify-content:flex-end;
+}
+
+.input-group input{
+    height:48px;
+}
+
+.input-group .btn{
+    height:48px;
+}
+
+/* ==========================
+   MOBILE
+========================== */
+
+@media(max-width:992px){
+
+.sidebar{
+    position:relative;
+    width:100%;
+    height:auto;
+}
+
+.main-content{
+    margin-left:0;
+    padding:20px;
+}
+
+.table{
+    min-width:1100px;
+}
+
+}
+/* ==========================
+   MOBILE
+========================== */
+
+@media(max-width:992px){
+
+.sidebar{
+    position:relative;
+    width:100%;
+    height:auto;
+}
+
+.main-content{
+    margin-left:0;
+    padding:20px;
+}
+
+.table{
+    min-width:1100px;
+}
 
 }
 
