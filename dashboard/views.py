@@ -4015,14 +4015,14 @@ def site_engineer_dashboard(request):
 
     site_inspection = total_site_inspection
 
-    inspection_pending = pending_site_inspection.count()
+    
 
     pending_site_inspection = MaintenanceScope.objects.filter(
         scope_status="Yes"
     ).exclude(
         customer_query__siteinspection__isnull=False
     )
-
+    inspection_pending = pending_site_inspection.count()
     # ==========================================
     # SEARCH
     # ==========================================
