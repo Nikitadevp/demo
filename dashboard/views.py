@@ -4015,12 +4015,7 @@ def site_engineer_dashboard(request):
 
     site_inspection = total_site_inspection
 
-    inspection_pending = max(
-        maintenance_scope -
-        site_inspection,
-        0
-    )
-
+    inspection_pending = pending_site_inspection.count()
 
     pending_site_inspection = MaintenanceScope.objects.filter(
         scope_status="Yes"
