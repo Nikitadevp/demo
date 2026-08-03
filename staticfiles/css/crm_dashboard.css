@@ -597,22 +597,93 @@ p{
 /* ==========================================================
    SIDEBAR
 ========================================================== */
-.dashboard-container{
-    display: flex;
-    min-height: 100vh;
-}
 
 .sidebar{
-    width: 270px;
-    position: fixed;
-    left: 0;
-    top: 0;
-    height: 100vh;
+
+    width:250px;
+
+    min-height:100vh;
+
+    background:#1f2937;
+
+    color:#ffffff;
+
+    position:sticky;
+
+    top:0;
+
 }
 
-.main-content{
-    margin-left: 270px;
-    width: calc(100% - 270px);
+.sidebar-header{
+
+    padding:22px;
+
+    text-align:center;
+
+    border-bottom:1px solid rgba(255,255,255,.1);
+
+}
+
+.sidebar-header h4{
+
+    margin:0;
+
+    font-size:22px;
+
+    font-weight:700;
+
+}
+
+.sidebar-menu{
+
+    list-style:none;
+
+    margin:0;
+
+    padding:20px 0;
+
+}
+
+.sidebar-menu li{
+
+    margin-bottom:6px;
+
+}
+
+.sidebar-menu li a{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    padding:14px 22px;
+
+    color:#d1d5db;
+
+    text-decoration:none;
+
+    transition:.3s;
+
+}
+
+.sidebar-menu li a:hover,
+
+.sidebar-menu li a.active{
+
+    background:#2563eb;
+
+    color:#ffffff;
+
+}
+
+.sidebar-menu li a i{
+
+    width:20px;
+
+    text-align:center;
+
 }
 
 /* ==========================================================
