@@ -597,52 +597,23 @@ p{
 /* ==========================================================
    SIDEBAR
 ========================================================== */
-
-/* ==========================
-   SIDEBAR
-========================== */
+.dashboard-container{
+    display: flex;
+    min-height: 100vh;
+}
 
 .sidebar{
-    position:fixed;
-    top:0;
-    left:0;
-    width:270px;
-    height:100vh;
-    background:#1f2937;
-    color:#fff;
-    overflow-y:auto;
-    z-index:1000;
+    width: 270px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
 }
 
-.sidebar .logo{
-    padding:30px 20px;
-    text-align:center;
+.main-content{
+    margin-left: 270px;
+    width: calc(100% - 270px);
 }
-
-.sidebar ul{
-    list-style:none;
-    margin:0;
-    padding:0;
-}
-
-.sidebar ul li{
-    margin:6px 0;
-}
-
-.sidebar ul li a{
-    display:block;
-    color:#fff;
-    text-decoration:none;
-    padding:15px 25px;
-    transition:.3s;
-    font-size:17px;
-}
-
-.sidebar ul li a:hover,
-.sidebar ul li a.active{
-    background:#2196f3;
-}
-
 
 /* ==========================================================
    MAIN CONTENT
