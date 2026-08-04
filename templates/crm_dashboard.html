@@ -636,6 +636,19 @@
                         <td>
 
                             {{ customer.pending_with }}
+                            <br>
+                            <small class="text-muted">      
+                            {% if customer.pending_with == "Site Engineer" %}   
+                                Dipesh Chaudhary
+                            {% elif customer.pending_with == "CRM" %}
+                                Varsha Sahu
+                            {% elif customer.pending_with == "Store Incharge" %}
+                                Bhola
+                            {% elif customer.pending_with == "Maintenance Incharge" %}
+                                Dharmendra
+                            
+                            {% endif %}
+                            </small>
 
                         </td>
 
