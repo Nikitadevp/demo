@@ -174,7 +174,7 @@ p{
 
 .card i{
 
-    transition:.4s;
+    font-size:55px !important;
 
 }
 
@@ -665,11 +665,10 @@ p{
 ========================== */
 
 .card{
-    border:none;
     border-radius:18px;
-    box-shadow:0 10px 25px rgba(0,0,0,.08);
+    min-height:170px;   /* Pehle agar 120-140 hai to ise 170 kar do */
+    transition:0.3s;
 }
-
 .card:hover{
     transform:translateY(-4px);
     transition:.3s;
@@ -1158,7 +1157,7 @@ td:nth-child(13){
 
     .card-body{
 
-        padding:18px;
+        padding:32px;
 
     }
 
@@ -1310,14 +1309,15 @@ td:nth-child(13){
 
     .card h6{
 
-        font-size:13px;
+        font-size:20px;
+        font-weight:600;
 
     }
 
     .card h2{
 
-        font-size:22px;
-
+        font-size:42px;
+        font-weight:700;
     }
 
     .card-body{
