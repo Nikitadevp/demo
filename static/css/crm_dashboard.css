@@ -666,7 +666,7 @@ p{
 
 .card{
     border-radius:18px;
-    min-height:170px;   /* Pehle agar 120-140 hai to ise 170 kar do */
+    min-height:150px;   /* Pehle agar 120-140 hai to ise 170 kar do */
     transition:0.3s;
 }
 .card:hover{
