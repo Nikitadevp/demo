@@ -4751,6 +4751,14 @@ def crm_dashboard(request):
             query.created_at
         ).strftime("%d-%m-%Y %I:%M %p")
 
+
+        
+        closed_date = "-" 
+        if feedback:
+            closed_date = timezone.localtime(
+                feedback.created_at
+            ).strftime("%d-%m-%Y %I:%M %p")                      
+
         # ==================================================
         # DUE TODAY
         # ==================================================
@@ -4844,6 +4852,8 @@ def crm_dashboard(request):
             "remaining": remaining_time,
 
             "is_overdue": is_overdue,
+
+            "closed_date": closed_date,
 
             
 
