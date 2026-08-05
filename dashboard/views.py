@@ -4878,7 +4878,26 @@ def crm_dashboard(request):
         if is_due_today and current_stage != "Completed":
 
             due_today_customers.append(customer)
-            
+
+
+
+  # ISSUE CATEGORY REPORT
+    issue_labels = []
+    issue_counts = []
+
+    issue_report = (
+        CustomerQuery.objects   
+        .values("issue")
+        .annotate(total=Count("id"))
+        .order_by("issue")
+    )
+    for item in issue_report:
+
+        issue_labels.append(item["issue"])
+
+        issue_counts.append(item["total"])
+
+
     # ======================================================
     # CONTEXT
     # ======================================================
@@ -4906,6 +4925,10 @@ def crm_dashboard(request):
 
         # Due Today Table
         "due_today_customers": due_today_customers,
+
+        "issue_labels": issue_labels,
+        
+        "issue_counts": issue_counts,
 
     }
 
