@@ -4579,6 +4579,8 @@ def crm_dashboard(request):
             Q(issue__icontains=search)
         )
 
+
+    
     # ======================================================
     # DASHBOARD COUNTS
     # ======================================================
@@ -4887,6 +4889,17 @@ def crm_dashboard(request):
         if is_due_today and current_stage != "Completed":
 
             due_today_customers.append(customer)
+
+
+    customer_feedback_list = CustomerFeedback.objects.select_related(
+        "customer_query"
+    ).order_by("-created_at")[:10]
+
+    if search:
+        customer_feedback_list = customer_feedback_list.filter(
+            Q(customer_query__ticket_id__icontains=search) |
+            Q(customer_query__name__icontains=search)
+        )
 
 
 

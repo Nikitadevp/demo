@@ -783,7 +783,126 @@
         </div>
 
     </div>
+ 
 
+     
+<div id="customer-feedback" class="card shadow border-0 mt-4">
+
+    <div class="card-header bg-success text-white">
+
+        <div class="d-flex justify-content-between align-items-center">
+
+            <h5 class="mb-0">
+
+                <i class="fas fa-comments me-2"></i>
+
+                Customer Feedback Report
+
+            </h5>
+
+            <span class="badge bg-light text-dark">
+
+                {{ feedback_list|length }} Records
+
+            </span>
+
+        </div>
+
+    </div>
+
+    <div class="card-body p-0">
+
+        <div class="table-responsive">
+
+            <table class="table table-hover table-bordered align-middle mb-0">
+
+                <thead class="table-success">
+
+                    <tr>
+
+                        <th>Ticket ID</th>
+
+                        <th>Customer</th>
+
+                        <th>Contact</th>
+
+                        <th>Feedback</th>
+
+                        <th>Rating</th>
+
+                        <th>Submitted On</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for feedback in feedback_list %}
+
+                    <tr>
+
+                        <td>
+
+                            {{ feedback.customer_query.ticket_id }}
+
+                        </td>
+
+                        <td>
+
+                            {{ feedback.customer_query.name }}
+
+                        </td>
+
+                        <td>
+
+                            {{ feedback.customer_query.contact }}
+
+                        </td>
+
+                        <td>
+
+                            {{ feedback.feedback }}
+
+                        </td>
+
+                        <td>
+
+                            {{ feedback.rating }}
+
+                        </td>
+
+                        <td>
+
+                            {{ feedback.created_at|date:"d-m-Y h:i A" }}
+
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td colspan="6" class="text-center">
+
+                            No Customer Feedback Available
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
 
 
  
