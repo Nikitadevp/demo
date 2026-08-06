@@ -802,7 +802,7 @@
 
             <span class="badge bg-light text-dark">
 
-                {{ feedback_list|length }} Records
+                {{ feedback_data|length }}Records
 
             </span>
 
@@ -844,8 +844,7 @@
 
                 <tbody>
 
-                    {% for feedback in customer_feedback_list %}
-
+                    {% for feedback in feedback_data %}
                     <tr>
 
                         <td>
@@ -897,7 +896,7 @@
 
                     <tr>
 
-                        <td colspan="6" class="text-center">
+                        <td colspan="8" class="text-center">
 
                             No Customer Feedback Available
 
