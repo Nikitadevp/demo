@@ -4920,6 +4920,9 @@ def crm_dashboard(request):
         issue_counts.append(item["total"])
 
 
+
+
+    feedback_data = CustomerFeedback.objects.all().order_by("-id")
     # ======================================================
     # CONTEXT
     # ======================================================
@@ -4952,6 +4955,8 @@ def crm_dashboard(request):
         "issue_labels": issue_labels,
         
         "issue_counts": issue_counts,
+
+        "feedback_data": feedback_data,
 
     }
 
