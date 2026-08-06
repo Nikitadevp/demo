@@ -4891,16 +4891,7 @@ def crm_dashboard(request):
             due_today_customers.append(customer)
 
 
-    customer_feedback_list = CustomerFeedback.objects.select_related(
-        "customer_query"
-    ).order_by("-created_at")[:10]
-
-    if search:
-        customer_feedback_list = customer_feedback_list.filter(
-            Q(customer_query__ticket_id__icontains=search) |
-            Q(customer_query__name__icontains=search)
-        )
-
+    
 
 
   # ISSUE CATEGORY REPORT
@@ -4922,7 +4913,23 @@ def crm_dashboard(request):
 
 
 
-    feedback_data = CustomerFeedback.objects.all().order_by("-id")
+    customer_feedback_data = CustomerFeedback.objects.all().order_by("-id")
+
+
+    feedback_list = []
+    for feedback in customer_feedback_data:
+        feedback_list.append({
+            "ticket_id": feedback.case_id,
+            "customer_name": feedback.customer_name,
+
+            "block": feedback.block,
+            "area": feedback.area,
+            "issue_resolved": feedback.issue_resolved,
+            "service_satisfied": feedback.service_satisfied,
+            "customer_remark": feedback.customer_remark,
+            "date": feedback.created_at,
+        })
+
     # ======================================================
     # CONTEXT
     # ======================================================
@@ -4956,7 +4963,7 @@ def crm_dashboard(request):
         
         "issue_counts": issue_counts,
 
-        "feedback_data": feedback_data,
+        "feedback_data": feedback_list,
 
     }
 

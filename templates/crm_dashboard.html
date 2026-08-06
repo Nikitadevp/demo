@@ -826,9 +826,15 @@
 
                         <th>Contact</th>
 
-                        <th>Feedback</th>
+                        <th>Block</th>
 
-                        <th>Rating</th>
+                        <th>Area</th>
+
+                        <th>Issue Resolved</th>
+
+                        <th>Service Satisfied</th>
+
+                        <th>Customer Remark</th>
 
                         <th>Submitted On</th>
 
@@ -838,45 +844,52 @@
 
                 <tbody>
 
-                    {% for feedback in feedback_list %}
+                    {% for feedback in customer_feedback_list %}
 
                     <tr>
 
                         <td>
 
-                            {{ feedback.customer_query.ticket_id }}
+                           {{ feedback.ticket_id }}
 
                         </td>
 
                         <td>
 
-                            {{ feedback.customer_query.name }}
+                            {{ feedback.customer_name }}
 
                         </td>
 
                         <td>
 
-                            {{ feedback.customer_query.contact }}
+                           {{ feedback.contact }}
 
                         </td>
 
                         <td>
 
-                            {{ feedback.feedback }}
+                            {{ feedback.block }}
 
                         </td>
 
                         <td>
 
-                            {{ feedback.rating }}
+                            {{ feedback.area }}
 
                         </td>
 
                         <td>
 
-                            {{ feedback.created_at|date:"d-m-Y h:i A" }}
+                            {{ feedback.issue_resolved }}
 
                         </td>
+
+                        <td>{{ feedback.service_satisfied }}</td>
+
+
+                        <td>{{ feedback.customer_remark }}</td>
+
+                        <td>{{ feedback.date|date:"d-m-Y h:i A" }}</td>
 
                     </tr>
 
