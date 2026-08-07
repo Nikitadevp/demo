@@ -3259,13 +3259,9 @@ def maintenance_dashboard(request):
         context
     )
 
+ 
 
 def admin_dashboard(request):
-
-    # ==========================================
-    # LOGIN CHECK
-    # ==========================================
-
 
     # ======================================================
     # LOGIN CHECK
@@ -3701,7 +3697,6 @@ def admin_dashboard(request):
         context,
 
     )
-
 
 
 
