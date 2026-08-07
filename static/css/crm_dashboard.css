@@ -1879,11 +1879,9 @@ a:hover{
 
 .crm-header-image {
     width: 100%;
-    height: auto;
-    max-height: 100px;
-    object-fit: contain;
+    height: 60px;
+    object-fit: fill;
     display: block;
-    border-radius: 10px;
 }
 
 
