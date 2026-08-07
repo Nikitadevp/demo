@@ -3270,7 +3270,7 @@ def admin_dashboard(request):
     if "admin_id" not in request.session:
         return redirect("login")
 
-    if request.session.get("admin_role") != "Admin":
+    if request.session.get("admin_role") != "":
         return redirect("login")
 
     # ======================================================
@@ -3318,7 +3318,7 @@ def admin_dashboard(request):
     # ======================================================
 
     customer_data = []
-    crm_pending_data = []
+   
     overdue_customers = []
     due_today_customers = []
     
@@ -3587,9 +3587,7 @@ def admin_dashboard(request):
 
         crm_stages = ["S1", "S3", "S4", "S5", "S11"]   # ya S0 agar tumhare project me wahi use hota hai
 
-        if current_stage in crm_stages:
-    
-            crm_pending_data.append(customer)  
+        
 
         # ==================================================
         # OVERDUE TABLE
@@ -3668,7 +3666,7 @@ def admin_dashboard(request):
 
         # Main Table
         "customer_data": customer_data,
-        "crm_pending_data": crm_pending_data,
+        
 
         # Overdue Table
         "overdue_customers": overdue_customers,
