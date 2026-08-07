@@ -1867,6 +1867,30 @@ a:hover{
    IMAGE STYLE
 ========================================================== */
 
+/* =========================================================
+   CRM HEADER IMAGE
+   ========================================================= */
+
+.crm-header-image {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.crm-dashboard-image {
+    width: 100%;
+    max-width: 1200px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 12px;
+    display: block;
+}
+
+
+
+
+
 
 
 /* ==========================================================
