@@ -1872,16 +1872,18 @@ a:hover{
    ========================================================= */
 
 .crm-header-image {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    width: 95%;
+    height: 100px;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    border-radius: 10px;
 }
 
 .crm-dashboard-image {
     width: 100%;
-    max-width: 1400px;
-    height: 140px;
+    max-width: 1800px;
+    height: 100px;
     object-fit: cover;
     border-radius: 12px;
     display: block;
