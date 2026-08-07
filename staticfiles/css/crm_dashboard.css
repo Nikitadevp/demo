@@ -1881,7 +1881,7 @@ a:hover{
 .crm-dashboard-image {
     width: 100%;
     max-width: 1200px;
-    height: 180px;
+    height: 160px;
     object-fit: cover;
     border-radius: 12px;
     display: block;
