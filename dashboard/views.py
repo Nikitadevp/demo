@@ -3270,7 +3270,7 @@ def admin_dashboard(request):
     if "admin_id" not in request.session:
         return redirect("login")
 
-    if request.session.get("admin_role") != "":
+    if request.session.get("admin_role") != "Admin":
         return redirect("login")
 
     # ======================================================
