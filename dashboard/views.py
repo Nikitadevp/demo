@@ -3266,665 +3266,431 @@ def admin_dashboard(request):
     # LOGIN CHECK
     # ==========================================
 
+
+    # ======================================================
+    # LOGIN CHECK
+    # ======================================================
+
     if "admin_id" not in request.session:
         return redirect("login")
 
-    if request.session.get("admin_role") != "Admin":
+    if request.session.get("admin_role") != "CRM":
         return redirect("login")
 
-
-    # ==========================================
-    # DASHBOARD SUMMARY
-    # ==========================================
-
-    total_queries = CustomerQuery.objects.count()
-
-    open_queries = CustomerQuery.objects.filter(
-        status="Open"
-    ).count()
-
-    pending_queries = CustomerQuery.objects.filter(
-        status="Pending"
-    ).count()
-
-    in_progress_queries = CustomerQuery.objects.filter(
-        status="In Progress"
-    ).count()
-
-    resolved_queries = CustomerQuery.objects.filter(
-        status="Resolved"
-    ).count()
-
-    closed_queries = CustomerQuery.objects.filter(
-        status="Closed"
-    ).count()
-
-    today_queries = CustomerQuery.objects.filter(
-        created_at__date=timezone.now().date()
-    ).count()
-
-
-    # ==========================================
-    # WORKFLOW COUNTS
-    # ==========================================
-
-    maintenance_scope = MaintenanceScope.objects.count()
-
-    site_inspection = SiteInspection.objects.count()
-
-    estimate_form = EstimateForm.objects.count()
-
-    customer_approval = CustomerApproval.objects.count()
-
-    advance_collection = AdvanceCollection.objects.count()
-
-    material_availability = MaterialAvailability.objects.count()
-
-    raise_indent = RaiseIndent.objects.count()
-
-    issue_material = IssueMaterial.objects.count()
-
-    receive_material = ReceiveMaterial.objects.count()
-
-    query_closer = QueryCloser.objects.count()
-
-    customer_feedback = CustomerFeedback.objects.count()
-    # ==========================================
-    # PENDING STAGE COUNTS
-    # ==========================================
-
-    scope_pending = max(
-        total_queries - maintenance_scope,
-        0
-    )
-
-    inspection_pending = max(
-        maintenance_scope - site_inspection,
-        0
-    )
-
-    estimate_pending = max(
-        site_inspection - estimate_form,
-        0
-    )
-
-    approval_pending = max(
-        estimate_form - customer_approval,
-        0
-    )
-
-    advance_pending = max(
-        customer_approval - advance_collection,
-        0
-    )
-
-    material_pending = max(
-        advance_collection - material_availability,
-        0
-    )
-
-    indent_pending = max(
-        material_availability - raise_indent,
-        0
-    )
-
-    issue_pending = max(
-        raise_indent - issue_material,
-        0
-    )
-
-    receive_pending = max(
-        issue_material - receive_material,
-        0
-    )
-
-    close_pending = max(
-        receive_material - query_closer,
-        0
-    )
-
-    feedback_pending = max(
-        query_closer - customer_feedback,
-        0
-    )
-
-
-    # ==========================================
-    # ALL COMPLAINTS
-    # (Admin will see every complaint)
-    # ==========================================
-
-    all_complaints = CustomerQuery.objects.order_by(
-        "-created_at"
-    )
-
-
-    # ==========================================
-    # CURRENT STAGE / PENDING WITH
-    # ==========================================
-
-    from datetime import timedelta
-    
-    STAGE_TIME = {
-
-    "Maintenance Scope": 3,
-    "Site Inspection": 3,
-    "Estimate": 24,
-    "Customer Approval": 24,
-    "Advance Collection": 24,
-    "Material Availability": 24,
-    "Raise Indent": 24,
-    "Issue Material": 24,
-    "Receive Material": 24,
-    "Query Closure": 24,
-    "Customer Feedback": 24,
-
-}
- 
-
-
-
-    for complaint in all_complaints:
-
-        complaint.current_stage = "Completed"
-        complaint.pending_with = "-"
-        complaint.overdue = "No"
-
-        if not MaintenanceScope.objects.filter(
-            customer_query=complaint
-        ).exists():
-
-            complaint.current_stage = "Maintenance Scope"
-            complaint.pending_with = "Dharmendra"
-
-        elif not SiteInspection.objects.filter(
-            customer_query=complaint
-        ).exists():
-
-            complaint.current_stage = "Site Inspection"
-            complaint.pending_with = "Dipesh Chaudhary"
-
-        elif not EstimateForm.objects.filter(
-            customer_query=complaint
-        ).exists():
-
-            complaint.current_stage = "Estimate"
-            complaint.pending_with = "Varsha Sahu"
-
-        elif not CustomerApproval.objects.filter(
-            customer_query=complaint
-        ).exists():
-
-            complaint.current_stage = "Customer Approval"
-            complaint.pending_with = "Varsha Sahu"
-
-        elif not AdvanceCollection.objects.filter(
-            customer_query=complaint
-        ).exists():
-
-            complaint.current_stage = "Advance Collection"
-            complaint.pending_with = "Varsha Sahu"
-
-        elif not MaterialAvailability.objects.filter(
-            customer_query=complaint
-        ).exists():
-
-            complaint.current_stage = "Material Availability"
-            complaint.pending_with = "Bhola"
-
-        elif not RaiseIndent.objects.filter(
-            customer_query=complaint
-        ).exists():
-
-            complaint.current_stage = "Raise Indent"
-            complaint.pending_with = "Bhola"
-
-        elif not IssueMaterial.objects.filter(
-            customer_query=complaint
-        ).exists():
-
-            complaint.current_stage = "Issue Material"
-            complaint.pending_with = "Bhola"
-
-        elif not ReceiveMaterial.objects.filter(
-            customer_query=complaint
-        ).exists():
-
-            complaint.current_stage = "Receive Material"
-            complaint.pending_with = "Dharmendra"
-
-        elif not QueryCloser.objects.filter(
-            customer_query=complaint
-        ).exists():
-
-            complaint.current_stage = "Query Closure"
-            complaint.pending_with = "Dharmendra"
-
-        elif not CustomerFeedback.objects.filter(
-            customer_query=complaint
-        ).exists():
-
-            complaint.current_stage = "Customer Feedback"
-            complaint.pending_with = "Varsha Sahu"    
-    
-        # ==========================================
-        # OVERDUE CALCULATION
-        # ==========================================
-        
-        
-    # ==========================================
-    # OVERDUE CALCULATION
-    # ==========================================
-
-    if complaint.current_stage == "Completed":
-
-        complaint.overdue = "No"
-
-    elif complaint.current_stage == "Maintenance Scope":
-
-        due_time = complaint.created_at + timedelta(hours=2)
-
-        complaint.overdue = (
-            "Yes" if timezone.now() > due_time else "No"
+    # ======================================================
+    # SEARCH
+    # ======================================================
+
+    search = request.GET.get("search", "").strip()
+
+    # ======================================================
+    # CUSTOMER QUERY
+    # ======================================================
+
+    queries = CustomerQuery.objects.all().order_by("-created_at")
+
+    if search:
+        queries = queries.filter(
+            Q(ticket_id__icontains=search) |
+            Q(name__icontains=search) |
+            Q(contact__icontains=search) |
+            Q(email__icontains=search) |
+            Q(tower__icontains=search) |
+            Q(area__icontains=search) |
+            Q(issue__icontains=search)
         )
 
-    elif complaint.current_stage == "Site Inspection":
 
-        scope = MaintenanceScope.objects.filter(
-            customer_query=complaint
-        ).first()
+    
+    # ======================================================
+    # DASHBOARD COUNTS
+    # ======================================================
 
-        if scope:
+    total_queries = queries.count()
 
-            due_time = scope.created_at + timedelta(hours=24)
+    open_count = 0
+    
+    in_progress_count = 0
+   
+    closed_count = 0
 
-            complaint.overdue = (
-                "Yes" if timezone.now() > due_time else "No"
-            )
+    overdue_count = 0
+    due_today_count = 0
 
-        else:
+    # ======================================================
+    # TABLE DATA
+    # ======================================================
 
-            complaint.overdue = "No"
+    customer_data = []
+    crm_pending_data = []
+    overdue_customers = []
+    due_today_customers = []
+    
 
-    elif complaint.current_stage == "Estimate":
+    today = timezone.localdate()
+
+    # ======================================================
+    # CUSTOMER LOOP
+    # ======================================================
+
+    for query in queries:
+
+        # ==============================================
+        # RELATED OBJECTS
+        # ==============================================
+
+        scope = safe_related(query, "scope_form")
 
         inspection = SiteInspection.objects.filter(
-            customer_query=complaint
+            customer_query=query
         ).first()
-
-        if inspection:
-
-            due_time = inspection.created_at + timedelta(hours=48)
-
-            complaint.overdue = (
-                "Yes" if timezone.now() > due_time else "No"
-            )
-
-        else:
-
-            complaint.overdue = "No"
-
-    elif complaint.current_stage == "Customer Approval":
 
         estimate = EstimateForm.objects.filter(
-            customer_query=complaint
+            customer_query=query
         ).first()
-
-        if estimate:
-
-            due_time = estimate.created_at + timedelta(hours=24)
-
-            complaint.overdue = (
-                "Yes" if timezone.now() > due_time else "No"
-            )
-
-        else:
-
-            complaint.overdue = "No"
-
-    elif complaint.current_stage == "Advance Collection":
 
         approval = CustomerApproval.objects.filter(
-            customer_query=complaint
+            customer_query=query
         ).first()
-
-        if approval:
-
-            due_time = approval.created_at + timedelta(hours=24)
-
-            complaint.overdue = (
-                "Yes" if timezone.now() > due_time else "No"
-            )
-
-        else:
-
-            complaint.overdue = "No"       
- 
-    elif complaint.current_stage == "Material Availability":
 
         advance = AdvanceCollection.objects.filter(
-            customer_query=complaint
+            customer_query=query
         ).first()
-
-        if advance:
-
-            due_time = advance.created_at + timedelta(hours=24)
-
-            complaint.overdue = (
-                "Yes" if timezone.now() > due_time else "No"
-            )
-
-        else:
-
-            complaint.overdue = "No"
-            
-    elif complaint.current_stage == "Raise Indent":
 
         material = MaterialAvailability.objects.filter(
-            customer_query=complaint
+            customer_query=query
         ).first()
-
-        if material:
-
-            due_time = material.created_at + timedelta(hours=24)
-
-            complaint.overdue = (
-                "Yes" if timezone.now() > due_time else "No"
-            )
-
-        else:
-
-            complaint.overdue = "No"    
-            
-    elif complaint.current_stage == "Issue Material":
 
         indent = RaiseIndent.objects.filter(
-            customer_query=complaint
+            customer_query=query
         ).first()
+
+        issue_material = IssueMaterial.objects.filter(
+            customer_query=query
+        ).first()
+
+        receive_material = ReceiveMaterial.objects.filter(
+            customer_query=query
+        ).first()
+
+        closer = QueryCloser.objects.filter(
+            customer_query=query
+        ).first()
+
+        feedback = CustomerFeedback.objects.filter(
+            customer_query=query
+        ).first()
+
+        # ==============================================
+        # CURRENT STAGE
+        # ==============================================
+
+        current_stage = "S1"
+        stage_start = query.created_at
+
+        if scope:
+            current_stage = "S2"
+            stage_start = scope.created_at
+
+        if inspection:
+            current_stage = "S3"
+            stage_start = inspection.created_at
+
+        if estimate:
+            current_stage = "S4"
+            stage_start = estimate.created_at
+
+        if approval:
+            current_stage = "S5"
+            stage_start = approval.created_at
+
+        if advance:
+            current_stage = "S6"
+            stage_start = advance.created_at
+
+        if material:
+            current_stage = "S7"
+            stage_start = material.created_at
 
         if indent:
+            current_stage = "S8"
+            stage_start = indent.created_at
 
-            due_time = indent.created_at + timedelta(hours=24)
+        if issue_material:
+            current_stage = "S9"
+            stage_start = issue_material.created_at
 
-            complaint.overdue = (
-                "Yes" if timezone.now() > due_time else "No"
+        if receive_material:
+            current_stage = "S10"
+            stage_start = receive_material.created_at
+
+        if closer:
+            current_stage = "S11"
+            stage_start = closer.created_at
+
+        if feedback:
+            current_stage = "Completed"
+            stage_start = feedback.created_at
+
+        # ==============================================
+        # STAGE DETAILS
+        # ==============================================
+
+        stage_name = get_stage_name(current_stage)
+        pending_with = get_pending_with(current_stage)
+        progress = get_progress(current_stage)
+       
+
+        # ==============================================
+        # DUE TIME
+        # ==============================================
+
+        due_time = calculate_due_time(
+            current_stage,
+            stage_start
+        )
+        
+        # ==================================================
+        # DUE TIME DISPLAY
+        # ==================================================
+
+        due_time_display = "-"
+        remaining_time = "-"
+        is_overdue = False
+
+        if due_time:
+
+            due_time_display = timezone.localtime(
+                due_time
+            ).strftime("%d-%m-%Y %I:%M %p")
+
+            remaining_time, is_overdue = calculate_remaining_time(
+                due_time
             )
+
+        # ==================================================
+        # QUERY RAISED
+        # ==================================================
+
+        query_raised = timezone.localtime(
+            query.created_at
+        ).strftime("%d-%m-%Y %I:%M %p")
+
+
+        
+        closed_date = "-" 
+        if feedback:
+            closed_date = timezone.localtime(
+                feedback.created_at
+            ).strftime("%d-%m-%Y %I:%M %p")                      
+
+        # ==================================================
+        # DUE TODAY
+        # ==================================================
+
+        is_due_today = False
+
+        if due_time and current_stage != "Completed":
+
+            if timezone.localtime(due_time).date() == today:
+
+                is_due_today = True
+                due_today_count += 1
+
+        # ==================================================
+        # OVERDUE
+        # ==================================================
+
+        if is_overdue and current_stage != "Completed":
+
+            overdue_count += 1
+
+        # ==================================================
+        # STATUS COUNT
+        # ==================================================
+
+        if query.status == "Open":
+
+            open_count += 1
+
+        elif query.status == "In Progress":
+
+            in_progress_count += 1
+
+
+        elif query.status == "Closed":
+
+            closed_count += 1
+
+        # ==================================================
+        # PROGRESS
+        # ==================================================
+
+        if current_stage == "Completed":
+
+            progress = "Closed"
+
+        elif current_stage == "S1":
+
+            progress = "Open"
 
         else:
 
-            complaint.overdue = "No"    
+            progress = "In Progress"
+
+        # ==================================================
+        # CUSTOMER DATA
+        # ==================================================
+
+        customer = {
+
+            "id": query.id,
+
+            "ticket": query.ticket_id,
+
+            "customer": query.name,
+
+            "contact": query.contact,
+
+            "email": query.email,
+
+            "tower": query.tower,
+
+            "area": query.area,
+
+            "issue": query.issue,
+
             
-    elif complaint.current_stage == "Receive Material":
 
-        issue = IssueMaterial.objects.filter(
-            customer_query=complaint
-        ).first()
+            "query_raised": query_raised,
 
-        if issue:
+            "current_stage": current_stage,
 
-            due_time = issue.created_at + timedelta(hours=24)
+            "stage_name": stage_name,
 
-            complaint.overdue = (
-                "Yes" if timezone.now() > due_time else "No"
-            )
+            "pending_with": pending_with,
 
-        else:
+            "progress": progress,
 
-            complaint.overdue = "No"
+            "due_time": due_time_display,
+
+            "remaining": remaining_time,
+
+            "is_overdue": is_overdue,
+
+            "closed_date": closed_date,
+
             
-    elif complaint.current_stage == "Query Closure":
 
-        receive = ReceiveMaterial.objects.filter(
-            customer_query=complaint
-        ).first()
+           
 
-        if receive:
+        }
 
-            due_time = receive.created_at + timedelta(hours=24)
-
-            complaint.overdue = (
-                "Yes" if timezone.now() > due_time else "No"
-            )
-
-        else:
-
-            complaint.overdue = "No"
-            
-    # ==========================================
-    # COMPLETED CASE
-    # ==========================================
-
-    elif complaint.current_stage == "Completed":
-
-        complaint.pending_with = "-"
-
-        complaint.overdue = "No"
-
-    # ==========================================
-    # DEFAULT
-    # ==========================================
-
-    else:
-
-        complaint.pending_with = "-"
-
-        complaint.overdue = "No"
-
-    # ==========================================
-    # RECENT ESTIMATES
-    # ==========================================
-
-    recent_estimates = EstimateForm.objects.select_related(
-        "customer_query"
-    ).order_by(
-        "-created_at"
-    )[:10]
+        customer_data.append(customer)
 
 
-    # ==========================================
-    # RECENT APPROVALS
-    # ==========================================
+        crm_stages = ["S1", "S3", "S4", "S5", "S11"]   # ya S0 agar tumhare project me wahi use hota hai
 
-    recent_approvals = CustomerApproval.objects.select_related(
-        "customer_query"
-    ).order_by(
-        "-created_at"
-    )[:10]
-
-
-    # ==========================================
-    # MATERIAL STATISTICS
-    # ==========================================
-
-    material_available_yes = MaterialAvailability.objects.filter(
-        material_available="Yes"
-    ).count()
-
-    material_available_no = MaterialAvailability.objects.filter(
-        material_available="No"
-    ).count()
-
-    total_material = (
-        material_available_yes +
-        material_available_no
-    )
-
-    if total_material > 0:
-
-        material_available_percent = round(
-            (material_available_yes / total_material) * 100
-        )
-
-        material_pending_percent = round(
-            (material_available_no / total_material) * 100
-        )
-
-    else:
-
-        material_available_percent = 0
-        material_pending_percent = 0
-
-
-    # ==========================================
-    # CHARGEABLE / NON CHARGEABLE
-    # ==========================================
-
-    chargeable = SiteInspection.objects.filter(
-        category="Chargeable"
-    ).count()
-
-    non_chargeable = SiteInspection.objects.filter(
-        category="Non Chargeable"
-    ).count()
-
-    total_category = chargeable + non_chargeable
-
-    if total_category > 0:
-
-        chargeable_percent = round(
-            (chargeable / total_category) * 100
-        )
-
-        non_chargeable_percent = round(
-            (non_chargeable / total_category) * 100
-        )
-
-    else:
-
-        chargeable_percent = 0
-        non_chargeable_percent = 0
-
-
-    # ==========================================
-    # MONTHLY COMPLAINT REPORT
-    # ==========================================
-
-    monthly_data = (
-        CustomerQuery.objects
-        .values("created_at__month")
-        .annotate(total=Count("id"))
-        .order_by("created_at__month")
-    )
-
-    month_names = {
-        1: "Jan",
-        2: "Feb",
-        3: "Mar",
-        4: "Apr",
-        5: "May",
-        6: "Jun",
-        7: "Jul",
-        8: "Aug",
-        9: "Sep",
-        10: "Oct",
-        11: "Nov",
-        12: "Dec",
-    }
-
-    months = []
-    monthly_counts = []
-
-    for item in monthly_data:
-
-        months.append(
-            month_names[item["created_at__month"]]
-        )
-
-        monthly_counts.append(
-            item["total"]
-        )
-
-    monthly_report = zip(
-        months,
-        monthly_counts
-    )
+        if current_stage in crm_stages:
     
-    # ==========================================
+            crm_pending_data.append(customer)  
+
+        # ==================================================
+        # OVERDUE TABLE
+        # ==================================================
+
+        if is_overdue and current_stage != "Completed":
+
+            overdue_customers.append(customer)
+
+        # ==================================================
+        # DUE TODAY TABLE
+        # ==================================================
+
+        if is_due_today and current_stage != "Completed":
+
+            due_today_customers.append(customer)
+
+
+    
+
+
+  # ISSUE CATEGORY REPORT
+    issue_labels = []
+    issue_counts = []
+
+    issue_report = (
+        CustomerQuery.objects   
+        .values("issue")
+        .annotate(total=Count("id"))
+        .order_by("issue")
+    )
+    for item in issue_report:
+
+        issue_labels.append(item["issue"])
+
+        issue_counts.append(item["total"])
+
+
+
+
+    customer_feedback_data = CustomerFeedback.objects.all().order_by("-id")
+
+
+    feedback_list = []
+    for feedback in customer_feedback_data:
+        feedback_list.append({
+            "ticket_id": feedback.case_id,
+            "customer_name": feedback.customer_name,
+
+            "block": feedback.block,
+            "area": feedback.area,
+            "issue_resolved": feedback.issue_resolved,
+            "service_satisfied": feedback.service_satisfied,
+            "customer_remark": feedback.customer_remark,
+            "date": feedback.created_at,
+        })
+
+    # ======================================================
     # CONTEXT
-    # ==========================================
+    # ======================================================
 
     context = {
 
-        # ======================================
-        # DASHBOARD SUMMARY
-        # ======================================
+        # Search
+        "search": search,
 
+        # Dashboard Counts
         "total_queries": total_queries,
-        "open_queries": open_queries,
-        "pending_queries": pending_queries,
-        "in_progress_queries": in_progress_queries,
-        "resolved_queries": resolved_queries,
-        "closed_queries": closed_queries,
-        "today_queries": today_queries,
+        "open_count": open_count,
+        
+        "in_progress_count": in_progress_count,
+        
+        "closed_count": closed_count,
+        "overdue_count": overdue_count,
+        "due_today_count": due_today_count,
 
-        # ======================================
-        # WORKFLOW COUNTS
-        # ======================================
+        # Main Table
+        "customer_data": customer_data,
+        "crm_pending_data": crm_pending_data,
 
-        "maintenance_scope": maintenance_scope,
-        "site_inspection": site_inspection,
-        "estimate_form": estimate_form,
-        "customer_approval": customer_approval,
-        "advance_collection": advance_collection,
-        "material_availability": material_availability,
-        "raise_indent": raise_indent,
-        "issue_material": issue_material,
-        "receive_material": receive_material,
-        "query_closer": query_closer,
-        "customer_feedback": customer_feedback,
+        # Overdue Table
+        "overdue_customers": overdue_customers,
 
-        # ======================================
-        # PENDING STAGES
-        # ======================================
+        # Due Today Table
+        "due_today_customers": due_today_customers,
 
-        "scope_pending": scope_pending,
-        "inspection_pending": inspection_pending,
-        "estimate_pending": estimate_pending,
-        "approval_pending": approval_pending,
-        "advance_pending": advance_pending,
-        "material_pending": material_pending,
-        "indent_pending": indent_pending,
-        "issue_pending": issue_pending,
-        "receive_pending": receive_pending,
-        "close_pending": close_pending,
-        "feedback_pending": feedback_pending,
+        "issue_labels": issue_labels,
+        
+        "issue_counts": issue_counts,
 
-        # ======================================
-        # TABLES
-        # ======================================
-
-        "all_complaints": all_complaints,
-        "recent_estimates": recent_estimates,
-        "recent_approvals": recent_approvals,
-
-        # ======================================
-        # CHART
-        # ======================================
-
-        "months": months,
-        "monthly_counts": monthly_counts,
-        "monthly_report": monthly_report,
-
-        # ======================================
-        # CHARGEABLE
-        # ======================================
-
-        "chargeable": chargeable,
-        "non_chargeable": non_chargeable,
-        "chargeable_percent": chargeable_percent,
-        "non_chargeable_percent": non_chargeable_percent,
-
-        # ======================================
-        # MATERIAL
-        # ======================================
-
-        "material_available_yes": material_available_yes,
-        "material_available_no": material_available_no,
-        "material_available_percent": material_available_percent,
-        "material_pending_percent": material_pending_percent,
-        "all_complaints": all_complaints,
+        "feedback_data": feedback_list,
 
     }
+
+    # ======================================================
+    # RENDER
+    # ======================================================
 
     return render(
 
@@ -3932,10 +3698,9 @@ def admin_dashboard(request):
 
         "admin_dashboard.html",
 
-        context
+        context,
 
     )
-
 
 
 
