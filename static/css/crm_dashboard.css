@@ -1871,21 +1871,20 @@ a:hover{
    CRM HEADER IMAGE
    ========================================================= */
 
-.crm-image-wrapper {
+.crm-header-image {
     width: 100%;
     display: flex;
     justify-content: center;
-    margin-bottom: 20px;
+    align-items: center;
 }
 
-.crm-header-image {
+.crm-dashboard-image {
     width: 100%;
-    max-width: 1500px;
-    height: 110px;
+    max-width: 1400px;
+    height: 140px;
     object-fit: cover;
-    object-position: center;
+    border-radius: 12px;
     display: block;
-    border-radius: 10px;
 }
 
 
