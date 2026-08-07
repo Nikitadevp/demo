@@ -1880,7 +1880,7 @@ a:hover{
 .crm-header-image {
     width: 100%;
     height: auto;
-    max-height: 120px;
+    max-height: 100px;
     object-fit: contain;
     display: block;
     border-radius: 10px;
