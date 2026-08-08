@@ -560,6 +560,8 @@
 
                             <th>Stage</th>
 
+                            <th>Link</th>
+
                             <th>Pending With</th>
 
                             <th>Progress</th>
@@ -671,6 +673,72 @@
                             </small>
 
                         </td>
+
+                        <td>
+
+                            {% if customer.current_stage == "S1" %}
+                                <a href="{% url 'customer_query_form' customer.id %}"
+                                    class="btn btn-sm btn-primary">       
+                                    Open Form
+                                </a>
+                            {% elif customer.current_stage == "S2" %}
+                                <a href="{% url 'site_inspection_form' customer.id %}"
+                                    class="btn btn-sm btn-primary">       
+                                    Open Form
+                                </a>
+                            {% elif customer.current_stage == "S3" %}
+                                <a href="{% url 'estimate_form' customer.id %}"
+                                    class="btn btn-sm btn-primary">       
+                                    Open Form
+                                </a>
+                            {% elif customer.current_stage == "S4" %}
+                                <a href="{% url 'customer_approval_form' customer.id %}"
+                                    class="btn btn-sm btn-primary">       
+                                    Open Form
+                                </a>
+                            {% elif customer.current_stage == "S5" %}
+                                <a href="{% url 'advance_collection_form' customer.id %}"
+                                    class="btn btn-sm btn-primary">       
+                                    Open Form
+                                </a>
+                            {% elif customer.current_stage == "S6" %}
+                                 <a href="{% url 'material_availability_form' customer.id %}"
+                                    class="btn btn-sm btn-primary">       
+                                    Open Form
+                                </a>    
+                            {% elif customer.current_stage == "S7" %}
+                                <a href="{% url 'raise_indent_form' customer.id %}"
+                                    class="btn btn-sm btn-primary">       
+                                    Open Form
+                                </a>    
+                            {% elif customer.current_stage == "S8" %}
+                                <a href="{% url 'issue_material_form' customer.id %}"
+                                    class="btn btn-sm btn-primary">       
+                                    Open Form
+                                </a>    
+                            {% elif customer.current_stage == "S9" %}
+                                <a href="{% url 'receive_material_form' customer.id %}"
+                                    class="btn btn-sm btn-primary">       
+                                    Open Form
+                                </a>    
+                            {% elif customer.current_stage == "S10" %}
+                                <a href="{% url 'query_closer_form' customer.id %}"
+                                    class="btn btn-sm btn-primary">       
+                                    Open Form
+                                </a>    
+                            {% elif customer.current_stage == "S11" %}
+                                a href="{% url 'customer_feedback_form' customer.id %}"
+                                    class="btn btn-sm btn-primary">       
+                                    Open Form   
+                                </a>    
+                            {% else %}
+                                <span class="text-muted">No Form Available</span>
+                            {% endif %}
+
+                        </td>
+
+                                
+                            
 
                         <!-- Pending With -->
 
