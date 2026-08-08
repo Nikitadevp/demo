@@ -4649,7 +4649,7 @@ def crm_dashboard(request):
 
             "issue": query.issue,
 
-            
+            "issue_description": query.issue_description,
 
             "query_raised": query_raised,
 
