@@ -4559,7 +4559,7 @@ def crm_dashboard(request):
 
             progress = "In Progress"
 
-
+        
         stage_form_url = None
         
         if current_stage == "S1":
@@ -4626,7 +4626,7 @@ def crm_dashboard(request):
             )                                
 
   
-
+        stage_form_url = None
         # ==================================================
         # CUSTOMER DATA
         # ==================================================
