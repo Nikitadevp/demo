@@ -4896,6 +4896,6 @@ def store_keeper_dashboard(request):
 
     return render(
         request,
-        "store_keeper/store_keeper_dashboard.html",
+        "store_keeper_dashboard.html",
         context
     )
