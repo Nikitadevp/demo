@@ -4727,7 +4727,6 @@ def crm_dashboard(request):
 
 
 
-
 def store_keeper_dashboard(request):
 
     # ==========================================
@@ -4749,7 +4748,7 @@ def store_keeper_dashboard(request):
 
 
     # ==========================================
-    # STORE KEEPER TAT
+    # TAT
     #
     # S6 - Material Availability = 2 Hours
     # S7 - Raise Indent          = 2 Days
@@ -4764,45 +4763,53 @@ def store_keeper_dashboard(request):
 
 
     # ==========================================
-    # MATERIAL AVAILABILITY
-    # S6
+    # MATERIAL AVAILABILITY - S6
     # ==========================================
 
-    availability_list = []
+    availability_list = MaterialAvailability.objects.select_related(
+        "customer_query"
+    ).order_by("-id")
 
-    total_requests = 0
+    total_requests = availability_list.count()
 
-    pending_availability = 0
+    availability_completed = availability_list.filter(
+        material_available__in=["Yes", "No"]
+    ).count()
 
-    availability_completed = 0
+    pending_availability = max(
+        total_requests - availability_completed,
+        0
+    )
 
 
     # ==========================================
-    # RAISE INDENT
-    # S7
+    # RAISE INDENT - S7
     # ==========================================
 
-    indent_list = []
+    indent_list = RaiseIndent.objects.select_related(
+        "customer_query"
+    ).order_by("-id")
 
-    total_indents = 0
+    total_indents = indent_list.count()
+
+    indent_completed = total_indents
 
     pending_indents = 0
 
-    indent_completed = 0
-
 
     # ==========================================
-    # ISSUE MATERIAL
-    # S8
+    # ISSUE MATERIAL - S8
     # ==========================================
 
-    issue_list = []
+    issue_list = IssueMaterial.objects.select_related(
+        "customer_query"
+    ).order_by("-id")
 
-    total_issued = 0
+    total_issued = issue_list.count()
+
+    issue_completed = total_issued
 
     pending_issue = 0
-
-    issue_completed = 0
 
 
     # ==========================================
@@ -4810,6 +4817,10 @@ def store_keeper_dashboard(request):
     # ==========================================
 
     overdue_count = 0
+
+    availability_overdue = 0
+    indent_overdue = 0
+    issue_overdue = 0
 
 
     # ==========================================
@@ -4837,7 +4848,7 @@ def store_keeper_dashboard(request):
 
 
         # --------------------------------------
-        # Summary Cards
+        # SUMMARY CARDS
         # --------------------------------------
 
         "total_requests": total_requests,
@@ -4852,7 +4863,7 @@ def store_keeper_dashboard(request):
 
 
         # --------------------------------------
-        # Material Availability - S6
+        # MATERIAL AVAILABILITY - S6
         # --------------------------------------
 
         "availability_list": availability_list,
@@ -4861,9 +4872,11 @@ def store_keeper_dashboard(request):
 
         "availability_progress": availability_progress,
 
+        "availability_overdue": availability_overdue,
+
 
         # --------------------------------------
-        # Raise Indent - S7
+        # RAISE INDENT - S7
         # --------------------------------------
 
         "indent_list": indent_list,
@@ -4874,9 +4887,11 @@ def store_keeper_dashboard(request):
 
         "indent_progress": indent_progress,
 
+        "indent_overdue": indent_overdue,
+
 
         # --------------------------------------
-        # Issue Material - S8
+        # ISSUE MATERIAL - S8
         # --------------------------------------
 
         "issue_list": issue_list,
@@ -4886,6 +4901,8 @@ def store_keeper_dashboard(request):
         "issue_completed": issue_completed,
 
         "issue_progress": issue_progress,
+
+        "issue_overdue": issue_overdue,
 
     }
 
