@@ -65,6 +65,7 @@ urlpatterns = [
     path("site-engineer/dashboard/",views.site_engineer_dashboard,name="site_engineer_dashboard"),
     path("crm-dashboard/", views.crm_dashboard, name="crm_dashboard"),
     path("store-keeper/", views.store_keeper_dashboard, name="store_dashboard"),
+   
 
     
 
