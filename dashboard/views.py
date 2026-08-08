@@ -3556,7 +3556,7 @@ def admin_dashboard(request):
 
             "issue": query.issue,
 
-            
+            "issue_description": query.problem,
 
             "query_raised": query_raised,
 
@@ -4649,7 +4649,7 @@ def crm_dashboard(request):
 
             "issue": query.issue,
 
-            "issue_description": query.issue_description,
+            "issue_description": query.problem,
 
             "query_raised": query_raised,
 
