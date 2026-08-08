@@ -1,0 +1,1065 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Store Keeper Dashboard</title>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+    <link rel="stylesheet"
+          href="{% static 'css/store_keeper_dashboard.css' %}">
+</head>
+
+<body>
+
+<div class="dashboard-wrapper">
+
+    <!-- ===================================================== -->
+    <!-- SIDEBAR -->
+    <!-- ===================================================== -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-logo">
+            <div class="logo-icon">
+                <i class="bi bi-box-seam"></i>
+            </div>
+
+            <div>
+                <h4>STORE</h4>
+                <span>KEEPER</span>
+            </div>
+        </div>
+
+
+        <nav class="sidebar-menu">
+
+            <a href="#" class="menu-item active">
+                <i class="bi bi-grid-1x2-fill"></i>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="#availability" class="menu-item">
+                <i class="bi bi-box2"></i>
+                <span>Material Availability</span>
+            </a>
+
+            <a href="#indent" class="menu-item">
+                <i class="bi bi-file-earmark-plus"></i>
+                <span>Raise Indent</span>
+            </a>
+
+            <a href="#issue" class="menu-item">
+                <i class="bi bi-box-arrow-up"></i>
+                <span>Issue Material</span>
+            </a>
+
+            <a href="#tat-monitor" class="menu-item">
+                <i class="bi bi-clock-history"></i>
+                <span>TAT Monitor</span>
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-footer">
+
+            <div class="user-box">
+
+                <div class="user-avatar">
+                    <i class="bi bi-person-fill"></i>
+                </div>
+
+                <div class="user-info">
+                    <strong>Store Keeper</strong>
+                    <span>Material Management</span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- ===================================================== -->
+    <!-- MAIN CONTENT -->
+    <!-- ===================================================== -->
+
+    <main class="main-content">
+
+
+        <!-- ================================================= -->
+        <!-- TOP HEADER -->
+        <!-- ================================================= -->
+
+        <header class="top-header">
+
+            <div class="header-left">
+
+                <button class="mobile-menu-btn">
+                    <i class="bi bi-list"></i>
+                </button>
+
+                <div>
+                    <h2>Store Keeper Dashboard</h2>
+                    <p>Material Management & Tracking</p>
+                </div>
+
+            </div>
+
+
+            <div class="header-right">
+
+                <div class="live-time-box">
+
+                    <i class="bi bi-clock"></i>
+
+                    <div>
+                        <span id="currentDate">Loading...</span>
+                        <strong id="currentTime">00:00:00</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- ================================================= -->
+        <!-- DASHBOARD CONTENT -->
+        <!-- ================================================= -->
+
+        <div class="content-area">
+
+
+            <!-- ================================================= -->
+            <!-- WELCOME SECTION -->
+            <!-- ================================================= -->
+
+            <section class="welcome-section">
+
+                <div>
+
+                    <h3>Material Overview</h3>
+
+                    <p>
+                        Track material availability, indents and material
+                        issues from one place.
+                    </p>
+
+                </div>
+
+                <div class="workflow-badge">
+                    <i class="bi bi-diagram-3"></i>
+                    S6 → S7 → S8
+                </div>
+
+            </section>
+
+
+
+            <!-- ================================================= -->
+            <!-- SUMMARY CARDS -->
+            <!-- ================================================= -->
+
+            <section class="summary-grid">
+
+
+                <!-- Material Requests -->
+
+                <div class="summary-card">
+
+                    <div class="card-icon blue">
+                        <i class="bi bi-box-seam"></i>
+                    </div>
+
+                    <div class="card-content">
+
+                        <span>Material Requests</span>
+
+                        <h3>
+                            {{ total_requests|default:"0" }}
+                        </h3>
+
+                        <small>
+                            Total requests
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Pending Availability -->
+
+                <div class="summary-card">
+
+                    <div class="card-icon orange">
+                        <i class="bi bi-hourglass-split"></i>
+                    </div>
+
+                    <div class="card-content">
+
+                        <span>Pending Availability</span>
+
+                        <h3>
+                            {{ pending_availability|default:"0" }}
+                        </h3>
+
+                        <small>
+                            TAT: 2 Hours
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Indent Raised -->
+
+                <div class="summary-card">
+
+                    <div class="card-icon purple">
+                        <i class="bi bi-file-earmark-text"></i>
+                    </div>
+
+                    <div class="card-content">
+
+                        <span>Indent Raised</span>
+
+                        <h3>
+                            {{ total_indents|default:"0" }}
+                        </h3>
+
+                        <small>
+                            TAT: 2 Days
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Material Issued -->
+
+                <div class="summary-card">
+
+                    <div class="card-icon green">
+                        <i class="bi bi-box-arrow-up"></i>
+                    </div>
+
+                    <div class="card-content">
+
+                        <span>Material Issued</span>
+
+                        <h3>
+                            {{ total_issued|default:"0" }}
+                        </h3>
+
+                        <small>
+                            TAT: 1 Hour
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Overdue -->
+
+                <div class="summary-card overdue-card">
+
+                    <div class="card-icon red">
+                        <i class="bi bi-exclamation-triangle"></i>
+                    </div>
+
+                    <div class="card-content">
+
+                        <span>Overdue</span>
+
+                        <h3>
+                            {{ overdue_count|default:"0" }}
+                        </h3>
+
+                        <small>
+                            Requires attention
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+            </section>
+
+
+
+            <!-- ================================================= -->
+            <!-- MATERIAL AVAILABILITY -->
+            <!-- ================================================= -->
+
+            <section class="dashboard-section" id="availability">
+
+                <div class="section-header">
+
+                    <div>
+
+                        <h3>
+                            <i class="bi bi-box2"></i>
+                            Material Availability
+                        </h3>
+
+                        <p>
+                            S6 - Check availability of material
+                        </p>
+
+                    </div>
+
+                    <div class="tat-badge availability-tat">
+                        <i class="bi bi-clock"></i>
+                        TAT: 2 Hours
+                    </div>
+
+                </div>
+
+
+                <div class="table-wrapper">
+
+                    <table class="data-table">
+
+                        <thead>
+
+                        <tr>
+
+                            <th>Ticket</th>
+
+                            <th>Customer</th>
+
+                            <th>Material</th>
+
+                            <th>Required Qty</th>
+
+                            <th>Available Qty</th>
+
+                            <th>Status</th>
+
+                            <th>Due Time</th>
+
+                            <th>Action</th>
+
+                        </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                        {% for item in availability_list %}
+
+                        <tr>
+
+                            <td>
+                                <strong>{{ item.ticket_no }}</strong>
+                            </td>
+
+                            <td>
+                                {{ item.customer_name }}
+                            </td>
+
+                            <td>
+                                {{ item.material }}
+                            </td>
+
+                            <td>
+                                {{ item.required_qty }}
+                            </td>
+
+                            <td>
+                                {{ item.available_qty }}
+                            </td>
+
+                            <td>
+
+                                {% if item.status == "Available" %}
+
+                                    <span class="status-badge available">
+                                        <i class="bi bi-check-circle"></i>
+                                        Available
+                                    </span>
+
+                                {% elif item.status == "Partially Available" %}
+
+                                    <span class="status-badge partial">
+                                        <i class="bi bi-dash-circle"></i>
+                                        Partially Available
+                                    </span>
+
+                                {% elif item.status == "Not Available" %}
+
+                                    <span class="status-badge unavailable">
+                                        <i class="bi bi-x-circle"></i>
+                                        Not Available
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="status-badge pending">
+                                        Pending
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+                            <td>
+                                <span class="due-time">
+                                    {{ item.due_time|default:"-" }}
+                                </span>
+                            </td>
+
+                            <td>
+
+                                <a href="#"
+                                   class="action-btn check-btn">
+
+                                    <i class="bi bi-eye"></i>
+                                    Check
+
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                        {% empty %}
+
+                        <tr>
+
+                            <td colspan="8" class="empty-state">
+
+                                <i class="bi bi-box2"></i>
+
+                                <p>
+                                    No material availability requests found.
+                                </p>
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ================================================= -->
+            <!-- INDENT SECTION -->
+            <!-- ================================================= -->
+
+            <section class="dashboard-section" id="indent">
+
+                <div class="section-header">
+
+                    <div>
+
+                        <h3>
+                            <i class="bi bi-file-earmark-plus"></i>
+                            Raise Indent
+                        </h3>
+
+                        <p>
+                            S7 - Raise indent for unavailable material
+                        </p>
+
+                    </div>
+
+                    <div class="tat-badge indent-tat">
+                        <i class="bi bi-clock"></i>
+                        TAT: 2 Days
+                    </div>
+
+                </div>
+
+
+                <div class="table-wrapper">
+
+                    <table class="data-table">
+
+                        <thead>
+
+                        <tr>
+
+                            <th>Indent ID</th>
+
+                            <th>Ticket</th>
+
+                            <th>Material</th>
+
+                            <th>Quantity</th>
+
+                            <th>Requested Date</th>
+
+                            <th>Status</th>
+
+                            <th>Due Date</th>
+
+                            <th>Action</th>
+
+                        </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                        {% for indent in indent_list %}
+
+                        <tr>
+
+                            <td>
+                                <strong>
+                                    {{ indent.indent_id }}
+                                </strong>
+                            </td>
+
+                            <td>
+                                {{ indent.ticket_no }}
+                            </td>
+
+                            <td>
+                                {{ indent.material }}
+                            </td>
+
+                            <td>
+                                {{ indent.quantity }}
+                            </td>
+
+                            <td>
+                                {{ indent.requested_date }}
+                            </td>
+
+                            <td>
+
+                                {% if indent.status == "Approved" %}
+
+                                    <span class="status-badge approved">
+                                        <i class="bi bi-check-circle"></i>
+                                        Approved
+                                    </span>
+
+                                {% elif indent.status == "Received" %}
+
+                                    <span class="status-badge available">
+                                        <i class="bi bi-box-seam"></i>
+                                        Received
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="status-badge pending">
+                                        <i class="bi bi-hourglass"></i>
+                                        {{ indent.status|default:"Pending" }}
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+                            <td>
+                                <span class="due-time">
+                                    {{ indent.due_date|default:"-" }}
+                                </span>
+                            </td>
+
+                            <td>
+
+                                <a href="#"
+                                   class="action-btn view-btn">
+
+                                    <i class="bi bi-eye"></i>
+                                    View
+
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                        {% empty %}
+
+                        <tr>
+
+                            <td colspan="8" class="empty-state">
+
+                                <i class="bi bi-file-earmark-text"></i>
+
+                                <p>
+                                    No indent records found.
+                                </p>
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ================================================= -->
+            <!-- MATERIAL ISSUE -->
+            <!-- ================================================= -->
+
+            <section class="dashboard-section" id="issue">
+
+                <div class="section-header">
+
+                    <div>
+
+                        <h3>
+                            <i class="bi bi-box-arrow-up"></i>
+                            Material Issue
+                        </h3>
+
+                        <p>
+                            S8 - Issue material to maintenance team
+                        </p>
+
+                    </div>
+
+                    <div class="tat-badge issue-tat">
+                        <i class="bi bi-clock"></i>
+                        TAT: 1 Hour
+                    </div>
+
+                </div>
+
+
+                <div class="table-wrapper">
+
+                    <table class="data-table">
+
+                        <thead>
+
+                        <tr>
+
+                            <th>Ticket</th>
+
+                            <th>Material</th>
+
+                            <th>Quantity</th>
+
+                            <th>Requested By</th>
+
+                            <th>Status</th>
+
+                            <th>Request Time</th>
+
+                            <th>Issue Time</th>
+
+                            <th>Action</th>
+
+                        </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                        {% for issue in issue_list %}
+
+                        <tr>
+
+                            <td>
+                                <strong>
+                                    {{ issue.ticket_no }}
+                                </strong>
+                            </td>
+
+                            <td>
+                                {{ issue.material }}
+                            </td>
+
+                            <td>
+                                {{ issue.quantity }}
+                            </td>
+
+                            <td>
+                                {{ issue.requested_by }}
+                            </td>
+
+                            <td>
+
+                                {% if issue.status == "Issued" %}
+
+                                    <span class="status-badge issued">
+                                        <i class="bi bi-check-circle"></i>
+                                        Issued
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="status-badge pending">
+                                        <i class="bi bi-hourglass"></i>
+                                        Pending
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+                            <td>
+                                {{ issue.request_time|default:"-" }}
+                            </td>
+
+                            <td>
+                                {{ issue.issue_time|default:"-" }}
+                            </td>
+
+                            <td>
+
+                                {% if issue.status != "Issued" %}
+
+                                    <a href="#"
+                                       class="action-btn issue-btn">
+
+                                        <i class="bi bi-box-arrow-up"></i>
+                                        Issue
+
+                                    </a>
+
+                                {% else %}
+
+                                    <span class="completed-text">
+                                        Completed
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+
+                        {% empty %}
+
+                        <tr>
+
+                            <td colspan="8" class="empty-state">
+
+                                <i class="bi bi-box-arrow-up"></i>
+
+                                <p>
+                                    No material issue records found.
+                                </p>
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ================================================= -->
+            <!-- TAT MONITOR -->
+            <!-- ================================================= -->
+
+            <section class="dashboard-section" id="tat-monitor">
+
+                <div class="section-header">
+
+                    <div>
+
+                        <h3>
+                            <i class="bi bi-clock-history"></i>
+                            TAT Monitor
+                        </h3>
+
+                        <p>
+                            Store Keeper workflow timeline
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="tat-grid">
+
+
+                    <!-- S6 -->
+
+                    <div class="tat-card">
+
+                        <div class="tat-card-top">
+
+                            <div class="stage-icon blue">
+                                <i class="bi bi-box2"></i>
+                            </div>
+
+                            <span class="stage-number">
+                                S6
+                            </span>
+
+                        </div>
+
+                        <h4>
+                            Material Availability
+                        </h4>
+
+                        <p>
+                            Check availability of required material.
+                        </p>
+
+                        <div class="tat-time">
+
+                            <i class="bi bi-clock"></i>
+
+                            <strong>
+                                2 Hours
+                            </strong>
+
+                        </div>
+
+                        <div class="progress">
+
+                            <div class="progress-bar"
+                                 style="width: {{ availability_progress|default:0 }}%;">
+                            </div>
+
+                        </div>
+
+                        <div class="tat-footer">
+
+                            <span>
+                                Completed:
+                                <strong>
+                                    {{ availability_completed|default:"0" }}
+                                </strong>
+                            </span>
+
+                            <span>
+                                Pending:
+                                <strong>
+                                    {{ pending_availability|default:"0" }}
+                                </strong>
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- S7 -->
+
+                    <div class="tat-card">
+
+                        <div class="tat-card-top">
+
+                            <div class="stage-icon purple">
+                                <i class="bi bi-file-earmark-plus"></i>
+                            </div>
+
+                            <span class="stage-number">
+                                S7
+                            </span>
+
+                        </div>
+
+                        <h4>
+                            Raise Indent
+                        </h4>
+
+                        <p>
+                            Raise indent when material is unavailable.
+                        </p>
+
+                        <div class="tat-time">
+
+                            <i class="bi bi-clock"></i>
+
+                            <strong>
+                                2 Days
+                            </strong>
+
+                        </div>
+
+                        <div class="progress">
+
+                            <div class="progress-bar"
+                                 style="width: {{ indent_progress|default:0 }}%;">
+                            </div>
+
+                        </div>
+
+                        <div class="tat-footer">
+
+                            <span>
+                                Completed:
+                                <strong>
+                                    {{ indent_completed|default:"0" }}
+                                </strong>
+                            </span>
+
+                            <span>
+                                Pending:
+                                <strong>
+                                    {{ pending_indents|default:"0" }}
+                                </strong>
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- S8 -->
+
+                    <div class="tat-card">
+
+                        <div class="tat-card-top">
+
+                            <div class="stage-icon green">
+                                <i class="bi bi-box-arrow-up"></i>
+                            </div>
+
+                            <span class="stage-number">
+                                S8
+                            </span>
+
+                        </div>
+
+                        <h4>
+                            Issue Material
+                        </h4>
+
+                        <p>
+                            Issue material to maintenance team.
+                        </p>
+
+                        <div class="tat-time">
+
+                            <i class="bi bi-clock"></i>
+
+                            <strong>
+                                1 Hour
+                            </strong>
+
+                        </div>
+
+                        <div class="progress">
+
+                            <div class="progress-bar"
+                                 style="width: {{ issue_progress|default:0 }}%;">
+                            </div>
+
+                        </div>
+
+                        <div class="tat-footer">
+
+                            <span>
+                                Completed:
+                                <strong>
+                                    {{ issue_completed|default:"0" }}
+                                </strong>
+                            </span>
+
+                            <span>
+                                Pending:
+                                <strong>
+                                    {{ pending_issue|default:"0" }}
+                                </strong>
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<!-- ========================================================= -->
+<!-- CURRENT DATE & TIME -->
+<!-- ========================================================= -->
+
+<script>
+
+    function updateDateTime() {
+
+        const now = new Date();
+
+        const dateOptions = {
+            day: "2-digit",
+            month: "short",
+            year: "numeric"
+        };
+
+        const timeOptions = {
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+            hour12: true
+        };
+
+        document.getElementById("currentDate").textContent =
+            now.toLocaleDateString("en-IN", dateOptions);
+
+        document.getElementById("currentTime").textContent =
+            now.toLocaleTimeString("en-IN", timeOptions);
+    }
+
+    updateDateTime();
+
+    setInterval(updateDateTime, 1000);
+
+</script>
+
+
+</body>
+</html>

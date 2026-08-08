@@ -4722,3 +4722,180 @@ def crm_dashboard(request):
         context,
 
     )
+
+
+
+
+
+
+def store_keeper_dashboard(request):
+
+    # ==========================================
+    # LOGIN CHECK
+    # ==========================================
+
+    if "admin_id" not in request.session:
+        return redirect("login")
+
+    if request.session.get("admin_role") != "Store Keeper":
+        return redirect("login")
+
+
+    # ==========================================
+    # CURRENT DATE & TIME
+    # ==========================================
+
+    now = timezone.localtime(timezone.now())
+
+
+    # ==========================================
+    # STORE KEEPER TAT
+    #
+    # S6 - Material Availability = 2 Hours
+    # S7 - Raise Indent          = 2 Days
+    # S8 - Issue Material        = 1 Hour
+    # ==========================================
+
+    availability_tat = timedelta(hours=2)
+
+    indent_tat = timedelta(days=2)
+
+    issue_tat = timedelta(hours=1)
+
+
+    # ==========================================
+    # MATERIAL AVAILABILITY
+    # S6
+    # ==========================================
+
+    availability_list = []
+
+    total_requests = 0
+
+    pending_availability = 0
+
+    availability_completed = 0
+
+
+    # ==========================================
+    # RAISE INDENT
+    # S7
+    # ==========================================
+
+    indent_list = []
+
+    total_indents = 0
+
+    pending_indents = 0
+
+    indent_completed = 0
+
+
+    # ==========================================
+    # ISSUE MATERIAL
+    # S8
+    # ==========================================
+
+    issue_list = []
+
+    total_issued = 0
+
+    pending_issue = 0
+
+    issue_completed = 0
+
+
+    # ==========================================
+    # OVERDUE
+    # ==========================================
+
+    overdue_count = 0
+
+
+    # ==========================================
+    # TAT PROGRESS
+    # ==========================================
+
+    availability_progress = 0
+
+    indent_progress = 0
+
+    issue_progress = 0
+
+
+    # ==========================================
+    # CONTEXT
+    # ==========================================
+
+    context = {
+
+        # --------------------------------------
+        # Current Time
+        # --------------------------------------
+
+        "current_time": now,
+
+
+        # --------------------------------------
+        # Summary Cards
+        # --------------------------------------
+
+        "total_requests": total_requests,
+
+        "pending_availability": pending_availability,
+
+        "total_indents": total_indents,
+
+        "total_issued": total_issued,
+
+        "overdue_count": overdue_count,
+
+
+        # --------------------------------------
+        # Material Availability - S6
+        # --------------------------------------
+
+        "availability_list": availability_list,
+
+        "availability_completed": availability_completed,
+
+        "availability_progress": availability_progress,
+
+
+        # --------------------------------------
+        # Raise Indent - S7
+        # --------------------------------------
+
+        "indent_list": indent_list,
+
+        "pending_indents": pending_indents,
+
+        "indent_completed": indent_completed,
+
+        "indent_progress": indent_progress,
+
+
+        # --------------------------------------
+        # Issue Material - S8
+        # --------------------------------------
+
+        "issue_list": issue_list,
+
+        "pending_issue": pending_issue,
+
+        "issue_completed": issue_completed,
+
+        "issue_progress": issue_progress,
+
+    }
+
+
+    # ==========================================
+    # RENDER DASHBOARD
+    # ==========================================
+
+    return render(
+        request,
+        "store_keeper/store_keeper_dashboard.html",
+        context
+    )
