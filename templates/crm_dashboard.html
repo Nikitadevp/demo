@@ -1093,7 +1093,7 @@
                     <!-- CUSTOMER TABLE DATA -->
                     <!-- ========================================================= -->
 
-                    {% for customer in customer_data %}
+                    {% for customer in crm_pending_data %}
 
                     <tr>
 
@@ -1157,9 +1157,11 @@
 
                         </td>
 
-                        <!-- Status -->
+                        <!-- Issue Description -->
 
-                        <td>{{ customer.issue_description }}</td>
+                        <td>
+                            {{ customer.issue_description }}
+                        </td>
 
                         <!-- Current Stage -->
 
