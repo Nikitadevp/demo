@@ -4579,49 +4579,49 @@ def crm_dashboard(request):
             )
         elif current_stage == "S4":
             stage_form_url = reverse(
-                "customer_approval",
+                "customer_approval_form",
                 args=[query.id]
             )
         elif current_stage == "S5":
             stage_form_url = reverse(
-                "advance_collection",
+                "advance_collection_form",
                 args=[query.id]
             )
 
         elif current_stage == "S6":
             stage_form_url = reverse(
-                "material_availability",
+                "material_availability_form",
                 args=[query.id]
             )
 
         elif current_stage == "S7":
             stage_form_url = reverse(
-                "raise_indent",
+                "raise_indent_form",
                 args=[query.id]
             )
 
         elif current_stage == "S8":
             stage_form_url = reverse(
-                "issue_material",
+                "issue_material_form",
                 args=[query.id]
             )
 
         elif current_stage == "S9":
             stage_form_url = reverse(
-                "receive_material",
+                "receive_material_form",
                 args=[query.id]
             )
 
         elif current_stage == "S10":    
             stage_form_url = reverse(
-                "query_closer",
+                "query_closer_form",
                 args=[query.id]
             )
 
 
         elif current_stage == "S11":            
             stage_form_url = reverse(
-                "customer_feedback",
+                "customer_feedback_form",
                 args=[query.id]
             )                                
 
