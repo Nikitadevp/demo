@@ -4564,7 +4564,7 @@ def crm_dashboard(request):
         
         if current_stage == "S1":
             stage_form_url = reverse(
-                "maintenance_scope",
+               "maintenance_scope_form",
                 args=[query.id]
             )
         elif current_stage == "S2":
