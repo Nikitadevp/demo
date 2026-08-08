@@ -2800,7 +2800,7 @@ def login_view(request):
             return redirect("site_engineer_dashboard")
 
         elif role == "Store Keeper":
-            return redirect("store_dashboard")
+            return redirect("store_keeper_dashboard")
 
         elif role == "Maintenance":
             return redirect("maintenance_dashboard")
