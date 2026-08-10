@@ -972,7 +972,7 @@ def crm_ho_dashboard(request):
     context = {
         "recent_tickets": recent_tickets,
         "total_tickets": tickets.count(),
-        "open_tickets": tickets.filter(status="Open").count(),
+        
         "closed_tickets": tickets.filter(status="Closed").count(),
         "urgent_tickets": tickets.filter(priority="Urgent").count(),
         "priority": priority,
