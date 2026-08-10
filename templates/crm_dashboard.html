@@ -88,7 +88,7 @@
 
             <li>
 
-                <a href="#customer-feedback">
+                <a href="{% url 'crm_dashboard' %}?page=customer_feedback">
 
                     <i class="fa-solid fa-comments"></i>
 
@@ -875,135 +875,7 @@
  
 
      
-<div id="customer-feedback" class="card shadow border-0 mt-4">
 
-    <div class="card-header bg-success text-white">
-
-        <div class="d-flex justify-content-between align-items-center">
-
-            <h5 class="mb-0">
-
-                <i class="fas fa-comments me-2"></i>
-
-                Customer Feedback Report
-
-            </h5>
-
-            <span class="badge bg-light text-dark">
-
-                {{ feedback_data|length }}Records
-
-            </span>
-
-        </div>
-
-    </div>
-
-    <div class="card-body p-0">
-
-        <div class="table-responsive">
-
-            <table class="table table-hover table-bordered align-middle mb-0">
-
-                <thead class="table-success">
-
-                    <tr>
-
-                        <th>Ticket ID</th>
-
-                        <th>Customer</th>
-
-                        <th>Contact</th>
-
-                        <th>Block</th>
-
-                        <th>Area</th>
-
-                        <th>Issue Resolved</th>
-
-                        <th>Service Satisfied</th>
-
-                        <th>Customer Remark</th>
-
-                        <th>Submitted On</th>
-
-                    </tr>
-
-                </thead>
-
-                <tbody>
-
-                    {% for feedback in feedback_data %}
-                    <tr>
-
-                        <td>
-
-                           {{ feedback.ticket_id }}
-
-                        </td>
-
-                        <td>
-
-                            {{ feedback.customer_name }}
-
-                        </td>
-
-                        <td>
-
-                           {{ feedback.contact }}
-
-                        </td>
-
-                        <td>
-
-                            {{ feedback.block }}
-
-                        </td>
-
-                        <td>
-
-                            {{ feedback.area }}
-
-                        </td>
-
-                        <td>
-
-                            {{ feedback.issue_resolved }}
-
-                        </td>
-
-                        <td>{{ feedback.service_satisfied }}</td>
-
-
-                        <td>{{ feedback.customer_remark }}</td>
-
-                        <td>{{ feedback.date|date:"d-m-Y h:i A" }}</td>
-
-                    </tr>
-
-                    {% empty %}
-
-                    <tr>
-
-                        <td colspan="8" class="text-center">
-
-                            No Customer Feedback Available
-
-                        </td>
-
-                    </tr>
-
-                    {% endfor %}
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-    </div>
-
-</div>
 
 
  

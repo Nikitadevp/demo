@@ -4796,7 +4796,13 @@ def crm_dashboard(request):
             context
         )
 
-
+    if request.GET.get("page") == "customer_feedback":
+        
+        return render(
+            request,
+            "customer_feedback.html",
+            context
+        )
     # =========================================================
     # NORMAL CRM DASHBOARD
     # =========================================================
