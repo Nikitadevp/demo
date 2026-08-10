@@ -1,0 +1,181 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Issue Category Report</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/crm_dashboard.css' %}"
+    >
+
+</head>
+
+<body>
+
+<div class="container-fluid py-4">
+
+    <!-- ========================================================= -->
+    <!-- HEADER -->
+    <!-- ========================================================= -->
+
+    <div class="card shadow border-0 mb-4">
+
+        <div class="card-header bg-warning text-dark">
+
+            <div class="d-flex justify-content-between align-items-center">
+
+                <h4 class="mb-0">
+
+                    <i class="fas fa-chart-bar me-2"></i>
+
+                    Issue Category Report
+
+                </h4>
+
+                <span class="badge bg-dark">
+
+                    Issue Analysis
+
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================================================= -->
+    <!-- ISSUE CATEGORY CHART -->
+    <!-- ========================================================= -->
+
+    <div class="card shadow border-0">
+
+        <div class="card-header bg-primary text-white">
+
+            <h5 class="mb-0">
+
+                <i class="fas fa-chart-bar me-2"></i>
+
+                Issue Category Report
+
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            <canvas id="issueChart" height="120"></canvas>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================================================= -->
+    <!-- BACK TO CRM DASHBOARD -->
+    <!-- ========================================================= -->
+
+    <div class="mt-4">
+
+        <a href="{% url 'crm_dashboard' %}"
+           class="btn btn-secondary">
+
+            <i class="fas fa-arrow-left me-2"></i>
+
+            Back to Dashboard
+
+        </a>
+
+    </div>
+
+</div>
+
+
+<!-- ========================================================= -->
+<!-- CHART JS -->
+<!-- ========================================================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+    const ctx = document.getElementById('issueChart');
+
+    new Chart(ctx, {
+
+        type: 'bar',
+
+        data: {
+
+            labels: {{ issue_labels|safe }},
+
+            datasets: [{
+
+                label: 'Number of Issues',
+
+                data: {{ issue_counts|safe }},
+
+            }]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            plugins: {
+
+                legend: {
+
+                    display: true
+
+                }
+
+            },
+
+            scales: {
+
+                y: {
+
+                    beginAtZero: true,
+
+                    ticks: {
+
+                        precision: 0
+
+                    }
+
+                }
+
+            }
+
+        }
+
+    });
+
+</script>
+
+</body>
+
+</html>
