@@ -564,13 +564,15 @@
 
                             <th>Pending With</th>
 
-                            <th>Progress</th>
+                            <th>Progress</th> 
+
+                            <th>Query Raised</th>
 
                             <th>Due Time</th>
 
                             <th>Remaining</th>
 
-                            <th>Query Raised</th>
+                            
 
                             <th>Closed Date</th>
 
@@ -1236,6 +1238,12 @@
 
                         </td>
 
+                        <td>
+
+                            {{ customer.query_raised }}
+
+                        </td>
+
                         <!-- Due Time -->
 
                         <td>
@@ -1271,11 +1279,7 @@
                         <!-- QUERY RAISED -->
                         <!-- ============================================== -->
 
-                        <td>
-
-                            {{ customer.query_raised }}
-
-                        </td>
+                        
 
                         <!-- ============================================== -->
                         <!-- TIMELINE -->
