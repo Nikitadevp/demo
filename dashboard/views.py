@@ -4,6 +4,8 @@ from django.core.mail import send_mail
 from django.utils import timezone
 from datetime import timedelta, time
 
+from matplotlib.style import context
+
 from dashboard.email_config import EMAILS
 from .models import EstimateForm, QueryCloser, Ticket
 from django.urls import reverse
@@ -13,7 +15,7 @@ matplotlib.use('Agg')
 import io
 import base64
 from .models import LeaveRequest
-from django.http import HttpResponse
+from django.http import HttpResponse, request
 import re
 from django.http import HttpResponseForbidden
 from django.db.models import Case, When, Value, IntegerField, Q
@@ -4776,22 +4778,42 @@ def crm_dashboard(request):
         "issue_counts": issue_counts,
 
         "feedback_data": feedback_list,
-
+        "crm_pending_data": crm_pending_data,
+        "total_queries": total_queries, 
     }
+
+
+
+    # =========================================================
+    # CUSTOMER QUERY DETAILS PAGE
+    # =========================================================
+
+    if request.GET.get("page") == "customer_queries":
+
+        return render(
+            request,
+            "customer_query_details.html",
+            context
+        )
+
+
+    # =========================================================
+    # NORMAL CRM DASHBOARD
+    # =========================================================
+
+    return render(
+        request,
+        "crm_dashboard.html",
+        context
+    )
 
     # ======================================================
     # RENDER
     # ======================================================
 
-    return render(
 
-        request,
 
-        "crm_dashboard.html",
 
-        context,
-
-    )
 
 
 
