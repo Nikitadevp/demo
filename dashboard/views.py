@@ -4806,13 +4806,17 @@ def crm_dashboard(request):
 
 
 
-    if request.GET.get("page") == "customer_queries":
-        
+    
+
+
+    if request.GET.get("page") == "issue_category":
+
         return render(
             request,
-            "customer_query_details.html",
+            "issue_category_report.html",
             context
         )
+
     # =========================================================
     # NORMAL CRM DASHBOARD
     # =========================================================
