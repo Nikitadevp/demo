@@ -503,6 +503,171 @@
         </div>
 
     </div>
+
+    
+<div id="due-today" class="card shadow border-0 mt-4">
+
+    <div class="card-header bg-warning">
+
+        <div class="d-flex justify-content-between align-items-center">
+
+            <h5 class="mb-0 text-dark">
+
+                <i class="fas fa-calendar-day me-2"></i>
+
+                Due Today
+
+            </h5>
+
+            <span class="badge bg-dark">
+
+                {{ due_today_count }}
+
+            </span>
+
+        </div>
+
+    </div>
+
+    <div class="card-body p-0">
+
+        <div class="table-responsive">
+
+            <table class="table table-bordered table-hover mb-0">
+
+                <thead class="table-warning">
+
+                    <tr>
+
+                        <th>Ticket</th>
+
+                        <th>Customer</th>
+
+                        <th>Contact</th>
+
+                        <th>Stage</th>
+
+                        <th>Pending With</th>
+
+                        <th>Due Time</th>
+
+                        <th>Remaining</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for customer in due_today_customers %}
+                    <!-- ========================================================= -->
+                    <!-- DUE TODAY CUSTOMER DATA -->
+                    <!-- ========================================================= -->
+
+                    <tr>
+
+                        <td>
+
+                            <strong class="text-warning">
+
+                                {{ customer.ticket }}
+
+                            </strong>
+
+                        </td>
+
+                        <td>
+
+                            {{ customer.customer }}
+
+                        </td>
+
+                        <td>
+
+                            {{ customer.contact }}
+
+                        </td>
+
+                        <td>
+
+                            {{ customer.current_stage }}
+
+                            <br>
+
+                            <small class="text-muted">
+
+                                {{ customer.stage_name }}
+
+                            </small>
+
+                        </td>
+
+                        <td>
+
+                            {{ customer.pending_with }}
+
+                        </td>
+
+                        <td>
+
+                            {{ customer.due_time }}
+
+                        </td>
+
+                        <td>
+
+                            {% if customer.is_overdue %}
+
+                                <span class="fw-bold text-danger">
+
+                                    {{ customer.remaining }}
+
+                                </span>
+
+                            {% else %}
+
+                                <span class="fw-bold text-success">
+
+                                    {{ customer.remaining }}
+
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td colspan="7" class="text-center py-4">
+
+                            <span class="text-muted">
+
+                                No Due Today Customers
+
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
  
    
     <div id="crm-pending-work" class="card shadow border-0 mt-4">
@@ -1045,166 +1210,6 @@
 <!-- DUE TODAY TABLE -->
 <!-- ========================================================= -->
 
-<div id="due-today" class="card shadow border-0 mt-4">
-
-    <div class="card-header bg-warning">
-
-        <div class="d-flex justify-content-between align-items-center">
-
-            <h5 class="mb-0 text-dark">
-
-                <i class="fas fa-calendar-day me-2"></i>
-
-                Due Today
-
-            </h5>
-
-            <span class="badge bg-dark">
-
-                {{ due_today_count }}
-
-            </span>
-
-        </div>
-
-    </div>
-
-    <div class="card-body p-0">
-
-        <div class="table-responsive">
-
-            <table class="table table-bordered table-hover mb-0">
-
-                <thead class="table-warning">
-
-                    <tr>
-
-                        <th>Ticket</th>
-
-                        <th>Customer</th>
-
-                        <th>Contact</th>
-
-                        <th>Stage</th>
-
-                        <th>Pending With</th>
-
-                        <th>Due Time</th>
-
-                        <th>Remaining</th>
-
-                    </tr>
-
-                </thead>
-
-                <tbody>
-
-                    {% for customer in due_today_customers %}
-                    <!-- ========================================================= -->
-                    <!-- DUE TODAY CUSTOMER DATA -->
-                    <!-- ========================================================= -->
-
-                    <tr>
-
-                        <td>
-
-                            <strong class="text-warning">
-
-                                {{ customer.ticket }}
-
-                            </strong>
-
-                        </td>
-
-                        <td>
-
-                            {{ customer.customer }}
-
-                        </td>
-
-                        <td>
-
-                            {{ customer.contact }}
-
-                        </td>
-
-                        <td>
-
-                            {{ customer.current_stage }}
-
-                            <br>
-
-                            <small class="text-muted">
-
-                                {{ customer.stage_name }}
-
-                            </small>
-
-                        </td>
-
-                        <td>
-
-                            {{ customer.pending_with }}
-
-                        </td>
-
-                        <td>
-
-                            {{ customer.due_time }}
-
-                        </td>
-
-                        <td>
-
-                            {% if customer.is_overdue %}
-
-                                <span class="fw-bold text-danger">
-
-                                    {{ customer.remaining }}
-
-                                </span>
-
-                            {% else %}
-
-                                <span class="fw-bold text-success">
-
-                                    {{ customer.remaining }}
-
-                                </span>
-
-                            {% endif %}
-
-                        </td>
-
-                    </tr>
-
-                    {% empty %}
-
-                    <tr>
-
-                        <td colspan="7" class="text-center py-4">
-
-                            <span class="text-muted">
-
-                                No Due Today Customers
-
-                            </span>
-
-                        </td>
-
-                    </tr>
-
-                    {% endfor %}
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-    </div>
-
-</div>
 
 
 
