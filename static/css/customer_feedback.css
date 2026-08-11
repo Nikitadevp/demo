@@ -31,12 +31,13 @@ body {
    ========================================================= */
 
 .feedback-header {
-    max-width: 1050px;
-    margin: 0 auto 25px;
+    width: 100%;
+    max-width: 750px;
+    margin: 0 auto 20px;
 
     display: flex;
     align-items: center;
-    gap: 18px;
+    gap: 15px;
 }
 
 .header-icon {
@@ -416,14 +417,13 @@ body {
    ========================================================= */
 
 .page-footer {
-    max-width: 1050px;
-
-    margin: 18px auto 0;
+    width: 100%;
+    max-width: 750px;
+    margin: 15px auto 0;
 
     text-align: center;
 
     font-size: 13px;
-
     color: #64748b;
 }
 
