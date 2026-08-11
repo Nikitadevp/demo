@@ -4221,9 +4221,6 @@ def get_progress(current_stage):
     if current_stage == "Completed":
         return "Closed"
 
-    elif current_stage == "S1":
-        return "Open"
-
     return "In Progress"
 
 
@@ -4550,11 +4547,6 @@ def crm_dashboard(request):
         if current_stage == "Completed":
 
             progress = "Closed"
-
-        elif current_stage == "S1":
-
-            progress = "Open"
-
         else:
 
             progress = "In Progress"
