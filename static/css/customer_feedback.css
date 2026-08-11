@@ -31,7 +31,7 @@ body {
    ========================================================= */
 
 .feedback-header {
-    max-width: 1010px;
+    max-width: 700px;
     margin: 0 auto 25px;
 
     display: flex;
@@ -80,7 +80,7 @@ body {
    ========================================================= */
 
 .feedback-card {
-    max-width: 1010px;
+    max-width: 700px;
     margin: 0 auto;
 
     background: #ffffff;
@@ -416,7 +416,7 @@ body {
    ========================================================= */
 
 .page-footer {
-    max-width: 1010px;
+    max-width: 700px;
 
     margin: 18px auto 0;
 
