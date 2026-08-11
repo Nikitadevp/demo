@@ -31,13 +31,12 @@ body {
    ========================================================= */
 
 .feedback-header {
-    width: 100%;
-    max-width: 750px;
-    margin: 0 auto 20px;
+    max-width: 1010px;
+    margin: 0 auto 25px;
 
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 18px;
 }
 
 .header-icon {
@@ -81,7 +80,7 @@ body {
    ========================================================= */
 
 .feedback-card {
-    max-width: 1050px;
+    max-width: 1010px;
     margin: 0 auto;
 
     background: #ffffff;
@@ -417,13 +416,14 @@ body {
    ========================================================= */
 
 .page-footer {
-    width: 100%;
-    max-width: 750px;
-    margin: 15px auto 0;
+    max-width: 1010px;
+
+    margin: 18px auto 0;
 
     text-align: center;
 
     font-size: 13px;
+
     color: #64748b;
 }
 
