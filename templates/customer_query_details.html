@@ -123,6 +123,8 @@
 
                             <th>Stage</th>
 
+                            <th>Link</th>
+
                             <th>Pending With</th>
 
                             <th>Progress</th>
@@ -246,6 +248,26 @@
 
                         </td>
 
+
+                        <td>
+                            {% if customer.stage_form_url %}
+
+                                <i class="fas fa-external-link-alt"></i>
+
+                                 <a href="{{ customer.stage_form_url }}"
+                                   class="btn btn-sm btn-primary">
+                                    <i class="fas fa-external-link-alt me-1"></i>
+
+                                    Open Form
+                                </a>
+                            {% else %}
+                                <span class="text-muted">
+
+                                    No Form Available
+
+                                </span>
+
+                            {% endif %}
 
                         <!-- Pending With -->
 
