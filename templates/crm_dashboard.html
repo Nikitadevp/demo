@@ -840,7 +840,7 @@
 
                                 </span>
 
-                            {% elif customer.progress == "Open" %}
+                            {% elif customer.progress == "In Progress" %}
 
                                 <span class="badge bg-primary">
 
@@ -848,13 +848,7 @@
 
                                 </span>
 
-                            {% else %}
-
-                                <span class="badge bg-warning text-dark">
-
-                                    {{ customer.progress }}
-
-                                </span>
+                          
 
                             {% endif %}
 
