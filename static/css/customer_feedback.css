@@ -1,115 +1,518 @@
-body{
-    font-family: Arial, sans-serif;
-    background: #f5f5f5;
+/* =========================================================
+   CUSTOMER FEEDBACK PAGE
+   ========================================================= */
+
+* {
     margin: 0;
-    padding: 15px;
-}
-
-.container{
-    max-width: 700px;
-    width: 100%;
-    margin: 20px auto;
-    background: #fff;
-    padding: 25px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,.1);
+    padding: 0;
     box-sizing: border-box;
 }
 
-h2{
-    text-align: center;
-    margin-bottom: 20px;
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #f4f7fb;
+    color: #263238;
 }
 
-p{
-    font-size: 14px;
-    color: #555;
-}
 
-label{
-    display: block;
-    margin-top: 15px;
-    font-weight: bold;
-}
+/* =========================================================
+   MAIN PAGE
+   ========================================================= */
 
-input,
-textarea{
+.feedback-page {
     width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    box-sizing: border-box;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    min-height: 100vh;
+    padding: 35px 20px 30px;
 }
 
-input[readonly]{
-    background: #f2f2f2;
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.feedback-header {
+    max-width: 1050px;
+    margin: 0 auto 25px;
+
+    display: flex;
+    align-items: center;
+    gap: 18px;
 }
 
-textarea{
-    min-height: 120px;
-    resize: vertical;
-}
+.header-icon {
+    width: 58px;
+    height: 58px;
 
-.radio-group{
-    margin-top: 10px;
-}
+    border-radius: 14px;
 
-.radio-group label{
-    display: block;
-    font-weight: normal;
-    margin-top: 8px;
-}
+    background: linear-gradient(
+        135deg,
+        #2563eb,
+        #1d4ed8
+    );
 
-.radio-group input{
-    width: auto;
-    margin-right: 8px;
-}
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-button{
-    width: 100%;
-    margin-top: 25px;
-    padding: 12px;
-    border: none;
-    background: #63b3a5;
     color: white;
-    border-radius: 5px;
+    font-size: 27px;
+
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.20);
+}
+
+.feedback-header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: #172033;
+}
+
+.feedback-header p {
+    margin: 0;
+    color: #718096;
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   FORM CARD
+   ========================================================= */
+
+.feedback-card {
+    max-width: 1050px;
+    margin: 0 auto;
+
+    background: #ffffff;
+
+    border-radius: 16px;
+
+    padding: 30px;
+
+    box-shadow:
+        0 8px 30px rgba(15, 23, 42, 0.08);
+
+    border: 1px solid #e7ebf0;
+}
+
+
+/* =========================================================
+   SECTION TITLE
+   ========================================================= */
+
+.section-title {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 20px;
+
+    padding-bottom: 12px;
+
+    border-bottom: 1px solid #e9edf2;
+}
+
+.section-title i {
+    font-size: 20px;
+    color: #2563eb;
+}
+
+.section-title span {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.feedback-title {
+    margin-top: 32px;
+}
+
+
+/* =========================================================
+   FORM GRID
+   ========================================================= */
+
+.form-grid {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 20px;
+}
+
+
+/* =========================================================
+   FORM GROUP
+   ========================================================= */
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: 600;
+
+    color: #334155;
+
+    margin-bottom: 8px;
+}
+
+.form-group label span,
+.question-label span {
+    color: #dc2626;
+    margin-left: 2px;
+}
+
+
+/* =========================================================
+   INPUT
+   ========================================================= */
+
+.form-group input,
+.question-box textarea {
+    width: 100%;
+
+    border: 1px solid #d8dee8;
+
+    border-radius: 9px;
+
+    padding: 11px 13px;
+
+    font-size: 14px;
+
+    color: #334155;
+
+    background: #ffffff;
+
+    outline: none;
+
+    transition: 0.2s ease;
+}
+
+.form-group input {
+    height: 45px;
+}
+
+
+/* Read Only Inputs */
+
+.form-group input[readonly] {
+    background: #f7f9fc;
+    color: #475569;
+    cursor: not-allowed;
+}
+
+
+/* Focus */
+
+.form-group input:focus,
+.question-box textarea:focus {
+    border-color: #2563eb;
+
+    box-shadow:
+        0 0 0 3px rgba(37, 99, 235, 0.10);
+}
+
+
+/* =========================================================
+   QUESTION BOX
+   ========================================================= */
+
+.question-box {
+    background: #f8fafc;
+
+    border: 1px solid #e6ebf2;
+
+    border-radius: 12px;
+
+    padding: 20px;
+
+    margin-bottom: 18px;
+}
+
+.question-label {
+    display: block;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    color: #1e293b;
+
+    margin-bottom: 5px;
+}
+
+.question-help {
+    font-size: 13px;
+
+    color: #64748b;
+
+    margin-bottom: 16px;
+}
+
+
+/* =========================================================
+   RADIO GROUP
+   ========================================================= */
+
+.radio-group {
+    display: flex;
+    gap: 25px;
+    flex-wrap: wrap;
+}
+
+.radio-option {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 9px;
+
     cursor: pointer;
-    font-size: 16px;
+
+    font-size: 14px;
+
+    font-weight: 500;
+
+    color: #334155;
 }
 
-button:hover{
-    background: #4e9a8d;
+.radio-option input {
+    position: absolute;
+
+    opacity: 0;
+
+    pointer-events: none;
 }
 
-hr{
-    margin: 20px 0;
+
+/* =========================================================
+   CUSTOM RADIO
+   ========================================================= */
+
+.radio-custom {
+    width: 19px;
+    height: 19px;
+
+    border: 2px solid #94a3b8;
+
+    border-radius: 50%;
+
+    display: inline-block;
+
+    position: relative;
+
+    transition: 0.2s ease;
+}
+
+
+/* Checked */
+
+.radio-option input:checked + .radio-custom {
+    border-color: #2563eb;
+}
+
+.radio-option input:checked + .radio-custom::after {
+    content: "";
+
+    position: absolute;
+
+    width: 9px;
+    height: 9px;
+
+    border-radius: 50%;
+
+    background: #2563eb;
+
+    top: 3px;
+    left: 3px;
+}
+
+
+/* =========================================================
+   TEXTAREA
+   ========================================================= */
+
+.question-box textarea {
+    resize: vertical;
+
+    min-height: 120px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   FORM FOOTER
+   ========================================================= */
+
+.form-footer {
+    display: flex;
+
+    justify-content: flex-end;
+
+    margin-top: 25px;
+
+    padding-top: 20px;
+
+    border-top: 1px solid #e9edf2;
+}
+
+
+/* =========================================================
+   SUBMIT BUTTON
+   ========================================================= */
+
+.submit-btn {
     border: none;
-    border-top: 1px solid #ddd;
+
+    background: linear-gradient(
+        135deg,
+        #2563eb,
+        #1d4ed8
+    );
+
+    color: white;
+
+    padding: 12px 24px;
+
+    border-radius: 9px;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+
+    box-shadow:
+        0 5px 15px rgba(37, 99, 235, 0.20);
 }
 
-@media screen and (max-width: 768px){
+.submit-btn:hover {
+    transform: translateY(-1px);
 
-    body{
-        padding: 10px;
+    box-shadow:
+        0 8px 18px rgba(37, 99, 235, 0.28);
+}
+
+.submit-btn:active {
+    transform: translateY(0);
+}
+
+
+/* =========================================================
+   PAGE FOOTER
+   ========================================================= */
+
+.page-footer {
+    max-width: 1050px;
+
+    margin: 18px auto 0;
+
+    text-align: center;
+
+    font-size: 13px;
+
+    color: #64748b;
+}
+
+.page-footer i {
+    color: #16a34a;
+
+    margin-right: 5px;
+}
+
+
+/* =========================================================
+   RESPONSIVE - TABLET
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+    .feedback-page {
+        padding: 25px 15px;
     }
 
-    .container{
-        width: 100%;
-        padding: 15px;
-        margin: 10px auto;
+    .feedback-card {
+        padding: 22px;
     }
 
-    h2{
+    .feedback-header h1 {
+        font-size: 24px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE - MOBILE
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+    .feedback-page {
+        padding: 18px 10px;
+    }
+
+    .feedback-header {
+        gap: 12px;
+    }
+
+    .header-icon {
+        width: 48px;
+        height: 48px;
+
         font-size: 22px;
     }
 
-    input,
-    textarea{
+    .feedback-header h1 {
+        font-size: 20px;
+    }
+
+    .feedback-header p {
+        font-size: 12px;
+    }
+
+    .feedback-card {
+        padding: 17px;
+        border-radius: 12px;
+    }
+
+    .section-title span {
         font-size: 16px;
     }
 
-    button{
-        font-size: 16px;
+    .question-box {
+        padding: 16px;
     }
+
+    .radio-group {
+        gap: 18px;
+    }
+
+    .form-footer {
+        justify-content: stretch;
+    }
+
+    .submit-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
 }
