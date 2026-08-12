@@ -3284,7 +3284,9 @@ def admin_dashboard(request):
     # CUSTOMER QUERY
     # ======================================================
 
-    queries = CustomerQuery.objects.all().order_by("-created_at")
+    # CUSTOMER QUERY
+
+    queries = CustomerQuery.objects.all().order_by("created_at")
 
     if search:
         queries = queries.filter(
