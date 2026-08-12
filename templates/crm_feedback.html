@@ -1,0 +1,441 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <!-- ========================================================= -->
+    <!-- META -->
+    <!-- ========================================================= -->
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <!-- ========================================================= -->
+    <!-- TITLE -->
+    <!-- ========================================================= -->
+
+    <title>CRM Feedback</title>
+
+
+    <!-- ========================================================= -->
+    <!-- BOOTSTRAP -->
+    <!-- ========================================================= -->
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+
+    <!-- ========================================================= -->
+    <!-- FONT AWESOME -->
+    <!-- ========================================================= -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+
+    <!-- ========================================================= -->
+    <!-- CRM DASHBOARD CSS -->
+    <!-- ========================================================= -->
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/crm_dashboard.css' %}"
+    >
+
+</head>
+
+
+<body>
+
+
+<div class="container-fluid py-4">
+
+
+    <!-- ========================================================= -->
+    <!-- PAGE HEADER -->
+    <!-- ========================================================= -->
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+
+        <!-- PAGE TITLE -->
+
+        <div>
+
+            <h3 class="mb-1">
+
+                <i class="fas fa-comments me-2 text-success"></i>
+
+                Customer Feedback
+
+            </h3>
+
+
+            <p class="text-muted mb-0">
+
+                Complete Customer Feedback Report
+
+            </p>
+
+        </div>
+
+
+        <!-- ===================================================== -->
+        <!-- BACK TO CRM DASHBOARD -->
+        <!-- ===================================================== -->
+
+        <a
+            href="{% url 'crm_dashboard' %}"
+            class="btn btn-primary"
+        >
+
+            <i class="fas fa-arrow-left me-2"></i>
+
+            Back to CRM Dashboard
+
+        </a>
+
+    </div>
+
+
+
+    <!-- ========================================================= -->
+    <!-- CUSTOMER FEEDBACK TABLE -->
+    <!-- ========================================================= -->
+
+    <div class="card shadow border-0">
+
+
+        <!-- ===================================================== -->
+        <!-- CARD HEADER -->
+        <!-- ===================================================== -->
+
+        <div class="card-header bg-success text-white">
+
+
+            <div class="d-flex justify-content-between align-items-center">
+
+
+                <h5 class="mb-0">
+
+                    <i class="fas fa-comments me-2"></i>
+
+                    Customer Feedback Report
+
+                </h5>
+
+
+                <!-- TOTAL RECORDS -->
+
+                <span class="badge bg-light text-dark">
+
+                    {{ feedback_data|length }} Records
+
+                </span>
+
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ===================================================== -->
+        <!-- CARD BODY -->
+        <!-- ===================================================== -->
+
+        <div class="card-body p-0">
+
+
+            <div class="table-responsive">
+
+
+                <table class="table table-hover table-bordered align-middle mb-0">
+
+
+                    <!-- ================================================= -->
+                    <!-- TABLE HEADER -->
+                    <!-- ================================================= -->
+
+                    <thead class="table-success">
+
+                        <tr>
+
+                            <th>Ticket ID</th>
+
+                            <th>Customer</th>
+
+                            <th>Contact</th>
+
+                            <th>Block</th>
+
+                            <th>Area</th>
+
+                            <th>Issue Resolved</th>
+
+                            <th>Service Satisfied</th>
+
+                            <th>Customer Remark</th>
+
+                            <th>Submitted On</th>
+
+                        </tr>
+
+                    </thead>
+
+
+
+                    <!-- ================================================= -->
+                    <!-- TABLE BODY -->
+                    <!-- ================================================= -->
+
+                    <tbody>
+
+
+                        {% for feedback in feedback_data %}
+
+
+                        <tr>
+
+
+                            <!-- ================================================= -->
+                            <!-- TICKET ID -->
+                            <!-- ================================================= -->
+
+                            <td>
+
+                                <strong class="text-primary">
+
+                                    {{ feedback.ticket_id }}
+
+                                </strong>
+
+                            </td>
+
+
+
+                            <!-- ================================================= -->
+                            <!-- CUSTOMER -->
+                            <!-- ================================================= -->
+
+                            <td>
+
+                                {{ feedback.customer_name }}
+
+                            </td>
+
+
+
+                            <!-- ================================================= -->
+                            <!-- CONTACT -->
+                            <!-- ================================================= -->
+
+                            <td>
+
+                                {{ feedback.contact }}
+
+                            </td>
+
+
+
+                            <!-- ================================================= -->
+                            <!-- BLOCK -->
+                            <!-- ================================================= -->
+
+                            <td>
+
+                                {{ feedback.block }}
+
+                            </td>
+
+
+
+                            <!-- ================================================= -->
+                            <!-- AREA -->
+                            <!-- ================================================= -->
+
+                            <td>
+
+                                {{ feedback.area }}
+
+                            </td>
+
+
+
+                            <!-- ================================================= -->
+                            <!-- ISSUE RESOLVED -->
+                            <!-- ================================================= -->
+
+                            <td>
+
+                                {% if feedback.issue_resolved == "Yes" %}
+
+                                    <span class="badge bg-success">
+
+                                        {{ feedback.issue_resolved }}
+
+                                    </span>
+
+                                {% elif feedback.issue_resolved == "No" %}
+
+                                    <span class="badge bg-danger">
+
+                                        {{ feedback.issue_resolved }}
+
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="badge bg-warning text-dark">
+
+                                        {{ feedback.issue_resolved }}
+
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+
+                            <!-- ================================================= -->
+                            <!-- SERVICE SATISFIED -->
+                            <!-- ================================================= -->
+
+                            <td>
+
+                                {% if feedback.service_satisfied == "Yes" %}
+
+                                    <span class="badge bg-success">
+
+                                        {{ feedback.service_satisfied }}
+
+                                    </span>
+
+                                {% elif feedback.service_satisfied == "No" %}
+
+                                    <span class="badge bg-danger">
+
+                                        {{ feedback.service_satisfied }}
+
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="badge bg-warning text-dark">
+
+                                        {{ feedback.service_satisfied }}
+
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+
+                            <!-- ================================================= -->
+                            <!-- CUSTOMER REMARK -->
+                            <!-- ================================================= -->
+
+                            <td>
+
+                                {{ feedback.customer_remark }}
+
+                            </td>
+
+
+
+                            <!-- ================================================= -->
+                            <!-- SUBMITTED DATE -->
+                            <!-- ================================================= -->
+
+                            <td>
+
+                                {{ feedback.date|date:"d-m-Y h:i A" }}
+
+                            </td>
+
+
+                        </tr>
+
+
+                        {% empty %}
+
+
+                        <!-- ================================================= -->
+                        <!-- NO DATA -->
+                        <!-- ================================================= -->
+
+                        <tr>
+
+                            <td
+                                colspan="9"
+                                class="text-center py-5"
+                            >
+
+                                <h5 class="text-muted mb-0">
+
+                                    No Customer Feedback Available
+
+                                </h5>
+
+                            </td>
+
+                        </tr>
+
+
+                        {% endfor %}
+
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ========================================================= -->
+    <!-- FOOTER -->
+    <!-- ========================================================= -->
+
+    <div class="text-center mt-4 mb-2">
+
+        <small class="text-muted">
+
+            CRM Feedback | Powered by Sampoorna Maintenance
+
+        </small>
+
+    </div>
+
+
+</div>
+
+
+
+<!-- ========================================================= -->
+<!-- BOOTSTRAP JS -->
+<!-- ========================================================= -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+</script>
+
+
+</body>
+
+</html>

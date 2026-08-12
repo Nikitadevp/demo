@@ -4813,7 +4813,7 @@ def crm_dashboard(request):
         
         return render(
             request,
-            "customer_feedback.html",
+            "crm_feedback.html",
             context
         )
 
