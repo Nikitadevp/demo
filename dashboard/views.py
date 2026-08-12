@@ -4353,6 +4353,20 @@ def crm_dashboard(request):
     # ======================================================
     # CUSTOMER LOOP
     # ======================================================
+    
+        
+    queries = queries.order_by("created_at")
+    fifo_query_id = None
+    for q in queries:
+        feedback_done = CustomerFeedback.objects.filter(
+            customer_query=q
+        ).exists()
+        if not feedback_done:
+            fifo_query_id = q.id
+            break
+        
+
+
 
     for query in queries:
 
@@ -4740,6 +4754,9 @@ def crm_dashboard(request):
     # ======================================================
     # CONTEXT
     # ======================================================
+    crm_pending_data.sort(key=lambda x: x["query_created_at"])
+    customer_data.sort(key=lambda x: x["query_created_at"])
+
 
     context = {
 
