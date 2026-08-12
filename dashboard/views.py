@@ -3284,6 +3284,8 @@ def admin_dashboard(request):
     # CUSTOMER QUERY
     # ======================================================
 
+    # CUSTOMER QUERY
+
     queries = CustomerQuery.objects.all().order_by("created_at")
 
     if search:
@@ -3329,7 +3331,7 @@ def admin_dashboard(request):
     # ======================================================
     # CUSTOMER LOOP
     # ======================================================
-
+    queries = queries.order_by("created_at")
     for query in queries:
 
         # ==============================================
@@ -4351,6 +4353,12 @@ def crm_dashboard(request):
     # ======================================================
     # CUSTOMER LOOP
     # ======================================================
+    
+        
+    
+        
+
+
 
     for query in queries:
 
@@ -4639,6 +4647,8 @@ def crm_dashboard(request):
             "area": query.area,
 
             "issue": query.issue,
+
+            "query_created_at": query.created_at,
 
             "issue_description": query.problem,
 
