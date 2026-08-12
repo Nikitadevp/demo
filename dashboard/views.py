@@ -1983,7 +1983,8 @@ def export_customer_queries(request):
 
     # DATA
 
-    queries = CustomerQuery.objects.all().order_by("created_at")
+    queries = CustomerQuery.objects.all()
+
     for obj in queries:
 
         photo_url = ""
@@ -3284,9 +3285,7 @@ def admin_dashboard(request):
     # CUSTOMER QUERY
     # ======================================================
 
-    # CUSTOMER QUERY
-
-    queries = CustomerQuery.objects.all().order_by("created_at")
+    queries = CustomerQuery.objects.all().order_by("-created_at")
 
     if search:
         queries = queries.filter(
@@ -3331,7 +3330,7 @@ def admin_dashboard(request):
     # ======================================================
     # CUSTOMER LOOP
     # ======================================================
-    queries = queries.order_by("created_at")
+
     for query in queries:
 
         # ==============================================
@@ -4308,7 +4307,7 @@ def crm_dashboard(request):
     # CUSTOMER QUERY
     # ======================================================
 
-    queries = CustomerQuery.objects.all().order_by("created_at")
+    queries = CustomerQuery.objects.all().order_by("-created_at")
 
     if search:
         queries = queries.filter(
@@ -4353,20 +4352,6 @@ def crm_dashboard(request):
     # ======================================================
     # CUSTOMER LOOP
     # ======================================================
-    
-        
-    queries = queries.order_by("created_at")
-    fifo_query_id = None
-    for q in queries:
-        feedback_done = CustomerFeedback.objects.filter(
-            customer_query=q
-        ).exists()
-        if not feedback_done:
-            fifo_query_id = q.id
-            break
-        
-
-
 
     for query in queries:
 
@@ -4546,14 +4531,14 @@ def crm_dashboard(request):
 
       
 
-        if current_stage == "Completed":
-
-            closed_count += 1
-
-
-        else:
+        if query.status == "In Progress":
 
             in_progress_count += 1
+
+
+        elif query.status == "Closed":
+
+            closed_count += 1
 
         # ==================================================
         # PROGRESS
@@ -4656,8 +4641,6 @@ def crm_dashboard(request):
 
             "issue": query.issue,
 
-            "query_created_at": query.created_at,
-
             "issue_description": query.problem,
 
             "query_raised": query_raised,
@@ -4691,7 +4674,7 @@ def crm_dashboard(request):
 
         crm_stages = ["S1", "S3", "S4", "S5", "S11"]   # ya S0 agar tumhare project me wahi use hota hai
 
-        if current_stage in crm_stages or progress == "Closed":
+        if current_stage in crm_stages:
     
             crm_pending_data.append(customer)  
 
@@ -4754,9 +4737,6 @@ def crm_dashboard(request):
     # ======================================================
     # CONTEXT
     # ======================================================
-    crm_pending_data.sort(key=lambda x: x["query_created_at"])
-    customer_data.sort(key=lambda x: x["query_created_at"])
-
 
     context = {
 
