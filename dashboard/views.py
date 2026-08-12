@@ -3588,7 +3588,8 @@ def admin_dashboard(request):
         customer_data.append(customer)
 
 
-        crm_stages = ["S1", "S3", "S4", "S5", "S11"]   # ya S0 agar tumhare project me wahi use hota hai
+        crm_stages = ["S1", "S3", "S4", "S5", "S11"] 
+          # ya S0 agar tumhare project me wahi use hota hai
 
         
 
@@ -4354,9 +4355,9 @@ def crm_dashboard(request):
     # CUSTOMER LOOP
     # ======================================================
     
-        
     
-        
+
+
 
 
 
@@ -4687,6 +4688,7 @@ def crm_dashboard(request):
     
             crm_pending_data.append(customer)  
 
+
         # ==================================================
         # OVERDUE TABLE
         # ==================================================
@@ -4703,6 +4705,13 @@ def crm_dashboard(request):
 
             due_today_customers.append(customer)
 
+    customer_data.sort(
+    key=lambda x: x["query_created_at"]
+    )
+
+    crm_pending_data.sort(
+    key=lambda x: x["query_created_at"]
+    )
 
     
 
