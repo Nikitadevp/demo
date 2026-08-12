@@ -4531,14 +4531,14 @@ def crm_dashboard(request):
 
       
 
-        if query.status == "In Progress":
-
-            in_progress_count += 1
-
-
-        elif query.status == "Closed":
+        if current_stage == "Completed":
 
             closed_count += 1
+
+
+        else:
+
+            in_progress_count += 1
 
         # ==================================================
         # PROGRESS
@@ -4674,7 +4674,7 @@ def crm_dashboard(request):
 
         crm_stages = ["S1", "S3", "S4", "S5", "S11"]   # ya S0 agar tumhare project me wahi use hota hai
 
-        if current_stage in crm_stages:
+        if current_stage in crm_stages or progress == "Closed":
     
             crm_pending_data.append(customer)  
 
