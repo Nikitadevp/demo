@@ -4713,6 +4713,11 @@ def crm_dashboard(request):
     key=lambda x: x["query_created_at"]
     )
 
+    overdue_customers.sort(
+        key=lambda x: x["query_created_at"]
+    )
+
+
     
 
 
