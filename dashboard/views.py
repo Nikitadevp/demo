@@ -1983,8 +1983,7 @@ def export_customer_queries(request):
 
     # DATA
 
-    queries = CustomerQuery.objects.all()
-
+    queries = CustomerQuery.objects.all().order_by("created_at")
     for obj in queries:
 
         photo_url = ""
