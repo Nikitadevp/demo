@@ -4335,6 +4335,8 @@ def crm_dashboard(request):
         )
 
 
+    search = request.GET.get("search", "").strip()
+
     tower_filter = request.GET.get("tower", "").strip()
     area_filter = request.GET.get("area", "").strip()
     issue_filter = request.GET.get("issue", "").strip()
