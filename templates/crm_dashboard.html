@@ -706,24 +706,7 @@
 
                             <th>Email</th>
 
-                            <th>
-                                Tower
-                                <br>
-                                <select
-                                class="column-filter"
-                                data-column="4"
-                                onchange="filterTable()">
-                                <option value="">All</option>
-                                {% for tower in towers %}
-                                    <option value="{{ tower }}">
-
-                                      {{ tower }}
-                                    </option>
-                                {% endfor %}
-
-                            </select>
-
-                            </th>
+                            <th>Tower</th>
 
                             <th>Area</th>
 
@@ -1300,56 +1283,7 @@ new Chart(ctx, {
 
 </script>
 
-<script>
 
-function filterTable() {
-
-    const table = document.getElementById("pendingActivitiesTable");
-
-    const filters = table.querySelectorAll(".column-filter");
-
-    const rows = table.querySelectorAll("tbody tr");
-
-    rows.forEach(row => {
-
-        let showRow = true;
-
-        filters.forEach(filter => {
-
-            const selectedValue = filter.value
-                .trim()
-                .toLowerCase();
-
-            const columnIndex = parseInt(
-                filter.getAttribute("data-column")
-            );
-
-            const cell = row.cells[columnIndex];
-
-            if (!cell) {
-                return;
-            }
-
-            const cellValue = cell.innerText
-                .trim()
-                .toLowerCase();
-
-            if (
-                selectedValue !== "" &&
-                cellValue !== selectedValue
-            ) {
-
-                showRow = false;
-
-            }
-
-        });
-
-        row.style.display = showRow ? "" : "none";
-
-    });
-
-}
 
 </script>
 
