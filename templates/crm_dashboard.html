@@ -706,7 +706,36 @@
 
                             <th>Email</th>
 
-                            <th>Tower</th>
+                            <th>
+                                <div class="filter-header">
+                                    <span>Tower</span>
+                                    <form method="GET" action="{% url 'crm_dashboard' %}">
+                                        {% if search %}
+                                            <input type="hidden" name="search" value="{{ search }}">
+                                        {% endif %}
+
+                                        {% if area_filter %}
+                                            <input type="hidden" name="area" value="{{ area_filter }}">
+                                        {% endif %}
+
+                                        {% if issue_filter %}
+                                            <input type="hidden" name="issue" value="{{ issue_filter }}">
+                                        {% endif %}
+
+                                        <select name="tower"
+                                               class="form-select form-select-sm"
+                                               onchange="this.form.submit()">
+                                            <option value="">All Towers</option>
+                                            {% for tower in tower_options %}
+                                                <option value="{{ tower }}"
+                                                    {% if tower_filter == tower %}selected{% endif %}>
+                                                    {{ tower }}
+                                                </option>
+                                            {% endfor %}
+                                        </select>
+                                    </form>
+                                </div>
+                            </th>
 
                             <th>Area</th>
 
