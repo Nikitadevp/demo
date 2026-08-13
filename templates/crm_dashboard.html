@@ -688,7 +688,7 @@
 
             <div class="table-responsive">
 
-                <table id="crmPendingTable" class="table table-hover table-bordered align-middle mb-0">
+                <table class="table table-hover table-bordered align-middle mb-0">
 
                     <!-- ============================================= -->
                     <!-- TABLE HEADER -->
@@ -764,10 +764,8 @@
 
                         <td>
 
-                            Customer Name
-                            <select id="customerFilter" class="column-filter" onchange="filterTable()">
-                                <option value="">All</option>
-                            </select>   
+                            {{ customer.customer }}
+
                         </td>
 
                         <!-- Contact -->
@@ -790,11 +788,7 @@
 
                         <td>
 
-                            Tower
-                            <select id="towerFilter" class="column-filter" onchange="filterTable()">
-                                <option value="">All</option>
-                                
-                            </select>
+                            {{ customer.tower }}
 
                         </td>
 
@@ -802,11 +796,7 @@
 
                         <td>
 
-                            Area
-                            <select id="areaFilter" class="column-filter" onchange="filterTable()">
-                                <option value="">All</option>
-                              
-                            </select>   
+                            {{ customer.area }}
 
                         </td>
 
@@ -814,10 +804,7 @@
 
                         <td>
 
-                            Issue
-                            <select id="issueFilter" class="column-filter" onchange="filterTable()">
-                                <option value="">All</option>
-                            </select>  
+                            {{ customer.issue }}
 
                         </td>
 
@@ -1294,57 +1281,6 @@ new Chart(ctx, {
 
 });
 
-</script>
-<script>
-function filterTable() {
-
-    const customerFilter = document.getElementById("customerFilter").value.toLowerCase();
-    const towerFilter = document.getElementById("towerFilter").value.toLowerCase();
-    const areaFilter = document.getElementById("areaFilter").value.toLowerCase();
-    const issueFilter = document.getElementById("issueFilter").value.toLowerCase();
-
-    const rows = document.querySelectorAll("#crmPendingTable tbody tr");
-
-    rows.forEach(row => {
-
-        // Tumhare table ke column positions:
-        // 0 = Ticket
-        // 1 = Customer
-        // 2 = Contact
-        // 3 = Email
-        // 4 = Tower
-        // 5 = Area
-        // 6 = Issue
-
-        const customer = row.cells[1].innerText.trim().toLowerCase();
-        const tower = row.cells[4].innerText.trim().toLowerCase();
-        const area = row.cells[5].innerText.trim().toLowerCase();
-        const issue = row.cells[6].innerText.trim().toLowerCase();
-
-        const customerMatch =
-            !customerFilter || customer === customerFilter;
-
-        const towerMatch =
-            !towerFilter || tower === towerFilter;
-
-        const areaMatch =
-            !areaFilter || area === areaFilter;
-
-        const issueMatch =
-            !issueFilter || issue === issueFilter;
-
-        if (
-            customerMatch &&
-            towerMatch &&
-            areaMatch &&
-            issueMatch
-        ) {
-            row.style.display = "";
-        } else {
-            row.style.display = "none";
-        }
-    });
-}
 </script>
 
 </body>
