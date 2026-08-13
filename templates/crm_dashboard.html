@@ -222,7 +222,7 @@
 
         <div class="col-md-6">
 
-            <form method="GET">
+            <form method="GET" action="{% url 'crm_dashboard' %}" class="d-flex">
 
                 <div class="input-group">
 
@@ -231,7 +231,7 @@
                         name="search"
                         value="{{ search }}"
                         class="form-control"
-                        placeholder="Search Ticket, Customer, Contact, Email...">
+                        placeholder="Search anything...">
 
                     <button
                         type="submit"

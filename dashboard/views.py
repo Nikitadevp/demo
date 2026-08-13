@@ -4320,7 +4320,9 @@ def crm_dashboard(request):
             Q(email__icontains=search) |
             Q(tower__icontains=search) |
             Q(area__icontains=search) |
-            Q(issue__icontains=search)
+            Q(issue__icontains=search)|
+            Q(problem__icontains=search) |
+            Q(block__icontains=search)
         )
 
 
