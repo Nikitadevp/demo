@@ -4314,15 +4314,18 @@ def crm_dashboard(request):
 
     if search:
         queries = queries.filter(
-            Q(ticket_id__icontains=search) |
-            Q(name__icontains=search) |
-            Q(contact__icontains=search) |
-            Q(email__icontains=search) |
-            Q(tower__icontains=search) |
-            Q(area__icontains=search) |
-            Q(issue__icontains=search)|
-            Q(problem__icontains=search) |
-            Q(block__icontains=search)
+            
+        Q(ticket_id__icontains=search) |
+        Q(name__icontains=search) |
+        Q(contact__icontains=search) |
+        Q(email__icontains=search) |
+        Q(tower__icontains=search) |
+        Q(other_tower__icontains=search) |
+        Q(area__icontains=search) |
+        Q(other_area__icontains=search) |
+        Q(issue__icontains=search) |
+        Q(problem__icontains=search) |
+        Q(status__icontains=search) 
         )
 
 
