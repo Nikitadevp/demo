@@ -1286,6 +1286,136 @@ new Chart(ctx, {
 
 </script>
 
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const table = document.getElementById("pendingActivitiesTable");
+
+    const filters = table.querySelectorAll(".column-filter");
+
+    const rows = table.querySelectorAll("tbody tr");
+
+
+    // =====================================================
+    // CREATE FILTER OPTIONS FROM TABLE DATA
+    // =====================================================
+
+    filters.forEach(function (filter) {
+
+        const columnIndex = parseInt(
+            filter.getAttribute("data-column")
+        );
+
+        const values = new Set();
+
+
+        rows.forEach(function (row) {
+
+            const cell = row.cells[columnIndex];
+
+            if (!cell) return;
+
+            const value = cell.innerText.trim();
+
+            if (value) {
+                values.add(value);
+            }
+
+        });
+
+
+        // Sort values
+        const sortedValues = Array.from(values).sort();
+
+
+        // Add values to dropdown
+        sortedValues.forEach(function (value) {
+
+            const option = document.createElement("option");
+
+            option.value = value;
+
+            option.textContent = value;
+
+            filter.appendChild(option);
+
+        });
+
+
+        // =================================================
+        // FILTER WHEN USER SELECTS VALUE
+        // =================================================
+
+        filter.addEventListener("change", function () {
+
+            applyFilters();
+
+        });
+
+    });
+
+
+    // =====================================================
+    // APPLY ALL FILTERS
+    // =====================================================
+
+    function applyFilters() {
+
+        rows.forEach(function (row) {
+
+            let showRow = true;
+
+
+            filters.forEach(function (filter) {
+
+                const selectedValue =
+                    filter.value.trim().toLowerCase();
+
+
+                const columnIndex =
+                    parseInt(
+                        filter.getAttribute("data-column")
+                    );
+
+
+                if (selectedValue) {
+
+                    const cell =
+                        row.cells[columnIndex];
+
+
+                    if (!cell) return;
+
+
+                    const cellValue =
+                        cell.innerText
+                            .trim()
+                            .toLowerCase();
+
+
+                    if (cellValue !== selectedValue) {
+
+                        showRow = false;
+
+                    }
+
+                }
+
+            });
+
+
+            row.style.display =
+                showRow ? "" : "none";
+
+        });
+
+    }
+
+});
+
+</script>
+
 </body>
 
 </html>
