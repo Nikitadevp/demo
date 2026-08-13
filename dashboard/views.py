@@ -3538,6 +3538,12 @@ def admin_dashboard(request):
 
             progress = "In Progress"
 
+
+           
+
+
+
+
         # ==================================================
         # CUSTOMER DATA
         # ==================================================
@@ -4655,6 +4661,15 @@ def crm_dashboard(request):
 
   
 
+
+
+        towers = sorted(
+            set(
+                c["tower"]
+                for c in crm_pending_data
+                if c["tower"]
+            )
+        )            
         # ==================================================
         # CUSTOMER DATA
         # ==================================================
@@ -4822,6 +4837,9 @@ def crm_dashboard(request):
         "crm_pending_data": crm_pending_data,
         "total_queries": total_queries,
         "closed_customer_data": closed_customer_data, 
+
+        "towers": towers,
+
     }
 
 

@@ -459,13 +459,7 @@
 
                         <th>Ticket</th>
 
-                        <th>
-                            Customer 
-                            <select class="column-filter" data-column="1">
-                                <option value="">All</option>
-                            </select>
-
-                        </th>
+                        <th>Customer</th>
 
                         <th>Contact</th>
 
@@ -712,7 +706,24 @@
 
                             <th>Email</th>
 
-                            <th>Tower</th>
+                            <th>
+                                Tower
+                                <br>
+                                <select
+                                class="column-filter"
+                                data-column="4"
+                                onchange="filterTable()">
+                                <option value="">All</option>
+                                {% for tower in towers %}
+                                    <option value="{{ tower }}">
+
+                                      {{ tower }}
+                                    </option>
+                                {% endfor %}
+
+                            </select>
+
+                            </th>
 
                             <th>Area</th>
 
@@ -1289,10 +1300,9 @@ new Chart(ctx, {
 
 </script>
 
-
 <script>
 
-document.addEventListener("DOMContentLoaded", function () {
+function filterTable() {
 
     const table = document.getElementById("pendingActivitiesTable");
 
@@ -1300,125 +1310,49 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const rows = table.querySelectorAll("tbody tr");
 
+    rows.forEach(row => {
 
-    // =====================================================
-    // CREATE FILTER OPTIONS FROM TABLE DATA
-    // =====================================================
+        let showRow = true;
 
-    filters.forEach(function (filter) {
+        filters.forEach(filter => {
 
-        const columnIndex = parseInt(
-            filter.getAttribute("data-column")
-        );
+            const selectedValue = filter.value
+                .trim()
+                .toLowerCase();
 
-        const values = new Set();
-
-
-        rows.forEach(function (row) {
+            const columnIndex = parseInt(
+                filter.getAttribute("data-column")
+            );
 
             const cell = row.cells[columnIndex];
 
-            if (!cell) return;
+            if (!cell) {
+                return;
+            }
 
-            const value = cell.innerText.trim();
+            const cellValue = cell.innerText
+                .trim()
+                .toLowerCase();
 
-            if (value) {
-                values.add(value);
+            if (
+                selectedValue !== "" &&
+                cellValue !== selectedValue
+            ) {
+
+                showRow = false;
+
             }
 
         });
 
-
-        // Sort values
-        const sortedValues = Array.from(values).sort();
-
-
-        // Add values to dropdown
-        sortedValues.forEach(function (value) {
-
-            const option = document.createElement("option");
-
-            option.value = value;
-
-            option.textContent = value;
-
-            filter.appendChild(option);
-
-        });
-
-
-        // =================================================
-        // FILTER WHEN USER SELECTS VALUE
-        // =================================================
-
-        filter.addEventListener("change", function () {
-
-            applyFilters();
-
-        });
+        row.style.display = showRow ? "" : "none";
 
     });
 
-
-    // =====================================================
-    // APPLY ALL FILTERS
-    // =====================================================
-
-    function applyFilters() {
-
-        rows.forEach(function (row) {
-
-            let showRow = true;
-
-
-            filters.forEach(function (filter) {
-
-                const selectedValue =
-                    filter.value.trim().toLowerCase();
-
-
-                const columnIndex =
-                    parseInt(
-                        filter.getAttribute("data-column")
-                    );
-
-
-                if (selectedValue) {
-
-                    const cell =
-                        row.cells[columnIndex];
-
-
-                    if (!cell) return;
-
-
-                    const cellValue =
-                        cell.innerText
-                            .trim()
-                            .toLowerCase();
-
-
-                    if (cellValue !== selectedValue) {
-
-                        showRow = false;
-
-                    }
-
-                }
-
-            });
-
-
-            row.style.display =
-                showRow ? "" : "none";
-
-        });
-
-    }
-
-});
+}
 
 </script>
+
 
 </body>
 
