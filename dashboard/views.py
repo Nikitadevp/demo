@@ -4335,7 +4335,47 @@ def crm_dashboard(request):
         )
 
 
-    
+    tower_filter = request.GET.get("tower", "").strip()
+    area_filter = request.GET.get("area", "").strip()
+    issue_filter = request.GET.get("issue", "").strip()
+
+    if tower_filter:
+        queries = queries.filter(tower=tower_filter)
+    if area_filter:
+        queries = queries.filter(area=area_filter)
+    if issue_filter:
+        queries = queries.filter(issue=issue_filter)
+
+
+
+    tower_options = sorted(
+         set(
+            CustomerQuery.objects
+            .values_list("area", flat=True)
+            .exclude(area="")
+        )   
+    )    
+
+    area_options = sorted(
+        set(
+            CustomerQuery.objects
+            .values_list("area", flat=True)
+            .exclude(area="")
+        )
+    )
+
+
+    issue_options = sorted(
+        
+        
+        set(
+            CustomerQuery.objects
+            .values_list("issue", flat=True)
+            .exclude(issue="")        
+        )
+    )
+
+
     # ======================================================
     # DASHBOARD COUNTS
     # ======================================================
@@ -4839,6 +4879,14 @@ def crm_dashboard(request):
         "closed_customer_data": closed_customer_data, 
 
         "towers": towers,
+
+        "tower_options": tower_options,
+        "area_options": area_options,
+        "issue_options": issue_options,
+
+        "tower_filter": tower_filter,
+        "area_filter": area_filter,
+        "issue_filter": issue_filter,
 
     }
 
