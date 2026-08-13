@@ -224,6 +224,8 @@
 
             <form method="GET" action="{% url 'crm_dashboard' %}" class="d-flex">
 
+                <input type="hidden" name="tower" value="{{ tower_filter }}">
+
                 <div class="input-group">
 
                     <input
