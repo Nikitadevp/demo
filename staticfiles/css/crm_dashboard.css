@@ -1887,7 +1887,43 @@ a:hover{
 }
 
 
+/* =========================================================
+   CUSTOMER FEEDBACK - LIGHT PURPLE TABLE
+   ========================================================= */
 
+.customer-feedback-table thead th {
+    background-color: #e9d5ff !important;
+    color: #4c1d95 !important;
+    border-color: #d8b4fe !important;
+}
+
+.customer-feedback-table tbody td {
+    border-color: #e9d5ff !important;
+}
+
+.customer-feedback-table tbody tr:hover {
+    background-color: #f5f3ff !important;
+}
+
+
+/* =========================================================
+   CUSTOMER FEEDBACK CARD HEADER
+   ========================================================= */
+
+.customer-feedback-card .card-header {
+    background-color: #c4b5fd !important;
+    color: #3b0764 !important;
+}
+
+
+/* =========================================================
+   RECORDS BADGE
+   ========================================================= */
+
+.customer-feedback-card .badge {
+    background-color: #f3e8ff !important;
+    color: #581c87 !important;
+}
 
 
 
