@@ -459,7 +459,13 @@
 
                         <th>Ticket</th>
 
-                        <th>Customer</th>
+                        <th>
+                            Customer 
+                            <select class="column-filter" data-column="1">
+                                <option value="">All</option>
+                            </select>
+
+                        </th>
 
                         <th>Contact</th>
 
@@ -1115,10 +1121,7 @@
 
                         <td>
 
-                            Customer
-                            <select class="column-filter" data-column="1">
-                                <option value="">All</option>
-                            </select>
+                            {{ customer.customer }}
 
                         </td>
 
@@ -1285,6 +1288,7 @@ new Chart(ctx, {
 });
 
 </script>
+
 
 <script>
 
