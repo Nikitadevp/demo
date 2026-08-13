@@ -4347,6 +4347,13 @@ def crm_dashboard(request):
     crm_pending_data = []
     overdue_customers = []
     due_today_customers = []
+
+    closed_customer_data = [
+        customer for customer in crm_pending_data
+        if customer.get("progress") == "Closed"
+    ]
+
+
     
 
     today = timezone.localdate()
@@ -4792,7 +4799,8 @@ def crm_dashboard(request):
 
         "feedback_data": feedback_list,
         "crm_pending_data": crm_pending_data,
-        "total_queries": total_queries, 
+        "total_queries": total_queries,
+        "closed_customer_data": closed_customer_data, 
     }
 
 
@@ -4829,6 +4837,17 @@ def crm_dashboard(request):
             "issue_category_report.html",
             context
         )
+
+
+    if request.GET.get("page") == "closed_queries":
+
+        return render(
+            request,
+            "closed_queries.html",
+            context
+        )
+
+
 
     # =========================================================
     # NORMAL CRM DASHBOARD
