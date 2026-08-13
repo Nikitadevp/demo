@@ -4843,7 +4843,7 @@ def crm_dashboard(request):
 
         return render(
             request,
-            "closed_queries.html",
+            "closed_customer_queries.html",
             context
         )
 
