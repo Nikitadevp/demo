@@ -3325,6 +3325,7 @@ def admin_dashboard(request):
     overdue_customers = []
     due_today_customers = []
     
+    
 
     today = timezone.localdate()
 
@@ -4348,10 +4349,7 @@ def crm_dashboard(request):
     overdue_customers = []
     due_today_customers = []
 
-    closed_customer_data = [
-        customer for customer in crm_pending_data
-        if customer.get("progress") == "Closed"
-    ]
+    closed_customer_data = []
 
 
     
@@ -4466,6 +4464,24 @@ def crm_dashboard(request):
         if feedback:
             current_stage = "Completed"
             stage_start = feedback.created_at
+            
+        if current_stage == "Completed":
+            
+            closed_customer_data.append({
+                "ticket": query.ticket_id,
+                "customer": query.name,
+                "contact": query.contact,
+                "email": query.email,
+                "tower": query.tower,
+                "area": query.area,
+                "issue": query.issue,
+                "issue_description": query.problem,
+                "current_stage": "Completed",
+                "query_raised": timezone.localtime(
+                    query.created_at).strftime("%d-%m-%Y %I:%M %p"),
+                "closed_date": timezone.localtime(
+                    feedback.created_at).strftime("%d-%m-%Y %I:%M %p") if feedback else None,
+            })
 
         # ==============================================
         # STAGE DETAILS
