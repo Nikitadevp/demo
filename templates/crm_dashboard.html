@@ -709,20 +709,28 @@
                             <th>
                                 <div class="d-flex flex-column gap-1">
                                     <span>Tower</span>
-                                     <select 
-                                        name="tower"
-                                        class="form-select form-select-sm"
-                                        onchange="this.form.submit()">
-                                        <option value="">All</option>
-                                        {% for tower in tower_options %}
-                                            <option 
-                                                value="{{ tower }}"
-                                                {% if selected_tower == tower %}selected{% endif %}
-                                            >
-                                                {{ tower }}
-                                            </option>
-                                        {% endfor %}
-                                    </select>
+
+                                    <form method="GET" action="{% url 'crm_dashboard' %}">
+                                        <input type="hidden" name="search" value="{{ search }}">
+                                        <select 
+                                    
+                                        
+                                            name="tower"
+                                            class="form-select form-select-sm"
+                                            onchange="this.form.submit()">
+                                            <option value="">All</option>
+                                            {% for tower in tower_options %}
+                                                <option 
+                                                    value="{{ tower }}"
+                                                    {% if selected_tower == tower %}selected{% endif %}
+                                                >
+                                                    {{ tower }}
+                                                 </option>
+                                            {% endfor %}
+                                        </select>
+                                    </form>
+
+
                                 </div>
 
                             </th>   
