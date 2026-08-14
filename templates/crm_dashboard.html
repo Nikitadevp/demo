@@ -712,8 +712,9 @@
 
                                     <form method="GET" action="{% url 'crm_dashboard' %}">
 
-                                        <input type="hidden" name="page" value="">
+                                        {% if search %}
                                         <input type="hidden" name="search" value="{{ search }}">
+                                        {% endif %}
                                         <select 
                                     
                                         
