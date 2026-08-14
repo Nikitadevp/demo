@@ -713,14 +713,15 @@
                                         <form method="GET" action="{% url 'crm_dashboard' %}">
                                     {% endif %}
 
-                                        
+                                        <input type="hidden" name="page" value="">
+                                        <input type="hidden" name="search" value="{{ search }}">
                                         <select 
                                     
                                         
                                             name="tower"
                                             class="form-select form-select-sm"
                                             onchange="this.form.submit()">
-                                            <option value=""{% if not tower_filter %}selected{% endif %}>>All</option>
+                                            <option value="">All</option>
                                             {% for tower in tower_options %}
                                                 <option 
                                                     value="{{ tower }}"

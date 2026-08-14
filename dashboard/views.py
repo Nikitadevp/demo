@@ -4357,7 +4357,7 @@ def crm_dashboard(request):
 
 
     tower_options = sorted(
-         set(
+        set(
             CustomerQuery.objects
             .values_list("tower", flat=True)
             .exclude(tower="")
