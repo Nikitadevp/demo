@@ -720,7 +720,7 @@
                                             name="tower"
                                             class="form-select form-select-sm"
                                             onchange="this.form.submit()">
-                                            <option value="" {% if not tower_filter %}selected{% endif %}>All</option>
+                                            <option value="">All</option>
                                             {% for tower in tower_options %}
                                                 <option 
                                                     value="{{ tower }}"
