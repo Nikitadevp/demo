@@ -706,8 +706,26 @@
 
                             <th>Email</th>
 
-                            <th>Tower </th>
+                            <th>
+                                <div class="d-flex flex-column gap-1">
+                                    <span>Tower</span>
+                                     <select 
+                                        name="tower"
+                                        class="form-select form-select-sm"
+                                        onchange="this.form.submit()">
+                                        <option value="">All</option>
+                                        {% for tower in towers %}
+                                            <option 
+                                                value="{{ tower }}"
+                                                {% if selected_tower == tower %}selected{% endif %}
+                                            >
+                                                {{ tower }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
 
+                            </th>   
                             <th>Area</th>
 
                             <th>Issue</th>

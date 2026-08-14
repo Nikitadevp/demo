@@ -3280,6 +3280,7 @@ def admin_dashboard(request):
 
     search = request.GET.get("search", "").strip()
 
+
     # ======================================================
     # CUSTOMER QUERY
     # ======================================================
@@ -3300,7 +3301,11 @@ def admin_dashboard(request):
         )
 
 
-    
+
+
+
+
+
     # ======================================================
     # DASHBOARD COUNTS
     # ======================================================
@@ -4312,6 +4317,11 @@ def crm_dashboard(request):
 
     search = request.GET.get("search", "").strip()
 
+    tower_filter = request.GET.get("tower", "").strip()
+    area_filter = request.GET.get("area", "").strip()
+    issue_filter = request.GET.get("issue", "").strip()
+
+
     # ======================================================
     # CUSTOMER QUERY
     # ======================================================
@@ -4335,11 +4345,7 @@ def crm_dashboard(request):
         )
 
 
-    search = request.GET.get("search", "").strip()
 
-    tower_filter = request.GET.get("tower", "").strip()
-    area_filter = request.GET.get("area", "").strip()
-    issue_filter = request.GET.get("issue", "").strip()
 
     if tower_filter:
         queries = queries.filter(tower=tower_filter)
