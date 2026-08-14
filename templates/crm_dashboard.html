@@ -714,7 +714,7 @@
                                         class="form-select form-select-sm"
                                         onchange="this.form.submit()">
                                         <option value="">All</option>
-                                        {% for tower in towers %}
+                                        {% for tower in tower_options %}
                                             <option 
                                                 value="{{ tower }}"
                                                 {% if selected_tower == tower %}selected{% endif %}
@@ -763,7 +763,7 @@
                     <!-- CUSTOMER TABLE DATA -->
                     <!-- ========================================================= -->
 
-                   {% for customer in crm_pending_data %}
+                   {% for customer in customer_data %}
                     <tr>
 
                         <!-- Ticket -->

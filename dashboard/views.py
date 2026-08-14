@@ -4359,8 +4359,8 @@ def crm_dashboard(request):
     tower_options = sorted(
          set(
             CustomerQuery.objects
-            .values_list("area", flat=True)
-            .exclude(area="")
+            .values_list("tower", flat=True)
+            .exclude(tower="")
         )   
     )    
 
@@ -4711,13 +4711,7 @@ def crm_dashboard(request):
 
 
 
-        towers = sorted(
-            set(
-                c["tower"]
-                for c in crm_pending_data
-                if c["tower"]
-            )
-        )            
+                
         # ==================================================
         # CUSTOMER DATA
         # ==================================================
@@ -4886,7 +4880,7 @@ def crm_dashboard(request):
         "total_queries": total_queries,
         "closed_customer_data": closed_customer_data, 
 
-        "towers": towers,
+        
 
         "tower_options": tower_options,
         "area_options": area_options,
