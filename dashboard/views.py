@@ -4546,18 +4546,26 @@ def crm_dashboard(request):
 
 
 
-        stage_images = []
+        stage_image = None
+        
 
         if current_stage == "S1":
             if query.photo:
-                stage_images.append(query.photo.url)
+                stage_image = query.photo.url
         elif current_stage == "S2":
             if inspection:
                 if inspection.photo1:
-                    stage_images.append(inspection.photo1.url)
-                if inspection.photo2:  
-                    stage_images.append(inspection.photo2.url)   
-           
+                    stage_image = inspection.photo1.url
+                elif inspection.photo2:  
+                    stage_image = inspection.photo2.url
+                    
+        elif current_stage == "S3":
+            if estimate and estimate.proforma_invoice:
+                stage_image = estimate.proforma_invoice.url
+                
+        elif current_stage == "S10":
+            if closer and closer.closer_report:
+                stage_image = closer.closer_report.url
 
         # ==============================================
         # STAGE DETAILS
@@ -4756,6 +4764,8 @@ def crm_dashboard(request):
             "query_raised": query_raised,
 
             "image": stage_image,
+
+            
 
             "current_stage": current_stage,
 
