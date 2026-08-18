@@ -4546,28 +4546,36 @@ def crm_dashboard(request):
 
 
 
-        stage_image = None
+        stage_file = None
+        stage_file_type = None
+        
         
 
         if current_stage == "S1":
             if query.photo:
-                stage_image = query.photo.url
+                stage_file = query.photo.url
+                stage_file_type = "image"
+
+
         elif current_stage == "S2":
             if inspection:
                 if inspection.photo1:
-                    stage_image = inspection.photo1.url
+                    stage_file = inspection.photo1.url
+                    stage_file_type = "image"
                     
                 elif inspection.photo2:  
-                    stage_image = inspection.photo2.url
+                    stage_file = inspection.photo2.url
+                    stage_file_type = "image"
                     
         elif current_stage == "S3":
             if estimate and estimate.proforma_invoice:
-                stage_image = estimate.proforma_invoice.url
+                stage_file = estimate.proforma_invoice.url
+                stage_file_type = "file"
                 
         elif current_stage == "S10":
             if closer and closer.closer_report:
-                stage_image = closer.closer_report.url
-
+                stage_file = closer.closer_report.url
+                stage_file_type = "file"
         # ==============================================
         # STAGE DETAILS
         # ==============================================
@@ -4764,7 +4772,9 @@ def crm_dashboard(request):
 
             "query_raised": query_raised,
 
-            "image": stage_image,
+            "stage_file": stage_file,
+
+            "stage_file_type": stage_file_type,
 
             
 
