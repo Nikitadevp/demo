@@ -726,9 +726,42 @@
                                     </select>
                                 </div>
                             </th>  
-                            <th>Area</th>
 
-                            <th>Issue</th>
+                            <th>
+                                <div class="d-flex flex-column gap-1">
+                                    <span>Area</span>
+                                    <select
+                                        name="area"
+                                        form="filterForm"
+                                        class="form-select form-select-sm"
+                                        onchange="document.getElementById('filterForm').submit()">
+                                        <option value="">All</option>
+                                        {% for area in area_options %}
+                                            <option value="{{ area }}" {% if area_filter == area %}selected{% endif %}>
+                                                {{ area }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </th>
+
+                            <th>
+                                <div class="d-flex flex-column gap-1">
+                                    <span>Issue</span>
+                                    <select
+                                        name="issue"
+                                        form="filterForm"
+                                        class="form-select form-select-sm"
+                                        onchange="document.getElementById('filterForm').submit()">
+                                        <option value="">All</option>
+                                        {% for issue in issue_options %}
+                                            <option value="{{ issue }}" {% if issue_filter == issue %}selected{% endif %}>
+                                                {{ issue }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </th>
 
                             <th>Issue Description</th>
 
