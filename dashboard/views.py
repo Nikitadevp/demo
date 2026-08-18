@@ -3592,7 +3592,7 @@ def admin_dashboard(request):
             "closed_date": closed_date,
 
            
-            "image": stage_image,
+            
             
 
            
@@ -4547,7 +4547,7 @@ def crm_dashboard(request):
 
 
         stage_image = None
-        
+
         if current_stage == "S1":
             if query.photo:
                 stage_image = query.photo.url
