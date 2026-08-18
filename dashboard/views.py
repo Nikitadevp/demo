@@ -4575,7 +4575,7 @@ def crm_dashboard(request):
             add_file(inspection.photo2, "Inspection Photo 2 (S2)")
 
         if estimate:
-            add_file(estimate.photo, "Estimate Photo (S3)")
+            add_file(estimate.proforma_invoice, "Proforma Invoice (S3)", file_type="file")
 
         if closer:
             add_file(closer.closer_report, "Closer Report (S10)", file_type="file")
