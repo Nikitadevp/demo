@@ -872,7 +872,13 @@
                                     <a href="{{ customer.stage_file }}"
                                         target="_blank"
                                         class="btn btn-sm btn-primary">
-                                        Open Image
+                                        {% if customer.stage_file_type == "image" %}
+                                            Open Image
+                                        {% else %}
+                                            Open File
+                                        {% endif %}
+
+
                                     </a>  
                                 {% else %}
 
