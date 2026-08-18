@@ -4432,7 +4432,7 @@ def crm_dashboard(request):
         # ==============================================
         # RELATED OBJECTS
         # ==============================================
-        stage_image = None
+      
         scope = safe_related(query, "scope_form")
 
         inspection = SiteInspection.objects.filter(
@@ -4556,6 +4556,7 @@ def crm_dashboard(request):
             if inspection:
                 if inspection.photo1:
                     stage_image = inspection.photo1.url
+                    
                 elif inspection.photo2:  
                     stage_image = inspection.photo2.url
                     
