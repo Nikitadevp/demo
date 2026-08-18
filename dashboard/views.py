@@ -4546,20 +4546,18 @@ def crm_dashboard(request):
 
 
 
-        stage_image = None
+        stage_images = []
 
         if current_stage == "S1":
             if query.photo:
-                stage_image = query.photo.url
+                stage_images.append(query.photo.url)
         elif current_stage == "S2":
-            if inspection and inspection.photo:
-                stage_image = inspection.photo.url
-        elif current_stage == "S3": 
-            if estimate and estimate.photo:
-                stage_image = estimate.photo.url
-        elif current_stage == "S10":
-            if closer and closer.photo:
-                stage_image = closer.photo.url   
+            if inspection:
+                if inspection.photo1:
+                    stage_images.append(inspection.photo1.url)
+                if inspection.photo2:  
+                    stage_images.append(inspection.photo2.url)   
+           
 
         # ==============================================
         # STAGE DETAILS
