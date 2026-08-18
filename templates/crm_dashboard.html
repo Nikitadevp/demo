@@ -866,39 +866,40 @@
                         <td>{{ customer.issue_description }}</td>
                         
                         <td class="text-center">
-                            {% if customer.stage_file %}
-                                {% if customer.stage_file_type == "image" %}
+                            {% if customer.all_files %}
+                                <div class="d-flex flex-wrap gap-2 justify-content-center">
+                                    {% for file in customer.all_files %}
+                                        {% if file.type == "image" %}
+                                            <a href="#"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#imageModal"
+                                                onclick="document.getElementById('modalImage').src='{{ file.url }}';
+                                                         document.getElementById('modalImageLabel').innerText='{{ file.label }}';"
+                                                class="btn btn-sm btn-primary p-1"
+                                                title="{{ file.label }}">
 
-                                    <a href="{{ customer.stage_file }}"
-                                        target="_blank"
-                                        class="btn btn-sm btn-primary">
+                                                <img
+                                                    src="{{ file.url }}"
+                                                    alt="{{ file.label }}"
+                                                    class="crm-table-image"
+                                                >
 
-                                        <img
-                                            src="{{ customer.stage_file }}"
-                                            alt="Customer Image"
-                                            class="crm-table-image"
-                                        >
-
-
-                                    </a>  
-                                {% else %}
-
-                                    <a href="{{ customer.stage_file }}"
-                                            target="_blank"
-                                            class="btn btn-sm btn-primary">
-                                            <i class="fa-solid fa-file-pdf me-1"></i>
-
-                                            Open File
-
-                                     </a>
-                                {% endif %}
+                                            </a>
+                                        {% else %}
+                                            <a href="{{ file.url }}"
+                                                target="_blank"
+                                                class="btn btn-sm btn-primary"
+                                                title="{{ file.label }}">
+                                                <i class="fa-solid fa-file-pdf me-1"></i>
+                                                Open File
+                                            </a>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
                             {% else %}
                                 <span class="text-muted">No Image</span>
                             {% endif %}
-                       
                         </td>
-
-
 
 
                         <!-- Current Stage -->
@@ -1375,7 +1376,24 @@ new Chart(ctx, {
 
 
 
-</script>
+<!-- ========================================================= -->
+<!-- IMAGE PREVIEW MODAL -->
+<!-- ========================================================= -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalImageLabel">Preview</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body text-center">
+        <img id="modalImage" src="" class="img-fluid" alt="Preview">
+      </div>
+    </div>
+  </div>
+</div>
+
+
 
 
 </body>

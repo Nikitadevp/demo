@@ -4545,48 +4545,98 @@ def crm_dashboard(request):
                     feedback.created_at).strftime("%d-%m-%Y %I:%M %p") if feedback else None,
             })
 
+        # ==================================================
+        # ALL UPLOADED FILES (SABHI STAGES SE)
+        # ==================================================
 
+        all_files = []
 
-        stage_file = None
-        stage_file_type = None
-        
-        
+        def get_file_type(url):
+            if url.lower().endswith((".png", ".jpg", ".jpeg", ".gif", ".webp")):
+                return "image"
+            return "file"
 
-        if current_stage == "S1":
-            if query.photo:
+        def add_file(field, label, file_type="image"):
+            if field:
                 try:
-                    if os.path.exists(query.photo.path):
-                        stage_file = query.photo.url
-                        stage_file_type = "image"
+                    if os.path.exists(field.path):
+                        all_files.append({
+                            "url": request.build_absolute_uri(field.url),
+                            "type": file_type if file_type == "image" else get_file_type(field.url),
+                            "label": label
+                        })
                 except (ValueError, OSError):
                     pass
 
-        elif current_stage == "S2":
-            if inspection:
-                if inspection.photo1:
-                    try:
-                        if os.path.exists(inspection.photo1.path):
-                            stage_file = inspection.photo1.url
-                            stage_file_type = "image"
-                    except (ValueError, OSError):
-                        pass        
-                if stage_file is None and inspection.photo2:
-                    try:
-                        if os.path.exists(inspection.photo2.path):
-                            stage_file = inspection.photo2.url
-                            stage_file_type = "image"
-                    except (ValueError, OSError):
-                        pass 
+        add_file(query.photo, "Customer Photo (S1)")
 
-        elif current_stage == "S3":
-            if estimate:
-                if estimate.photo:
-                    try:
-                        if os.path.exists(estimate.photo.path):
-                            stage_file = estimate.photo.url
-                            stage_file_type = "image"
-                    except (ValueError, OSError):  
-                        pass       
+        if inspection:
+            add_file(inspection.photo1, "Inspection Photo 1 (S2)")
+            add_file(inspection.photo2, "Inspection Photo 2 (S2)")
+
+        if estimate:
+            add_file(estimate.photo, "Estimate Photo (S3)")
+
+        if closer:
+            add_file(closer.closer_report, "Closer Report (S10)", file_type="file")
+
+        # stage_file = None
+        # stage_file_type = None
+        
+        
+
+        # if current_stage == "S1":
+        #     if query.photo:
+        #         try:
+        #             if os.path.exists(query.photo.path):
+        #                 stage_file = query.photo.url
+        #                 stage_file_type = "image"
+        #         except (ValueError, OSError):
+        #             pass
+
+        # elif current_stage == "S2":
+        #     if inspection:
+        #         if inspection.photo1:
+        #             try:
+        #                 if os.path.exists(inspection.photo1.path):
+        #                     stage_file = inspection.photo1.url
+        #                     stage_file_type = "image"
+        #             except (ValueError, OSError):
+        #                 pass        
+        #         if stage_file is None and inspection.photo2:
+        #             try:
+        #                 if os.path.exists(inspection.photo2.path):
+        #                     stage_file = inspection.photo2.url
+        #                     stage_file_type = "image"
+        #             except (ValueError, OSError):
+        #                 pass 
+
+        # elif current_stage == "S3":
+        #     if estimate:
+        #         if estimate.photo:
+        #             try:
+        #                 if os.path.exists(estimate.photo.path):
+        #                     stage_file = estimate.photo.url
+        #                     stage_file_type = "image"
+        #             except (ValueError, OSError):  
+        #                 pass
+
+
+
+
+
+
+        # elif current_stage == "S10":
+        #     if closer and closer.closer_report:
+                                  
+        #             try:
+        #                 if os.path.exists(closer.closer_report.path):
+        #                     stage_file = closer.closer_report.url
+        #                     stage_file_type = "image"
+        #             except (ValueError, OSError):
+        #                  pass      
+        
+       
 
 
         # ==============================================
@@ -4785,11 +4835,11 @@ def crm_dashboard(request):
 
             "query_raised": query_raised,
 
-            "stage_file": stage_file,
+            # "stage_file": stage_file,
 
-            "stage_file_type": stage_file_type,
+            # "stage_file_type": stage_file_type,
 
-            
+            "all_files": all_files,
 
             "current_stage": current_stage,
 
