@@ -881,10 +881,24 @@
                                     >
                                 </a>
                             {% else %}
-                                <span class="text-muted">
-                                    No Image
-                                </span>
+                                {% if customer.image2 %}
+                                    <a href="{{ customer.image2 }}" target="_blank">
+                                       <img
+                                           src="{{ customer.image2 }}"
+                                           alt="Stage Image"
+                                           style="
+                                                width: 70px;
+                                                height: 70px;
+                                                border-radius: 6px;
+                                                border: 1px solid #ddd;
+                                        >   "
+                                    </a>
+                                {% else %}
+                                    <span class="text-muted">No Image</span>
+                                {% endif %}
                             {% endif %}
+   
+                           
 
                         </td>
 
