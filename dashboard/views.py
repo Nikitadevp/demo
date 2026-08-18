@@ -3545,7 +3545,7 @@ def admin_dashboard(request):
 
 
            
-
+       
 
 
 
@@ -3592,15 +3592,7 @@ def admin_dashboard(request):
             "closed_date": closed_date,
 
            
-            "customer_photo_url": query.photo.url if query.photo else None,
-
-            "inspection_photo1_url": inspection.photo1.url if inspection and inspection.photo1 else None,
-
-            "inspection_photo2_url": inspection.photo2.url if inspection and inspection.photo2 else None,
-
-            "estimate_invoice_url": estimate.proforma_invoice.url if estimate and estimate.proforma_invoice else None,
-
-            "closer_report_url": closer.closer_report.url if closer and closer.closer_report else None,
+            "image": stage_image,
             
 
            
@@ -4440,7 +4432,7 @@ def crm_dashboard(request):
         # ==============================================
         # RELATED OBJECTS
         # ==============================================
-
+        stage_image = None
         scope = safe_related(query, "scope_form")
 
         inspection = SiteInspection.objects.filter(
@@ -4551,6 +4543,23 @@ def crm_dashboard(request):
                 "closed_date": timezone.localtime(
                     feedback.created_at).strftime("%d-%m-%Y %I:%M %p") if feedback else None,
             })
+
+
+
+        stage_image = None
+        
+        if current_stage == "S1":
+            if query.photo:
+                stage_image = query.photo.url
+        elif current_stage == "S2":
+            if inspection and inspection.photo:
+                stage_image = inspection.photo.url
+        elif current_stage == "S3": 
+            if estimate and estimate.photo:
+                stage_image = estimate.photo.url
+        elif current_stage == "S10":
+            if closer and closer.photo:
+                stage_image = closer.photo.url   
 
         # ==============================================
         # STAGE DETAILS
@@ -4718,9 +4727,7 @@ def crm_dashboard(request):
             )                                
 
   
-
-
-
+               
                 
         # ==================================================
         # CUSTOMER DATA
@@ -4749,6 +4756,8 @@ def crm_dashboard(request):
             "issue_description": query.problem,
 
             "query_raised": query_raised,
+
+            "image": stage_image,
 
             "current_stage": current_stage,
 
