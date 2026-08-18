@@ -3591,8 +3591,16 @@ def admin_dashboard(request):
 
             "closed_date": closed_date,
 
-            "photo_url": query.photo.url if query.photo else None,
+           
+            "customer_photo_url": query.photo.url if query.photo else None,
 
+            "inspection_photo1_url": inspection.photo1.url if inspection and inspection.photo1 else None,
+
+            "inspection_photo2_url": inspection.photo2.url if inspection and inspection.photo2 else None,
+
+            "estimate_invoice_url": estimate.proforma_invoice.url if estimate and estimate.proforma_invoice else None,
+
+            "closer_report_url": closer.closer_report.url if closer and closer.closer_report else None,
             
 
            

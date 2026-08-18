@@ -866,13 +866,44 @@
                         <td>{{ customer.issue_description }}</td>
                         
                         <td>
-                            {% if customer.photo_url %}
-                                <a href="{{ customer.photo_url }}" target="_blank" class="btn btn-sm btn-primary">
-                                    <i class="fa-solid fa-image"></i>
-                                </a>
-                            {% else %}
-                                <span class="text-muted">-</span>
-                            {% endif %}
+                            <div class="d-flex flex-column gap-1">
+                               {% if customer.photo_url %}
+                                    <a href="{{ customer.photo_url }}" target="_blank" class="btn btn-sm btn-primary">
+                                       
+                                       Customer Photo
+                                    </a>
+                                {% endif %}
+
+                                {% if customer.inspection_photo1_url %}
+                                    <a href="{{ customer.inspection_photo1_url }}" target="_blank" class="btn btn-sm btn-info">
+                                        Inspection Photo 1
+                                    </a>
+                                {% endif %}
+
+                                {% if customer.inspection_photo2_url %}
+                                    <a href="{{ customer.inspection_photo2_url }}" target="_blank" class="btn btn-sm btn-info">
+                                        Inspection Photo 2
+                                    </a>
+                                {% endif %}
+
+                                {% if customer.estimate_invoice_url %}
+                                    <a href="{{ customer.estimate_invoice_url }}" target="_blank" class="btn btn-sm btn-warning">
+                                        Proforma Invoice
+                                    </a>
+                                {% endif %}
+
+                                {% if customer.closer_report_url %}
+                                    <a href="{{ customer.closer_report_url }}" target="_blank" class="btn btn-sm btn-success">
+                                        Closer Report
+                                    </a>
+                                {% endif %}
+
+                                {% if not customer.customer_photo_url and not customer.inspection_photo1_url and not customer.inspection_photo2_url and not customer.estimate_invoice_url and not customer.closer_report_url %}
+                                    <span class="text-muted">No Image</span>
+                                {% endif %}
+
+                            </div>
+
                         </td>
 
 
