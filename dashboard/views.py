@@ -4576,7 +4576,19 @@ def crm_dashboard(request):
                             stage_file = inspection.photo2.url
                             stage_file_type = "image"
                     except (ValueError, OSError):
-                        pass        
+                        pass 
+
+        elif current_stage == "S3":
+            if estimate:
+                if estimate.photo:
+                    try:
+                        if os.path.exists(estimate.photo.path):
+                            stage_file = estimate.photo.url
+                            stage_file_type = "image"
+                    except (ValueError, OSError):  
+                        pass       
+
+
         # ==============================================
         # STAGE DETAILS
         # ==============================================
