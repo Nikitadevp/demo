@@ -3591,6 +3591,8 @@ def admin_dashboard(request):
 
             "closed_date": closed_date,
 
+            "photo_url": query.photo.url if query.photo else None,
+
             
 
            
