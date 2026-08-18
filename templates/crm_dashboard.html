@@ -688,6 +688,10 @@
 
             <div class="table-responsive">
 
+                <form id="filterForm" method="GET" action="{% url 'crm_dashboard' %}" style="display:none;">
+                    <input type="hidden" name="search" value="{{ search }}">
+                </form>
+
                 <table class="table table-hover table-bordered align-middle mb-0">
 
                     <!-- ============================================= -->
@@ -705,38 +709,23 @@
                             <th>Contact</th>
 
                             <th>Email</th>
-
                             <th>
                                 <div class="d-flex flex-column gap-1">
                                     <span>Tower</span>
-
-                                    <form method="GET" action="{% url 'crm_dashboard' %}">
-
-                                        {% if search %}
-                                        <input type="hidden" name="search" value="{{ search }}">
-                                        {% endif %}
-                                        <select 
-                                    
-                                        
-                                            name="tower"
-                                            class="form-select form-select-sm"
-                                            onchange="this.form.submit()">
-                                            <option value="">All</option>
-                                            {% for tower in tower_options %}
-                                                <option 
-                                                    value="{{ tower }}"
-                                                    {% if selected_tower == tower %}selected{% endif %}
-                                                >
-                                                    {{ tower }}
-                                                </option>
-                                            {% endfor %}
-                                        </select>
-                                    </form>
-
-
+                                    <select
+                                        name="tower"
+                                        form="filterForm"
+                                        class="form-select form-select-sm"
+                                        onchange="document.getElementById('filterForm').submit()">
+                                        <option value="">All</option>
+                                        {% for tower in tower_options %}
+                                            <option value="{{ tower }}" {% if tower_filter == tower %}selected{% endif %}>
+                                                {{ tower }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
                                 </div>
-
-                            </th>   
+                            </th>  
                             <th>Area</th>
 
                             <th>Issue</th>
@@ -1098,6 +1087,7 @@
     <div class="card-body p-0">
 
         <div class="table-responsive">
+
 
             <table class="table table-bordered table-hover mb-0">
 
