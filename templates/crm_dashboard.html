@@ -765,6 +765,9 @@
 
                             <th>Issue Description</th>
 
+                            <th>Photo</th>
+
+
                             <th>Stage</th>
 
                             <th>Link</th>
@@ -862,7 +865,19 @@
                         <!-- Status -->
                         <td>{{ customer.issue_description }}</td>
                         
-            
+                        <td>
+                            {% if customer.photo_url %}
+                                <a href="{{ customer.photo_url }}" target="_blank" class="btn btn-sm btn-primary">
+                                    <i class="fa-solid fa-image"></i>
+                                </a>
+                            {% else %}
+                                <span class="text-muted">-</span>
+                            {% endif %}
+                        </td>
+
+
+
+
                         <!-- Current Stage -->
 
                         <td>
