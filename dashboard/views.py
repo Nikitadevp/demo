@@ -41,6 +41,7 @@ from .models import AdminUser
 from django.contrib.auth.decorators import login_required
 
 from django.db.models import Count, Q
+import os
 
 
 
@@ -4553,29 +4554,29 @@ def crm_dashboard(request):
 
         if current_stage == "S1":
             if query.photo:
-                stage_file = query.photo.url
-                stage_file_type = "image"
-
+                try:
+                    if os.path.exists(query.photo.path):
+                        stage_file = query.photo.url
+                        stage_file_type = "image"
+                except (ValueError, OSError):
+                    pass
 
         elif current_stage == "S2":
             if inspection:
                 if inspection.photo1:
-                    stage_file = inspection.photo1.url
-                    stage_file_type = "image"
-                    
-                elif inspection.photo2:  
-                    stage_file = inspection.photo2.url
-                    stage_file_type = "image"
-                    
-        elif current_stage == "S3":
-            if estimate and estimate.proforma_invoice:
-                stage_file = estimate.proforma_invoice.url
-                stage_file_type = "file"
-                
-        elif current_stage == "S10":
-            if closer and closer.closer_report:
-                stage_file = closer.closer_report.url
-                stage_file_type = "file"
+                    try:
+                        if os.path.exists(inspection.photo1.path):
+                            stage_file = inspection.photo1.url
+                            stage_file_type = "image"
+                    except (ValueError, OSError):
+                        pass        
+                if stage_file is None and inspection.photo2:
+                    try:
+                        if os.path.exists(inspection.photo2.path):
+                            stage_file = inspection.photo2.url
+                            stage_file_type = "image"
+                    except (ValueError, OSError):
+                        pass        
         # ==============================================
         # STAGE DETAILS
         # ==============================================
