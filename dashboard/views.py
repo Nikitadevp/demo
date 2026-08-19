@@ -3805,7 +3805,7 @@ def site_engineer_dashboard(request):
 
     recent_site_inspections = recent_site_inspections.select_related(
         "customer_query"
-    ).order_by("-created_at")[:10]
+    ).order_by("-created_at")
 
 
     maintenance_scope_list = MaintenanceScope.objects.filter(
@@ -3837,7 +3837,7 @@ def site_engineer_dashboard(request):
 
     maintenance_scope_list = maintenance_scope_list.select_related(
     "customer_query"
-    ).order_by("-created_at")[:10]
+    ).order_by("-created_at")
 
     
 
