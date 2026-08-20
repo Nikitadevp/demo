@@ -3775,21 +3775,18 @@ def site_engineer_dashboard(request):
     # ==========================================                                         
 
     site_inspection = total_site_inspection
-
-    
-
-    # ==========================================
-    # PENDING INSPECTION FILTERS
-    # ==========================================
-    # 1. Pehle ye define ho
     pending_site_inspection = MaintenanceScope.objects.filter(
         scope_status="Yes"
     ).exclude(
         customer_query__siteinspection__isnull=False
     )
     inspection_pending = pending_site_inspection.count()
+    
 
-    # 2. Uske BAAD ye naya filter block aaye
+    # ==========================================
+    # PENDING INSPECTION FILTERS
+    # ==========================================
+
     customer_options = pending_site_inspection.values_list(
         "customer_name", flat=True
     ).distinct().order_by("customer_name")
@@ -3961,6 +3958,10 @@ def site_engineer_dashboard(request):
 
         "pending_overdue_list": pending_overdue_list,
         "pending_site_inspection": pending_site_inspection,
+
+
+        "site_inspection": site_inspection,
+        "inspection_pending": inspection_pending,
 
         # Charts
         "customer_options": customer_options,
