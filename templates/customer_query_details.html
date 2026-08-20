@@ -51,6 +51,15 @@
 
         <div class="card-body p-0">
             <div class="table-responsive">
+
+                <!-- ================================================= -->
+                <!-- HIDDEN FILTER FORM -->
+                <!-- ================================================= -->
+                <form id="filterForm" method="GET" action="{% url 'crm_dashboard' %}" style="display:none;">
+                    <input type="hidden" name="page" value="customer_queries">
+                    <input type="hidden" name="search" value="{{ search }}">
+                </form>
+
                 <table class="table table-hover table-bordered align-middle mb-0">
 
                     <!-- ================================================= -->
@@ -59,12 +68,79 @@
                     <thead class="table-dark">
                         <tr>
                             <th>Ticket ID</th>
-                            <th>Customer</th>
+
+                            <th>
+                                <div class="d-flex flex-column gap-1">
+                                    <span>Customer Name</span>
+                                    <input
+                                        type="text"
+                                        name="customer_name"
+                                        form="filterForm"
+                                        class="form-control form-control-sm"
+                                        placeholder="Search Name"
+                                        value="{{ customer_name_filter }}"
+                                        onchange="document.getElementById('filterForm').submit()"
+                                    >
+                                </div>
+                            </th>
+
                             <th>Contact</th>
                             <th>Email</th>
-                            <th>Tower</th>
-                            <th>Area</th>
-                            <th>Issue</th>
+
+                            <th>
+                                <div class="d-flex flex-column gap-1">
+                                    <span>Tower</span>
+                                    <select
+                                        name="tower"
+                                        form="filterForm"
+                                        class="form-select form-select-sm"
+                                        onchange="document.getElementById('filterForm').submit()">
+                                        <option value="">All</option>
+                                        {% for tower in tower_options %}
+                                            <option value="{{ tower }}" {% if tower_filter == tower %}selected{% endif %}>
+                                                {{ tower }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </th>
+
+                            <th>
+                                <div class="d-flex flex-column gap-1">
+                                    <span>Area</span>
+                                    <select
+                                        name="area"
+                                        form="filterForm"
+                                        class="form-select form-select-sm"
+                                        onchange="document.getElementById('filterForm').submit()">
+                                        <option value="">All</option>
+                                        {% for area in area_options %}
+                                            <option value="{{ area }}" {% if area_filter == area %}selected{% endif %}>
+                                                {{ area }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </th>
+
+                            <th>
+                                <div class="d-flex flex-column gap-1">
+                                    <span>Issue</span>
+                                    <select
+                                        name="issue"
+                                        form="filterForm"
+                                        class="form-select form-select-sm"
+                                        onchange="document.getElementById('filterForm').submit()">
+                                        <option value="">All</option>
+                                        {% for issue in issue_options %}
+                                            <option value="{{ issue }}" {% if issue_filter == issue %}selected{% endif %}>
+                                                {{ issue }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </th>
+
                             <th>Issue Description</th>
                             <th>Photo</th>
                             <th>Stage</th>
