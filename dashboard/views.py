@@ -4897,11 +4897,12 @@ def crm_dashboard(request):
             due_today_customers.append(customer)
 
     customer_data.sort(
-    key=lambda x: x["query_created_at"]
+        key=lambda x: x["query_created_at"],
+        reverse=True
     )
 
     crm_pending_data.sort(
-    key=lambda x: x["query_created_at"]
+        key=lambda x: x["query_created_at"]
     )
 
     overdue_customers.sort(
