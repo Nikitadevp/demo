@@ -3851,15 +3851,26 @@ def site_engineer_dashboard(request):
             scope.created_at,
             1
         )
-        scope.due_date = due_date
-        
+
         if timezone.now() > due_date:
-            
-            scope.overdue = "Over Due"      
+            delta = timezone.now() - due_date
+            days = delta.days
+            hours = delta.seconds // 3600
+
+            if days > 0:
+                scope.overdue_text = f"Over Due by {days}d {hours}h"
+            else:
+                scope.overdue_text = f"Over Due by {hours}h"
+            scope.status_type = "overdue"        
         else:
-            scope.pending = "Pending"
-            
-        pending_overdue_list.append(scope)
+            scope.status_type = "pending"
+        pending_overdue_list.append(scope)    
+
+
+
+
+
+     
 
 
 
