@@ -3781,7 +3781,15 @@ def site_engineer_dashboard(request):
     # ==========================================
     # PENDING INSPECTION FILTERS
     # ==========================================
+    # 1. Pehle ye define ho
+    pending_site_inspection = MaintenanceScope.objects.filter(
+        scope_status="Yes"
+    ).exclude(
+        customer_query__siteinspection__isnull=False
+    )
+    inspection_pending = pending_site_inspection.count()
 
+    # 2. Uske BAAD ye naya filter block aaye
     customer_options = pending_site_inspection.values_list(
         "customer_name", flat=True
     ).distinct().order_by("customer_name")
