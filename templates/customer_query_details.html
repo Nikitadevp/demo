@@ -28,9 +28,12 @@
 
 </head>
 
+
 <body>
 
+
 <div class="container-fluid py-4">
+
 
     <!-- ========================================================= -->
     <!-- PAGE HEADER -->
@@ -41,20 +44,29 @@
         <div>
 
             <h3 class="mb-1">
+
                 <i class="fas fa-users me-2"></i>
+
                 Customer Query Details
+
             </h3>
 
             <p class="text-muted mb-0">
+
                 Complete Customer Query Report
+
             </p>
 
         </div>
 
-        <a href="{% url 'crm_dashboard' %}"
-           class="btn btn-primary">
+
+        <a
+            href="{% url 'crm_dashboard' %}"
+            class="btn btn-primary"
+        >
 
             <i class="fas fa-arrow-left me-2"></i>
+
             Back to CRM Dashboard
 
         </a>
@@ -62,11 +74,17 @@
     </div>
 
 
+
     <!-- ========================================================= -->
     <!-- CUSTOMER QUERY TABLE -->
     <!-- ========================================================= -->
 
     <div class="card shadow border-0">
+
+
+        <!-- ===================================================== -->
+        <!-- CARD HEADER -->
+        <!-- ===================================================== -->
 
         <div class="card-header bg-primary text-white">
 
@@ -80,6 +98,7 @@
 
                 </h5>
 
+
                 <span class="badge bg-light text-dark">
 
                     {{ total_queries }} Records
@@ -91,11 +110,54 @@
         </div>
 
 
+
+        <!-- ===================================================== -->
+        <!-- CARD BODY -->
+        <!-- ===================================================== -->
+
         <div class="card-body p-0">
+
 
             <div class="table-responsive">
 
-                <table class="table table-hover table-bordered align-middle mb-0">
+
+                <!-- ================================================= -->
+                <!-- FILTER FORM -->
+                <!-- ================================================= -->
+
+                <form
+                    id="filterForm"
+                    method="GET"
+                    action="{% url 'crm_dashboard' %}"
+                    style="display: none;"
+                >
+
+                    <input
+                        type="hidden"
+                        name="page"
+                        value="customer_queries"
+                    >
+
+
+                    <!-- Keep Search -->
+                    <input
+                        type="hidden"
+                        name="search"
+                        value="{{ search }}"
+                    >
+
+                </form>
+
+
+
+                <!-- ================================================= -->
+                <!-- TABLE -->
+                <!-- ================================================= -->
+
+                <table
+                    class="table table-hover table-bordered align-middle mb-0"
+                >
+
 
                     <!-- ================================================= -->
                     <!-- TABLE HEADER -->
@@ -105,54 +167,289 @@
 
                         <tr>
 
-                            <th>Ticket ID</th>
 
-                            <th>Customer</th>
+                            <!-- Ticket ID -->
 
-                            <th>Contact</th>
+                            <th>
+                                Ticket ID
+                            </th>
 
-                            <th>Email</th>
 
-                            <th>Tower</th>
 
-                            <th>Area</th>
+                            <!-- Customer Name -->
 
-                            <th>Issue</th>
+                            <th>
 
-                            <th>Issue Description</th>
+                                <div class="d-flex flex-column gap-1">
 
-                            <th>Stage</th>
+                                    <span>
+                                        Customer Name
+                                    </span>
 
-                            <th>Link</th>
 
-                            <th>Pending With</th>
+                                    <input
+                                        type="text"
+                                        name="customer_name"
+                                        form="filterForm"
+                                        class="form-control form-control-sm"
+                                        placeholder="Search Name"
+                                        value="{{ customer_name_filter }}"
+                                        onchange="document.getElementById('filterForm').submit()"
+                                    >
 
-                            <th>Progress</th>
+                                </div>
 
-                            <th>Query Raised</th>
+                            </th>
 
-                            <th>Due Time</th>
 
-                            <th>Remaining</th>
 
-                            <th>Closed Date</th>
+                            <!-- Contact -->
+
+                            <th>
+                                Contact
+                            </th>
+
+
+
+                            <!-- Email -->
+
+                            <th>
+                                Email
+                            </th>
+
+
+
+                            <!-- Tower -->
+
+                            <th>
+
+                                <div class="d-flex flex-column gap-1">
+
+                                    <span>
+                                        Tower
+                                    </span>
+
+
+                                    <select
+                                        name="tower"
+                                        form="filterForm"
+                                        class="form-select form-select-sm"
+                                        onchange="document.getElementById('filterForm').submit()"
+                                    >
+
+                                        <option value="">
+                                            All
+                                        </option>
+
+
+                                        {% for tower in tower_options %}
+
+                                            <option
+                                                value="{{ tower }}"
+                                                {% if tower_filter == tower %}
+                                                    selected
+                                                {% endif %}
+                                            >
+
+                                                {{ tower }}
+
+                                            </option>
+
+                                        {% endfor %}
+
+                                    </select>
+
+                                </div>
+
+                            </th>
+
+
+
+                            <!-- Area -->
+
+                            <th>
+
+                                <div class="d-flex flex-column gap-1">
+
+                                    <span>
+                                        Area
+                                    </span>
+
+
+                                    <select
+                                        name="area"
+                                        form="filterForm"
+                                        class="form-select form-select-sm"
+                                        onchange="document.getElementById('filterForm').submit()"
+                                    >
+
+                                        <option value="">
+                                            All
+                                        </option>
+
+
+                                        {% for area in area_options %}
+
+                                            <option
+                                                value="{{ area }}"
+                                                {% if area_filter == area %}
+                                                    selected
+                                                {% endif %}
+                                            >
+
+                                                {{ area }}
+
+                                            </option>
+
+                                        {% endfor %}
+
+                                    </select>
+
+                                </div>
+
+                            </th>
+
+
+
+                            <!-- Issue -->
+
+                            <th>
+
+                                <div class="d-flex flex-column gap-1">
+
+                                    <span>
+                                        Issue
+                                    </span>
+
+
+                                    <select
+                                        name="issue"
+                                        form="filterForm"
+                                        class="form-select form-select-sm"
+                                        onchange="document.getElementById('filterForm').submit()"
+                                    >
+
+                                        <option value="">
+                                            All
+                                        </option>
+
+
+                                        {% for issue in issue_options %}
+
+                                            <option
+                                                value="{{ issue }}"
+                                                {% if issue_filter == issue %}
+                                                    selected
+                                                {% endif %}
+                                            >
+
+                                                {{ issue }}
+
+                                            </option>
+
+                                        {% endfor %}
+
+                                    </select>
+
+                                </div>
+
+                            </th>
+
+
+
+                            <!-- Issue Description -->
+
+                            <th>
+                                Issue Description
+                            </th>
+
+
+
+                            <!-- Stage -->
+
+                            <th>
+                                Stage
+                            </th>
+
+
+
+                            <!-- Link -->
+
+                            <th>
+                                Link
+                            </th>
+
+
+
+                            <!-- Pending With -->
+
+                            <th>
+                                Pending With
+                            </th>
+
+
+
+                            <!-- Progress -->
+
+                            <th>
+                                Progress
+                            </th>
+
+
+
+                            <!-- Query Raised -->
+
+                            <th>
+                                Query Raised
+                            </th>
+
+
+
+                            <!-- Due Time -->
+
+                            <th>
+                                Due Time
+                            </th>
+
+
+
+                            <!-- Remaining -->
+
+                            <th>
+                                Remaining
+                            </th>
+
+
+
+                            <!-- Closed Date -->
+
+                            <th>
+                                Closed Date
+                            </th>
+
 
                         </tr>
 
                     </thead>
 
 
+
                     <!-- ================================================= -->
-                    <!-- TABLE DATA -->
+                    <!-- TABLE BODY -->
                     <!-- ================================================= -->
 
                     <tbody>
 
+
                     {% for customer in customer_data %}
+
 
                     <tr>
 
+
+                        <!-- ================================================= -->
                         <!-- Ticket ID -->
+                        <!-- ================================================= -->
 
                         <td>
 
@@ -165,7 +462,10 @@
                         </td>
 
 
+
+                        <!-- ================================================= -->
                         <!-- Customer -->
+                        <!-- ================================================= -->
 
                         <td>
 
@@ -174,7 +474,10 @@
                         </td>
 
 
+
+                        <!-- ================================================= -->
                         <!-- Contact -->
+                        <!-- ================================================= -->
 
                         <td>
 
@@ -183,7 +486,10 @@
                         </td>
 
 
+
+                        <!-- ================================================= -->
                         <!-- Email -->
+                        <!-- ================================================= -->
 
                         <td>
 
@@ -192,7 +498,10 @@
                         </td>
 
 
+
+                        <!-- ================================================= -->
                         <!-- Tower -->
+                        <!-- ================================================= -->
 
                         <td>
 
@@ -201,7 +510,10 @@
                         </td>
 
 
+
+                        <!-- ================================================= -->
                         <!-- Area -->
+                        <!-- ================================================= -->
 
                         <td>
 
@@ -210,7 +522,10 @@
                         </td>
 
 
+
+                        <!-- ================================================= -->
                         <!-- Issue -->
+                        <!-- ================================================= -->
 
                         <td>
 
@@ -219,7 +534,10 @@
                         </td>
 
 
+
+                        <!-- ================================================= -->
                         <!-- Issue Description -->
+                        <!-- ================================================= -->
 
                         <td>
 
@@ -228,7 +546,10 @@
                         </td>
 
 
+
+                        <!-- ================================================= -->
                         <!-- Stage -->
+                        <!-- ================================================= -->
 
                         <td>
 
@@ -249,18 +570,26 @@
                         </td>
 
 
+
+                        <!-- ================================================= -->
+                        <!-- Link -->
+                        <!-- ================================================= -->
+
                         <td>
+
                             {% if customer.stage_form_url %}
 
-                                
-
-                                <a href="{{ customer.stage_form_url }}"
-                                   class="btn btn-sm btn-primary">
-                                    
+                                <a
+                                    href="{{ customer.stage_form_url }}"
+                                    class="btn btn-sm btn-primary"
+                                >
 
                                     Open Form
+
                                 </a>
+
                             {% else %}
+
                                 <span class="text-muted">
 
                                     No Form Available
@@ -269,7 +598,13 @@
 
                             {% endif %}
 
+                        </td>
+
+
+
+                        <!-- ================================================= -->
                         <!-- Pending With -->
+                        <!-- ================================================= -->
 
                         <td>
 
@@ -279,17 +614,21 @@
 
                             <small class="text-muted">
 
+
                                 {% if customer.pending_with == "Site Engineer" %}
 
                                     Dipesh Chaudhary
+
 
                                 {% elif customer.pending_with == "CRM" %}
 
                                     Varsha Sahu
 
+
                                 {% elif customer.pending_with == "Store Incharge" %}
 
                                     Bhola
+
 
                                 {% elif customer.pending_with == "Maintenance Incharge" %}
 
@@ -297,14 +636,19 @@
 
                                 {% endif %}
 
+
                             </small>
 
                         </td>
 
 
+
+                        <!-- ================================================= -->
                         <!-- Progress -->
+                        <!-- ================================================= -->
 
                         <td>
+
 
                             {% if customer.progress == "Closed" %}
 
@@ -314,6 +658,7 @@
 
                                 </span>
 
+
                             {% elif customer.progress == "Open" %}
 
                                 <span class="badge bg-primary">
@@ -321,6 +666,7 @@
                                     {{ customer.progress }}
 
                                 </span>
+
 
                             {% else %}
 
@@ -332,10 +678,14 @@
 
                             {% endif %}
 
+
                         </td>
 
 
+
+                        <!-- ================================================= -->
                         <!-- Query Raised -->
+                        <!-- ================================================= -->
 
                         <td>
 
@@ -344,7 +694,10 @@
                         </td>
 
 
+
+                        <!-- ================================================= -->
                         <!-- Due Time -->
+                        <!-- ================================================= -->
 
                         <td>
 
@@ -353,9 +706,13 @@
                         </td>
 
 
+
+                        <!-- ================================================= -->
                         <!-- Remaining -->
+                        <!-- ================================================= -->
 
                         <td>
+
 
                             {% if customer.is_overdue %}
 
@@ -364,6 +721,7 @@
                                     {{ customer.remaining }}
 
                                 </span>
+
 
                             {% else %}
 
@@ -375,10 +733,14 @@
 
                             {% endif %}
 
+
                         </td>
 
 
+
+                        <!-- ================================================= -->
                         <!-- Closed Date -->
+                        <!-- ================================================= -->
 
                         <td>
 
@@ -386,15 +748,19 @@
 
                         </td>
 
+
                     </tr>
 
 
                     {% empty %}
 
+
                     <tr>
 
-                        <td colspan="16"
-                            class="text-center py-5">
+                        <td
+                            colspan="16"
+                            class="text-center py-5"
+                        >
 
                             <h5 class="text-muted">
 
@@ -406,11 +772,15 @@
 
                     </tr>
 
+
                     {% endfor %}
+
 
                     </tbody>
 
+
                 </table>
+
 
             </div>
 
@@ -418,7 +788,9 @@
 
     </div>
 
+
 </div>
+
 
 </body>
 
