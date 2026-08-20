@@ -396,7 +396,7 @@
                         <th>Area</th>
                         <th>Issue</th>
                         <th>Issue Description</th>
-                        <th>Due Date</th>
+                        
                         <th>Status</th>
                         
                         <th>Date</th>
@@ -418,7 +418,6 @@
 
                          <td>{{ scope.issue_description }}</td>
    
-                         <td>{{ scope.due_date|date:"d/m/Y h:i A" }}</td>
 
                          <td>
                          {% if scope.status_type == "overdue" %}
