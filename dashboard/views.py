@@ -4359,17 +4359,7 @@ def crm_dashboard(request):
     if issue_filter:
         queries = queries.filter(issue=issue_filter)
     if customer_name_filter:
-       queries = queries.filter(name=customer_name_filter)
-
-
-    customer_name_options = sorted(
-        set(
-            CustomerQuery.objects
-            .values_list("name", flat=True)
-            .exclude(name="")
-        )
-    )        
-
+       queries = queries.filter(name__icontains=customer_name_filter)
 
 
     tower_options = sorted(
@@ -4846,8 +4836,6 @@ def crm_dashboard(request):
 
             "issue_description": query.problem,
 
-           
-
             "query_raised": query_raised,
 
             # "stage_file": stage_file,
@@ -4874,9 +4862,7 @@ def crm_dashboard(request):
 
             "closed_date": closed_date,
 
-            "customer_name_options": customer_name_options,
-
-            
+            "customer_name_filter": customer_name_filter,
 
             
 

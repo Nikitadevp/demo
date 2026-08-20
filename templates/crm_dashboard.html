@@ -707,21 +707,18 @@
                             <th>
                                 <div class="d-flex flex-column gap-1">
                                     <span>Customer Name</span>
-                                    <select
-                                        
+                                    <input
+                                        type="text"
                                         name="customer_name"
                                         form="filterForm"
                                         class="form-control form-control-sm"
-                                
-                                        onchange="document.getElementById('filterForm').submit()">
-                                        <option value="">All</option>
-                                        {% for name in customer_name_options %}
-                                            <option value="{{ name }}" {% if customer_name_filter == name %}selected{% endif %}>
-                                                {{ name }}
-                                           </option>
-                                        {% endfor %}
-                                    </select>
+                                        placeholder="Search Name"
+                                        value="{{ customer_name_filter }}"
+                                        onchange="document.getElementById('filterForm').submit()"
+                                    >
+
                                 </div>
+
 
                                 
                             </th>
