@@ -4359,7 +4359,17 @@ def crm_dashboard(request):
     if issue_filter:
         queries = queries.filter(issue=issue_filter)
     if customer_name_filter:
-       queries = queries.filter( name__icontains=customer_name_filter)
+       queries = queries.filter(name=customer_name_filter)
+
+
+    customer_name_options = sorted(
+        set(
+            CustomerQuery.objects
+            .values_list("name", flat=True)
+            .exclude(name="")
+        )
+    )        
+
 
 
     tower_options = sorted(
@@ -4863,6 +4873,8 @@ def crm_dashboard(request):
             "is_overdue": is_overdue,
 
             "closed_date": closed_date,
+
+            "customer_name_options": customer_name_options,
 
             
 
