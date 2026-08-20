@@ -4846,7 +4846,7 @@ def crm_dashboard(request):
 
             "issue_description": query.problem,
 
-            "customer_name_filter": customer_name_filter,
+           
 
             "query_raised": query_raised,
 
