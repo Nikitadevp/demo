@@ -4320,6 +4320,8 @@ def crm_dashboard(request):
 
     search = request.GET.get("search", "").strip()
 
+
+    customer_name_filter = request.GET.get("customer_name", "").strip()
     tower_filter = request.GET.get("tower", "").strip()
     area_filter = request.GET.get("area", "").strip()
     issue_filter = request.GET.get("issue", "").strip()
@@ -4356,7 +4358,8 @@ def crm_dashboard(request):
         queries = queries.filter(area=area_filter)
     if issue_filter:
         queries = queries.filter(issue=issue_filter)
-
+    if  customer_name_filter:
+        customer_queries = customer_queries.filter(name__icontains=customer_name_filter)
 
 
     tower_options = sorted(
@@ -4859,6 +4862,8 @@ def crm_dashboard(request):
 
             "closed_date": closed_date,
 
+            "customer_name_filter": customer_name_filter,
+
             
 
            
@@ -5237,6 +5242,14 @@ def store_keeper_dashboard(request):
         "issue_progress": issue_progress,
 
         "issue_overdue": issue_overdue,
+
+
+
+
+
+
+
+
 
     }
 

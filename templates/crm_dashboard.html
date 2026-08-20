@@ -704,7 +704,21 @@
 
                             <th>Ticket ID</th>
 
-                            <th>Customer</th>
+                            <th>
+                                <div class="d-flex flex-column gap-1">
+                                       <span>Customer Name</span>
+
+                                        <input
+                                            type="text"
+                                            name="customer_name"
+                                            form="filterForm"
+                                            class="form-control form-control-sm"
+                                            placeholder="Search Name"
+                                            value="{{ customer_name_filter }}"
+                                            onchange="document.getElementById('filterForm').submit()"
+                                        >
+                                </div>
+                            </th>
 
                             <th>Contact</th>
 
