@@ -421,13 +421,13 @@
                          <td>{{ scope.due_date|date:"d/m/Y h:i A" }}</td>
 
                          <td>
-                         {% if scope.pending %}
-                            <span class="badge bg-warning text-dark">
-                                {{ scope.pending }}
-                            </span>
-                         {% elif scope.overdue %}
+                         {% if scope.status_type == "overdue" %}
                             <span class="badge bg-danger">
-                                {{ scope.overdue }}
+                                {{ scope.overdue_text }}
+                            </span>
+                         {% elif scope.status_type == "pending" %}
+                            <span class="badge bg-warning text-dark">
+                                Pending
                             </span> 
                          {% endif %}
                          </td>
