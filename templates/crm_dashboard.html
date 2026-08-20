@@ -714,7 +714,7 @@
                                         class="form-control form-control-sm"
                                         placeholder="Search Name"
                                         value="{{ customer_name_filter }}"
-                                        onchange="document.getElementById('filterForm').submit()"
+                                        onkeydown="if(event.key === 'Enter'){ event.preventDefault(); document.getElementById('filterForm').submit(); }"
                                     >
 
                                 </div>
