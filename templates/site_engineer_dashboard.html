@@ -378,6 +378,11 @@
                 </a>    
             </form>
         </div>
+
+
+        <form id="filterForm" method="GET" action="{% url 'site_engineer_dashboard' %}" style="display:none;">
+            <input type="hidden" name="search" value="{{ search }}">
+        </form>
  
         <div class="section-title" id="site-inspection-status">
           
@@ -391,10 +396,52 @@
                     <tr>
 
                         <th>Case ID</th>
-                        <th>Customer</th>
-                        <th>Block</th>
-                        <th>Area</th>
-                        <th>Issue</th>
+                                                <th>
+                            Customer
+                            <select name="customer" form="filterForm" onchange="document.getElementById('filterForm').submit()">
+                                <option value="">All</option>
+                                {% for customer in customer_options %}
+                                    <option value="{{ customer }}" {% if customer_filter == customer %}selected{% endif %}>
+                                        {{ customer }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </th>
+                        <th>
+                            Block
+                            <select name="block" form="filterForm" onchange="document.getElementById('filterForm').submit()">
+                                <option value="">All</option>
+                                {% for block in block_options %}
+                                    <option value="{{ block }}" {% if block_filter == block %}selected{% endif %}>
+                                        {{ block }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </th>
+
+                        <th>
+                            Area
+                            <select name="area" form="filterForm" onchange="document.getElementById('filterForm').submit()">
+                                <option value="">All</option>
+                                {% for area in area_options %}
+                                    <option value="{{ area }}" {% if area_filter == area %}selected{% endif %}>
+                                        {{ area }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </th>
+
+                        <th>
+                            Issue
+                            <select name="issue" form="filterForm" onchange="document.getElementById('filterForm').submit()">
+                                <option value="">All</option>
+                                {% for issue in issue_options %}
+                                    <option value="{{ issue }}" {% if issue_filter == issue %}selected{% endif %}>
+                                        {{ issue }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </th>
                         <th>Issue Description</th>
                         
                         <th>Status</th>

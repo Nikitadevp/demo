@@ -3778,12 +3778,50 @@ def site_engineer_dashboard(request):
 
     
 
-    pending_site_inspection = MaintenanceScope.objects.filter(
-        scope_status="Yes"
-    ).exclude(
-        customer_query__siteinspection__isnull=False
-    )
-    inspection_pending = pending_site_inspection.count()
+    # ==========================================
+    # PENDING INSPECTION FILTERS
+    # ==========================================
+
+    customer_options = pending_site_inspection.values_list(
+        "customer_name", flat=True
+    ).distinct().order_by("customer_name")
+
+    block_options = pending_site_inspection.values_list(
+        "block", flat=True
+    ).distinct().order_by("block")
+
+    area_options = pending_site_inspection.values_list(
+        "location", flat=True
+    ).distinct().order_by("location")
+
+    issue_options = pending_site_inspection.values_list(
+        "issue_related", flat=True
+    ).distinct().order_by("issue_related")
+
+    customer_filter = request.GET.get("customer", "")
+    block_filter = request.GET.get("block", "")
+    area_filter = request.GET.get("area", "")
+    issue_filter = request.GET.get("issue", "")
+
+    if customer_filter:
+        pending_site_inspection = pending_site_inspection.filter(
+            customer_name=customer_filter
+        )
+
+    if block_filter:
+        pending_site_inspection = pending_site_inspection.filter(
+            block=block_filter
+        )
+
+    if area_filter:
+        pending_site_inspection = pending_site_inspection.filter(
+            location=area_filter
+        )
+
+    if issue_filter:
+        pending_site_inspection = pending_site_inspection.filter(
+            issue_related=issue_filter
+        )
     # ==========================================
     # SEARCH
     # ==========================================
@@ -3891,7 +3929,7 @@ def site_engineer_dashboard(request):
 
         "maintenance_scope": maintenance_scope,
         "site_inspection": site_inspection,
-        "inspection_pending": inspection_pending,
+      
 
         # Site Inspection Summary
 
@@ -3917,6 +3955,15 @@ def site_engineer_dashboard(request):
         "pending_site_inspection": pending_site_inspection,
 
         # Charts
+        "customer_options": customer_options,
+        "block_options": block_options,
+        "area_options": area_options,
+        "issue_options": issue_options,
+
+        "customer_filter": customer_filter,
+        "block_filter": block_filter,
+        "area_filter": area_filter,
+        "issue_filter": issue_filter,
         
 
        
