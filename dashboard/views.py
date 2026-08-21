@@ -4938,9 +4938,11 @@ def crm_dashboard(request):
 
             "closed_date": closed_date,
 
+            "customer_name_options": customer_name_options,
+
             "customer_name_filter": customer_name_filter,
 
-            "customer_name_options": customer_name_options,
+            
 
             
 
