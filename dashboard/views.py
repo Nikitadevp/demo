@@ -5077,6 +5077,9 @@ def crm_dashboard(request):
         "area_filter": area_filter,
         "issue_filter": issue_filter,
 
+
+
+        "customer_name_options": customer_name_options,
         "customer_name_filter": customer_name_filter,
 
     }
