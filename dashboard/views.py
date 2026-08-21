@@ -3865,7 +3865,7 @@ def site_engineer_dashboard(request):
         
     pending_site_inspection = pending_site_inspection.select_related(
         "customer_query"
-    ).order_by("-created_at")    
+    ).order_by("created_at")   
 
 
 

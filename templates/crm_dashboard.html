@@ -704,26 +704,17 @@
 
                             <th>Ticket ID</th>
 
-                            <th>
-                                <div class="d-flex flex-column gap-1">
-                                    <span>Customer Name</span>
-                                    <select
-                                        
-                                        name="customer_name"
-                                        form="filterForm"
-                                        class="form-select form-select-sm"
-                                        onchange="document.getElementById('filterForm').submit()">
-                                        <option value="">All</option>
-                                        {% for name in customer_name_options %}
-                                            <option value="{{ name }}" {% if customer_name_filter == name %}selected{% endif %}>
-                                                {{ name }}
-                                            </option>
-                                        {% endfor %}
-                                    </select>
-
-                                </div>
-                                
-                            </th>
+                        <th>
+                            Customer
+                            <select name="customer" form="filterForm" onchange="document.getElementById('filterForm').submit()">
+                                <option value="">All</option>
+                                {% for customer in customer_options %}
+                                    <option value="{{ customer }}" {% if customer_filter == customer %}selected{% endif %}>
+                                        {{ customer }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </th>
 
                             <th>Contact</th>
 
