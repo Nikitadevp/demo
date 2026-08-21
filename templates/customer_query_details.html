@@ -68,22 +68,17 @@
                     <thead class="table-dark">
                         <tr>
                             <th>Ticket ID</th>
-
-                            <th>
-                                <div class="d-flex flex-column gap-1">
-                                    <span>Customer Name</span>
-                                    <input
-                                        type="text"
-                                        name="customer_name"
-                                        form="filterForm"
-                                        class="form-control form-control-sm"
-                                        placeholder="Search Name"
-                                        value="{{ customer_name_filter }}"
-                                        onkeydown="if(event.key === 'Enter'){ event.preventDefault(); document.getElementById('filterForm').submit(); }"
-                                    >
-                                </div>
-                            </th>
-
+                        <th>
+                            Customer
+                            <select name="customer" form="filterForm" onchange="document.getElementById('filterForm').submit()">
+                                <option value="">All</option>
+                                {% for customer in customer_options %}
+                                    <option value="{{ customer }}" {% if customer_filter == customer %}selected{% endif %}>
+                                        {{ customer }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </th>
                             <th>Contact</th>
                             <th>Email</th>
 
