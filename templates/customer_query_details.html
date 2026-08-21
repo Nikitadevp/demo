@@ -68,17 +68,19 @@
                     <thead class="table-dark">
                         <tr>
                             <th>Ticket ID</th>
-                        <th>
-                            Customer
-                            <select name="customer" form="filterForm" onchange="document.getElementById('filterForm').submit()">
-                                <option value="">All</option>
-                                {% for customer in customer_options %}
-                                    <option value="{{ customer }}" {% if customer_filter == customer %}selected{% endif %}>
-                                        {{ customer }}
-                                    </option>
-                                {% endfor %}
-                            </select>
-                        </th>
+                            <th>
+                                Customer
+                                <select name="customer" form="filterForm" onchange="document.getElementById('filterForm').submit()">
+                                    <option value="">All</option>
+                                    {% for customer in customer_options %}
+                                           <option value="{{ customer }}" {% if customer_filter == customer %}selected{% endif %}>
+                                               {{ customer }}
+                                           </option>
+                                    {% endfor %}
+                                </select>
+
+                            </th>
+                       
                             <th>Contact</th>
                             <th>Email</th>
 
