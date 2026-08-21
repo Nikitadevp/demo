@@ -706,11 +706,11 @@
                             
                             <th>
                                 Customer
-                                <select name="customer" form="filterForm" onchange="document.getElementById('filterForm').submit()">
+                                <select name="customer_name" form="filterForm" onchange="document.getElementById('filterForm').submit()">
                                     <option value="">All</option>
                                     {% for customer in customer_options %}
-                                           <option value="{{ customer }}" {% if customer_filter == customer %}selected{% endif %}>
-                                               {{ customer }}
+                                           <option value="{{ name }}" {% if customer_name_filter == name %}selected{% endif %}>
+                                               {{ name }}
                                            </option>
                                     {% endfor %}
                                 </select>
