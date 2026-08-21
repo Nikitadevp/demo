@@ -1928,6 +1928,52 @@ a:hover{
 }
 
 
+
+/* =========================================================
+   CRM TABLE FILTER HEADER
+   ========================================================= */
+
+.table thead th {
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+/* Filter header ke andar heading */
+.table thead th .d-flex {
+    min-width: 110px;
+}
+
+/* Customer Name filter */
+.table thead th select {
+    width: 100%;
+    min-width: 110px;
+    height: 32px;
+    padding: 4px 28px 4px 8px;
+    font-size: 13px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #212529;
+    cursor: pointer;
+}
+
+/* Filter ke focus hone par */
+.table thead th select:focus {
+    outline: none;
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.15rem rgba(13, 110, 253, 0.15);
+}
+
+/* Filter header ka text */
+.table thead th span {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+
+
+
+
 /* =========================================================
    RECORDS BADGE
    ========================================================= */
