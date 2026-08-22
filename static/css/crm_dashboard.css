@@ -658,12 +658,14 @@ p{
    MAIN CONTENT
 ========================== */
 
-.main-content{
-    margin-left:270px;
-    padding:30px;
-    min-height:100vh;
+.main-content {
+    transition: margin-left 0.3s ease;
 }
 
+
+.sidebar.collapsed ~ .main-content {
+    margin-left: 70px;
+}
 /* ==========================
    CONTAINER
 ========================== */
@@ -671,6 +673,7 @@ p{
 .container-fluid{
     max-width:100%;
 }
+
 
 /* ==========================
    CARDS
