@@ -4426,7 +4426,8 @@ def crm_dashboard(request):
     if issue_filter:
         queries = queries.filter(issue=issue_filter)
     if customer_name_filter:
-       queries = queries.filter(name=customer_name_filter)
+       queries = queries.filter(name__icontains=customer_name_filter)
+
 
     customer_name_options = sorted(
         set(
