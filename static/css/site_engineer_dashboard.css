@@ -105,12 +105,12 @@ Sidebar
 Main Content
 =========================*/
 
-/* .main-content{
+.main-content{
 
     margin-left:260px;
     width:calc(100% - 260px);
     padding:30px;
-} */
+}
 .sidebar {
     transition: width 0.3s ease;
     overflow: hidden;
