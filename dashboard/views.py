@@ -4353,7 +4353,7 @@ def get_stage_name(current_stage):
         "S9": "Receive Material",
         "S10": "Resolve Issue",
         "S11": "Customer Feedback",
-        "Completed": "Query Closed",
+        "": "Completed",
 
     }
 
