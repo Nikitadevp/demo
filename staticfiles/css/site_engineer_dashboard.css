@@ -111,43 +111,7 @@ Main Content
     width:calc(100% - 260px);
     padding:30px;
 }
-.sidebar {
-    transition: width 0.3s ease;
-    overflow: hidden;
-}
 
-.sidebar.collapsed {
-    width: 70px;
-}
-
-.sidebar.collapsed .logo h2,
-.sidebar.collapsed .logo p,
-.sidebar.collapsed ul li a span {
-    display: none;
-}
-
-.sidebar.collapsed ul li a {
-    justify-content: center;
-}
-
-.sidebar-toggle-btn {
-    background: none;
-    border: none;
-    color: #fff;
-    font-size: 18px;
-    padding: 10px;
-    cursor: pointer;
-    width: 100%;
-    text-align: left;
-}
-
-.main-content {
-    transition: margin-left 0.3s ease;
-}
-
-.sidebar.collapsed ~ .main-content {
-    margin-left: 70px;
-}
 /*=========================
 Header
 =========================*/
