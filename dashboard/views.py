@@ -4422,7 +4422,7 @@ def crm_dashboard(request):
     if tower_filter:
         queries = queries.filter(tower=tower_filter)
     if area_filter:
-        queries = queries.filter(area=area_filter)
+        queries = queries.filter(area__icontains=area_filter)
     if issue_filter:
         queries = queries.filter(issue=issue_filter)
     if customer_name_filter:
@@ -4454,7 +4454,6 @@ def crm_dashboard(request):
             .exclude(area="")
         )
     )
-
 
     issue_options = sorted(
         
