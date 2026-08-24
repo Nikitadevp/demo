@@ -402,14 +402,17 @@
                         <th>Case ID</th>
                         <th>
                             Customer
-                            <select name="customer" form="filterForm" onchange="document.getElementById('filterForm').submit()">
-                                <option value="">All</option>
-                                {% for customer in customer_options %}
-                                    <option value="{{ customer }}" {% if customer_filter == customer %}selected{% endif %}>
-                                        {{ customer }}
-                                    </option>
-                                {% endfor %}
-                            </select>
+                            <input
+                                type="text"
+                                name="customer"
+                                form="filterForm"
+                                placeholder="Search Name"
+                                value="{{ customer_filter }}"
+                                onkeydown="if(event.key === 'Enter'){ event.preventDefault(); document.getElementById('filterForm').submit(); }"
+                            >
+
+
+
                         </th>
                         <th>
                             Block
@@ -425,14 +428,15 @@
 
                         <th>
                             Area
-                            <select name="area" form="filterForm" onchange="document.getElementById('filterForm').submit()">
-                                <option value="">All</option>
-                                {% for area in area_options %}
-                                    <option value="{{ area }}" {% if area_filter == area %}selected{% endif %}>
-                                        {{ area }}
-                                    </option>
-                                {% endfor %}
-                            </select>
+                            <input
+                                type="text"
+                                name="area"
+                                form="filterForm"
+                                placeholder="Search Area"
+                                value="{{ area_filter }}"
+                                onkeydown="if(event.key === 'Enter'){ event.preventDefault(); document.getElementById('filterForm').submit(); }"
+                            >   
+
                         </th>
 
                         <th>

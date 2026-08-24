@@ -3810,7 +3810,7 @@ def site_engineer_dashboard(request):
 
     if customer_filter:
         pending_site_inspection = pending_site_inspection.filter(
-            customer_name=customer_filter
+            customer_name__icontains=customer_filter
         )
 
     if block_filter:
@@ -3820,7 +3820,7 @@ def site_engineer_dashboard(request):
 
     if area_filter:
         pending_site_inspection = pending_site_inspection.filter(
-            location=area_filter
+            location__icontains=area_filter
         )
 
     if issue_filter:
