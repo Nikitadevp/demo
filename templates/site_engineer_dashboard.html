@@ -482,7 +482,7 @@
 
                          <td>
                          {% if scope.status_type == "overdue" %}
-                            <span class="text-danger fw-bold">
+                            <span style="color: red !important; font-weight: bold;">
                                 {{ scope.overdue_text }}
                             </span>
                          {% elif scope.status_type == "pending" %}
