@@ -3748,6 +3748,12 @@ def site_engineer_dashboard(request):
         created_at__date=timezone.now().date()
     ).count()
 
+
+    today_site_inspections = SiteInspection.objects.filter(
+        created_at__date=timezone.now().date()
+    ).order_by("-created_at")    
+
+
     chargeable = SiteInspection.objects.filter(
         category="Chargeable"
     ).count()
@@ -3973,6 +3979,7 @@ def site_engineer_dashboard(request):
         "block_filter": block_filter,
         "area_filter": area_filter,
         "issue_filter": issue_filter,
+        "today_site_inspections": today_site_inspections,
         
 
        

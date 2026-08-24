@@ -57,7 +57,21 @@
 
             </li>
 
+
+            <li>
+
+                <a href="#today-site-inspection">
+                    <i class="fa-solid fa-calendar-day"></i>
+
+                    <span>Today's Inspection</span>
+
+                </a>
+
+            </li>
+
            
+
+
 
             <li>
 
@@ -387,6 +401,104 @@
         <form id="filterForm" method="GET" action="{% url 'site_engineer_dashboard' %}" style="display:none;">
             <input type="hidden" name="search" value="{{ search }}">
         </form>
+        <!-- ==========================================
+        TODAY'S SITE INSPECTION
+        =========================================== -->
+
+
+
+        <!-- ==========================================
+                TODAY'S SITE INSPECTION
+        =========================================== -->
+        <div class="section-title" id="today-site-inspection">
+            <h2>
+                Today's Inspection
+            </h2>
+        </div>
+        <div class="table-box">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Case ID</th>
+                        <th>Customer</th>
+                        <th>Engineer</th>
+                        <th>Block</th>
+                        <th>Area</th>
+                        <th>Issue</th>
+                        <th>Issue Description</th>
+                        <th>Category</th>
+                        <th>Material</th>
+                        <th>Scope</th>
+                        <th>Days</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for inspection in today_site_inspections %}
+                    <tr>
+                        <td>
+                            {{ inspection.case_id }}
+                        </td>
+                        <td>
+                            {{ inspection.customer_name }}
+                        </td>
+                        <td>
+                            {{ inspection.engineer_name }}
+                        </td>
+                        <td>
+                            {{ inspection.block }}
+                        </td>
+                        <td>
+                            {{ inspection.area }}
+                        </td>
+                        <td>
+                            {{ inspection.customer_query.issue }}
+                        </td>
+                        <td>
+                            {{ inspection.customer_query.problem }}
+                        </td>
+                        <td>
+                            {{ inspection.category }}
+                        </td>
+                        <td>
+                            {{ inspection.material_required }}
+                        </td>
+                        <td>
+                            {{ inspection.under_scope }}
+                        </td>
+                        <td>
+                            {{ inspection.days_required }}
+                        </td>
+                        <td>
+                            {{ inspection.created_at|date:"d/m/y h:i A" }}
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="12" class="text-center">
+                            No Inspection Created Today
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+ 
+        <div class="section-title" id="site-inspection-status">
+          
+            <h2>
+               Pending Inspection
+            </h2>
+        </div>
+        <div class="table-box">
+        
+
+
+
+
+
+        
  
         <div class="section-title" id="site-inspection-status">
           
