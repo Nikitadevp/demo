@@ -604,21 +604,17 @@ Header
 
 .table-box {
     width: 100%;
-    max-width: 100%;
-    min-width: 0;
-    background: #fff;
-    border-radius: 18px;
     overflow-x: auto;
     overflow-y: hidden;
-    box-shadow: 0 8px 20px rgba(0,0,0,.08);
-    margin-top: 25px;
-    margin-bottom: 35px;
+    border-radius: 18px;
+    background: white;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
 }
+
 
 .table-box table {
     width: 100%;
-    max-width: 100%;
-    min-width: 0;
+    min-width: max-content;
     border-collapse: collapse;
     table-layout: auto;
 }
@@ -630,10 +626,10 @@ Header
     white-space: nowrap;
 }
 
-.table-box td {
+.table-box td{
+    white-space: normal;
     padding: 10px 12px;
     vertical-align: middle;
-    white-space: normal;
     word-break: break-word;
     overflow-wrap: anywhere;
 }
@@ -711,25 +707,7 @@ Header
 
 
 
-/* ==========================================
-   PENDING INSPECTION TABLE - COMPACT ROWS
-========================================== */
 
-.table-box table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.table-box table tbody tr {
-    height: auto !important;
-}
-
-.table-box table tbody td {
-    padding: 10px 12px !important;
-    height: auto !important;
-    line-height: 1.3 !important;
-    vertical-align: middle;
-}
 /*==========================================
         STATUS BADGE
 ==========================================*/
