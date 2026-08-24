@@ -37,6 +37,17 @@ Dashboard Layout
 Sidebar
 =========================*/
 
+.sidebar{
+
+    width:260px;
+    background:#1f2937;
+    color:#fff;
+    position:fixed;
+    top:0;
+    left:0;
+    bottom:0;
+    overflow-y:auto;
+}
 .sidebar {
     transition: width 0.3s ease;
     overflow: hidden;
@@ -74,7 +85,6 @@ Sidebar
 .sidebar.collapsed ~ .main-content {
     margin-left: 70px;
 }
-
 .logo{
 
     padding:30px 20px;
