@@ -5158,7 +5158,6 @@ def crm_dashboard(request):
 
 
 
-
 def store_keeper_dashboard(request):
 
     # ==========================================
@@ -5171,100 +5170,207 @@ def store_keeper_dashboard(request):
     if request.session.get("admin_role") != "Store Keeper":
         return redirect("login")
 
-
     # ==========================================
-    # CURRENT DATE & TIME
-    # ==========================================
-
-    now = timezone.localtime(timezone.now())
-
-
-    # ==========================================
-    # TAT
-    #
-    # S6 - Material Availability = 2 Hours
-    # S7 - Raise Indent          = 2 Days
-    # S8 - Issue Material        = 1 Hour
+    # SUMMARY COUNTS
     # ==========================================
 
-    availability_tat = timedelta(hours=2)
+    total_material_checks = MaterialAvailability.objects.count()
 
-    indent_tat = timedelta(days=2)
-
-    issue_tat = timedelta(hours=1)
-
-
-    # ==========================================
-    # MATERIAL AVAILABILITY - S6
-    # ==========================================
-
-    availability_list = MaterialAvailability.objects.select_related(
-        "customer_query"
-    ).order_by("-id")
-
-    total_requests = availability_list.count()
-
-    availability_completed = availability_list.filter(
-        material_available__in=["Yes", "No"]
+    available_count = MaterialAvailability.objects.filter(
+        material_available="Yes"
     ).count()
 
-    pending_availability = max(
-        total_requests - availability_completed,
-        0
+    not_available_count = MaterialAvailability.objects.filter(
+        material_available="No"
+    ).count()
+
+    indent_raised_count = RaiseIndent.objects.count()
+
+    material_issued_count = IssueMaterial.objects.count()
+
+    today_material_checks = MaterialAvailability.objects.filter(
+        created_at__date=timezone.now().date()
+    ).count()
+
+    # ==========================================
+    # SEARCH
+    # ==========================================
+
+    search = request.GET.get("search", "")
+
+    customer_filter = request.GET.get("customer", "")
+    block_filter = request.GET.get("block", "")
+    area_filter = request.GET.get("area", "")
+
+    # ==========================================
+    # PENDING MATERIAL CHECK (S6)
+    # ==========================================
+
+    pending_material_check = SiteInspection.objects.filter(
+        material_required="Yes"
+    ).exclude(
+        customer_query__materialavailability__isnull=False
     )
 
+    pending_material_check_count = pending_material_check.count()
 
-    # ==========================================
-    # RAISE INDENT - S7
-    # ==========================================
+    if customer_filter:
+        pending_material_check = pending_material_check.filter(
+            customer_name__icontains=customer_filter
+        )
 
-    indent_list = RaiseIndent.objects.select_related(
+    if block_filter:
+        pending_material_check = pending_material_check.filter(
+            block__icontains=block_filter
+        )
+
+    if area_filter:
+        pending_material_check = pending_material_check.filter(
+            area__icontains=area_filter
+        )
+
+    if search:
+        pending_material_check = pending_material_check.filter(
+            Q(case_id__icontains=search) |
+            Q(customer_name__icontains=search) |
+            Q(block__icontains=search) |
+            Q(area__icontains=search)
+        )
+
+    pending_material_check = pending_material_check.select_related(
         "customer_query"
-    ).order_by("-id")
+    ).order_by("created_at")
 
-    total_indents = indent_list.count()
+    pending_material_list = []
 
-    indent_completed = total_indents
+    for item in pending_material_check:
 
-    pending_indents = 0
+        due_date = item.created_at + timedelta(hours=2)
 
+        if timezone.now() > due_date:
+            delta = timezone.now() - due_date
+            days = delta.days
+            hours = delta.seconds // 3600
+
+            if days > 0:
+                item.overdue_text = f"Over Due by {days}d {hours}h"
+            else:
+                item.overdue_text = f"Over Due by {hours}h"
+            item.status_type = "overdue"
+        else:
+            item.status_type = "pending"
+
+        pending_material_list.append(item)
 
     # ==========================================
-    # ISSUE MATERIAL - S8
+    # PENDING INDENT (S7)
     # ==========================================
 
-    issue_list = IssueMaterial.objects.select_related(
+    pending_indent = MaterialAvailability.objects.filter(
+        material_available="No"
+    ).exclude(
+        customer_query__raiseindent__isnull=False
+    )
+
+    pending_indent_count = pending_indent.count()
+
+    if customer_filter:
+        pending_indent = pending_indent.filter(
+            customer_name__icontains=customer_filter
+        )
+
+    if block_filter:
+        pending_indent = pending_indent.filter(
+            block__icontains=block_filter
+        )
+
+    if area_filter:
+        pending_indent = pending_indent.filter(
+            area__icontains=area_filter
+        )
+
+    pending_indent = pending_indent.select_related(
         "customer_query"
-    ).order_by("-id")
+    ).order_by("created_at")
 
-    total_issued = issue_list.count()
+    pending_indent_list = []
 
-    issue_completed = total_issued
+    for item in pending_indent:
 
-    pending_issue = 0
+        due_date = add_working_days(item.created_at, 2)
 
+        if timezone.now() > due_date:
+            delta = timezone.now() - due_date
+            days = delta.days
+            hours = delta.seconds // 3600
+
+            if days > 0:
+                item.overdue_text = f"Over Due by {days}d {hours}h"
+            else:
+                item.overdue_text = f"Over Due by {hours}h"
+            item.status_type = "overdue"
+        else:
+            item.status_type = "pending"
+
+        pending_indent_list.append(item)
 
     # ==========================================
-    # OVERDUE
+    # READY TO ISSUE (S8)
     # ==========================================
 
-    overdue_count = 0
+    ready_available = MaterialAvailability.objects.filter(
+        material_available="Yes"
+    ).exclude(
+        customer_query__issuematerial__isnull=False
+    ).select_related("customer_query")
 
-    availability_overdue = 0
-    indent_overdue = 0
-    issue_overdue = 0
+    ready_indent = RaiseIndent.objects.exclude(
+        customer_query__issuematerial__isnull=False
+    ).select_related("customer_query")
 
+    ready_to_issue_list = []
+
+    for item in ready_available:
+        ready_to_issue_list.append({
+            "case_id": item.case_id,
+            "customer_name": item.customer_name,
+            "block": item.block,
+            "area": item.area,
+            "source": "Material Available",
+            "created_at": item.created_at,
+            "customer_query_id": item.customer_query_id,
+        })
+
+    for item in ready_indent:
+        ready_to_issue_list.append({
+            "case_id": item.case_id,
+            "customer_name": item.customer_name,
+            "block": item.block,
+            "area": item.area,
+            "source": "Indent Raised",
+            "created_at": item.created_at,
+            "customer_query_id": item.customer_query_id,
+        })
+
+    ready_to_issue_list.sort(key=lambda x: x["created_at"])
+
+    ready_to_issue_count = len(ready_to_issue_list)
 
     # ==========================================
-    # TAT PROGRESS
+    # RECENT ISSUED MATERIAL (Closed)
     # ==========================================
 
-    availability_progress = 0
+    recent_issued = IssueMaterial.objects.select_related(
+        "customer_query"
+    ).order_by("-created_at")
 
-    indent_progress = 0
-
-    issue_progress = 0
-
+    if search:
+        recent_issued = recent_issued.filter(
+            Q(case_id__icontains=search) |
+            Q(customer_name__icontains=search) |
+            Q(block__icontains=search) |
+            Q(area__icontains=search)
+        )
 
     # ==========================================
     # CONTEXT
@@ -5272,87 +5378,36 @@ def store_keeper_dashboard(request):
 
     context = {
 
-        # --------------------------------------
-        # Current Time
-        # --------------------------------------
+        "total_material_checks": total_material_checks,
+        "available_count": available_count,
+        "not_available_count": not_available_count,
+        "indent_raised_count": indent_raised_count,
+        "material_issued_count": material_issued_count,
+        "today_material_checks": today_material_checks,
 
-        "current_time": now,
+        "pending_material_check_count": pending_material_check_count,
+        "pending_material_list": pending_material_list,
 
+        "pending_indent_count": pending_indent_count,
+        "pending_indent_list": pending_indent_list,
 
-        # --------------------------------------
-        # SUMMARY CARDS
-        # --------------------------------------
+        "ready_to_issue_list": ready_to_issue_list,
+        "ready_to_issue_count": ready_to_issue_count,
 
-        "total_requests": total_requests,
+        "recent_issued": recent_issued,
 
-        "pending_availability": pending_availability,
-
-        "total_indents": total_indents,
-
-        "total_issued": total_issued,
-
-        "overdue_count": overdue_count,
-
-
-        # --------------------------------------
-        # MATERIAL AVAILABILITY - S6
-        # --------------------------------------
-
-        "availability_list": availability_list,
-
-        "availability_completed": availability_completed,
-
-        "availability_progress": availability_progress,
-
-        "availability_overdue": availability_overdue,
-
-
-        # --------------------------------------
-        # RAISE INDENT - S7
-        # --------------------------------------
-
-        "indent_list": indent_list,
-
-        "pending_indents": pending_indents,
-
-        "indent_completed": indent_completed,
-
-        "indent_progress": indent_progress,
-
-        "indent_overdue": indent_overdue,
-
-
-        # --------------------------------------
-        # ISSUE MATERIAL - S8
-        # --------------------------------------
-
-        "issue_list": issue_list,
-
-        "pending_issue": pending_issue,
-
-        "issue_completed": issue_completed,
-
-        "issue_progress": issue_progress,
-
-        "issue_overdue": issue_overdue,
-
-
-
-
-
-
-
-
+        "search": search,
+        "customer_filter": customer_filter,
+        "block_filter": block_filter,
+        "area_filter": area_filter,
 
     }
-
-
-    # ==========================================
-    # RENDER DASHBOARD
-    # ==========================================
 
     return render(
         request,
         "store_keeper_dashboard.html",
         context
     )
+
+
+
