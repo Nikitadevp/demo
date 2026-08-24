@@ -705,7 +705,19 @@ Header
 }
 
 
+.open-form-link {
+    color: #0d6efd;
+    background: none;
+    border: none;
+    padding: 0;
+    text-decoration: none;
+    font-weight: 500;
+}
 
+.open-form-link:hover {
+    color: #0a58ca;
+    text-decoration: underline;
+}
 
 
 /*==========================================
