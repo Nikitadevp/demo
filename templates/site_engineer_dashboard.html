@@ -651,13 +651,46 @@
 
                         <th>Case ID</th>
 
-                        <th>Customer</th>
+                        <th>
+                            Customer
+                            <input
+                                type="text"
+                                name="customer"
+                                form="filterForm"
+                                placeholder="Search Name"
+                                value="{{ customer_filter }}"
+                                onkeydown="if(event.key === 'Enter'){ event.preventDefault(); document.getElementById('filterForm').submit(); }"
+                            >
+
+
+
+                        </th>
 
                         <th>Engineer</th>
+                        <th>
+                            Block
+                            <select name="block" form="filterForm" onchange="document.getElementById('filterForm').submit()">
+                                <option value="">All</option>
+                                {% for block in block_options %}
+                                    <option value="{{ block }}" {% if block_filter == block %}selected{% endif %}>
+                                        {{ block }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </th>
 
-                        <th>Block</th>
+                        <th>
+                            Area
+                            <input
+                                type="text"
+                                name="area"
+                                form="filterForm"
+                                placeholder="Search Area"
+                                value="{{ area_filter }}"
+                                onkeydown="if(event.key === 'Enter'){ event.preventDefault(); document.getElementById('filterForm').submit(); }"
+                            >   
 
-                        <th>Area</th>
+                        </th>
 
                         <th class="category-header">
                             Category
