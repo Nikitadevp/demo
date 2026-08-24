@@ -456,6 +456,10 @@
                         
                         <th>Date</th>
 
+                        <th>Closed Date</th>
+
+
+
                     </tr>
                 </thead>
                 <tbody>
@@ -488,11 +492,15 @@
                             
 
                          <td>{{ scope.created_at|date:"d/m/y h:i A" }}</td>
+
+                         <td>{{ inspection.closed_date|date:"d M Y h:i A" }}</td>
+
+
                     </tr>
                {% empty %}
                      <tr>
 
-                       <td colspan="8">
+                       <td colspan="11">
 
                          No Pending Site Inspection
 
