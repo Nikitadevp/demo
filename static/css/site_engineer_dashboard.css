@@ -37,16 +37,42 @@ Dashboard Layout
 Sidebar
 =========================*/
 
-.sidebar{
+.sidebar {
+    transition: width 0.3s ease;
+    overflow: hidden;
+}
 
-    width:260px;
-    background:#1f2937;
-    color:#fff;
-    position:fixed;
-    top:0;
-    left:0;
-    bottom:0;
-    overflow-y:auto;
+.sidebar.collapsed {
+    width: 70px;
+}
+
+.sidebar.collapsed .logo h2,
+.sidebar.collapsed .logo p,
+.sidebar.collapsed ul li a span {
+    display: none;
+}
+
+.sidebar.collapsed ul li a {
+    justify-content: center;
+}
+
+.sidebar-toggle-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 18px;
+    padding: 10px;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+}
+
+.main-content {
+    transition: margin-left 0.3s ease;
+}
+
+.sidebar.collapsed ~ .main-content {
+    margin-left: 70px;
 }
 
 .logo{
