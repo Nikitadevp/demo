@@ -453,6 +453,8 @@
                         <th>Issue Description</th>
                         
                         <th>Status</th>
+
+                        <th>Form</th>
                         
                         <th>Date</th>
 
@@ -489,7 +491,13 @@
                             </span> 
                          {% endif %}
                          </td>
-                            
+
+                         <td>
+                            <a href="{% url 'site_inspection_form' scope.customer_query.id %}"
+                                class="btn btn-sm btn-primary">
+                                Open Form
+                            </a>
+                         </td>
 
                          <td>{{ scope.created_at|date:"d/m/y h:i A" }}</td>
 
