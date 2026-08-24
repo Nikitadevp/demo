@@ -597,18 +597,44 @@ Header
 
 }
 
-.table-box td{
-
-    padding:16px;
-    border-bottom:1px solid #e5e7eb;
-    font-size:14px;
-
+.table-box {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
 }
+
+.table-box table {
+    width: 100%;
+    min-width: max-content;
+    border-collapse: collapse;
+}
+
 
 .table-box tbody tr{
 
     transition:.3s;
 
+}
+/* Issue Description ko thoda flexible rakho */
+.table-box th:nth-child(6),
+.table-box td:nth-child(6) {
+    min-width: 220px;
+    max-width: 350px;
+    white-space: normal;
+    word-break: break-word;
+}
+
+/* Form column */
+.table-box th:nth-child(8),
+.table-box td:nth-child(8) {
+    min-width: 120px;
+    text-align: center;
+}
+
+.table-box td{
+    white-space: nowrap;
+    padding: 10px 12px;
+    vertical-align: middle;
 }
 
 .table-box tbody tr:hover{
