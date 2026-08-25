@@ -391,14 +391,14 @@
         </div>
 
 
+        <form id="filterForm" method="GET" action="{% url 'store_keeper_dashboard' %}" style="display:none;">
+            <input type="hidden" name="search" value="{{ search }}">
+        </form>
 
 
         <!-- ==========================================
                 PENDING MATERIAL CHECK (S6)
         =========================================== -->
-        <form id="filterForm" method="GET" action="{% url 'store_keeper_dashboard' %}" style="display:none;">
-            <input type="hidden" name="search" value="{{ search }}">
-        </form>
 
         <div class="section-title" id="pending-material-check">
 
@@ -414,6 +414,7 @@
                     <tr>
 
                         <th>Case ID</th>
+
                         <th>
                            <div class="d-flex flex-column gap-1">
                                 <span>Customer Name</span>
@@ -424,7 +425,7 @@
                                     class="form-control form-control-sm"
                                     placeholder="Search Name"
                                     value="{{ customer_filter }}"
-                                    onkeydown="if(event.key === 'Enter'){event.preventDefault();document.getElementById('filterForm').submit();}"
+                                    onkeydown="if(event.key === 'Enter'){ event.preventDefault(); document.getElementById('filterForm').submit(); }"
                                 >
                             </div>
                         </th>
@@ -447,19 +448,23 @@
                                     {% endfor %}
                                 </select>
                             </div>
-                          
                         </th>
+
                         <th>
-                            Area
-                            <input
-                                type="text"
-                                name="area"
-                                form="filterForm"
-                                placeholder="Search Area"
-                                value="{{ area_filter }}"
-                                onkeydown="if(event.key === 'Enter'){ event.preventDefault(); document.getElementById('filterForm').submit(); }"
-                            >
+                           <div class="d-flex flex-column gap-1">
+                                <span>Area</span>
+                                <input
+                                    type="text"
+                                    name="area"
+                                    form="filterForm"
+                                    class="form-control form-control-sm"
+                                    placeholder="Search Area"
+                                    value="{{ area_filter }}"
+                                    onkeydown="if(event.key === 'Enter'){ event.preventDefault(); document.getElementById('filterForm').submit(); }"
+                                >
+                            </div>
                         </th>
+
                         <th>Status</th>
                         <th>Form</th>
                         <th>Date</th>
@@ -533,6 +538,7 @@
                     <tr>
 
                         <th>Case ID</th>
+
                         <th>
                            <div class="d-flex flex-column gap-1">
                                 <span>Customer Name</span>
@@ -543,32 +549,41 @@
                                     class="form-control form-control-sm"
                                     placeholder="Search Name"
                                     value="{{ customer_filter }}"
-                                    onkeydown="if(event.key === 'Enter'){event.preventDefault();document.getElementById('filterForm').submit();}"
+                                    onkeydown="if(event.key === 'Enter'){ event.preventDefault(); document.getElementById('filterForm').submit(); }"
                                 >
                             </div>
                         </th>
+
                         <th>
-                            Block
-                            <input
-                                type="text"
-                                name="block"
-                                form="filterForm"
-                                placeholder="Search Block"
-                                value="{{ block_filter }}"
-                                onkeydown="if(event.key === 'Enter'){ event.preventDefault(); document.getElementById('filterForm').submit(); }"
-                            >
+                           <div class="d-flex flex-column gap-1">
+                                <span>Block</span>
+                                <input
+                                    type="text"
+                                    name="block"
+                                    form="filterForm"
+                                    class="form-control form-control-sm"
+                                    placeholder="Search Block"
+                                    value="{{ block_filter }}"
+                                    onkeydown="if(event.key === 'Enter'){ event.preventDefault(); document.getElementById('filterForm').submit(); }"
+                                >
+                            </div>
                         </th>
+
                         <th>
-                            Area
-                            <input
-                                type="text"
-                                name="area"
-                                form="filterForm"
-                                placeholder="Search Area"
-                                value="{{ area_filter }}"
-                                onkeydown="if(event.key === 'Enter'){ event.preventDefault(); document.getElementById('filterForm').submit(); }"
-                            >
+                           <div class="d-flex flex-column gap-1">
+                                <span>Area</span>
+                                <input
+                                    type="text"
+                                    name="area"
+                                    form="filterForm"
+                                    class="form-control form-control-sm"
+                                    placeholder="Search Area"
+                                    value="{{ area_filter }}"
+                                    onkeydown="if(event.key === 'Enter'){ event.preventDefault(); document.getElementById('filterForm').submit(); }"
+                                >
+                            </div>
                         </th>
+
                         <th>Status</th>
                         <th>Form</th>
                         <th>Date</th>
