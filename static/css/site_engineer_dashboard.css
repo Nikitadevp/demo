@@ -504,7 +504,77 @@ th select option {
     color: var(--text-muted);
     border-top: 1px solid var(--border);
 }
+/* =========================================================
+   PENDING MATERIAL CHECK - FILTER BOX FIX
+   ========================================================= */
 
+/* Table ko content ke according proper space do */
+#pending-material-check table {
+    table-layout: fixed;
+    width: 100%;
+}
+
+/* Customer Name column */
+#pending-material-check th:nth-child(2) {
+    width: 180px;
+}
+
+/* Block column */
+#pending-material-check th:nth-child(3) {
+    width: 150px;
+}
+
+/* Area column */
+#pending-material-check th:nth-child(4) {
+    width: 180px;
+}
+
+
+/* =========================================================
+   FILTER INPUTS
+   ========================================================= */
+
+#pending-material-check th input,
+#pending-material-check th select {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+}
+
+
+/* Customer Name search box */
+#pending-material-check th input[name="customer"] {
+    width: 150px !important;
+    max-width: 150px !important;
+}
+
+
+/* Block dropdown */
+#pending-material-check th select[name="block"] {
+    width: 120px !important;
+    max-width: 120px !important;
+}
+
+
+/* Area search box */
+#pending-material-check th input[name="area"] {
+    width: 150px !important;
+    max-width: 150px !important;
+}
+
+
+/* Filter container */
+#pending-material-check th .d-flex {
+    width: 100%;
+    min-width: 0;
+}
+
+
+/* Prevent filter boxes from overflowing into next column */
+#pending-material-check th {
+    overflow: hidden;
+}
 /* ==========================================
    RESPONSIVE
 ========================================== */
