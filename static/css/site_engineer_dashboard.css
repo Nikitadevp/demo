@@ -1,5 +1,5 @@
 /*==========================================
-    SITE ENGINEER DASHBOARD
+    STORE KEEPER DASHBOARD
 ==========================================*/
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
@@ -296,56 +296,29 @@ Header
     SUMMARY CARD COLORS
 ==========================================*/
 
-.card.total-card{
+.blue-card{ border-left:6px solid #2563eb; }
+.blue-card i{ color:#2563eb; }
 
-    border-left:6px solid #2563eb;
+.orange-card{ border-left:6px solid #f59e0b; }
+.orange-card i{ color:#f59e0b; }
 
-}
+.purple-card{ border-left:6px solid #8b5cf6; }
+.purple-card i{ color:#8b5cf6; }
 
-.card.total-card i{
+.cyan-card{ border-left:6px solid #0ea5e9; }
+.cyan-card i{ color:#0ea5e9; }
 
-    color:#2563eb;
+.gray-card{ border-left:6px solid #64748b; }
+.gray-card i{ color:#64748b; }
 
-}
+.pink-card{ border-left:6px solid #ec4899; }
+.pink-card i{ color:#ec4899; }
 
+.dark-card{ border-left:6px solid #1f2937; }
+.dark-card i{ color:#1f2937; }
 
-.card.open-card{
-
-    border-left:6px solid #22c55e;
-
-}
-
-.card.open-card i{
-
-    color:#22c55e;
-
-}
-
-
-.card.pending-card{
-
-    border-left:6px solid #f59e0b;
-
-}
-
-.card.pending-card i{
-
-    color:#f59e0b;
-
-}
-
-
-.card.closed-card{
-
-    border-left:6px solid #ef4444;
-
-}
-
-.card.closed-card i{
-
-    color:#ef4444;
-
-}
+.yellow-card{ border-left:6px solid #eab308; }
+.yellow-card i{ color:#eab308; }
 
 
 /*==========================================
@@ -368,139 +341,13 @@ Header
 
 
 /*==========================================
-    WORKFLOW GRID
-==========================================*/
-
-.workflow-grid{
-
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-    gap:25px;
-    margin-bottom:40px;
-
-}
-
-.workflow-card{
-
-    background:#fff;
-    border-radius:18px;
-    padding:25px;
-    transition:.35s;
-    box-shadow:0 8px 20px rgba(0,0,0,.08);
-
-}
-
-.workflow-card:hover{
-
-    transform:translateY(-8px);
-    box-shadow:0 18px 35px rgba(0,0,0,.15);
-
-}
-
-.workflow-top{
-
-    display:flex;
-    align-items:center;
-    gap:15px;
-    margin-bottom:20px;
-
-}
-
-.workflow-top i{
-
-    width:55px;
-    height:55px;
-    border-radius:50%;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-size:22px;
-
-}
-
-.workflow-top span{
-
-    font-size:17px;
-    font-weight:600;
-
-}
-
-.workflow-card h2{
-
-    font-size:36px;
-    margin-bottom:10px;
-
-}
-
-.workflow-card small{
-
-    font-size:14px;
-    color:#64748b;
-
-}
-
-
-/*==========================================
-    S0 CUSTOMER QUERY
-==========================================*/
-
-.query-card{
-
-    border-left:6px solid #2563eb;
-
-}
-
-.query-card i{
-
-    background:#dbeafe;
-    color:#2563eb;
-
-}
-
-
-/*==========================================
-    S1 MAINTENANCE SCOPE
-==========================================*/
-
-.scope-card{
-
-    border-left:6px solid #10b981;
-
-}
-
-.scope-card i{
-
-    background:#d1fae5;
-    color:#10b981;
-
-}
-
-
-/*==========================================
-    S2 SITE INSPECTION
-==========================================*/
-
-.inspection-card{
-
-    border-left:6px solid #f59e0b;
-
-}
-
-.inspection-card i{
-
-    background:#fef3c7;
-    color:#f59e0b;
-
-}
-
-/*==========================================
         ANALYTICS CARD
 ==========================================*/
 
 .analytics-grid{
 
     display:grid;
-    grid-template-columns:repeat(2,1fr);
+    grid-template-columns:repeat(4,1fr);
     gap:25px;
     margin:40px 0;
 
@@ -513,6 +360,7 @@ Header
     padding:28px;
     box-shadow:0 10px 25px rgba(0,0,0,.08);
     transition:.3s;
+    border-left:6px solid #f59e0b;
 
 }
 
@@ -523,79 +371,57 @@ Header
 
 }
 
-.analytics-card h3{
+.analytics-card i{
 
     font-size:22px;
-    margin-bottom:20px;
-    color:#1f2937;
+    color:#f59e0b;
+    margin-bottom:15px;
 
 }
 
 .analytics-card h2{
 
-    font-size:42px;
+    font-size:36px;
     color:#0ea5e9;
-    margin-bottom:15px;
+    margin-bottom:10px;
 
 }
 
-/*==========================================
-        PROGRESS BAR
-==========================================*/
+.analytics-card p{
 
-.progress{
-
-    width:100%;
-    height:12px;
-    background:#e5e7eb;
-    border-radius:30px;
-    overflow:hidden;
-
-}
-
-.progress-fill{
-
-    height:100%;
-    border-radius:30px;
-    background:linear-gradient(90deg,#0ea5e9,#0284c7);
-
-}
-
-/*==========================================
-        TABLE
-==========================================*/
-
-.table-box{
-
-    background:#fff;
-    border-radius:18px;
-    overflow:hidden;
-    box-shadow:0 8px 20px rgba(0,0,0,.08);
-    margin-top:25px;
-    margin-bottom:35px;
-
-}
-
-.table-box table{
-
-    width:100%;
-    border-collapse:collapse;
-
-}
-
-.table-box thead{
-
-    background:#0ea5e9;
-    color:#fff;
-
-}
-
-.table-box th{
-
-    padding:18px;
-    text-align:left;
+    color:#64748b;
     font-size:15px;
 
+}
+
+/*==========================================
+        SEARCH BOX
+==========================================*/
+
+.search-box{
+    margin:20px 0;
+}
+
+.search-box form{
+    display:flex;
+    gap:10px;
+}
+
+.search-box input{
+    width:350px;
+    padding:10px;
+    border:1px solid #ccc;
+    border-radius:5px;
+    font-size:15px;
+}
+
+.search-box button{
+    padding:10px 20px;
+    background:#0d6efd;
+    color:white;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
 }
 
 /*==========================================
@@ -609,8 +435,9 @@ Header
     border-radius: 18px;
     background: white;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+    margin-top:25px;
+    margin-bottom:35px;
 }
-
 
 .table-box table {
     width: 100%;
@@ -619,62 +446,51 @@ Header
     table-layout: auto;
 }
 
+.table-box thead{
+
+    background:#0ea5e9;
+    color:#fff;
+
+}
+
 .table-box th {
     padding: 18px;
     text-align: left;
     font-size: 15px;
     white-space: nowrap;
+    vertical-align: top;
+}
+
+/* Filter label text inside th, sits above the input/select */
+.table-box th > *:first-child {
+    display: block;
+    margin-bottom: 8px;
+}
+
+.table-box th input,
+.table-box th select {
+    display: block;
+    width: 150px;
+    max-width: 100%;
+    padding: 8px 10px;
+    font-size: 13px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    color: #1e293b;
+    background: #fff;
+    white-space: normal;
 }
 
 .table-box td{
     white-space: normal;
-    padding: 10px 12px;
+    padding: 14px 16px;
+    font-size: 15px;
     vertical-align: middle;
     word-break: break-word;
     overflow-wrap: anywhere;
 }
 
-
-/* Issue Description */
-.table-box th:nth-child(6),
-.table-box td:nth-child(6) {
-    min-width: 180px;
-    max-width: 350px;
-    white-space: normal;
-    word-break: break-word;
-}
-
-
-/* Form column */
-.table-box th:nth-child(8),
-.table-box td:nth-child(8) {
-    min-width: 110px;
-    text-align: center;
-    white-space: nowrap;
-}
-
-
-/* Button */
-.table-box td .btn {
-    white-space: nowrap;
-}
-
-
-/* Row Hover */
-.table-box tbody tr {
-    transition: .3s;
-}
-
-.table-box tbody tr:hover {
-    background: #f0f9ff;
-}
-
-.table-box tbody tr{
-
-    transition:.3s;
-
-}
-/* Issue Description ko thoda flexible rakho */
+/* Issue Description column, a bit wider */
 .table-box th:nth-child(6),
 .table-box td:nth-child(6) {
     min-width: 220px;
@@ -683,19 +499,10 @@ Header
     word-break: break-word;
 }
 
-/* Form column */
-.table-box th:nth-child(8),
-.table-box td:nth-child(8) {
-    min-width: 120px;
-    text-align: center;
-}
+.table-box tbody tr{
 
-.table-box td{
-    white-space: normal;
-    padding: 10px 12px;
-    vertical-align: middle;
-    word-break: break-word;
-    overflow-wrap: anywhere;
+    transition:.3s;
+
 }
 
 .table-box tbody tr:hover{
@@ -704,19 +511,19 @@ Header
 
 }
 
-
 .open-form-link {
-    color: #0d6efd;
-    background: none;
-    border: none;
-    padding: 0;
+    color: #fff;
+    background: #f59e0b;
+    padding: 8px 14px;
+    border-radius: 6px;
     text-decoration: none;
-    font-weight: 500;
+    font-weight: 600;
+    font-size: 14px;
+    white-space: nowrap;
 }
 
 .open-form-link:hover {
-    color: #0a58ca;
-    text-decoration: underline;
+    background: #0ea5e9;
 }
 
 
@@ -724,39 +531,34 @@ Header
         STATUS BADGE
 ==========================================*/
 
-.status{
+.badge{
 
     padding:6px 16px;
     border-radius:25px;
-    color:#fff;
     font-size:13px;
     font-weight:600;
 
 }
 
-.status.open{
+.bg-warning{
 
-    background:#3b82f6;
-
-}
-
-.status.pending{
-
-    background:#f59e0b;
+    background:#fef3c7;
 
 }
 
-.status.progress{
+.text-dark{
 
-    background:#8b5cf6;
+    color:#92400e;
+
+}
+
+.bg-danger{
+
+    background:#fee2e2;
+    color:#b91c1c;
 
 }
 
-.status.closed{
-
-    background:#22c55e;
-
-}
 
 /*==========================================
         BUTTONS
@@ -773,6 +575,26 @@ button:hover{
     transform:translateY(-2px);
 
 }
+
+.logout-btn{
+
+    background:#dc3545;
+    color:#fff;
+    border:none;
+    padding:10px 18px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:15px;
+    font-weight:600;
+
+}
+
+.logout-btn:hover{
+
+    background:#b02a37;
+
+}
+
 
 /*==========================================
         FOOTER
@@ -822,7 +644,6 @@ button:hover{
 ==========================================*/
 
 .card,
-.workflow-card,
 .analytics-card,
 .table-box,
 .welcome-card{
@@ -830,57 +651,6 @@ button:hover{
     animation:fadeUp .5s ease;
 
 }
-
-.search-box{
-    margin:20px 0;
-}
-
-.search-box form{
-    display:flex;
-    gap:10px;
-}
-
-.search-box input{
-    width:350px;
-    padding:10px;
-    border:1px solid #ccc;
-    border-radius:5px;
-}
-
-.search-box button{
-    padding:10px 20px;
-    background:#0d6efd;
-    color:white;
-    border:none;
-    border-radius:5px;
-    cursor:pointer;
-}
-.category-header{
-
-    white-space: nowrap;
-
-}
-
-#categoryFilter{
-
-    border: none;
-    background: transparent;
-    color: white;
-    font-weight: 600;
-    cursor: pointer;
-    outline: none;
-
-}
-
-#categoryFilter option{
-
-    color: black;
-    background: white;
-
-}
-
-
-
 
 @keyframes fadeUp{
 
@@ -919,33 +689,6 @@ button:hover{
     }
 
 }
- 
-
-.btn-primary {
-    background-color: #0d6efd;
-    border-color: #0d6efd;
-    color: white;
-}
-
-
-.logout-btn{
-
-    background:#dc3545;
-    color:#fff;
-    border:none;
-    padding:10px 18px;
-    border-radius:8px;
-    cursor:pointer;
-    font-size:15px;
-    font-weight:600;
-
-}
-
-.logout-btn:hover{
-
-    background:#b02a37;
-
-}
 
 @media(max-width:768px){
 
@@ -963,9 +706,9 @@ button:hover{
     }
 
     .main-content{
-    margin-left:260px;
-    width:calc(100% - 260px);
-    padding:30px;
+        margin-left:80px;
+        width:calc(100% - 80px);
+        padding:30px;
     }
 
     .header{
@@ -985,12 +728,6 @@ button:hover{
     }
 
     .summary-grid{
-
-        grid-template-columns:1fr;
-
-    }
-
-    .workflow-grid{
 
         grid-template-columns:1fr;
 
