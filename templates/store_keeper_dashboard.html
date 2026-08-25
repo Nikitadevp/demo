@@ -45,7 +45,7 @@
 
             <li class="active">
 
-                <a href="{% url 'store_dashboard' %}">
+                <a href="{% url 'store_keeper_dashboard' %}">
 
                     <i class="fa-solid fa-chart-line"></i>
 
@@ -377,7 +377,7 @@
 
                 </button>
 
-                <a href="{% url 'store_dashboard' %}">
+                <a href="{% url 'store_keeper_dashboard' %}">
 
                     <button type="button">
 
@@ -388,7 +388,7 @@
             </form>
         </div>
 
-        <form id="filterForm" method="GET" action="{% url 'store_dashboard' %}" style="display:none;">
+        <form id="filterForm" method="GET" action="{% url 'store_keeper_dashboard' %}" style="display:none;">
             <input type="hidden" name="search" value="{{ search }}">
         </form>
 
@@ -424,24 +424,14 @@
                         </th>
                         <th>
                             Block
-                            <select
+                            <input
+                                type="text"
                                 name="block"
                                 form="filterForm"
-                                onchange="document.getElementById('filterForm').submit();"
+                                placeholder="Search Block"
+                                value="{{ block_filter }}"
+                                onkeydown="if(event.key === 'Enter'){ event.preventDefault(); document.getElementById('filterForm').submit(); }"
                             >
-                                <option value="">All</option>
-
-                                {% for block in block_options %}
-                                    <option
-                                        value="{{ block }}"
-                                        {% if block == block_filter %}selected{% endif %}
-                                    >
-                                        {{ block }}
-                                    </option>
-                                {% endfor %}
-                           </select>
-
-                           
                         </th>
                         <th>
                             Area
