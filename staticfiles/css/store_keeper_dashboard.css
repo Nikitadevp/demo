@@ -531,77 +531,127 @@ body {
 ========================================================= */
 
 .table-box {
+    width: 100%;
     background: #fff;
-
     border-radius: 12px;
-
     overflow-x: auto;
-
-    box-shadow:
-        0 2px 6px rgba(0, 0, 0, 0.06);
-
+    overflow-y: hidden;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
     margin-bottom: 20px;
 }
 
+/* Table */
 .table-box table {
     width: 100%;
-
+    min-width: 1050px;
     border-collapse: collapse;
-
-    min-width: 700px;
+    table-layout: fixed;
 }
+
 
 /* Table Header */
 
 .table-box thead {
     background: #1b2a4a;
-
     color: #fff;
 }
 
 .table-box th,
 .table-box td {
-    padding: 12px 14px;
-
+    padding: 12px 10px;
     text-align: left;
-
     font-size: 13px;
-
     border-bottom: 1px solid #eef0f3;
-
     white-space: nowrap;
+    vertical-align: middle;
 }
 
-/* Table Header Inputs */
+
+/* =========================================================
+   COLUMN WIDTHS
+========================================================= */
+
+/* Case ID */
+.table-box th:nth-child(1),
+.table-box td:nth-child(1) {
+    width: 90px;
+}
+
+/* Customer Name */
+.table-box th:nth-child(2),
+.table-box td:nth-child(2) {
+    width: 220px;
+}
+
+/* Block */
+.table-box th:nth-child(3),
+.table-box td:nth-child(3) {
+    width: 150px;
+}
+
+/* Area */
+.table-box th:nth-child(4),
+.table-box td:nth-child(4) {
+    width: 190px;
+}
+
+/* Status */
+.table-box th:nth-child(5),
+.table-box td:nth-child(5) {
+    width: 170px;
+}
+
+/* Form */
+.table-box th:nth-child(6),
+.table-box td:nth-child(6) {
+    width: 110px;
+}
+
+/* Date */
+.table-box th:nth-child(7),
+.table-box td:nth-child(7) {
+    width: 150px;
+}
+/* =========================================================
+   HEADER FILTER INPUTS
+========================================================= */
 
 .table-box th input,
 .table-box th select {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
     margin-top: 6px;
 
-    padding: 6px 8px;
-
-    font-size: 12px;
-
-    border-radius: 6px;
+    padding: 7px 9px;
 
     border: none;
-
-    width: 100%;
-
-    min-width: 100px;
-
-    color: #1b2a4a;
+    border-radius: 6px;
 
     background: #fff;
+    color: #1b2a4a;
+
+    font-size: 12px;
+    font-family: 'Segoe UI', Arial, sans-serif;
 
     outline: none;
+
+    box-sizing: border-box;
 }
 
+/* Focus */
 .table-box th input:focus,
 .table-box th select:focus {
-    box-shadow:
-        0 0 0 2px rgba(245, 158, 11, 0.35);
+    box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.35);
 }
+
+/* Placeholder */
+.table-box th input::placeholder {
+    color: #9ca3af;
+}
+
 
 /* Table Hover */
 
@@ -609,19 +659,26 @@ body {
     background: #f9fafb;
 }
 
+
+
+/* =========================================================
+   TABLE BODY
+========================================================= */
+
+.table-box tbody tr:hover {
+    background: #f9fafb;
+}
+
+
 /* =========================================================
    BADGES
 ========================================================= */
 
 .badge {
     display: inline-block;
-
     padding: 5px 10px;
-
     border-radius: 20px;
-
     font-size: 12px;
-
     font-weight: 600;
 }
 
@@ -635,7 +692,6 @@ body {
 
 .bg-danger {
     background: #fca5a5;
-
     color: #7f1d1d;
 }
 
@@ -645,9 +701,7 @@ body {
 
 .open-form-link {
     display: inline-block;
-
     background: #f59e0b;
-
     color: #1b2a4a;
 
     padding: 6px 12px;
@@ -655,9 +709,7 @@ body {
     border-radius: 6px;
 
     font-size: 12px;
-
     text-decoration: none;
-
     font-weight: 600;
 
     white-space: nowrap;
@@ -667,10 +719,8 @@ body {
 
 .open-form-link:hover {
     background: #1b2a4a;
-
     color: #fff;
 }
-
 /* =========================================================
    FOOTER
 ========================================================= */
