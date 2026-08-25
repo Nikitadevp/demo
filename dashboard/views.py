@@ -3814,6 +3814,18 @@ def site_engineer_dashboard(request):
     area_filter = request.GET.get("area", "")
     issue_filter = request.GET.get("issue", "")
 
+    block_options = (
+        SiteInspection.objects
+        .values_list("block", flat=True)
+        .distinct()
+        .order_by("block")
+    )
+
+    block_options = [
+        block for block in block_options
+        if block
+    ]
+
     if customer_filter:
         pending_site_inspection = pending_site_inspection.filter(
             customer_name__icontains=customer_filter
@@ -3980,6 +3992,8 @@ def site_engineer_dashboard(request):
         "area_filter": area_filter,
         "issue_filter": issue_filter,
         "today_site_inspections": today_site_inspections,
+
+        "block_options": block_options,
         
 
        
