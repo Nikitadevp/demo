@@ -5237,8 +5237,7 @@ def store_keeper_dashboard(request):
 
     if customer_filter:
         pending_material_check = pending_material_check.filter(
-            Q(customer_name__icontains=customer_filter) |
-            Q(customer_query__name__icontains=customer_filter)
+            customer_query__name__icontains=customer_filter
         )
 
     if block_filter:
@@ -5298,7 +5297,7 @@ def store_keeper_dashboard(request):
 
     if customer_filter:
         pending_indent = pending_indent.filter(
-            customer_name__icontains=customer_filter
+            customer_query__name__icontains=customer_filter
         )
 
     if block_filter:
@@ -5310,6 +5309,18 @@ def store_keeper_dashboard(request):
         pending_indent = pending_indent.filter(
             area__icontains=area_filter
         )
+
+    if search:
+        pending_material_check = pending_material_check.filter(
+            Q(case_id__icontains=search) |
+            Q(customer_query__name__icontains=search) |
+            Q(block__icontains=search) |
+            Q(area__icontains=search)
+    )
+
+
+
+
 
     pending_indent = pending_indent.select_related(
         "customer_query"
