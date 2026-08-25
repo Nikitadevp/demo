@@ -363,13 +363,13 @@
 
         <div class="search-box">
 
-            <form method="GET">
-
+           <form method="GET" action="{% url 'store_keeper_dashboard' %}">
                 <input id="searchInput"
                        type="text"
                        name="search"
                        placeholder="Search by Case ID, Customer, Block, Area"
                        value="{{ search }}">
+                    >
 
                 <button type="submit">
 
@@ -377,8 +377,8 @@
 
                 </button>
 
-                {% url 'store_dashboard' %}
-
+                
+                <a href="{% url 'store_keeper_dashboard' %}">
 
                     <button type="button">
 
