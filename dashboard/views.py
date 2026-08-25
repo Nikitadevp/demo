@@ -5216,6 +5216,19 @@ def store_keeper_dashboard(request):
     block_filter = request.GET.get("block", "")
     area_filter = request.GET.get("area", "")
 
+
+
+    block_options = (
+        SiteInspection.objects
+        .values_list("block", flat=True)
+        .distinct()
+        .order_by("block")
+    )
+
+    block_options = [
+        block for block in block_options
+        if block
+    ]
     # ==========================================
     # PENDING MATERIAL CHECK (S6)
     # ==========================================
@@ -5414,6 +5427,7 @@ def store_keeper_dashboard(request):
         "customer_filter": customer_filter,
         "block_filter": block_filter,
         "area_filter": area_filter,
+        "block_options": block_options,
 
     }
 
