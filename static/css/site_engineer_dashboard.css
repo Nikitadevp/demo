@@ -539,7 +539,51 @@ Header
     background: #0ea5e9;
 }
 
+/* ==========================================
+   TABLE HEADER FILTERS - SMALL SIZE
+========================================== */
 
+/* Customer Search */
+.table-box th input[name="customer"] {
+    width: 120px;
+    height: 32px;
+    padding: 5px 8px;
+
+    font-size: 12px;
+    border: none;
+    border-radius: 6px;
+
+    background: #fff;
+    color: #1e293b;
+}
+
+/* Block Search / Dropdown */
+.table-box th input[name="block"],
+.table-box th select[name="block"] {
+    width: 90px;
+    height: 32px;
+    padding: 4px 7px;
+
+    font-size: 12px;
+    border-radius: 6px;
+
+    background: #fff;
+    color: #1e293b;
+}
+
+/* Area Search */
+.table-box th input[name="area"] {
+    width: 100px;
+    height: 32px;
+    padding: 5px 8px;
+
+    font-size: 12px;
+    border: none;
+    border-radius: 6px;
+
+    background: #fff;
+    color: #1e293b;
+}
 /*==========================================
         STATUS BADGE
 ==========================================*/
