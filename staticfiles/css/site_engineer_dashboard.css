@@ -341,23 +341,35 @@ table {
     width: 100%;
     border-collapse: collapse;
     font-size: 13px;
+    table-layout: fixed;
 }
 
 thead th {
     background: var(--navy);
     color: #fff;
     text-align: left;
-    padding: 10px 14px;
+    padding: 10px 12px;
     font-weight: 600;
     font-size: 12.5px;
-    white-space: nowrap;
-    vertical-align: middle;
+    white-space: normal;
+    vertical-align: top;
+    overflow: hidden;
 }
 
+/* Column widths — keeps filter boxes from spilling into the next column */
+.table-box table thead th:nth-child(1) { width: 90px; }   /* Case ID */
+.table-box table thead th:nth-child(2) { width: 170px; }  /* Customer */
+.table-box table thead th:nth-child(3) { width: 120px; }  /* Block */
+.table-box table thead th:nth-child(4) { width: 150px; }  /* Area */
+.table-box table thead th:nth-child(5) { width: 120px; }  /* Status/Source */
+.table-box table thead th:nth-child(6) { width: 100px; }  /* Form */
+.table-box table thead th:nth-child(7) { width: 130px; }  /* Date */
+
 tbody td {
-    padding: 10px 14px;
+    padding: 10px 12px;
     border-bottom: 1px solid var(--border);
     color: var(--text-dark);
+    overflow-wrap: break-word;
 }
 
 tbody tr:last-child td {
@@ -375,11 +387,28 @@ tbody td[colspan] {
 }
 
 /* ---- Compact filter inputs inside table headers ---- */
-/* Customer / Area text filters */
+
+th .d-flex.flex-column {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+th .gap-1 {
+    gap: 4px;
+}
+
+th .d-flex.flex-column > span {
+    white-space: normal;
+    line-height: 1.2;
+}
+
+/* Customer / Block(text) / Area text filters */
+th input[type="text"].form-control,
 th input[type="text"] {
     display: block;
-    margin-top: 6px;
-    width: 100px;
+    box-sizing: border-box;
+    width: 100%;
     max-width: 100%;
     padding: 4px 8px;
     font-size: 11.5px;
@@ -410,8 +439,8 @@ th input[type="text"]:focus::placeholder {
 th .form-select,
 th select {
     display: block;
-    margin-top: 6px;
-    width: 90px;
+    box-sizing: border-box;
+    width: 100%;
     max-width: 100%;
     padding: 4px 6px;
     font-size: 11.5px;
@@ -427,15 +456,6 @@ th select {
 th select option {
     color: var(--text-dark);
     background: #fff;
-}
-
-th .d-flex.flex-column {
-    display: flex;
-    flex-direction: column;
-}
-
-th .gap-1 {
-    gap: 2px;
 }
 
 /* Status badges */
