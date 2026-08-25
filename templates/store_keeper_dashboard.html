@@ -364,12 +364,13 @@
         <div class="search-box">
 
            <form method="GET" action="{% url 'store_keeper_dashboard' %}">
-                <input id="searchInput"
-                       type="text"
-                       name="search"
-                       placeholder="Search by Case ID, Customer, Block, Area"
-                       value="{{ search }}">
-                    >
+                <input 
+                    id="searchInput"
+                    type="text"
+                    name="search"
+                    placeholder="Search by Case ID, Customer, Block, Area"
+                    value="{{ search }}"
+                >
 
                 <button type="submit">
 
