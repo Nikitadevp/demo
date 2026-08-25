@@ -467,20 +467,59 @@ Header
     margin-bottom: 8px;
 }
 
+
+/* ==========================================
+   TABLE FILTER FIX
+========================================== */
+
 .table-box th input,
 .table-box th select {
-    display: block;
-    width: 150px;
+    display: block !important;
+    width: 180px;
     max-width: 100%;
-    padding: 8px 10px;
-    font-size: 13px;
-    border: 1px solid #d1d5db;
-    border-radius: 6px;
-    color: #1e293b;
+    height: 38px;
+    margin-top: 8px;
+    padding: 7px 12px;
+
+    border: none;
+    border-radius: 7px;
+
     background: #fff;
-    white-space: normal;
+    color: #1e293b;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+
+    outline: none;
+    box-sizing: border-box;
 }
 
+/* Customer filter */
+.table-box th input[name="customer"] {
+    width: 180px;
+}
+
+/* Block dropdown */
+.table-box th select[name="block"] {
+    width: 120px;
+}
+
+/* Area filter */
+.table-box th input[name="area"] {
+    width: 180px;
+}
+
+/* Filter heading */
+.table-box th {
+    vertical-align: top !important;
+}
+
+/* Filter input focus */
+.table-box th input:focus,
+.table-box th select:focus {
+    box-shadow: 0 0 0 2px rgba(255,255,255,.5);
+}
 .table-box td{
     white-space: normal;
     padding: 14px 16px;
@@ -813,7 +852,7 @@ button:hover{
 /* Block */
 .table-box th:nth-child(3),
 .table-box td:nth-child(3) {
-    min-width: 120px;
+    min-width: 160px;
 }
 
 /* Area */
@@ -840,15 +879,17 @@ button:hover{
     min-width: 170px;
 }
 
-
 /* ==========================================
-   CUSTOMER NAME FILTER
+   TABLE FILTER FIX
 ========================================== */
 
-.table-box th input[name="customer"],
-.table-box th input[name="name"] {
+.table-box th input,
+.table-box th select {
+    display: block !important;
     width: 180px;
+    max-width: 100%;
     height: 38px;
+    margin-top: 8px;
     padding: 7px 12px;
 
     border: none;
@@ -862,6 +903,33 @@ button:hover{
     font-weight: 400;
 
     outline: none;
+    box-sizing: border-box;
+}
+
+/* Customer filter */
+.table-box th input[name="customer"] {
+    width: 180px;
+}
+
+/* Block dropdown */
+.table-box th select[name="block"] {
+    width: 120px;
+}
+
+/* Area filter */
+.table-box th input[name="area"] {
+    width: 180px;
+}
+
+/* Filter heading */
+.table-box th {
+    vertical-align: top !important;
+}
+
+/* Filter input focus */
+.table-box th input:focus,
+.table-box th select:focus {
+    box-shadow: 0 0 0 2px rgba(255,255,255,.5);
 }
 
 
