@@ -424,14 +424,24 @@
                         </th>
                         <th>
                             Block
-                            <input
-                                type="text"
+                            <select
                                 name="block"
                                 form="filterForm"
-                                placeholder="Search Block"
-                                value="{{ block_filter }}"
-                                onkeydown="if(event.key === 'Enter'){ event.preventDefault(); document.getElementById('filterForm').submit(); }"
+                                onchange="document.getElementById('filterForm').submit();"
                             >
+                                <option value="">All</option>
+
+                                {% for block in block_options %}
+                                    <option
+                                        value="{{ block }}"
+                                        {% if block == block_filter %}selected{% endif %}
+                                    >
+                                        {{ block }}
+                                    </option>
+                                {% endfor %}
+                           </select>
+
+                           
                         </th>
                         <th>
                             Area
