@@ -5167,6 +5167,8 @@ def crm_dashboard(request):
 
 
 
+
+
 def store_keeper_dashboard(request):
 
     # ==========================================
@@ -5178,6 +5180,7 @@ def store_keeper_dashboard(request):
 
     if request.session.get("admin_role") != "Store Keeper":
         return redirect("login")
+
 
     # ==========================================
     # SUMMARY COUNTS
@@ -5201,185 +5204,608 @@ def store_keeper_dashboard(request):
         created_at__date=timezone.now().date()
     ).count()
 
+
     # ==========================================
-    # SEARCH
+    # SEARCH / FILTER VALUES
     # ==========================================
 
-    search = request.GET.get("search", "")
+    search = request.GET.get("search", "").strip()
 
-    customer_filter = request.GET.get("customer", "")
-    block_filter = request.GET.get("block", "")
-    area_filter = request.GET.get("area", "")
+    customer_filter = request.GET.get(
+        "customer",
+        ""
+    ).strip()
+
+    block_filter = request.GET.get(
+        "block",
+        ""
+    ).strip()
+
+    area_filter = request.GET.get(
+        "area",
+        ""
+    ).strip()
+
+
+    # ==========================================
+    # BLOCK OPTIONS
+    # ==========================================
+
+    block_options = (
+        CustomerQuery.objects
+        .values_list("tower", flat=True)
+        .distinct()
+        .order_by("tower")
+    )
+
+    block_options = [
+        block
+        for block in block_options
+        if block
+    ]
+
 
     # ==========================================
     # PENDING MATERIAL CHECK (S6)
     # ==========================================
 
-    pending_material_check = SiteInspection.objects.filter(
-        material_required="Yes"
-    ).exclude(
-        customer_query__materialavailability__isnull=False
+    pending_material_check = (
+        SiteInspection.objects
+        .filter(
+            material_required="Yes"
+        )
+        .exclude(
+            customer_query__materialavailability__isnull=False
+        )
     )
 
-    pending_material_check_count = pending_material_check.count()
+
+    # ------------------------------------------
+    # CUSTOMER FILTER
+    # ------------------------------------------
 
     if customer_filter:
-        pending_material_check = pending_material_check.filter(
-            customer_name__icontains=customer_filter
+
+        pending_material_check = (
+            pending_material_check
+            .filter(
+                customer_name__icontains=customer_filter
+            )
         )
+
+
+    # ------------------------------------------
+    # BLOCK FILTER
+    # ------------------------------------------
 
     if block_filter:
-        pending_material_check = pending_material_check.filter(
-            block__icontains=block_filter
+
+        pending_material_check = (
+            pending_material_check
+            .filter(
+                block__icontains=block_filter
+            )
         )
+
+
+    # ------------------------------------------
+    # AREA FILTER
+    # ------------------------------------------
 
     if area_filter:
-        pending_material_check = pending_material_check.filter(
-            area__icontains=area_filter
+
+        pending_material_check = (
+            pending_material_check
+            .filter(
+                area__icontains=area_filter
+            )
         )
+
+
+    # ------------------------------------------
+    # GENERAL SEARCH
+    # ------------------------------------------
 
     if search:
-        pending_material_check = pending_material_check.filter(
-            Q(case_id__icontains=search) |
-            Q(customer_name__icontains=search) |
-            Q(block__icontains=search) |
-            Q(area__icontains=search)
+
+        pending_material_check = (
+            pending_material_check
+            .filter(
+                Q(case_id__icontains=search) |
+                Q(customer_name__icontains=search) |
+                Q(block__icontains=search) |
+                Q(area__icontains=search)
+            )
         )
 
-    pending_material_check = pending_material_check.select_related(
-        "customer_query"
-    ).order_by("created_at")
+
+    pending_material_check = (
+        pending_material_check
+        .select_related(
+            "customer_query"
+        )
+        .order_by("created_at")
+    )
+
+
+    # ------------------------------------------
+    # PENDING MATERIAL COUNT
+    # ------------------------------------------
+
+    pending_material_check_count = (
+        pending_material_check.count()
+    )
+
+
+    # ------------------------------------------
+    # PENDING MATERIAL LIST
+    # ------------------------------------------
 
     pending_material_list = []
 
+
     for item in pending_material_check:
 
-        due_date = item.created_at + timedelta(hours=2)
+        due_date = (
+            item.created_at +
+            timedelta(hours=2)
+        )
 
         if timezone.now() > due_date:
-            delta = timezone.now() - due_date
+
+            delta = (
+                timezone.now() -
+                due_date
+            )
+
             days = delta.days
-            hours = delta.seconds // 3600
+
+            hours = (
+                delta.seconds // 3600
+            )
 
             if days > 0:
-                item.overdue_text = f"Over Due by {days}d {hours}h"
+
+                item.overdue_text = (
+                    f"Over Due by "
+                    f"{days}d {hours}h"
+                )
+
             else:
-                item.overdue_text = f"Over Due by {hours}h"
+
+                item.overdue_text = (
+                    f"Over Due by "
+                    f"{hours}h"
+                )
+
             item.status_type = "overdue"
+
         else:
+
             item.status_type = "pending"
 
-        pending_material_list.append(item)
+
+        pending_material_list.append(
+            item
+        )
+
 
     # ==========================================
     # PENDING INDENT (S7)
     # ==========================================
 
-    pending_indent = MaterialAvailability.objects.filter(
-        material_available="No"
-    ).exclude(
-        customer_query__raiseindent__isnull=False
+    pending_indent = (
+        MaterialAvailability.objects
+        .filter(
+            material_available="No"
+        )
+        .exclude(
+            customer_query__raiseindent__isnull=False
+        )
     )
 
-    pending_indent_count = pending_indent.count()
+
+    # ------------------------------------------
+    # CUSTOMER FILTER
+    # ------------------------------------------
 
     if customer_filter:
-        pending_indent = pending_indent.filter(
-            customer_name__icontains=customer_filter
+
+        pending_indent = (
+            pending_indent
+            .filter(
+                customer_name__icontains=customer_filter
+            )
         )
+
+
+    # ------------------------------------------
+    # BLOCK FILTER
+    # ------------------------------------------
 
     if block_filter:
-        pending_indent = pending_indent.filter(
-            block__icontains=block_filter
+
+        pending_indent = (
+            pending_indent
+            .filter(
+                block__icontains=block_filter
+            )
         )
+
+
+    # ------------------------------------------
+    # AREA FILTER
+    # ------------------------------------------
 
     if area_filter:
-        pending_indent = pending_indent.filter(
-            area__icontains=area_filter
+
+        pending_indent = (
+            pending_indent
+            .filter(
+                area__icontains=area_filter
+            )
         )
 
-    pending_indent = pending_indent.select_related(
-        "customer_query"
-    ).order_by("created_at")
+
+    # ------------------------------------------
+    # GENERAL SEARCH
+    # ------------------------------------------
+
+    if search:
+
+        pending_indent = (
+            pending_indent
+            .filter(
+                Q(case_id__icontains=search) |
+                Q(customer_name__icontains=search) |
+                Q(block__icontains=search) |
+                Q(area__icontains=search)
+            )
+        )
+
+
+    pending_indent = (
+        pending_indent
+        .select_related(
+            "customer_query"
+        )
+        .order_by("created_at")
+    )
+
+
+    # ------------------------------------------
+    # PENDING INDENT COUNT
+    # ------------------------------------------
+
+    pending_indent_count = (
+        pending_indent.count()
+    )
+
+
+    # ------------------------------------------
+    # PENDING INDENT LIST
+    # ------------------------------------------
 
     pending_indent_list = []
 
+
     for item in pending_indent:
 
-        due_date = add_working_days(item.created_at, 2)
+        due_date = add_working_days(
+            item.created_at,
+            2
+        )
+
 
         if timezone.now() > due_date:
-            delta = timezone.now() - due_date
+
+            delta = (
+                timezone.now() -
+                due_date
+            )
+
             days = delta.days
-            hours = delta.seconds // 3600
+
+            hours = (
+                delta.seconds // 3600
+            )
+
 
             if days > 0:
-                item.overdue_text = f"Over Due by {days}d {hours}h"
+
+                item.overdue_text = (
+                    f"Over Due by "
+                    f"{days}d {hours}h"
+                )
+
             else:
-                item.overdue_text = f"Over Due by {hours}h"
+
+                item.overdue_text = (
+                    f"Over Due by "
+                    f"{hours}h"
+                )
+
             item.status_type = "overdue"
+
         else:
+
             item.status_type = "pending"
 
-        pending_indent_list.append(item)
+
+        pending_indent_list.append(
+            item
+        )
+
 
     # ==========================================
     # READY TO ISSUE (S8)
     # ==========================================
 
-    ready_available = MaterialAvailability.objects.filter(
-        material_available="Yes"
-    ).exclude(
-        customer_query__issuematerial__isnull=False
-    ).select_related("customer_query")
+    ready_available = (
+        MaterialAvailability.objects
+        .filter(
+            material_available="Yes"
+        )
+        .exclude(
+            customer_query__issuematerial__isnull=False
+        )
+        .select_related(
+            "customer_query"
+        )
+    )
 
-    ready_indent = RaiseIndent.objects.exclude(
-        customer_query__issuematerial__isnull=False
-    ).select_related("customer_query")
+
+    ready_indent = (
+        RaiseIndent.objects
+        .exclude(
+            customer_query__issuematerial__isnull=False
+        )
+        .select_related(
+            "customer_query"
+        )
+    )
+
+
+    # ------------------------------------------
+    # READY TO ISSUE CUSTOMER FILTER
+    # ------------------------------------------
+
+    if customer_filter:
+
+        ready_available = (
+            ready_available
+            .filter(
+                customer_name__icontains=customer_filter
+            )
+        )
+
+        ready_indent = (
+            ready_indent
+            .filter(
+                customer_name__icontains=customer_filter
+            )
+        )
+
+
+    # ------------------------------------------
+    # READY TO ISSUE BLOCK FILTER
+    # ------------------------------------------
+
+    if block_filter:
+
+        ready_available = (
+            ready_available
+            .filter(
+                block__icontains=block_filter
+            )
+        )
+
+        ready_indent = (
+            ready_indent
+            .filter(
+                block__icontains=block_filter
+            )
+        )
+
+
+    # ------------------------------------------
+    # READY TO ISSUE AREA FILTER
+    # ------------------------------------------
+
+    if area_filter:
+
+        ready_available = (
+            ready_available
+            .filter(
+                area__icontains=area_filter
+            )
+        )
+
+        ready_indent = (
+            ready_indent
+            .filter(
+                area__icontains=area_filter
+            )
+        )
+
+
+    # ------------------------------------------
+    # READY TO ISSUE SEARCH
+    # ------------------------------------------
+
+    if search:
+
+        ready_available = (
+            ready_available
+            .filter(
+                Q(case_id__icontains=search) |
+                Q(customer_name__icontains=search) |
+                Q(block__icontains=search) |
+                Q(area__icontains=search)
+            )
+        )
+
+        ready_indent = (
+            ready_indent
+            .filter(
+                Q(case_id__icontains=search) |
+                Q(customer_name__icontains=search) |
+                Q(block__icontains=search) |
+                Q(area__icontains=search)
+            )
+        )
+
+
+    # ------------------------------------------
+    # READY TO ISSUE LIST
+    # ------------------------------------------
 
     ready_to_issue_list = []
 
+
     for item in ready_available:
+
         ready_to_issue_list.append({
+
             "case_id": item.case_id,
-            "customer_name": item.customer_name,
-            "block": item.block,
-            "area": item.area,
-            "source": "Material Available",
-            "created_at": item.created_at,
-            "customer_query_id": item.customer_query_id,
+
+            "customer_name":
+                item.customer_name,
+
+            "block":
+                item.block,
+
+            "area":
+                item.area,
+
+            "source":
+                "Material Available",
+
+            "created_at":
+                item.created_at,
+
+            "customer_query_id":
+                item.customer_query_id,
+
         })
+
 
     for item in ready_indent:
+
         ready_to_issue_list.append({
+
             "case_id": item.case_id,
-            "customer_name": item.customer_name,
-            "block": item.block,
-            "area": item.area,
-            "source": "Indent Raised",
-            "created_at": item.created_at,
-            "customer_query_id": item.customer_query_id,
+
+            "customer_name":
+                item.customer_name,
+
+            "block":
+                item.block,
+
+            "area":
+                item.area,
+
+            "source":
+                "Indent Raised",
+
+            "created_at":
+                item.created_at,
+
+            "customer_query_id":
+                item.customer_query_id,
+
         })
 
-    ready_to_issue_list.sort(key=lambda x: x["created_at"])
 
-    ready_to_issue_count = len(ready_to_issue_list)
+    # ------------------------------------------
+    # SORT READY TO ISSUE
+    # ------------------------------------------
+
+    ready_to_issue_list.sort(
+        key=lambda x: x["created_at"]
+    )
+
+
+    # ------------------------------------------
+    # READY TO ISSUE COUNT
+    # ------------------------------------------
+
+    ready_to_issue_count = (
+        len(ready_to_issue_list)
+    )
+
 
     # ==========================================
-    # RECENT ISSUED MATERIAL (Closed)
+    # RECENT ISSUED MATERIAL
     # ==========================================
 
-    recent_issued = IssueMaterial.objects.select_related(
-        "customer_query"
-    ).order_by("-created_at")
+    recent_issued = (
+        IssueMaterial.objects
+        .select_related(
+            "customer_query"
+        )
+        .order_by("-created_at")
+    )
+
+
+    # ------------------------------------------
+    # CUSTOMER FILTER
+    # ------------------------------------------
+
+    if customer_filter:
+
+        recent_issued = (
+            recent_issued
+            .filter(
+                customer_name__icontains=customer_filter
+            )
+        )
+
+
+    # ------------------------------------------
+    # BLOCK FILTER
+    # ------------------------------------------
+
+    if block_filter:
+
+        recent_issued = (
+            recent_issued
+            .filter(
+                block__icontains=block_filter
+            )
+        )
+
+
+    # ------------------------------------------
+    # AREA FILTER
+    # ------------------------------------------
+
+    if area_filter:
+
+        recent_issued = (
+            recent_issued
+            .filter(
+                area__icontains=area_filter
+            )
+        )
+
+
+    # ------------------------------------------
+    # GENERAL SEARCH
+    # ------------------------------------------
 
     if search:
-        recent_issued = recent_issued.filter(
-            Q(case_id__icontains=search) |
-            Q(customer_name__icontains=search) |
-            Q(block__icontains=search) |
-            Q(area__icontains=search)
+
+        recent_issued = (
+            recent_issued
+            .filter(
+                Q(case_id__icontains=search) |
+                Q(customer_name__icontains=search) |
+                Q(block__icontains=search) |
+                Q(area__icontains=search)
+            )
         )
+
 
     # ==========================================
     # CONTEXT
@@ -5387,30 +5813,95 @@ def store_keeper_dashboard(request):
 
     context = {
 
-        "total_material_checks": total_material_checks,
-        "available_count": available_count,
-        "not_available_count": not_available_count,
-        "indent_raised_count": indent_raised_count,
-        "material_issued_count": material_issued_count,
-        "today_material_checks": today_material_checks,
+        # --------------------------------------
+        # SUMMARY
+        # --------------------------------------
 
-        "pending_material_check_count": pending_material_check_count,
-        "pending_material_list": pending_material_list,
+        "total_material_checks":
+            total_material_checks,
 
-        "pending_indent_count": pending_indent_count,
-        "pending_indent_list": pending_indent_list,
+        "available_count":
+            available_count,
 
-        "ready_to_issue_list": ready_to_issue_list,
-        "ready_to_issue_count": ready_to_issue_count,
+        "not_available_count":
+            not_available_count,
 
-        "recent_issued": recent_issued,
+        "indent_raised_count":
+            indent_raised_count,
 
-        "search": search,
-        "customer_filter": customer_filter,
-        "block_filter": block_filter,
-        "area_filter": area_filter,
+        "material_issued_count":
+            material_issued_count,
+
+        "today_material_checks":
+            today_material_checks,
+
+
+        # --------------------------------------
+        # S6
+        # --------------------------------------
+
+        "pending_material_check_count":
+            pending_material_check_count,
+
+        "pending_material_list":
+            pending_material_list,
+
+
+        # --------------------------------------
+        # S7
+        # --------------------------------------
+
+        "pending_indent_count":
+            pending_indent_count,
+
+        "pending_indent_list":
+            pending_indent_list,
+
+
+        # --------------------------------------
+        # S8
+        # --------------------------------------
+
+        "ready_to_issue_list":
+            ready_to_issue_list,
+
+        "ready_to_issue_count":
+            ready_to_issue_count,
+
+
+        # --------------------------------------
+        # ISSUED MATERIAL
+        # --------------------------------------
+
+        "recent_issued":
+            recent_issued,
+
+
+        # --------------------------------------
+        # FILTER VALUES
+        # --------------------------------------
+
+        "search":
+            search,
+
+        "customer_filter":
+            customer_filter,
+
+        "block_filter":
+            block_filter,
+
+        "area_filter":
+            area_filter,
+
+        "block_options":
+            block_options,
 
     }
+
+
+    # ==========================================
+    # RENDER
+    # ==========================================
 
     return render(
         request,
