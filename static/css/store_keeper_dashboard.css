@@ -1,3 +1,8 @@
+/* =========================================================
+   STORE KEEPER DASHBOARD
+   Brand: Navy #1B2A4A | Amber #F59E0B
+========================================================= */
+
 * {
     margin: 0;
     padding: 0;
@@ -10,21 +15,31 @@ body {
     color: #1b2a4a;
 }
 
+/* =========================================================
+   DASHBOARD LAYOUT
+========================================================= */
+
 .dashboard {
     display: flex;
     min-height: 100vh;
+    width: 100%;
 }
 
-/* ==========================================
-        SIDEBAR
-=========================================== */
+/* =========================================================
+   SIDEBAR
+========================================================= */
 
 .sidebar {
     width: 250px;
+    min-height: 100vh;
+
     background: #1b2a4a;
     color: #fff;
+
     padding: 20px 0;
+
     transition: width 0.3s ease;
+
     overflow: hidden;
     flex-shrink: 0;
 }
@@ -33,33 +48,55 @@ body {
     width: 70px;
 }
 
+/* Sidebar Toggle */
+
 .sidebar-toggle-btn {
     background: none;
     border: none;
+
     color: #fff;
     font-size: 18px;
+
     padding: 10px 20px;
+
     cursor: pointer;
+
     width: 100%;
     text-align: left;
 }
 
+.sidebar-toggle-btn:hover {
+    color: #f59e0b;
+}
+
+/* Logo */
+
 .sidebar .logo {
     padding: 10px 20px 20px;
+
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
     margin-bottom: 10px;
 }
 
 .sidebar .logo h2 {
     font-size: 20px;
+    font-weight: 600;
+
     white-space: nowrap;
 }
 
 .sidebar .logo p {
     font-size: 13px;
+
     color: #f59e0b;
+
     white-space: nowrap;
+
+    margin-top: 4px;
 }
+
+/* Hide text when collapsed */
 
 .sidebar.collapsed .logo h2,
 .sidebar.collapsed .logo p,
@@ -67,108 +104,179 @@ body {
     display: none;
 }
 
+/* Sidebar Menu */
+
 .sidebar ul {
     list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar ul li {
+    width: 100%;
 }
 
 .sidebar ul li a {
     display: flex;
+
     align-items: center;
+
     gap: 12px;
+
     padding: 12px 20px;
+
     color: #d1d5db;
+
     text-decoration: none;
+
     font-size: 14px;
+
     white-space: nowrap;
-    transition: background 0.2s ease;
+
+    transition: background 0.2s ease,
+                color 0.2s ease;
 }
 
 .sidebar ul li a i {
     width: 18px;
+
     text-align: center;
+
     flex-shrink: 0;
 }
+
+/* Active + Hover */
 
 .sidebar ul li.active a,
 .sidebar ul li a:hover {
     background: #f59e0b;
     color: #1b2a4a;
+
     font-weight: 600;
 }
 
+/* Collapsed Sidebar */
+
 .sidebar.collapsed ul li a {
     justify-content: center;
+
     padding: 12px 0;
+
+    gap: 0;
 }
 
-/* ==========================================
-        MAIN CONTENT
-=========================================== */
+/* =========================================================
+   MAIN CONTENT
+========================================================= */
 
 .main-content {
     flex: 1;
+
     padding: 24px 32px;
-    transition: margin-left 0.3s ease;
+
     min-width: 0;
+
+    transition: all 0.3s ease;
 }
+
+/* =========================================================
+   HEADER
+========================================================= */
 
 .header {
     display: flex;
+
     justify-content: space-between;
     align-items: center;
+
     margin-bottom: 20px;
+
+    gap: 15px;
 }
 
 .header h1 {
     font-size: 22px;
+
     color: #1b2a4a;
+
+    font-weight: 600;
 }
 
 .header span {
     color: #6b7280;
+
     font-size: 14px;
 }
 
+/* New Button */
+
 .new-btn {
     background: #1b2a4a;
+
     color: #fff;
+
     border: none;
+
     padding: 10px 18px;
+
     border-radius: 8px;
+
     font-size: 14px;
+
     cursor: pointer;
+
     display: flex;
+
     align-items: center;
+
     gap: 8px;
+
+    transition: 0.2s ease;
 }
 
 .new-btn:hover {
     background: #f59e0b;
+
     color: #1b2a4a;
 }
 
-/* ==========================================
-        WELCOME CARD
-=========================================== */
+/* =========================================================
+   WELCOME CARD
+========================================================= */
 
 .welcome-card {
-    background: linear-gradient(135deg, #1b2a4a, #2e4374);
+    background: linear-gradient(
+        135deg,
+        #1b2a4a,
+        #2e4374
+    );
+
     color: #fff;
+
     border-radius: 14px;
+
     padding: 24px 28px;
+
     display: flex;
+
     justify-content: space-between;
+
     align-items: center;
+
     margin-bottom: 24px;
+
+    box-shadow: 0 4px 12px rgba(27, 42, 74, 0.12);
 }
 
 .welcome-card h2 {
     font-size: 20px;
+
     margin-bottom: 6px;
 }
 
 .welcome-card p {
     font-size: 14px;
+
     color: #d1d5db;
 }
 
@@ -178,17 +286,19 @@ body {
 
 .welcome-right h1 {
     font-size: 32px;
+
     color: #f59e0b;
 }
 
 .welcome-right span {
     font-size: 13px;
+
     color: #d1d5db;
 }
 
-/* ==========================================
-        SECTION TITLE
-=========================================== */
+/* =========================================================
+   SECTION TITLE
+========================================================= */
 
 .section-title {
     margin: 28px 0 12px;
@@ -196,92 +306,168 @@ body {
 
 .section-title h2 {
     font-size: 17px;
+
     color: #1b2a4a;
+
     border-left: 4px solid #f59e0b;
+
     padding-left: 10px;
+
+    font-weight: 600;
 }
 
-/* ==========================================
-        SUMMARY GRID
-=========================================== */
+/* =========================================================
+   SUMMARY GRID
+========================================================= */
 
 .summary-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(160px, 1fr));
+
     gap: 16px;
 }
 
+/* =========================================================
+   SUMMARY CARD
+========================================================= */
+
 .card {
     background: #fff;
+
     border-radius: 12px;
+
     padding: 18px;
+
     text-align: center;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+
+    box-shadow:
+        0 2px 6px rgba(0, 0, 0, 0.06);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 5px 14px rgba(0, 0, 0, 0.08);
 }
 
 .card i {
     font-size: 22px;
+
     margin-bottom: 8px;
+
     color: #1b2a4a;
 }
 
 .card h2 {
     font-size: 24px;
+
     margin-bottom: 4px;
+
+    color: #1b2a4a;
 }
 
 .card p {
     font-size: 13px;
+
     color: #6b7280;
 }
 
-.blue-card i { color: #378ADD; }
-.orange-card i { color: #BA7517; }
-.purple-card i { color: #7F77DD; }
-.cyan-card i { color: #1D9E75; }
-.gray-card i { color: #888780; }
-.yellow-card i { color: #EF9F27; }
-.pink-card i { color: #D4537E; }
-.dark-card i { color: #1b2a4a; }
+/* Store Keeper Card Icons */
 
-/* ==========================================
-        ANALYTICS GRID
-=========================================== */
+.blue-card i {
+    color: #378ADD;
+}
+
+.orange-card i {
+    color: #BA7517;
+}
+
+.purple-card i {
+    color: #7F77DD;
+}
+
+.cyan-card i {
+    color: #1D9E75;
+}
+
+.gray-card i {
+    color: #888780;
+}
+
+.yellow-card i {
+    color: #EF9F27;
+}
+
+.pink-card i {
+    color: #D4537E;
+}
+
+.dark-card i {
+    color: #1b2a4a;
+}
+
+/* =========================================================
+   ANALYTICS GRID
+========================================================= */
 
 .analytics-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(180px, 1fr));
+
     gap: 16px;
 }
 
 .analytics-card {
     background: #fff;
+
     border-radius: 12px;
+
     padding: 18px;
+
     display: flex;
+
     flex-direction: column;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+
+    box-shadow:
+        0 2px 6px rgba(0, 0, 0, 0.06);
+
     border-left: 4px solid #f59e0b;
 }
 
 .analytics-card i {
     font-size: 18px;
+
     color: #f59e0b;
+
     margin-bottom: 8px;
 }
 
 .analytics-card h2 {
     font-size: 22px;
+
+    color: #1b2a4a;
+
+    margin-bottom: 3px;
 }
 
 .analytics-card p {
     font-size: 13px;
+
     color: #6b7280;
 }
 
-/* ==========================================
-        SEARCH BOX
-=========================================== */
+/* =========================================================
+   SEARCH BOX
+========================================================= */
 
 .search-box {
     margin: 24px 0 10px;
@@ -289,85 +475,153 @@ body {
 
 .search-box form {
     display: flex;
+
     gap: 8px;
+
     max-width: 480px;
 }
 
 .search-box input {
     flex: 1;
+
     padding: 10px 14px;
+
     border: 1px solid #d1d5db;
+
     border-radius: 8px;
+
     font-size: 14px;
+
+    outline: none;
+
+    background: #fff;
+}
+
+.search-box input:focus {
+    border-color: #f59e0b;
+
+    box-shadow:
+        0 0 0 2px rgba(245, 158, 11, 0.15);
 }
 
 .search-box button {
     background: #1b2a4a;
+
     color: #fff;
+
     border: none;
+
     padding: 10px 14px;
+
     border-radius: 8px;
+
     cursor: pointer;
+
+    transition: 0.2s ease;
 }
 
 .search-box button:hover {
     background: #f59e0b;
+
     color: #1b2a4a;
 }
 
-/* ==========================================
-        TABLE BOX
-=========================================== */
+/* =========================================================
+   TABLE BOX
+========================================================= */
 
 .table-box {
     background: #fff;
+
     border-radius: 12px;
+
     overflow-x: auto;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
-    margin-bottom: 10px;
+
+    box-shadow:
+        0 2px 6px rgba(0, 0, 0, 0.06);
+
+    margin-bottom: 20px;
 }
 
 .table-box table {
     width: 100%;
+
     border-collapse: collapse;
+
     min-width: 700px;
 }
 
+/* Table Header */
+
 .table-box thead {
     background: #1b2a4a;
+
     color: #fff;
 }
 
 .table-box th,
 .table-box td {
     padding: 12px 14px;
+
     text-align: left;
+
     font-size: 13px;
+
     border-bottom: 1px solid #eef0f3;
+
     white-space: nowrap;
 }
+
+/* Table Header Inputs */
 
 .table-box th input,
 .table-box th select {
     margin-top: 6px;
+
     padding: 6px 8px;
+
     font-size: 12px;
+
     border-radius: 6px;
+
     border: none;
+
     width: 100%;
+
     min-width: 100px;
+
     color: #1b2a4a;
+
+    background: #fff;
+
+    outline: none;
 }
+
+.table-box th input:focus,
+.table-box th select:focus {
+    box-shadow:
+        0 0 0 2px rgba(245, 158, 11, 0.35);
+}
+
+/* Table Hover */
 
 .table-box tbody tr:hover {
     background: #f9fafb;
 }
 
+/* =========================================================
+   BADGES
+========================================================= */
+
 .badge {
     display: inline-block;
+
     padding: 5px 10px;
+
     border-radius: 20px;
+
     font-size: 12px;
+
     font-weight: 600;
 }
 
@@ -381,51 +635,215 @@ body {
 
 .bg-danger {
     background: #fca5a5;
+
     color: #7f1d1d;
 }
 
+/* =========================================================
+   OPEN FORM BUTTON
+========================================================= */
+
 .open-form-link {
+    display: inline-block;
+
     background: #f59e0b;
+
     color: #1b2a4a;
+
     padding: 6px 12px;
+
     border-radius: 6px;
+
     font-size: 12px;
+
     text-decoration: none;
+
     font-weight: 600;
+
     white-space: nowrap;
+
+    transition: 0.2s ease;
 }
 
 .open-form-link:hover {
     background: #1b2a4a;
+
     color: #fff;
 }
 
-/* ==========================================
-        FOOTER
-=========================================== */
+/* =========================================================
+   FOOTER
+========================================================= */
 
 .footer {
     margin-top: 30px;
+
     text-align: center;
+
     padding: 16px 0;
+
     color: #9ca3af;
+
     font-size: 13px;
 }
 
-/* ==========================================
-        RESPONSIVE
-=========================================== */
+/* =========================================================
+   RESPONSIVE — TABLET
+========================================================= */
+
+@media (max-width: 992px) {
+
+    .sidebar {
+        width: 210px;
+    }
+
+    .main-content {
+        padding: 20px;
+    }
+
+    .welcome-card {
+        padding: 20px;
+    }
+}
+
+/* =========================================================
+   RESPONSIVE — MOBILE
+========================================================= */
 
 @media (max-width: 768px) {
+
     .dashboard {
         flex-direction: column;
     }
 
     .sidebar {
         width: 100%;
+
+        min-height: auto;
+
+        padding: 10px 0;
+    }
+
+    .sidebar.collapsed {
+        width: 100%;
+    }
+
+    .sidebar-toggle-btn {
+        padding: 8px 16px;
+    }
+
+    .sidebar .logo {
+        padding: 8px 16px 12px;
+    }
+
+    .sidebar ul li a {
+        padding: 10px 16px;
+    }
+
+    .sidebar.collapsed ul li a {
+        justify-content: flex-start;
+
+        padding: 10px 16px;
+
+        gap: 12px;
+    }
+
+    .sidebar.collapsed ul li a span {
+        display: inline;
+    }
+
+    .sidebar.collapsed .logo h2,
+    .sidebar.collapsed .logo p {
+        display: block;
     }
 
     .main-content {
+        width: 100%;
+
         padding: 16px;
+    }
+
+    .header {
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+    .header h1 {
+        font-size: 20px;
+    }
+
+    .new-btn {
+        width: 100%;
+
+        justify-content: center;
+    }
+
+    .welcome-card {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 15px;
+    }
+
+    .welcome-right {
+        text-align: left;
+    }
+
+    .welcome-right h1 {
+        font-size: 26px;
+    }
+
+    .summary-grid,
+    .analytics-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+
+        gap: 10px;
+    }
+
+    .card {
+        padding: 14px;
+    }
+
+    .card h2 {
+        font-size: 20px;
+    }
+
+    .search-box form {
+        max-width: 100%;
+    }
+}
+
+/* =========================================================
+   RESPONSIVE — SMALL MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+
+    .summary-grid,
+    .analytics-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .welcome-card {
+        padding: 18px;
+    }
+
+    .welcome-card h2 {
+        font-size: 18px;
+    }
+
+    .section-title h2 {
+        font-size: 16px;
+    }
+
+    .search-box form {
+        flex-direction: column;
+    }
+
+    .search-box button {
+        width: 100%;
     }
 }
