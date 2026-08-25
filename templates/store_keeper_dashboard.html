@@ -45,7 +45,7 @@
 
             <li class="active">
 
-                {% url 'store_dashboard' %}
+                {% url 'store_keeper_dashboard' %}
 
                     <i class="fa-solid fa-chart-line"></i>
 
@@ -389,7 +389,7 @@
             </form>
         </div>
 
-        <form id="filterForm" method="GET" action="{% url 'store_dashboard' %}" style="display:none;">
+        <form id="filterForm" method="GET" action="{% url 'store_keeper_dashboard' %}" style="display:none;">
             <input type="hidden" name="search" value="{{ search }}">
         </form>
 
