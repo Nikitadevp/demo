@@ -64,7 +64,8 @@ urlpatterns = [
     path("admin-dashboard/", views.admin_dashboard, name="admin_dashboard"),
     path("site-engineer/dashboard/",views.site_engineer_dashboard,name="site_engineer_dashboard"),
     path("crm-dashboard/", views.crm_dashboard, name="crm_dashboard"),
-    path('store-keeper/dashboard/',views.store_keeper_dashboard,name='store_dashboard'),
+    path("store-keeper/dashboard/", views.store_keeper_dashboard, name="store_keeper_dashboard" ),
+   
 
 
    
