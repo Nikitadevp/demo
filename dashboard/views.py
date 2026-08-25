@@ -5204,7 +5204,7 @@ def store_keeper_dashboard(request):
     # SEARCH
     # ==========================================
 
-    search = request.GET.get("search", "")
+    search = request.GET.get("search", "").strip()
 
     customer_filter = request.GET.get("customer", "")
     block_filter = request.GET.get("block", "")
@@ -5237,7 +5237,8 @@ def store_keeper_dashboard(request):
 
     if customer_filter:
         pending_material_check = pending_material_check.filter(
-            customer_name__icontains=customer_filter
+            Q(customer_name__icontains=customer_filter) |
+            Q(customer_query__name__icontains=customer_filter)
         )
 
     if block_filter:
