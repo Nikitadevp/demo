@@ -5223,6 +5223,25 @@ def store_keeper_dashboard(request):
         block for block in block_options
         if block
     ]
+
+
+    area_options = (
+        SiteInspection.objects
+        .values_list("area", flat=True)
+        .distinct()
+        .order_by("area")
+    )
+
+    area_options = [
+        area for area in area_options
+        if area
+    ]
+
+
+
+
+
+
     # ==========================================
     # PENDING MATERIAL CHECK (S6)
     # ==========================================
@@ -5311,7 +5330,7 @@ def store_keeper_dashboard(request):
         )
 
     if search:
-        pending_material_check = pending_material_check.filter(
+        pending_indent = pending_indent.filter(
             Q(case_id__icontains=search) |
             Q(customer_query__name__icontains=search) |
             Q(block__icontains=search) |
@@ -5357,9 +5376,63 @@ def store_keeper_dashboard(request):
         customer_query__issuematerial__isnull=False
     ).select_related("customer_query")
 
+    if customer_filter:
+        ready_available = ready_available.filter(
+            customer_query__name__icontains=customer_filter
+        )
+
+    if block_filter:
+        ready_available = ready_available.filter(
+            block__icontains=block_filter
+        )
+
+    if area_filter:
+        ready_available = ready_available.filter(
+            area__icontains=area_filter
+        )
+
+    if search:
+        ready_available = ready_available.filter(
+            Q(case_id__icontains=search) |
+            Q(customer_query__name__icontains=search) |
+            Q(block__icontains=search) |
+            Q(area__icontains=search)
+    )
+
+
     ready_indent = RaiseIndent.objects.exclude(
         customer_query__issuematerial__isnull=False
     ).select_related("customer_query")
+
+
+
+    if customer_filter:
+        ready_indent = ready_indent.filter(
+            customer_query__name__icontains=customer_filter
+        )
+
+    if block_filter:
+        ready_indent = ready_indent.filter(
+            block__icontains=block_filter
+        )
+
+    if area_filter:
+        ready_indent = ready_indent.filter(
+            area__icontains=area_filter
+        )
+
+    if search:
+        ready_indent = ready_indent.filter(
+            Q(case_id__icontains=search) |
+            Q(customer_query__name__icontains=search) |
+            Q(block__icontains=search) |
+            Q(area__icontains=search)
+        )
+
+
+
+
+
 
     ready_to_issue_list = []
 
@@ -5405,6 +5478,31 @@ def store_keeper_dashboard(request):
             Q(area__icontains=search)
         )
 
+
+    if customer_filter:
+        recent_issued = recent_issued.filter(
+            customer_query__name__icontains=customer_filter
+        )
+
+    if block_filter:
+        recent_issued = recent_issued.filter(
+            block__icontains=block_filter
+        )
+
+    if area_filter:
+        recent_issued = recent_issued.filter(
+            area__icontains=area_filter
+        )
+
+    if search:
+        recent_issued = recent_issued.filter(
+            Q(case_id__icontains=search) |
+            Q(customer_query__name__icontains=search) |
+            Q(block__icontains=search) |
+            Q(area__icontains=search)
+        )
+
+
     # ==========================================
     # CONTEXT
     # ==========================================
@@ -5434,6 +5532,7 @@ def store_keeper_dashboard(request):
         "block_filter": block_filter,
         "area_filter": area_filter,
         "block_options": block_options,
+        "area_options": area_options,
 
     }
 

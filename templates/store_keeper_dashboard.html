@@ -529,15 +529,18 @@
 
                         <th>Case ID</th>
                         <th>
-                            Customer
-                            <input
-                                type="text"
-                                name="customer"
-                                form="filterForm"
-                                placeholder="Search Name"
-                                value="{{ customer_filter }}"
-                                onkeydown="if(event.key === 'Enter'){ event.preventDefault(); document.getElementById('filterForm').submit(); }"
-                            >
+                           <div class="d-flex flex-column gap-1">
+                                <span>Customer Name</span>
+                                <input
+                                    type="text"
+                                    name="customer"
+                                    form="filterForm"
+                                    class="form-control form-control-sm"
+                                    placeholder="Search Name"
+                                    value="{{ customer_filter }}"
+                                    onkeydown="if(event.key === 'Enter'){event.preventDefault();document.getElementById('filterForm').submit();}"
+                                >
+                            </div>
                         </th>
                         <th>
                             Block
