@@ -541,42 +541,231 @@ th select option {
    Customer Name / Block / Area
 ========================================================= */
 
+/* Table */
 .table-box table {
     width: 100%;
     table-layout: fixed;
+    border-collapse: collapse;
 }
 
-/* Customer Name column */
-.table-box th:nth-child(2) {
-    width: 220px;
+/* =========================================================
+   COLUMN WIDTHS
+========================================================= */
+
+/* Case ID */
+.table-box table th:nth-child(1),
+.table-box table td:nth-child(1) {
+    width: 90px;
 }
 
-/* Block column */
-.table-box th:nth-child(3) {
-    width: 180px;
+/* Customer Name */
+.table-box table th:nth-child(2),
+.table-box table td:nth-child(2) {
+    width: 170px;
 }
 
-/* Area column */
-.table-box th:nth-child(4) {
-    width: 220px;
+/* Block */
+.table-box table th:nth-child(3),
+.table-box table td:nth-child(3) {
+    width: 130px;
 }
 
-/* Filter wrapper */
-.table-box th .d-flex {
+/* Area */
+.table-box table th:nth-child(4),
+.table-box table td:nth-child(4) {
+    width: 160px;
+}
+
+/* Status */
+.table-box table th:nth-child(5),
+.table-box table td:nth-child(5) {
+    width: 125px;
+}
+
+/* Form */
+.table-box table th:nth-child(6),
+.table-box table td:nth-child(6) {
+    width: 105px;
+}
+
+/* Date */
+.table-box table th:nth-child(7),
+.table-box table td:nth-child(7) {
+    width: 125px;
+}
+
+
+/* =========================================================
+   FILTER WRAPPER
+   IMPORTANT — fixes the overlap
+========================================================= */
+
+.table-box th .d-flex.flex-column {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 4px !important;
+
+    width: 100% !important;
+    min-width: 0 !important;
+}
+
+
+/* =========================================================
+   HEADER TEXT
+========================================================= */
+
+.table-box th .d-flex.flex-column > span {
+    display: block;
     width: 100%;
-    min-width: 0;
-}
 
-/* Filter input and select */
-.table-box th input,
-.table-box th select {
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
-    box-sizing: border-box;
-}
-
-/* Header text */
-.table-box th span {
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    line-height: 1.2;
+}
+
+
+/* =========================================================
+   FILTER INPUTS
+========================================================= */
+
+.table-box th input[type="text"],
+.table-box th input.form-control {
+    display: block !important;
+
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+
+    height: 30px;
+
+    box-sizing: border-box;
+
+    padding: 4px 8px;
+
+    font-size: 11px;
+    font-weight: 400;
+
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 6px;
+
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+
+    outline: none;
+}
+
+
+/* Placeholder */
+.table-box th input[type="text"]::placeholder {
+    color: rgba(255, 255, 255, 0.65);
+}
+
+
+/* Input focus */
+.table-box th input[type="text"]:focus {
+    background: #fff;
+    color: var(--text-dark);
+
+    border-color: var(--amber);
+}
+
+
+/* =========================================================
+   BLOCK DROPDOWN
+========================================================= */
+
+.table-box th select,
+.table-box th select.form-select {
+    display: block !important;
+
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+
+    height: 30px;
+
+    box-sizing: border-box;
+
+    padding: 4px 8px;
+
+    font-size: 11px;
+    font-weight: 400;
+
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 6px;
+
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+
+    outline: none;
+    cursor: pointer;
+}
+
+
+/* Dropdown options */
+.table-box th select option {
+    color: var(--text-dark);
+    background: #fff;
+}
+
+
+/* =========================================================
+   TABLE HEADER
+========================================================= */
+
+.table-box thead th {
+    padding: 10px 10px;
+
+    vertical-align: top;
+
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   TABLE BODY
+========================================================= */
+
+.table-box tbody td {
+    padding: 10px 10px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   OPEN FORM BUTTON
+========================================================= */
+
+.open-form-link {
+    display: inline-block;
+
+    color: var(--navy);
+    background: var(--amber);
+
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 12px;
+
+    border: 1px solid var(--amber);
+
+    padding: 5px 10px;
+
+    border-radius: 6px;
+
+    white-space: nowrap;
+
+    transition: all 0.2s ease;
+}
+
+.open-form-link:hover {
+    background: var(--navy);
+    color: #fff;
+
+    border-color: var(--navy);
 }
