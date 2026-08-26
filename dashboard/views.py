@@ -2438,15 +2438,12 @@ def material_availability_form(request, query_id):
 
         customer.save()
 
-        return render(
+        messages.success(
             request,
-            "material_availability.html",
-            {
-                "customer": customer,
-                "popup_message":
-                "Material Availability Form Submitted Successfully"
-            }
+            "Material Availability Form Submitted Successfully"
         )
+
+        return redirect("store_keeper_dashboard")
 
     return render(
         request,
@@ -2489,15 +2486,12 @@ def raise_indent_form(request, query_id):
 
         customer.save()
 
-        return render(
+        messages.success(
             request,
-            "raise_indent.html",
-            {
-                "customer": customer,
-                "popup_message":
-                "Raise Indent Form Submitted Successfully"
-            }
+            "Raise Indent Form Submitted Successfully"
         )
+
+        return redirect("store_keeper_dashboard")
 
     return render(
         request,
@@ -2550,15 +2544,12 @@ def issue_material_form(request, query_id):
 
         customer.save()
 
-        return render(
+        messages.success(
             request,
-            "issue_material.html",
-            {
-                "customer": customer,
-                "popup_message":
-                "Issue Material Form Submitted Successfully"
-            }
+            "Issue Material Form Submitted Successfully"
         )
+
+        return redirect("store_keeper_dashboard")
 
     return render(
         request,
