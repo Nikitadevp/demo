@@ -42,7 +42,7 @@
 
             <li class="active">
 
-                <a href="{% url 'maintenance_incharge_dashboard' %}">
+                <a href="{% url 'maintenance_dashboard' %}">
 
                     <i class="fa-solid fa-chart-line"></i>
 
@@ -205,7 +205,7 @@
 
         <div class="search-box">
 
-           <form method="GET" action="{% url 'maintenance_incharge_dashboard' %}">
+           <form method="GET" action="{% url 'maintenance_dashboard' %}">
                 <input
                     id="searchInput"
                     type="text"
@@ -218,7 +218,7 @@
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </button>
 
-                <a href="{% url 'maintenance_incharge_dashboard' %}">
+                <a href="{% url 'maintenance_dashboard' %}">
                     <button type="button">
                         <i class="fa-solid fa-rotate"></i>
                     </button>
@@ -226,7 +226,7 @@
             </form>
         </div>
 
-        <form id="filterForm" method="GET" action="{% url 'maintenance_incharge_dashboard' %}" style="display:none;">
+        <form id="filterForm" method="GET" action="{% url 'maintenance_dashboard' %}" style="display:none;">
             <input type="hidden" name="search" value="{{ search }}">
         </form>
 
