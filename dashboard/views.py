@@ -2913,15 +2913,18 @@ from .models import (
 )
 
 
+# NOTE: adjust these imports to match your actual app/models file
+# from .models import CustomerQuery, IssueMaterial, ReceiveMaterial, QueryCloser
+
+
 def maintenance_dashboard(request):
 
     if "admin_id" not in request.session:
         return redirect("login")
 
     # ==========================================
-    # FILTERS
+    # FILTERS (from GET params)
     # ==========================================
-
     search = request.GET.get("search", "")
     customer_filter = request.GET.get("customer", "")
     tower_filter = request.GET.get("tower", "")
@@ -2931,34 +2934,30 @@ def maintenance_dashboard(request):
 
     # ==========================================
     # S9 — PENDING MATERIAL RECEIVE
+    # Material issued by Store Keeper (S8) but
+    # not yet received by Maintenance Incharge.
+    # SLA: 1 Day from issue date
     # ==========================================
-
     received_ids = ReceiveMaterial.objects.values_list(
-        "customer_query_id",
-        flat=True
+        "customer_query_id", flat=True
     )
 
     pending_receive_qs = IssueMaterial.objects.select_related(
         "customer_query"
-    ).exclude(
-        customer_query_id__in=received_ids
-    )
+    ).exclude(customer_query_id__in=received_ids)
 
     if customer_filter:
         pending_receive_qs = pending_receive_qs.filter(
             customer_query__name__icontains=customer_filter
         )
-
     if tower_filter:
         pending_receive_qs = pending_receive_qs.filter(
             customer_query__tower=tower_filter
         )
-
     if area_filter:
         pending_receive_qs = pending_receive_qs.filter(
             customer_query__area__icontains=area_filter
         )
-
     if search:
         pending_receive_qs = pending_receive_qs.filter(
             Q(customer_query__ticket_id__icontains=search)
@@ -2968,30 +2967,19 @@ def maintenance_dashboard(request):
         )
 
     pending_material_receive_list = []
-
     for item in pending_receive_qs:
-
         cq = item.customer_query
         deadline = item.created_at + timedelta(days=1)
 
         if now > deadline:
-
             overdue = now - deadline
             status_type = "overdue"
-
-            overdue_text = (
-                f"Over Due by "
-                f"{overdue.days}d "
-                f"{overdue.seconds // 3600}h"
-            )
-
+            overdue_text = f"Over Due by {overdue.days}d {overdue.seconds // 3600}h"
         else:
-
             status_type = "pending"
             overdue_text = ""
 
         pending_material_receive_list.append({
-
             "case_id": cq.ticket_id,
             "customer_name": cq.name,
             "tower": cq.tower,
@@ -3000,39 +2988,33 @@ def maintenance_dashboard(request):
             "overdue_text": overdue_text,
             "created_at": item.created_at,
             "customer_query": cq,
-
         })
 
     # ==========================================
-    # S10 — READY TO RESOLVE
+    # S10 — READY TO RESOLVE (PENDING RESOLUTION)
+    # Material received but issue not yet closed.
+    # SLA: 4 Days from receive date
     # ==========================================
-
     closed_ids = QueryCloser.objects.values_list(
-        "customer_query_id",
-        flat=True
+        "customer_query_id", flat=True
     )
 
     pending_resolution_qs = ReceiveMaterial.objects.select_related(
         "customer_query"
-    ).exclude(
-        customer_query_id__in=closed_ids
-    )
+    ).exclude(customer_query_id__in=closed_ids)
 
     if customer_filter:
         pending_resolution_qs = pending_resolution_qs.filter(
             customer_query__name__icontains=customer_filter
         )
-
     if tower_filter:
         pending_resolution_qs = pending_resolution_qs.filter(
             customer_query__tower=tower_filter
         )
-
     if area_filter:
         pending_resolution_qs = pending_resolution_qs.filter(
             customer_query__area__icontains=area_filter
         )
-
     if search:
         pending_resolution_qs = pending_resolution_qs.filter(
             Q(customer_query__ticket_id__icontains=search)
@@ -3042,30 +3024,19 @@ def maintenance_dashboard(request):
         )
 
     pending_resolution_list = []
-
     for item in pending_resolution_qs:
-
         cq = item.customer_query
         deadline = item.created_at + timedelta(days=4)
 
         if now > deadline:
-
             overdue = now - deadline
             status_type = "overdue"
-
-            overdue_text = (
-                f"Over Due by "
-                f"{overdue.days}d "
-                f"{overdue.seconds // 3600}h"
-            )
-
+            overdue_text = f"Over Due by {overdue.days}d {overdue.seconds // 3600}h"
         else:
-
             status_type = "pending"
             overdue_text = ""
 
         pending_resolution_list.append({
-
             "case_id": cq.ticket_id,
             "customer_name": cq.name,
             "tower": cq.tower,
@@ -3074,13 +3045,11 @@ def maintenance_dashboard(request):
             "overdue_text": overdue_text,
             "created_at": item.created_at,
             "customer_query": cq,
-
         })
 
     # ==========================================
-    # RESOLVED / CLOSED
+    # RESOLVED / CLOSED (S10 done via QueryCloser)
     # ==========================================
-
     resolved_qs = QueryCloser.objects.select_related(
         "customer_query"
     ).order_by("-created_at")
@@ -3089,12 +3058,10 @@ def maintenance_dashboard(request):
         resolved_qs = resolved_qs.filter(
             customer_query__name__icontains=customer_filter
         )
-
     if tower_filter:
         resolved_qs = resolved_qs.filter(
             customer_query__tower=tower_filter
         )
-
     if area_filter:
         resolved_qs = resolved_qs.filter(
             customer_query__area__icontains=area_filter
@@ -3103,69 +3070,44 @@ def maintenance_dashboard(request):
     recent_resolved_qs = resolved_qs[:20]
 
     recent_resolved = []
-
     for item in recent_resolved_qs:
-
         cq = item.customer_query
-
         recent_resolved.append({
-
             "case_id": cq.ticket_id,
             "customer_name": cq.name,
             "tower": cq.tower,
             "area": cq.area,
-            "resolved_by": getattr(
-                item,
-                "resolved_by",
-                "-"
-            ),
-            "remark": getattr(
-                item,
-                "remark",
-                "-"
-            ),
+            # adjust field names below to match your QueryCloser model
+            "resolved_by": getattr(item, "resolved_by", "-"),
+            "remark": getattr(item, "remark", "-"),
             "created_at": item.created_at,
-
         })
 
     # ==========================================
     # SUMMARY COUNTS
     # ==========================================
-
-    pending_receive_count = len(
-        pending_material_receive_list
-    )
-
-    pending_resolution_count = len(
-        pending_resolution_list
-    )
-
+    pending_receive_count = len(pending_material_receive_list)
+    pending_resolution_count = len(pending_resolution_list)
     resolved_count = QueryCloser.objects.count()
-
     total_received_count = ReceiveMaterial.objects.count()
 
     today = timezone.now().date()
-
     today_resolved_count = QueryCloser.objects.filter(
         created_at__date=today
     ).count()
 
     overdue_receive_count = sum(
-        1
-        for item in pending_material_receive_list
+        1 for item in pending_material_receive_list
         if item["status_type"] == "overdue"
     )
-
     overdue_resolution_count = sum(
-        1
-        for item in pending_resolution_list
+        1 for item in pending_resolution_list
         if item["status_type"] == "overdue"
     )
 
     # ==========================================
-    # TOWER OPTIONS
+    # TOWER OPTIONS (dropdown filter)
     # ==========================================
-
     tower_options = (
         CustomerQuery.objects
         .exclude(tower__isnull=True)
@@ -3175,65 +3117,37 @@ def maintenance_dashboard(request):
         .order_by("tower")
     )
 
-    # ==========================================
-    # CONTEXT
-    # ==========================================
-
     context = {
+        # TABLES
+        "pending_material_receive_list": pending_material_receive_list,
+        "pending_resolution_list": pending_resolution_list,
+        "recent_resolved": recent_resolved,
 
-        "pending_material_receive_list":
-            pending_material_receive_list,
+        # SUMMARY
+        "pending_receive_count": pending_receive_count,
+        "pending_resolution_count": pending_resolution_count,
+        "resolved_count": resolved_count,
+        "total_received_count": total_received_count,
+        "today_resolved_count": today_resolved_count,
+        "overdue_receive_count": overdue_receive_count,
+        "overdue_resolution_count": overdue_resolution_count,
 
-        "pending_resolution_list":
-            pending_resolution_list,
-
-        "recent_resolved":
-            recent_resolved,
-
-        "pending_receive_count":
-            pending_receive_count,
-
-        "pending_resolution_count":
-            pending_resolution_count,
-
-        "resolved_count":
-            resolved_count,
-
-        "total_received_count":
-            total_received_count,
-
-        "today_resolved_count":
-            today_resolved_count,
-
-        "overdue_receive_count":
-            overdue_receive_count,
-
-        "overdue_resolution_count":
-            overdue_resolution_count,
-
-        "search":
-            search,
-
-        "customer_filter":
-            customer_filter,
-
-        "tower_filter":
-            tower_filter,
-
-        "area_filter":
-            area_filter,
-
-        "tower_options":
-            tower_options,
+        # FILTERS
+        "search": search,
+        "customer_filter": customer_filter,
+        "tower_filter": tower_filter,
+        "area_filter": area_filter,
+        "tower_options": tower_options,
     }
 
     return render(
         request,
         "maintenance_dashboard.html",
-        context
+        context,
     )
 
- 
+
+
 
 def admin_dashboard(request):
 
