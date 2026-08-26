@@ -5206,9 +5206,9 @@ def store_keeper_dashboard(request):
 
     search = request.GET.get("search", "").strip()
 
-    customer_filter = request.GET.get("customer", "")
-    block_filter = request.GET.get("block", "")
-    area_filter = request.GET.get("area", "")
+    customer_filter = request.GET.get("customer", "").strip()
+    block_filter = request.GET.get("block", "").strip()
+    area_filter = request.GET.get("area", "").strip()
 
 
 
@@ -5494,13 +5494,6 @@ def store_keeper_dashboard(request):
             area__icontains=area_filter
         )
 
-    if search:
-        recent_issued = recent_issued.filter(
-            Q(case_id__icontains=search) |
-            Q(customer_query__name__icontains=search) |
-            Q(block__icontains=search) |
-            Q(area__icontains=search)
-        )
 
 
     # ==========================================
