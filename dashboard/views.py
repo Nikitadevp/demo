@@ -2324,16 +2324,12 @@ def customer_approval_form(request, query_id):
 
         customer.save()
 
-        return render(
+        messages.success(
             request,
-            "customer_approval.html",
-            {
-                "customer": customer,
-                "success": True,
-                "popup_message": popup_message
-            }
+            popup_message
         )
-
+        return redirect("crm_dashboard")
+    
     return render(
         request,
         "customer_approval.html",
