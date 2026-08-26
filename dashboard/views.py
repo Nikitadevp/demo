@@ -2190,6 +2190,8 @@ def site_inspection_form(request, query_id):
             request,
             "Site Inspection Form Submitted Successfully"
         )
+
+
         return redirect("site_engineer_dashboard")   
 
     return render(
@@ -2199,8 +2201,6 @@ def site_inspection_form(request, query_id):
             "customer":customer
         }
     )
-
-
 
 
 
@@ -2248,7 +2248,18 @@ def estimate_form(request, query_id):
                 )
             )
 
-            return HttpResponse("DATA SAVED")
+            # Customer status update
+            customer.status = "Approval Pending"
+            customer.save()
+
+            # Success popup
+            messages.success(
+                request,
+                "Estimate Form Submitted Successfully"
+            )
+
+            # CRM Dashboard
+            return redirect("crm_dashboard")
 
         except Exception as e:
 
@@ -2263,7 +2274,6 @@ def estimate_form(request, query_id):
             "customer": customer
         }
     )
-
 
 # customer_approval_form
 
