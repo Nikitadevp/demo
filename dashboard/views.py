@@ -2379,7 +2379,7 @@ def advance_collection_form(request, query_id):
 
         return render(
             request,
-            "advance_collection.html",
+            "crm_dashboard.html",
             {
                 "customer": customer,
                 "success": True,
