@@ -2099,14 +2099,9 @@ Thank You.
             )
 
         customer.save()
-
-        return render(
-            request,
-            "scope_success.html",
-            {
-                "popup_message": popup_message
-            }
-        )
+        messages.success(request, popup_message)
+        return redirect("crm_dashboard")
+       
 
     return render(
         request,
