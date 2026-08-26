@@ -5154,6 +5154,10 @@ def store_keeper_dashboard(request):
     if "admin_id" not in request.session:
         return redirect("login")
 
+
+    print("ADMIN ID:", request.session.get("admin_id"))
+    print("ADMIN ROLE:", request.session.get("admin_role"))
+
     if request.session.get("admin_role") != "Store Keeper":
         return redirect("login")
 
