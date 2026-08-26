@@ -2377,16 +2377,12 @@ def advance_collection_form(request, query_id):
             )
         )
 
-        return render(
+        messages.success(
             request,
-            "crm_dashboard.html",
-            {
-                "customer": customer,
-                "success": True,
-                "popup_message":
-                "Advance Collection Form Submitted Successfully"
-            }
+            "Advance Collection Form Submitted Successfully"
         )
+
+        return redirect("crm_dashboard")
 
     return render(
         request,
