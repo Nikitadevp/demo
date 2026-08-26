@@ -2186,13 +2186,11 @@ def site_inspection_form(request, query_id):
 
         customer.save()
 
-        return render(
+        messages.success(
             request,
-            "site_inspection.html",
-            {
-                "popup_message": "Site Inspection Form Submitted Successfully"
-            }
+            "Site Inspection Form Submitted Successfully"
         )
+        return redirect("site_engineer_dashboard")   
 
     return render(
         request,
