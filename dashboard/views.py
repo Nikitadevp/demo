@@ -5161,11 +5161,6 @@ def crm_dashboard(request):
 
 
 
-
-
-
-
-
 def store_keeper_dashboard(request):
 
     # ==========================================
@@ -5201,16 +5196,14 @@ def store_keeper_dashboard(request):
     ).count()
 
     # ==========================================
-    # SEARCH
+    # SEARCH / FILTERS
     # ==========================================
 
     search = request.GET.get("search", "").strip()
 
-    customer_filter = request.GET.get("customer", "").strip()
-    block_filter = request.GET.get("block", "").strip()
-    area_filter = request.GET.get("area", "").strip()
-
-
+    customer_filter = request.GET.get("customer", "")
+    block_filter = request.GET.get("block", "")
+    area_filter = request.GET.get("area", "")
 
     block_options = (
         SiteInspection.objects
@@ -5218,12 +5211,7 @@ def store_keeper_dashboard(request):
         .distinct()
         .order_by("block")
     )
-
-    block_options = [
-        block for block in block_options
-        if block
-    ]
-
+    block_options = [b for b in block_options if b]
 
     area_options = (
         SiteInspection.objects
@@ -5231,19 +5219,13 @@ def store_keeper_dashboard(request):
         .distinct()
         .order_by("area")
     )
-
-    area_options = [
-        area for area in area_options
-        if area
-    ]
-
-
-
-
-
+    area_options = [a for a in area_options if a]
 
     # ==========================================
     # PENDING MATERIAL CHECK (S6)
+    # NOTE: SiteInspection model — confirm its customer field name too
+    # (it already used customer_name / customer_query__name before,
+    # left as-is since it wasn't reported broken)
     # ==========================================
 
     pending_material_check = SiteInspection.objects.filter(
@@ -5256,7 +5238,7 @@ def store_keeper_dashboard(request):
 
     if customer_filter:
         pending_material_check = pending_material_check.filter(
-            customer_query__name__icontains=customer_filter
+            customer_name__icontains=customer_filter
         )
 
     if block_filter:
@@ -5284,7 +5266,6 @@ def store_keeper_dashboard(request):
     pending_material_list = []
 
     for item in pending_material_check:
-
         due_date = item.created_at + timedelta(hours=2)
 
         if timezone.now() > due_date:
@@ -5316,7 +5297,7 @@ def store_keeper_dashboard(request):
 
     if customer_filter:
         pending_indent = pending_indent.filter(
-            customer_query__name__icontains=customer_filter
+            customer_name__icontains=customer_filter
         )
 
     if block_filter:
@@ -5332,14 +5313,10 @@ def store_keeper_dashboard(request):
     if search:
         pending_indent = pending_indent.filter(
             Q(case_id__icontains=search) |
-            Q(customer_query__name__icontains=search) |
+            Q(customer_name__icontains=search) |
             Q(block__icontains=search) |
             Q(area__icontains=search)
-    )
-
-
-
-
+        )
 
     pending_indent = pending_indent.select_related(
         "customer_query"
@@ -5348,7 +5325,6 @@ def store_keeper_dashboard(request):
     pending_indent_list = []
 
     for item in pending_indent:
-
         due_date = add_working_days(item.created_at, 2)
 
         if timezone.now() > due_date:
@@ -5378,7 +5354,7 @@ def store_keeper_dashboard(request):
 
     if customer_filter:
         ready_available = ready_available.filter(
-            customer_query__name__icontains=customer_filter
+            customer_name__icontains=customer_filter
         )
 
     if block_filter:
@@ -5394,21 +5370,18 @@ def store_keeper_dashboard(request):
     if search:
         ready_available = ready_available.filter(
             Q(case_id__icontains=search) |
-            Q(customer_query__name__icontains=search) |
+            Q(customer_name__icontains=search) |
             Q(block__icontains=search) |
             Q(area__icontains=search)
-    )
-
+        )
 
     ready_indent = RaiseIndent.objects.exclude(
         customer_query__issuematerial__isnull=False
     ).select_related("customer_query")
 
-
-
     if customer_filter:
         ready_indent = ready_indent.filter(
-            customer_query__name__icontains=customer_filter
+            customer_name__icontains=customer_filter
         )
 
     if block_filter:
@@ -5424,15 +5397,10 @@ def store_keeper_dashboard(request):
     if search:
         ready_indent = ready_indent.filter(
             Q(case_id__icontains=search) |
-            Q(customer_query__name__icontains=search) |
+            Q(customer_name__icontains=search) |
             Q(block__icontains=search) |
             Q(area__icontains=search)
         )
-
-
-
-
-
 
     ready_to_issue_list = []
 
@@ -5470,18 +5438,9 @@ def store_keeper_dashboard(request):
         "customer_query"
     ).order_by("-created_at")
 
-    if search:
-        recent_issued = recent_issued.filter(
-            Q(case_id__icontains=search) |
-            Q(customer_name__icontains=search) |
-            Q(block__icontains=search) |
-            Q(area__icontains=search)
-        )
-
-
     if customer_filter:
         recent_issued = recent_issued.filter(
-            customer_query__name__icontains=customer_filter
+            customer_name__icontains=customer_filter
         )
 
     if block_filter:
@@ -5494,7 +5453,13 @@ def store_keeper_dashboard(request):
             area__icontains=area_filter
         )
 
-
+    if search:
+        recent_issued = recent_issued.filter(
+            Q(case_id__icontains=search) |
+            Q(customer_name__icontains=search) |
+            Q(block__icontains=search) |
+            Q(area__icontains=search)
+        )
 
     # ==========================================
     # CONTEXT
@@ -5534,6 +5499,4 @@ def store_keeper_dashboard(request):
         "store_keeper_dashboard.html",
         context
     )
-
-
 
