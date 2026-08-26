@@ -2913,263 +2913,267 @@ from .models import (
 )
 
 
-
 def maintenance_dashboard(request):
-    
+
     if "admin_id" not in request.session:
         return redirect("login")
 
     # ==========================================
-    # DASHBOARD SUMMARY
+    # FILTERS
     # ==========================================
 
-    total_queries = CustomerQuery.objects.count()
+    search = request.GET.get("search", "")
+    customer_filter = request.GET.get("customer", "")
+    tower_filter = request.GET.get("tower", "")
+    area_filter = request.GET.get("area", "")
 
-    open_queries = SiteInspection.objects.filter(
-    under_scope="Yes",
-    customer_query__status="Open"
-    ).count()
-
-    pending_queries = CustomerQuery.objects.filter(
-        status="Pending"
-    ).count()
-
-    in_progress_queries = CustomerQuery.objects.filter(
-        status="In Progress"
-    ).count()
-
-    resolved_queries = CustomerQuery.objects.filter(
-        status="Resolved"
-    ).count()
-
-    closed_queries = CustomerQuery.objects.filter(
-        status="Closed"
-    ).count()
-
-    today_queries = CustomerQuery.objects.filter(
-        created_at__date=timezone.now().date()
-    ).count()
-
+    now = timezone.now()
 
     # ==========================================
-    # WORKFLOW COUNTS
+    # S9 — PENDING MATERIAL RECEIVE
     # ==========================================
 
-    maintenance_scope = MaintenanceScope.objects.count()
-
-    site_inspection = SiteInspection.objects.count()
-
-    estimate_form = EstimateForm.objects.count()
-
-    customer_approval = CustomerApproval.objects.count()
-
-    advance_collection = AdvanceCollection.objects.count()
-
-    material_availability = MaterialAvailability.objects.count()
-
-    raise_indent = RaiseIndent.objects.count()
-
-    issue_material = IssueMaterial.objects.count()
-
-    receive_material = ReceiveMaterial.objects.count()
-
-    query_closer = QueryCloser.objects.count()
-
-    customer_feedback = CustomerFeedback.objects.count()
-
-
-    # ==========================================
-    # PENDING STAGE COUNTS
-    # ==========================================
-
-    scope_pending = max(
-        total_queries - maintenance_scope,
-        0
+    received_ids = ReceiveMaterial.objects.values_list(
+        "customer_query_id",
+        flat=True
     )
 
-    inspection_pending = max(
-        maintenance_scope - site_inspection,
-        0
-    )
-
-    estimate_pending = max(
-        site_inspection - estimate_form,
-        0
-    )
-
-    approval_pending = max(
-        estimate_form - customer_approval,
-        0
-    )
-
-    advance_pending = max(
-        customer_approval - advance_collection,
-        0
-    )
-
-    material_pending = max(
-        advance_collection - material_availability,
-        0
-    )
-
-    indent_pending = max(
-        material_availability - raise_indent,
-        0
-    )
-
-    issue_pending = max(
-        raise_indent - issue_material,
-        0
-    )
-
-    receive_pending = max(
-        issue_material - receive_material,
-        0
-    )
-
-    close_pending = max(
-        receive_material - query_closer,
-        0
-    )
-
-    feedback_pending = max(
-        query_closer - customer_feedback,
-        0
-    )
-
-
-    # ==========================================
-    # LATEST COMPLAINTS
-    # ==========================================
-
-    all_complaints = CustomerQuery.objects.order_by(
-        "-created_at"
-    )
-
-
-    # ==========================================
-    # RECENT ESTIMATES
-    # ==========================================
-
-    recent_estimates = EstimateForm.objects.select_related(
+    pending_receive_qs = IssueMaterial.objects.select_related(
         "customer_query"
-    ).order_by("-id")[:5]
-
-
-    # ==========================================
-    # RECENT APPROVALS
-    # ==========================================
-
-    recent_approvals = CustomerApproval.objects.select_related(
-        "customer_query"
-    ).order_by("-id")[:5]
-    
-
-    # ==========================================
-    # MATERIAL STATISTICS
-    # ==========================================
-
-    material_available_yes = MaterialAvailability.objects.filter(
-        material_available="Yes"
-    ).count()
-
-    material_available_no = MaterialAvailability.objects.filter(
-        material_available="No"
-    ).count()
-
-    total_material = (
-        material_available_yes +
-        material_available_no
+    ).exclude(
+        customer_query_id__in=received_ids
     )
 
-    if total_material:
-
-        material_available_percent = round(
-            (material_available_yes / total_material) * 100
+    if customer_filter:
+        pending_receive_qs = pending_receive_qs.filter(
+            customer_query__name__icontains=customer_filter
         )
 
-        material_pending_percent = round(
-            (material_available_no / total_material) * 100
+    if tower_filter:
+        pending_receive_qs = pending_receive_qs.filter(
+            customer_query__tower=tower_filter
         )
 
-    else:
+    if area_filter:
+        pending_receive_qs = pending_receive_qs.filter(
+            customer_query__area__icontains=area_filter
+        )
 
-        material_available_percent = 0
-        material_pending_percent = 0
+    if search:
+        pending_receive_qs = pending_receive_qs.filter(
+            Q(customer_query__ticket_id__icontains=search)
+            | Q(customer_query__name__icontains=search)
+            | Q(customer_query__tower__icontains=search)
+            | Q(customer_query__area__icontains=search)
+        )
 
+    pending_material_receive_list = []
+
+    for item in pending_receive_qs:
+
+        cq = item.customer_query
+        deadline = item.created_at + timedelta(days=1)
+
+        if now > deadline:
+
+            overdue = now - deadline
+            status_type = "overdue"
+
+            overdue_text = (
+                f"Over Due by "
+                f"{overdue.days}d "
+                f"{overdue.seconds // 3600}h"
+            )
+
+        else:
+
+            status_type = "pending"
+            overdue_text = ""
+
+        pending_material_receive_list.append({
+
+            "case_id": cq.ticket_id,
+            "customer_name": cq.name,
+            "tower": cq.tower,
+            "area": cq.area,
+            "status_type": status_type,
+            "overdue_text": overdue_text,
+            "created_at": item.created_at,
+            "customer_query": cq,
+
+        })
 
     # ==========================================
-    # CHARGEABLE / NON CHARGEABLE
+    # S10 — READY TO RESOLVE
     # ==========================================
 
-    chargeable = SiteInspection.objects.filter(
-        category="Chargeable"
+    closed_ids = QueryCloser.objects.values_list(
+        "customer_query_id",
+        flat=True
+    )
+
+    pending_resolution_qs = ReceiveMaterial.objects.select_related(
+        "customer_query"
+    ).exclude(
+        customer_query_id__in=closed_ids
+    )
+
+    if customer_filter:
+        pending_resolution_qs = pending_resolution_qs.filter(
+            customer_query__name__icontains=customer_filter
+        )
+
+    if tower_filter:
+        pending_resolution_qs = pending_resolution_qs.filter(
+            customer_query__tower=tower_filter
+        )
+
+    if area_filter:
+        pending_resolution_qs = pending_resolution_qs.filter(
+            customer_query__area__icontains=area_filter
+        )
+
+    if search:
+        pending_resolution_qs = pending_resolution_qs.filter(
+            Q(customer_query__ticket_id__icontains=search)
+            | Q(customer_query__name__icontains=search)
+            | Q(customer_query__tower__icontains=search)
+            | Q(customer_query__area__icontains=search)
+        )
+
+    pending_resolution_list = []
+
+    for item in pending_resolution_qs:
+
+        cq = item.customer_query
+        deadline = item.created_at + timedelta(days=4)
+
+        if now > deadline:
+
+            overdue = now - deadline
+            status_type = "overdue"
+
+            overdue_text = (
+                f"Over Due by "
+                f"{overdue.days}d "
+                f"{overdue.seconds // 3600}h"
+            )
+
+        else:
+
+            status_type = "pending"
+            overdue_text = ""
+
+        pending_resolution_list.append({
+
+            "case_id": cq.ticket_id,
+            "customer_name": cq.name,
+            "tower": cq.tower,
+            "area": cq.area,
+            "status_type": status_type,
+            "overdue_text": overdue_text,
+            "created_at": item.created_at,
+            "customer_query": cq,
+
+        })
+
+    # ==========================================
+    # RESOLVED / CLOSED
+    # ==========================================
+
+    resolved_qs = QueryCloser.objects.select_related(
+        "customer_query"
+    ).order_by("-created_at")
+
+    if customer_filter:
+        resolved_qs = resolved_qs.filter(
+            customer_query__name__icontains=customer_filter
+        )
+
+    if tower_filter:
+        resolved_qs = resolved_qs.filter(
+            customer_query__tower=tower_filter
+        )
+
+    if area_filter:
+        resolved_qs = resolved_qs.filter(
+            customer_query__area__icontains=area_filter
+        )
+
+    recent_resolved_qs = resolved_qs[:20]
+
+    recent_resolved = []
+
+    for item in recent_resolved_qs:
+
+        cq = item.customer_query
+
+        recent_resolved.append({
+
+            "case_id": cq.ticket_id,
+            "customer_name": cq.name,
+            "tower": cq.tower,
+            "area": cq.area,
+            "resolved_by": getattr(
+                item,
+                "resolved_by",
+                "-"
+            ),
+            "remark": getattr(
+                item,
+                "remark",
+                "-"
+            ),
+            "created_at": item.created_at,
+
+        })
+
+    # ==========================================
+    # SUMMARY COUNTS
+    # ==========================================
+
+    pending_receive_count = len(
+        pending_material_receive_list
+    )
+
+    pending_resolution_count = len(
+        pending_resolution_list
+    )
+
+    resolved_count = QueryCloser.objects.count()
+
+    total_received_count = ReceiveMaterial.objects.count()
+
+    today = timezone.now().date()
+
+    today_resolved_count = QueryCloser.objects.filter(
+        created_at__date=today
     ).count()
 
-    non_chargeable = SiteInspection.objects.filter(
-        category="Non Chargeable"
-    ).count()
+    overdue_receive_count = sum(
+        1
+        for item in pending_material_receive_list
+        if item["status_type"] == "overdue"
+    )
 
-    total_category = chargeable + non_chargeable
-
-    if total_category:
-
-        chargeable_percent = round(
-            (chargeable / total_category) * 100
-        )
-
-        non_chargeable_percent = round(
-            (non_chargeable / total_category) * 100
-        )
-
-    else:
-
-        chargeable_percent = 0
-        non_chargeable_percent = 0
-
+    overdue_resolution_count = sum(
+        1
+        for item in pending_resolution_list
+        if item["status_type"] == "overdue"
+    )
 
     # ==========================================
-    # MONTHLY COMPLAINTS
+    # TOWER OPTIONS
     # ==========================================
 
-    monthly_data = (
+    tower_options = (
         CustomerQuery.objects
-        .values("created_at__month")
-        .annotate(total=Count("id"))
-        .order_by("created_at__month")
+        .exclude(tower__isnull=True)
+        .exclude(tower__exact="")
+        .values_list("tower", flat=True)
+        .distinct()
+        .order_by("tower")
     )
-
-    month_names = {
-        1: "Jan",
-        2: "Feb",
-        3: "Mar",
-        4: "Apr",
-        5: "May",
-        6: "Jun",
-        7: "Jul",
-        8: "Aug",
-        9: "Sep",
-        10: "Oct",
-        11: "Nov",
-        12: "Dec",
-    }
-
-    months = []
-    monthly_counts = []
-    
-
-    for item in monthly_data:
-
-        months.append(
-            month_names[item["created_at__month"]]
-        )
-
-        monthly_counts.append(
-            item["total"]
-        )
-
-    monthly_report = zip(months, monthly_counts)
-
 
     # ==========================================
     # CONTEXT
@@ -3177,68 +3181,50 @@ def maintenance_dashboard(request):
 
     context = {
 
-        # SUMMARY
+        "pending_material_receive_list":
+            pending_material_receive_list,
 
-        "total_queries": total_queries,
-        "open_queries": open_queries,
-        "pending_queries": pending_queries,
-        "in_progress_queries": in_progress_queries,
-        "resolved_queries": resolved_queries,
-        "closed_queries": closed_queries,
-        "today_queries": today_queries,
+        "pending_resolution_list":
+            pending_resolution_list,
 
-        # WORKFLOW
+        "recent_resolved":
+            recent_resolved,
 
-        "maintenance_scope": maintenance_scope,
-        "site_inspection": site_inspection,
-        "estimate_form": estimate_form,
-        "customer_approval": customer_approval,
-        "advance_collection": advance_collection,
-        "material_availability": material_availability,
-        "raise_indent": raise_indent,
-        "issue_material": issue_material,
-        "receive_material": receive_material,
-        "query_closer": query_closer,
-        "customer_feedback": customer_feedback,
+        "pending_receive_count":
+            pending_receive_count,
 
-        # PENDING
+        "pending_resolution_count":
+            pending_resolution_count,
 
-        "scope_pending": scope_pending,
-        "inspection_pending": inspection_pending,
-        "estimate_pending": estimate_pending,
-        "approval_pending": approval_pending,
-        "advance_pending": advance_pending,
-        "material_pending": material_pending,
-        "indent_pending": indent_pending,
-        "issue_pending": issue_pending,
-        "receive_pending": receive_pending,
-        "close_pending": close_pending,
-        "feedback_pending": feedback_pending,
+        "resolved_count":
+            resolved_count,
 
-        # TABLES
+        "total_received_count":
+            total_received_count,
 
-        "all_complaints": all_complaints,
-        "recent_estimates": recent_estimates,
-        "recent_approvals": recent_approvals,
+        "today_resolved_count":
+            today_resolved_count,
 
-        # CHART DATA
+        "overdue_receive_count":
+            overdue_receive_count,
 
-        "months": months,
-        "monthly_counts": monthly_counts,
-        "monthly_report": monthly_report,
+        "overdue_resolution_count":
+            overdue_resolution_count,
 
-        # PERCENTAGES
+        "search":
+            search,
 
-        "chargeable": chargeable,
-        "non_chargeable": non_chargeable,
-        "chargeable_percent": chargeable_percent,
-        "non_chargeable_percent": non_chargeable_percent,
+        "customer_filter":
+            customer_filter,
 
-        "material_available_yes": material_available_yes,
-        "material_available_no": material_available_no,
-        "material_available_percent": material_available_percent,
-        "material_pending_percent": material_pending_percent,
+        "tower_filter":
+            tower_filter,
 
+        "area_filter":
+            area_filter,
+
+        "tower_options":
+            tower_options,
     }
 
     return render(
@@ -5155,8 +5141,7 @@ def store_keeper_dashboard(request):
         return redirect("login")
 
 
-    print("ADMIN ID:", request.session.get("admin_id"))
-    print("ADMIN ROLE:", request.session.get("admin_role"))
+    
 
     if request.session.get("admin_role") != "Store Keeper":
         return redirect("login")

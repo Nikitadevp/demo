@@ -10,7 +10,7 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
-    <title>Maintenance Dashboard</title>
+    <title>Maintenance Incharge Dashboard</title>
 
     <link rel="stylesheet"
           href="{% static 'css/maintenance_dashboard.css' %}">
@@ -25,7 +25,7 @@
 <div class="dashboard">
 
     <!-- ===========================
-            SIDEBAR
+            SIDEBAR (same as maintenance_dashboard.html)
     ============================ -->
 
     <aside class="sidebar">
@@ -42,7 +42,7 @@
 
             <li class="active">
 
-                <a href="{% url 'maintenance_dashboard' %}">
+                <a href="{% url 'maintenance_incharge_dashboard' %}">
 
                     <i class="fa-solid fa-chart-line"></i>
 
@@ -54,95 +54,11 @@
 
             <li>
 
-                <a href="#">
-
-                    <i class="fa-solid fa-list-check"></i>
-
-                    Maintenance Scope
-
-                </a>
-
-            </li>
-
-            <li>
-
-                <a href="#">
-
-                    <i class="fa-solid fa-house-circle-check"></i>
-
-                    Site Inspection
-
-                </a>
-
-            </li>
-
-            <li>
-
-                <a href="#">
-
-                    <i class="fa-solid fa-file-invoice-dollar"></i>
-
-                    Estimate
-
-                </a>
-
-            </li>
-
-            <li>
-
-                <a href="#">
-
-                    <i class="fa-solid fa-user-check"></i>
-
-                    Customer Approval
-
-                </a>
-
-            </li>
-
-            <li>
-
-                <a href="#">
-
-                    <i class="fa-solid fa-wallet"></i>
-
-                    Advance Collection
-
-                </a>
-
-            </li>
-
-            <li>
-
-                <a href="#">
-
-                    <i class="fa-solid fa-boxes-stacked"></i>
-
-                    Material
-
-                </a>
-
-            </li>
-
-            <li>
-
-                <a href="#">
-
-                    <i class="fa-solid fa-truck"></i>
-
-                    Issue Material
-
-                </a>
-
-            </li>
-
-            <li>
-
-                <a href="#">
+                <a href="#pending-material-receive">
 
                     <i class="fa-solid fa-box-open"></i>
 
-                    Receive Material
+                    Pending Material Receive
 
                 </a>
 
@@ -150,11 +66,23 @@
 
             <li>
 
-                <a href="#">
+                <a href="#pending-resolution">
+
+                    <i class="fa-solid fa-screwdriver-wrench"></i>
+
+                    Ready To Resolve
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="#resolved-queries">
 
                     <i class="fa-solid fa-circle-check"></i>
 
-                    Close Query
+                    Resolved / Closed
 
                 </a>
 
@@ -170,13 +98,13 @@
 
     <main class="main-content">
 
-        <!-- HEADER -->
+        <!-- HEADER (same as maintenance_dashboard.html) -->
 
         <div class="header">
 
             <div>
 
-                <h1>Maintenance Dashboard</h1>
+                <h1>Maintenance Incharge Dashboard</h1>
 
                 <span>
                     Welcome Back
@@ -186,13 +114,6 @@
 
             <div class="header-right">
 
-                <button class="new-btn">
-
-                    <i class="fa-solid fa-plus"></i>
-
-                    New Query
-
-                </button>
                 <a href="{% url 'logout' %}" class="logout-btn">
 
                     <i class="fa-solid fa-right-from-bracket"></i>
@@ -212,13 +133,13 @@
 
                 <h2>
 
-                    Hello Maintenance Team 👋
+                    Hello {{ request.session.admin_name }} 👋
 
                 </h2>
 
                 <p>
 
-                    Total Maintenance Activities Overview
+                    Track material receiving and issue resolution from one place.
 
                 </p>
 
@@ -228,13 +149,13 @@
 
                 <h1>
 
-                    {{ total_queries }}
+                    {{ total_received_count }}
 
                 </h1>
 
                 <span>
 
-                    Total Complaints
+                    Material Received
 
                 </span>
 
@@ -242,603 +163,335 @@
 
         </div>
 
-        <!-- SUMMARY CARDS -->
+        <!-- ==========================================
+                    SUMMARY CARDS
+        =========================================== -->
+
+        <div class="section-title">
+            <h2>Summary</h2>
+        </div>
 
         <div class="summary-grid">
 
             <div class="card open-card">
-
-
-                <i class="fa-solid fa-folder-open"></i>
-
-                <h2>
-
-                    {{ open_queries }}
-
-                </h2>
-
-                <p>
-
-                    Open Queries
-
-                </p>
-
+                <i class="fa-solid fa-box-open"></i>
+                <h2>{{ pending_receive_count }}</h2>
+                <p>Pending Material Receive</p>
             </div>
 
             <div class="card pending-card">
-
-                <i class="fa-solid fa-hourglass-half"></i>
-
-                <h2>
-
-                    {{ pending_queries }}
-
-                </h2>
-
-                <p>
-
-                    Pending
-
-                </p>
-
+                <i class="fa-solid fa-screwdriver-wrench"></i>
+                <h2>{{ pending_resolution_count }}</h2>
+                <p>Ready To Resolve</p>
             </div>
 
             <div class="card progress-card">
-
-                <i class="fa-solid fa-spinner"></i>
-
-                <h2>
-
-                    {{ in_progress_queries }}
-
-                </h2>
-
-                <p>
-
-                    In Progress
-
-                </p>
-
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <h2>{{ overdue_receive_count }}</h2>
+                <p>Overdue Receive</p>
             </div>
 
             <div class="card closed-card">
-
                 <i class="fa-solid fa-circle-check"></i>
-
-                <h2>
-
-                    {{ closed_queries }}
-
-                </h2>
-
-                <p>
-
-                    Closed
-
-                </p>
-
+                <h2>{{ resolved_count }}</h2>
+                <p>Resolved / Closed</p>
             </div>
 
         </div>
 
-        <!-- WORKFLOW TITLE -->
+        <!-- ==========================================
+                    SEARCH
+        =========================================== -->
 
-        <div class="section-title">
+        <div class="search-box">
 
-            <h2>
+           <form method="GET" action="{% url 'maintenance_incharge_dashboard' %}">
+                <input
+                    id="searchInput"
+                    type="text"
+                    name="search"
+                    placeholder="Search by Ticket ID, Customer, Tower, Area"
+                    value="{{ search }}"
+                >
 
-                Maintenance Workflow
+                <button type="submit">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
 
-            </h2>
-
+                <a href="{% url 'maintenance_incharge_dashboard' %}">
+                    <button type="button">
+                        <i class="fa-solid fa-rotate"></i>
+                    </button>
+                </a>
+            </form>
         </div>
 
-        <!-- WORKFLOW GRID -->
-
-        <div class="workflow-grid">
-
-            <!-- =========================
-                 WORKFLOW CARDS
-            ========================== -->
-
-            <div class="workflow-card">
-                <div class="workflow-top">
-                    <i class="fa-solid fa-clipboard-list"></i>
-                    <span>Maintenance Scope</span>
-                </div>
-
-                <h2>{{ maintenance_scope }}</h2>
-
-                <small>
-                    Pending : {{ scope_pending }}
-                </small>
-            </div>
-
-            <div class="workflow-card">
-                <div class="workflow-top">
-                    <i class="fa-solid fa-house-circle-check"></i>
-                    <span>Site Inspection</span>
-                </div>
-
-                <h2>{{ site_inspection }}</h2>
-
-                <small>
-                    Pending : {{ inspection_pending }}
-                </small>
-            </div>
-
-            <div class="workflow-card">
-                <div class="workflow-top">
-                    <i class="fa-solid fa-file-invoice-dollar"></i>
-                    <span>Estimate Form</span>
-                </div>
-
-                <h2>{{ estimate_form }}</h2>
-
-                <small>
-                    Pending : {{ estimate_pending }}
-                </small>
-            </div>
-
-            <div class="workflow-card">
-                <div class="workflow-top">
-                    <i class="fa-solid fa-user-check"></i>
-                    <span>Customer Approval</span>
-                </div>
-
-                <h2>{{ customer_approval }}</h2>
-
-                <small>
-                    Pending : {{ approval_pending }}
-                </small>
-            </div>
-
-            <div class="workflow-card">
-                <div class="workflow-top">
-                    <i class="fa-solid fa-wallet"></i>
-                    <span>Advance Collection</span>
-                </div>
-
-                <h2>{{ advance_collection }}</h2>
-
-                <small>
-                    Pending : {{ advance_pending }}
-                </small>
-            </div>
-
-            <div class="workflow-card">
-                <div class="workflow-top">
-                    <i class="fa-solid fa-boxes-stacked"></i>
-                    <span>Material Availability</span>
-                </div>
-
-                <h2>{{ material_availability }}</h2>
-
-                <small>
-                    Pending : {{ material_pending }}
-                </small>
-            </div>
-
-            <div class="workflow-card">
-                <div class="workflow-top">
-                    <i class="fa-solid fa-list"></i>
-                    <span>Raise Indent</span>
-                </div>
-
-                <h2>{{ raise_indent }}</h2>
-
-                <small>
-                    Pending : {{ indent_pending }}
-                </small>
-            </div>
-
-            <div class="workflow-card">
-                <div class="workflow-top">
-                    <i class="fa-solid fa-truck"></i>
-                    <span>Issue Material</span>
-                </div>
-
-                <h2>{{ issue_material }}</h2>
-
-                <small>
-                    Pending : {{ issue_pending }}
-                </small>
-            </div>
-
-            <div class="workflow-card">
-                <div class="workflow-top">
-                    <i class="fa-solid fa-box-open"></i>
-                    <span>Receive Material</span>
-                </div>
-
-                <h2>{{ receive_material }}</h2>
-
-                <small>
-                    Pending : {{ receive_pending }}
-                </small>
-            </div>
-
-            <div class="workflow-card">
-                <div class="workflow-top">
-                    <i class="fa-solid fa-circle-check"></i>
-                    <span>Query Closer</span>
-                </div>
-
-                <h2>{{ query_closer }}</h2>
-
-                <small>
-                    Pending : {{ close_pending }}
-                </small>
-            </div>
-
-            <div class="workflow-card">
-                <div class="workflow-top">
-                    <i class="fa-solid fa-star"></i>
-                    <span>Customer Feedback</span>
-                </div>
-
-                <h2>{{ customer_feedback }}</h2>
-
-                <small>
-                    Pending : {{ feedback_pending }}
-                </small>
-            </div>
-
-        </div>
-
-        <!-- =========================
-             ANALYTICS
-        ========================== -->
-
-        <div class="analytics-grid">
-
-            <div class="analytics-card">
-
-                <h3>Chargeable vs Non-Chargeable</h3>
-
-                <div class="percent-row">
-
-                    <div>
-
-                        <h2>{{ chargeable_percent }}%</h2>
-
-                        <span>Chargeable</span>
-
-                    </div>
-
-                    <div>
-
-                        <h2>{{ non_chargeable_percent }}%</h2>
-
-                        <span>Non-Chargeable</span>
-
-                    </div>
-
-                </div>
-
-                <div class="progress">
-
-                    <div class="progress-fill chargeable"
-                         style="width: {{ chargeable_percent }}%;">
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="analytics-card">
-
-                <h3>Material Availability</h3>
-
-                <h2>
-
-                    {{ material_available_percent }}%
-
-                </h2>
-
-                <div class="progress">
-
-                    <div class="progress-fill material"
-                         style="width: {{ material_available_percent }}%;">
-
-                    </div>
-
-                </div>
-
-                <p>
-
-                    Available : {{ material_available_yes }}
-
-                    &nbsp;&nbsp;&nbsp;
-
-                    Pending : {{ material_available_no }}
-
-                </p>
-
-            </div>
-
-        </div>
-
-        <!-- =========================
-             LATEST COMPLAINTS
-        ========================== -->
-
-        <div class="section-title">
-
-            <h2>
-
-                Latest Complaints
-
-            </h2>
-
+        <form id="filterForm" method="GET" action="{% url 'maintenance_incharge_dashboard' %}" style="display:none;">
+            <input type="hidden" name="search" value="{{ search }}">
+        </form>
+
+        <!-- ==========================================
+                PENDING MATERIAL RECEIVE (S9)
+        =========================================== -->
+
+        <div class="section-title" id="pending-material-receive">
+            <h2>Pending Material Receive</h2>
         </div>
 
         <div class="table-box">
-
             <table>
-
                 <thead>
-
                     <tr>
 
-                        <th>Ticket</th>
+                        <th>Ticket ID</th>
+
+                        <th>
+                           <div class="d-flex flex-column gap-1">
+                                <span>Customer Name</span>
+                                <input
+                                    type="text"
+                                    name="customer"
+                                    form="filterForm"
+                                    class="form-control form-control-sm"
+                                    placeholder="Search Name"
+                                    value="{{ customer_filter }}"
+                                    onkeydown="if(event.key === 'Enter'){ event.preventDefault(); document.getElementById('filterForm').submit(); }"
+                                >
+                            </div>
+                        </th>
+
+                        <th>
+                           <div class="d-flex flex-column gap-1">
+                                <span>Tower</span>
+                                <select
+                                    name="tower"
+                                    form="filterForm"
+                                    class="form-select form-select-sm"
+                                    onchange="document.getElementById('filterForm').submit();">
+                                    <option value="">All</option>
+                                    {% for tower in tower_options %}
+                                        <option
+                                            value="{{ tower }}"
+                                            {% if tower_filter == tower %}selected{% endif %}>
+                                            {{ tower }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </th>
+
+                        <th>
+                           <div class="d-flex flex-column gap-1">
+                                <span>Area</span>
+                                <input
+                                    type="text"
+                                    name="area"
+                                    form="filterForm"
+                                    class="form-control form-control-sm"
+                                    placeholder="Search Area"
+                                    value="{{ area_filter }}"
+                                    onkeydown="if(event.key === 'Enter'){ event.preventDefault(); document.getElementById('filterForm').submit(); }"
+                                >
+                            </div>
+                        </th>
+
+                        <th>Status</th>
+                        <th>Form</th>
+                        <th>Date</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                 {% for item in pending_material_receive_list %}
+                    <tr>
+                         <td>{{ item.case_id }}</td>
+                         <td>{{ item.customer_name }}</td>
+                         <td>{{ item.tower }}</td>
+                         <td>{{ item.area }}</td>
+
+                         <td>
+                         {% if item.status_type == "overdue" %}
+                            <span style="color: red !important; font-weight: bold;">
+                                {{ item.overdue_text }}
+                            </span>
+                         {% elif item.status_type == "pending" %}
+                            <span class="badge bg-warning text-dark">
+                                Pending
+                            </span>
+                         {% endif %}
+                         </td>
+
+                         <td>
+                            <a href="{% url 'receive_material_form' item.customer_query.id %}"
+                                class="open-form-link">
+                                Open Form
+                            </a>
+                         </td>
+
+                         <td>{{ item.created_at|date:"d/m/y h:i A" }}</td>
+                    </tr>
+               {% empty %}
+                     <tr>
+                       <td colspan="7">
+                         No Pending Material Receive
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ==========================================
+                READY TO RESOLVE (S10)
+        =========================================== -->
+
+        <div class="section-title" id="pending-resolution">
+            <h2>Ready To Resolve</h2>
+        </div>
+
+        <div class="table-box">
+            <table>
+                <thead>
+                    <tr>
+
+                        <th>Ticket ID</th>
+
+                        <th>
+                           <div class="d-flex flex-column gap-1">
+                                <span>Customer Name</span>
+                                <input
+                                    type="text"
+                                    name="customer"
+                                    form="filterForm"
+                                    class="form-control form-control-sm"
+                                    placeholder="Search Name"
+                                    value="{{ customer_filter }}"
+                                    onkeydown="if(event.key === 'Enter'){ event.preventDefault(); document.getElementById('filterForm').submit(); }"
+                                >
+                            </div>
+                        </th>
+
+                        <th>
+                           <div class="d-flex flex-column gap-1">
+                                <span>Tower</span>
+                                <select
+                                    name="tower"
+                                    form="filterForm"
+                                    class="form-select form-select-sm"
+                                    onchange="document.getElementById('filterForm').submit();">
+                                    <option value="">All</option>
+                                    {% for tower in tower_options %}
+                                        <option
+                                            value="{{ tower }}"
+                                            {% if tower_filter == tower %}selected{% endif %}>
+                                            {{ tower }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </th>
+
+                        <th>
+                           <div class="d-flex flex-column gap-1">
+                                <span>Area</span>
+                                <input
+                                    type="text"
+                                    name="area"
+                                    form="filterForm"
+                                    class="form-control form-control-sm"
+                                    placeholder="Search Area"
+                                    value="{{ area_filter }}"
+                                    onkeydown="if(event.key === 'Enter'){ event.preventDefault(); document.getElementById('filterForm').submit(); }"
+                                >
+                            </div>
+                        </th>
+
+                        <th>Status</th>
+                        <th>Form</th>
+                        <th>Date</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                 {% for item in pending_resolution_list %}
+                    <tr>
+                         <td>{{ item.case_id }}</td>
+                         <td>{{ item.customer_name }}</td>
+                         <td>{{ item.tower }}</td>
+                         <td>{{ item.area }}</td>
+
+                         <td>
+                         {% if item.status_type == "overdue" %}
+                            <span style="color: red !important; font-weight: bold;">
+                                {{ item.overdue_text }}
+                            </span>
+                         {% elif item.status_type == "pending" %}
+                            <span class="badge bg-warning text-dark">
+                                Pending
+                            </span>
+                         {% endif %}
+                         </td>
+
+                         <td>
+                            <a href="{% url 'query_closer_form' item.customer_query.id %}"
+                                class="open-form-link">
+                                Open Form
+                            </a>
+                         </td>
+
+                         <td>{{ item.created_at|date:"d/m/y h:i A" }}</td>
+                    </tr>
+               {% empty %}
+                     <tr>
+                       <td colspan="7">
+                         No Cases Ready To Resolve
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ==========================================
+                RESOLVED / CLOSED
+        =========================================== -->
+
+        <div class="section-title" id="resolved-queries">
+            <h2>Resolved / Closed Queries</h2>
+        </div>
+
+        <div class="table-box">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ticket ID</th>
                         <th>Customer</th>
                         <th>Tower</th>
                         <th>Area</th>
-                        <th>Issue</th>
-                        <th>Status</th>
+                        <th>Resolved By</th>
+                        <th>Remark</th>
                         <th>Date</th>
-                        <th>SLA Due Time</th>
-                        <th>SLA Status</th>
-
                     </tr>
-
                 </thead>
-
                 <tbody>
-
-                {% for complaint in latest_complaints %}
-
+                {% for item in recent_resolved %}
                     <tr>
-
-                        <td>{{ complaint.ticket_id }}</td>
-
-                        <td>{{ complaint.name }}</td>
-
-                        <td>{{ complaint.tower }}</td>
-
-                        <td>{{ complaint.area }}</td>
-
-                        <td>{{ complaint.issue }}</td>
-
-                        <td>{{ complaint.status }}</td>
-                        
-
-                        <td>{{ complaint.created_at|date:"d/m/y" }}</td>
-                      
-                        <td>{{ complaint.sla_due_time|date:"d/m/y h:i A" }}</td>
-
-                        <td>
-                            {% if complaint.is_overdue %}
-                                <span style="color:red;font-weight:bold;">Overdue</span>
-                            {% else %}
-                                <span style="color:green;font-weight:bold;">On Time</span>
-                            {% endif %}
-                        </td>
-
-
+                        <td>{{ item.case_id }}</td>
+                        <td>{{ item.customer_name }}</td>
+                        <td>{{ item.tower }}</td>
+                        <td>{{ item.area }}</td>
+                        <td>{{ item.resolved_by }}</td>
+                        <td>{{ item.remark }}</td>
+                        <td>{{ item.created_at|date:"d M Y" }}</td>
                     </tr>
-
                 {% empty %}
-
                     <tr>
-
-                        <td colspan="7">
-
-                            No Complaints Found
-
-                        </td>
-
+                        <td colspan="7">No Resolved Queries Yet</td>
                     </tr>
-
                 {% endfor %}
-
                 </tbody>
-
             </table>
-
         </div>
-
-        <!-- =========================
-             RECENT ESTIMATES
-        ========================== -->
-
-        <div class="section-title">
-
-            <h2>Recent Estimates</h2>
-
-        </div>
-
-        <div class="table-box">
-
-            <table>
-
-                <thead>
-
-                    <tr>
-
-                        <th>Ticket ID</th>
-                        <th>Customer</th>
-                        <th>Email</th>
-                        
-
-                    </tr>
-
-                </thead>
-
-                <tbody>
-
-                {% for estimate in recent_estimates %}
-
-                    <tr>
-
-                        <td>{{ estimate.customer_query.ticket_id }}</td>
-
-                        <td>{{ estimate.customer_query.name }}</td>
-
-                        <td>{{ estimate.email }}</td>
-
-                    </tr>
-
-                {% empty %}
-
-                    <tr>
-
-                        <td colspan="3">
-
-                            No Estimate Available
-
-                        </td>
-
-                    </tr>
-
-                {% endfor %}
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-
-        <!-- =========================
-             RECENT APPROVALS
-        ========================== -->
-
-        <div class="section-title">
-
-            <h2>Recent Customer Approvals</h2>
-
-        </div>
-
-        <div class="table-box">
-
-            <table>
-
-                <thead>
-
-                    <tr>
-
-                        <th>Ticket ID</th>
-                        <th>Customer</th>
-                        <th>Status</th>
-                        
-
-                    </tr>
-
-                </thead>
-
-                <tbody>
-
-                {% for approval in recent_approvals %}
-
-                    <tr>
-
-                        <td>{{ approval.customer_query.ticket_id }}</td>
-
-                        <td>{{ approval.customer_query.name }}</td>
-
-                        <td>
-
-                            <span class="status approved">
-
-                                Approved
-
-                            </span>
-
-                        </td>
-
-                    </tr>
-
-                {% empty %}
-
-                    <tr>
-
-                        <td colspan="3">
-
-                            No Approval Available
-
-                        </td>
-
-                    </tr>
-
-                {% endfor %}
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-
-        <!-- =========================
-             MONTHLY REPORT
-        ========================== -->
-
-        <div class="section-title">
-
-            <h2>Monthly Complaint Statistics</h2>
-
-        </div>
-
-        <div class="analytics-card">
-
-            <table>
-
-                <thead>
-
-                    <tr>
-
-                        <th>Month</th>
-                        <th>Total Complaints</th>
-
-                    </tr>
-
-                </thead>
-
-                <tbody>
-
-                {% for month, count in monthly_report %}
-
-                    <tr>
-
-                        <td>{{ month }}</td>
-
-                        <td>{{ count }}</td>
-
-                    </tr>
-
-                {% empty %}
-
-                    <tr>
-
-                        <td colspan="2">
-
-                            No Monthly Data
-
-                        </td>
-
-                    </tr>
-
-                {% endfor %}
-
-                </tbody>
-
-            </table>
-
-        </div>
-
 
         <!-- =========================
              FOOTER
@@ -852,7 +505,11 @@
 
                 |
 
-                Sampoorna Maintenance Dashboard
+                Sampoorna Maintenance
+
+                |
+
+                Maintenance Incharge Dashboard
 
             </p>
 
