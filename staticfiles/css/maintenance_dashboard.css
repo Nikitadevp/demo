@@ -1,113 +1,42 @@
 /* =========================================================
-   MAINTENANCE DASHBOARD — SAMPoorna
-   PROFESSIONAL THEME
-   Deep Slate Blue + Emerald
+   MAINTENANCE INCHARGE DASHBOARD
+   Professional Corporate Theme
+   Primary  : #17324D
+   Secondary: #315A7D
+   Accent   : #0F9D8A
 ========================================================= */
 
 
 /* =========================================================
-   ROOT VARIABLES
-========================================================= */
-
-:root {
-
-    /* =========================
-       PRIMARY COLORS
-    ========================= */
-
-    --primary: #26384A;
-    --primary-dark: #1B2938;
-    --primary-light: #E8EEF3;
-
-    /* =========================
-       ACCENT
-    ========================= */
-
-    --accent: #10B981;
-    --accent-light: #D1FAE5;
-
-    /* =========================
-       BACKGROUND
-    ========================= */
-
-    --bg: #F5F7FA;
-    --card-bg: #FFFFFF;
-
-    /* =========================
-       BORDER
-    ========================= */
-
-    --border: #D9E1E8;
-
-    /* =========================
-       TEXT
-    ========================= */
-
-    --text-dark: #1F2937;
-    --text-muted: #64748B;
-
-    /* =========================
-       STATUS COLORS
-    ========================= */
-
-    --red: #DC2626;
-    --red-light: #FEE2E2;
-
-    --green: #059669;
-    --green-light: #D1FAE5;
-
-    --orange: #D97706;
-    --orange-light: #FEF3C7;
-
-    --blue: #2563EB;
-    --blue-light: #DBEAFE;
-
-    --purple: #7C3AED;
-    --purple-light: #EDE9FE;
-
-    --yellow: #CA8A04;
-    --yellow-light: #FEF9C3;
-
-    --radius: 10px;
-}
-
-
-/* =========================================================
-   RESET
+   GLOBAL RESET
 ========================================================= */
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-
-    font-family:
-        'Segoe UI',
-        'Poppins',
-        Arial,
-        sans-serif;
+    font-family: "Segoe UI", Arial, sans-serif;
 }
 
-
-/* =========================================================
-   BODY
-========================================================= */
+html {
+    scroll-behavior: smooth;
+}
 
 body {
-    background: var(--bg);
-    color: var(--text-dark);
-
+    background: #F4F7FA;
+    color: #243447;
     font-size: 15px;
 }
 
 
 /* =========================================================
-   MAIN DASHBOARD
+   DASHBOARD LAYOUT
 ========================================================= */
 
 .dashboard {
     display: flex;
     min-height: 100vh;
+    width: 100%;
 }
 
 
@@ -116,103 +45,56 @@ body {
 ========================================================= */
 
 .sidebar {
+    width: 255px;
+    min-height: 100vh;
 
-    width: 250px;
+    background: #17324D;
+    color: #ffffff;
 
-    background: linear-gradient(
-        180deg,
-        #26384A 0%,
-        #1B2938 100%
-    );
-
-    color: #FFFFFF;
-
-    padding: 20px 0;
+    padding: 22px 0;
 
     flex-shrink: 0;
 
-    transition: width 0.25s ease;
+    box-shadow: 3px 0 12px rgba(23, 50, 77, 0.10);
 
-    position: relative;
+    position: sticky;
+    top: 0;
+    height: 100vh;
 
-    box-shadow:
-        3px 0 15px rgba(15, 23, 42, 0.08);
+    overflow-y: auto;
 }
 
 
 /* =========================================================
-   COLLAPSED SIDEBAR
+   SIDEBAR LOGO
 ========================================================= */
 
-.sidebar.collapsed {
-    width: 74px;
+.sidebar .logo {
+    padding: 10px 24px 22px;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+
+    margin-bottom: 18px;
 }
 
-.sidebar.collapsed .logo p,
-.sidebar.collapsed ul li span {
-    display: none;
-}
-
-
-/* =========================================================
-   SIDEBAR TOGGLE
-========================================================= */
-
-.sidebar-toggle-btn {
-
-    background: none;
-
-    border: none;
-
-    color: #FFFFFF;
-
-    font-size: 19px;
-
-    cursor: pointer;
-
-    margin: 0 0 10px 20px;
-
-    transition: transform 0.2s ease;
-}
-
-.sidebar-toggle-btn:hover {
-    transform: scale(1.08);
-}
-
-
-/* =========================================================
-   LOGO
-========================================================= */
-
-.logo {
-
-    padding: 0 20px 20px;
-
-    border-bottom:
-        1px solid rgba(255, 255, 255, 0.12);
-
-    margin-bottom: 20px;
-}
-
-.logo h2 {
-
-    color: #FFFFFF;
-
-    font-size: 23px;
-
+.sidebar .logo h2 {
+    font-size: 22px;
     font-weight: 700;
 
-    letter-spacing: 0.5px;
+    color: #ffffff;
+
+    letter-spacing: 0.3px;
 }
 
-.logo p {
+.sidebar .logo p {
+    margin-top: 5px;
 
-    font-size: 13px;
+    font-size: 14px;
+    font-weight: 500;
 
-    color:
-        rgba(255, 255, 255, 0.68);
+    color: #5FD1C0;
 
-    margin-top: 4px;
+    white-space: nowrap;
 }
 
 
@@ -222,86 +104,81 @@ body {
 
 .sidebar ul {
     list-style: none;
+
+    padding: 0;
+    margin: 0;
 }
 
 .sidebar ul li {
     width: 100%;
+
+    margin-bottom: 4px;
 }
 
 .sidebar ul li a {
-
     display: flex;
-
     align-items: center;
 
     gap: 13px;
 
-    padding: 13px 20px;
+    margin: 0 12px;
 
-    color:
-        rgba(255, 255, 255, 0.82);
+    padding: 13px 14px;
+
+    color: #D8E2EA;
 
     text-decoration: none;
 
     font-size: 15px;
-
     font-weight: 500;
 
-    border-left:
-        3px solid transparent;
+    border-radius: 8px;
 
     transition:
-        all 0.2s ease;
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
 }
 
-
-/* =========================================================
-   SIDEBAR ICON
-========================================================= */
-
 .sidebar ul li a i {
-
-    width: 19px;
+    width: 20px;
 
     text-align: center;
 
+    font-size: 16px;
+
     flex-shrink: 0;
-
-    font-size: 15px;
 }
 
 
-/* =========================================================
-   SIDEBAR HOVER
-========================================================= */
-
-.sidebar ul li a:hover {
-
-    background:
-        rgba(255, 255, 255, 0.08);
-
-    color: #FFFFFF;
-
-    border-left-color:
-        rgba(16, 185, 129, 0.6);
-}
-
-
-/* =========================================================
-   ACTIVE MENU
-========================================================= */
+/* Active menu */
 
 .sidebar ul li.active a {
+    background: #0F9D8A;
 
-    background:
-        rgba(16, 185, 129, 0.16);
-
-    border-left-color:
-        var(--accent);
-
-    color: #FFFFFF;
+    color: #ffffff;
 
     font-weight: 600;
+
+    box-shadow: 0 4px 10px rgba(15, 157, 138, 0.22);
+}
+
+
+/* Hover menu */
+
+.sidebar ul li a:hover {
+    background: #244966;
+
+    color: #ffffff;
+
+    transform: translateX(2px);
+}
+
+
+/* Active hover */
+
+.sidebar ul li.active a:hover {
+    background: #0C8C7B;
 }
 
 
@@ -310,14 +187,13 @@ body {
 ========================================================= */
 
 .main-content {
-
     flex: 1;
 
-    padding: 30px 34px;
-
-    overflow-x: hidden;
-
     min-width: 0;
+
+    padding: 28px 34px;
+
+    background: #F4F7FA;
 }
 
 
@@ -326,50 +202,35 @@ body {
 ========================================================= */
 
 .header {
-
     display: flex;
 
     justify-content: space-between;
-
     align-items: center;
 
+    gap: 20px;
+
     margin-bottom: 24px;
+
+    padding-bottom: 18px;
+
+    border-bottom: 1px solid #DDE5EC;
 }
 
 .header h1 {
+    color: #17324D;
 
-    font-size: 27px;
-
+    font-size: 25px;
     font-weight: 700;
 
-    color: #1F2937;
-
     line-height: 1.3;
+
+    margin-bottom: 4px;
 }
 
 .header span {
-
-    display: block;
-
-    margin-top: 5px;
+    color: #718096;
 
     font-size: 15px;
-
-    color: var(--text-muted);
-}
-
-
-/* =========================================================
-   HEADER RIGHT
-========================================================= */
-
-.header-right {
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 12px;
 }
 
 
@@ -377,40 +238,51 @@ body {
    LOGOUT BUTTON
 ========================================================= */
 
-.logout-btn {
+.header-right {
+    display: flex;
+    align-items: center;
+}
 
+.logout-btn {
     display: inline-flex;
 
     align-items: center;
+    justify-content: center;
 
     gap: 8px;
 
-    padding: 9px 15px;
+    padding: 10px 17px;
 
-    border-radius: 7px;
+    background: #17324D;
+    color: #ffffff;
 
-    background: #FFFFFF;
-
-    border: 1px solid var(--border);
-
-    color: #475569;
+    border-radius: 8px;
 
     text-decoration: none;
 
     font-size: 14px;
-
     font-weight: 600;
 
-    transition: all 0.2s ease;
+    border: 1px solid #17324D;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.logout-btn i {
+    font-size: 14px;
 }
 
 .logout-btn:hover {
+    background: #0F9D8A;
 
-    background: #F8FAFC;
+    border-color: #0F9D8A;
 
-    color: #1F2937;
+    color: #ffffff;
 
-    border-color: #BFCBD6;
+    transform: translateY(-1px);
 }
 
 
@@ -419,137 +291,77 @@ body {
 ========================================================= */
 
 .welcome-card {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 25px;
+
+    padding: 25px 30px;
+
+    margin-bottom: 28px;
+
+    color: #ffffff;
 
     background:
         linear-gradient(
             135deg,
-            #FFFFFF 0%,
-            #F8FAFC 100%
+            #17324D 0%,
+            #244966 65%,
+            #315A7D 100%
         );
 
-    border:
-        1px solid var(--border);
-
-    border-radius:
-        var(--radius);
-
-    padding: 23px 25px;
-
-    margin-bottom: 25px;
+    border-radius: 14px;
 
     box-shadow:
-        0 3px 12px
-        rgba(15, 23, 42, 0.05);
-
-    display: flex;
-
-    justify-content: space-between;
-
-    align-items: center;
+        0 6px 18px rgba(23, 50, 77, 0.15);
 }
 
 .welcome-card h2 {
-
     font-size: 21px;
 
-    color: #1F2937;
+    font-weight: 600;
 
-    margin-bottom: 6px;
+    margin-bottom: 7px;
+
+    color: #ffffff;
 }
 
 .welcome-card p {
+    color: #DCE7EF;
 
     font-size: 15px;
-
-    color: var(--text-muted);
 
     line-height: 1.5;
 }
 
+.welcome-right {
+    min-width: 150px;
 
-/* =========================================================
-   SUMMARY GRID
-========================================================= */
+    text-align: right;
 
-.summary-grid {
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(4, 1fr);
-
-    gap: 18px;
-
-    margin-bottom: 28px;
+    padding-left: 20px;
 }
 
+.welcome-right h1 {
+    font-size: 35px;
 
-/* =========================================================
-   SUMMARY CARD
-========================================================= */
-
-.summary-card {
-
-    background: var(--card-bg);
-
-    border:
-        1px solid var(--border);
-
-    border-radius:
-        var(--radius);
-
-    padding: 20px;
-
-    min-height: 125px;
-
-    box-shadow:
-        0 3px 10px
-        rgba(15, 23, 42, 0.045);
-
-    transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
-}
-
-.summary-card:hover {
-
-    transform: translateY(-2px);
-
-    box-shadow:
-        0 6px 18px
-        rgba(15, 23, 42, 0.08);
-}
-
-
-/* =========================================================
-   SUMMARY CARD TITLE
-========================================================= */
-
-.summary-card h3 {
-
-    font-size: 14px;
-
-    color: var(--text-muted);
-
-    font-weight: 600;
-
-    margin-bottom: 10px;
-}
-
-
-/* =========================================================
-   SUMMARY CARD NUMBER
-========================================================= */
-
-.summary-card .count {
-
-    font-size: 29px;
+    line-height: 1;
 
     font-weight: 700;
 
-    color: var(--text-dark);
+    color: #5FD1C0;
 
-    line-height: 1.2;
+    margin-bottom: 6px;
+}
+
+.welcome-right span {
+    font-size: 14px;
+
+    color: #DCE7EF;
+
+    font-weight: 500;
 }
 
 
@@ -558,23 +370,284 @@ body {
 ========================================================= */
 
 .section-title {
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
     margin: 30px 0 14px;
 }
 
 .section-title h2 {
+    display: flex;
 
-    font-size: 21px;
+    align-items: center;
+
+    min-height: 25px;
+
+    padding-left: 12px;
+
+    border-left: 4px solid #0F9D8A;
+
+    color: #17324D;
+
+    font-size: 19px;
 
     font-weight: 700;
 
-    color: #26384A;
+    line-height: 1.3;
+}
+
+
+/* =========================================================
+   SUMMARY GRID
+========================================================= */
+
+.summary-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 18px;
+
+    margin-bottom: 10px;
+}
+
+
+/* =========================================================
+   SUMMARY CARD
+========================================================= */
+
+.card {
+    position: relative;
+
+    background: #ffffff;
+
+    border-radius: 12px;
+
+    padding: 21px 18px;
+
+    text-align: center;
+
+    border: 1px solid #E4EAF0;
+
+    box-shadow:
+        0 3px 10px rgba(23, 50, 77, 0.06);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 7px 18px rgba(23, 50, 77, 0.10);
+}
+
+.card i {
+    display: block;
+
+    font-size: 24px;
+
+    margin-bottom: 10px;
+}
+
+.card h2 {
+    font-size: 27px;
+
+    line-height: 1.2;
+
+    margin-bottom: 6px;
+
+    color: #17324D;
+
+    font-weight: 700;
+}
+
+.card p {
+    font-size: 14px;
+
+    line-height: 1.4;
+
+    color: #718096;
+
+    font-weight: 500;
+}
+
+
+/* =========================================================
+   CARD COLORS
+========================================================= */
+
+/* Pending Material Receive */
+
+.open-card {
+    border-top: 3px solid #315A7D;
+}
+
+.open-card i {
+    color: #315A7D;
+}
+
+
+/* Ready To Resolve */
+
+.pending-card {
+    border-top: 3px solid #0F9D8A;
+}
+
+.pending-card i {
+    color: #0F9D8A;
+}
+
+
+/* Overdue */
+
+.progress-card {
+    border-top: 3px solid #D64545;
+}
+
+.progress-card i {
+    color: #D64545;
+}
+
+
+/* Resolved */
+
+.closed-card {
+    border-top: 3px solid #3A7D44;
+}
+
+.closed-card i {
+    color: #3A7D44;
+}
+
+
+/* =========================================================
+   SEARCH BOX
+========================================================= */
+
+.search-box {
+    margin: 28px 0 16px;
+
+    width: 100%;
+}
+
+.search-box form {
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    width: 100%;
+
+    max-width: 720px;
+}
+
+.search-box input {
+    flex: 1;
+
+    min-width: 0;
+
+    height: 42px;
+
+    padding: 9px 14px;
+
+    background: #ffffff;
+
+    color: #243447;
+
+    border: 1px solid #CCD7E0;
+
+    border-radius: 8px;
+
+    outline: none;
+
+    font-size: 14px;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.search-box input::placeholder {
+    color: #98A6B5;
+}
+
+.search-box input:focus {
+    border-color: #0F9D8A;
+
+    box-shadow:
+        0 0 0 3px rgba(15, 157, 138, 0.10);
+}
+
+
+/* Search button */
+
+.search-box form > button {
+    width: 44px;
+    height: 42px;
+
+    flex-shrink: 0;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: #17324D;
+
+    color: #ffffff;
+
+    cursor: pointer;
+
+    font-size: 15px;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+.search-box form > button:hover {
+    background: #0F9D8A;
+
+    transform: translateY(-1px);
+}
+
+
+/* Reset button */
+
+.search-box form a {
+    display: block;
+
+    flex-shrink: 0;
+
+    text-decoration: none;
+}
+
+.search-box form a button {
+    width: 44px;
+    height: 42px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: #E7EDF2;
+
+    color: #315A7D;
+
+    cursor: pointer;
+
+    font-size: 15px;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+.search-box form a button:hover {
+    background: #D5E0E8;
+
+    color: #17324D;
 }
 
 
@@ -583,23 +656,21 @@ body {
 ========================================================= */
 
 .table-box {
+    width: 100%;
 
-    background:
-        var(--card-bg);
+    background: #ffffff;
 
-    border:
-        1px solid var(--border);
-
-    border-radius:
-        var(--radius);
+    border-radius: 12px;
 
     overflow-x: auto;
+    overflow-y: hidden;
 
-    margin-bottom: 32px;
+    margin-bottom: 24px;
+
+    border: 1px solid #E1E8EE;
 
     box-shadow:
-        0 3px 10px
-        rgba(15, 23, 42, 0.045);
+        0 3px 10px rgba(23, 50, 77, 0.06);
 }
 
 
@@ -608,12 +679,13 @@ body {
 ========================================================= */
 
 .table-box table {
-
     width: 100%;
 
-    border-collapse: collapse;
+    min-width: 1100px;
 
-    font-size: 14px;
+    border-collapse: separate;
+
+    border-spacing: 0;
 
     table-layout: fixed;
 }
@@ -623,24 +695,36 @@ body {
    TABLE HEADER
 ========================================================= */
 
-.table-box thead th {
+.table-box thead {
+    background: #17324D;
 
-    background:
-        #26384A;
+    color: #ffffff;
+}
 
-    color: #FFFFFF;
+.table-box th {
+    padding: 13px 12px;
 
     text-align: left;
 
-    padding: 13px 13px;
+    font-size: 14px;
 
     font-weight: 600;
 
-    font-size: 13.5px;
+    line-height: 1.3;
+
+    border-bottom: 1px solid #284A65;
 
     vertical-align: top;
 
-    overflow: hidden;
+    white-space: nowrap;
+}
+
+.table-box th:first-child {
+    border-top-left-radius: 11px;
+}
+
+.table-box th:last-child {
+    border-top-right-radius: 11px;
 }
 
 
@@ -648,23 +732,36 @@ body {
    TABLE BODY
 ========================================================= */
 
-.table-box tbody td {
+.table-box td {
+    padding: 13px 12px;
 
-    padding: 12px 13px;
-
-    border-bottom:
-        1px solid var(--border);
-
-    color:
-        var(--text-dark);
+    text-align: left;
 
     font-size: 14px;
+
+    line-height: 1.4;
+
+    color: #34495E;
+
+    border-bottom: 1px solid #E9EEF2;
+
+    vertical-align: middle;
+
+    white-space: nowrap;
 
     overflow: hidden;
 
     text-overflow: ellipsis;
+}
 
-    white-space: nowrap;
+.table-box tbody tr {
+    background: #ffffff;
+
+    transition: background 0.15s ease;
+}
+
+.table-box tbody tr:hover {
+    background: #F5FAF9;
 }
 
 .table-box tbody tr:last-child td {
@@ -673,146 +770,155 @@ body {
 
 
 /* =========================================================
-   TABLE HOVER
+   TABLE COLUMN WIDTHS
 ========================================================= */
 
-.table-box tbody tr:hover {
+/* Ticket ID */
 
-    background:
-        #F0FDF8;
+.table-box th:nth-child(1),
+.table-box td:nth-child(1) {
+    width: 105px;
+}
+
+
+/* Customer */
+
+.table-box th:nth-child(2),
+.table-box td:nth-child(2) {
+    width: 220px;
+}
+
+
+/* Tower */
+
+.table-box th:nth-child(3),
+.table-box td:nth-child(3) {
+    width: 155px;
+}
+
+
+/* Area */
+
+.table-box th:nth-child(4),
+.table-box td:nth-child(4) {
+    width: 200px;
+}
+
+
+/* Status / Resolved By */
+
+.table-box th:nth-child(5),
+.table-box td:nth-child(5) {
+    width: 180px;
+}
+
+
+/* Form / Remark */
+
+.table-box th:nth-child(6),
+.table-box td:nth-child(6) {
+    width: 150px;
+}
+
+
+/* Date */
+
+.table-box th:nth-child(7),
+.table-box td:nth-child(7) {
+    width: 155px;
 }
 
 
 /* =========================================================
-   EMPTY TABLE MESSAGE
+   FILTER HEADER AREA
 ========================================================= */
 
-.table-box tbody td[colspan] {
+.table-box th .d-flex {
+    display: flex;
 
-    text-align: center;
+    flex-direction: column;
 
-    color:
-        var(--text-muted);
-
-    padding: 25px;
-
-    font-size: 14px;
-}
-
-
-/* =========================================================
-   TABLE FILTER WRAPPER
-========================================================= */
-
-.table-box th .d-flex.flex-column {
-
-    display: flex !important;
-
-    flex-direction: column !important;
-
-    align-items: stretch !important;
-
-    gap: 5px !important;
-
-    width: 100% !important;
-
-    min-width: 0 !important;
-}
-
-
-/* =========================================================
-   TABLE HEADER TEXT
-========================================================= */
-
-.table-box th .d-flex.flex-column > span {
-
-    display: block;
+    gap: 6px;
 
     width: 100%;
 
-    white-space: nowrap;
+    min-width: 0;
+}
 
-    overflow: hidden;
+.table-box th .d-flex span {
+    display: block;
 
-    text-overflow: ellipsis;
+    font-size: 14px;
 
-    line-height: 1.3;
+    font-weight: 600;
 
-    font-size: 13px;
+    line-height: 18px;
+
+    color: #ffffff;
 }
 
 
 /* =========================================================
-   TABLE TEXT FILTER
+   TABLE FILTER INPUTS
 ========================================================= */
 
-.table-box th input[type="text"],
-.table-box th input.form-control {
+.table-box th input,
+.table-box th select {
+    display: block;
 
-    display: block !important;
+    width: 100%;
+    max-width: 100%;
 
-    width: 100% !important;
+    min-width: 0;
 
-    max-width: 100% !important;
+    height: 34px;
 
-    min-width: 0 !important;
+    padding: 6px 9px;
 
-    height: 32px;
+    margin: 0;
 
-    box-sizing: border-box;
+    border: 1px solid #D8E1E8;
 
-    padding: 5px 9px;
+    border-radius: 6px;
+
+    background: #ffffff;
+
+    color: #243447;
+
+    font-family: "Segoe UI", Arial, sans-serif;
 
     font-size: 12px;
 
     font-weight: 400;
 
-    border:
-        1px solid
-        rgba(255, 255, 255, 0.30);
-
-    border-radius: 6px;
-
-    background:
-        rgba(255, 255, 255, 0.10);
-
-    color: #FFFFFF;
-
     outline: none;
 
-    transition:
-        background 0.2s ease,
-        border-color 0.2s ease;
+    box-sizing: border-box;
 }
 
 
-/* =========================================================
-   FILTER PLACEHOLDER
-========================================================= */
+/* Filter placeholder */
 
-.table-box th input[type="text"]::placeholder {
-
-    color:
-        rgba(255, 255, 255, 0.65);
+.table-box th input::placeholder {
+    color: #8A99A8;
 }
 
 
-/* =========================================================
-   FILTER FOCUS
-========================================================= */
+/* Filter focus */
 
-.table-box th input[type="text"]:focus,
-.table-box th input.form-control:focus {
-
-    background:
-        rgba(255, 255, 255, 0.17);
-
-    border-color:
-        var(--accent);
+.table-box th input:focus,
+.table-box th select:focus {
+    border-color: #0F9D8A;
 
     box-shadow:
-        0 0 0 2px
-        rgba(16, 185, 129, 0.15);
+        0 0 0 2px rgba(15, 157, 138, 0.18);
+}
+
+
+/* Select arrow */
+
+.table-box th select {
+    cursor: pointer;
 }
 
 
@@ -821,12 +927,16 @@ body {
 ========================================================= */
 
 .badge {
+    display: inline-flex;
 
-    display: inline-block;
+    align-items: center;
+    justify-content: center;
 
-    padding: 5px 9px;
+    min-height: 28px;
 
-    border-radius: 6px;
+    padding: 5px 11px;
+
+    border-radius: 20px;
 
     font-size: 12px;
 
@@ -836,59 +946,39 @@ body {
 }
 
 
-/* =========================================================
-   PENDING BADGE
-========================================================= */
+/* Pending badge */
 
-.badge-pending {
+.bg-warning {
+    background: #FFF1C7;
 
-    background:
-        var(--orange-light);
+    color: #8A5A00;
+}
 
-    color:
-        var(--orange);
+.text-dark {
+    color: #243447;
 }
 
 
 /* =========================================================
-   OVERDUE BADGE
+   OVERDUE STATUS
 ========================================================= */
 
-.badge-overdue {
+.table-box td span[style*="color: red"] {
+    display: inline-block;
 
-    background:
-        var(--red-light);
+    color: #C62828 !important;
 
-    color:
-        var(--red);
-}
+    background: #FFF0F0;
 
+    padding: 5px 9px;
 
-/* =========================================================
-   SUCCESS BADGE
-========================================================= */
+    border-radius: 6px;
 
-.badge-success {
+    font-size: 12px;
 
-    background:
-        var(--green-light);
+    font-weight: 700 !important;
 
-    color:
-        var(--green);
-}
-
-
-/* =========================================================
-   PROGRESS BADGE
-========================================================= */
-
-.badge-progress {
-
-    background:
-        var(--primary-light);
-
-    color:
-        var(--primary);
+    white-space: nowrap;
 }
 
 
@@ -897,87 +987,61 @@ body {
 ========================================================= */
 
 .open-form-link {
+    display: inline-flex;
 
-    display: inline-block;
+    align-items: center;
+    justify-content: center;
 
-    color: #FFFFFF;
+    min-width: 92px;
 
-    background:
-        var(--primary);
+    padding: 8px 12px;
+
+    background: #0F9D8A;
+
+    color: #ffffff;
+
+    border-radius: 7px;
+
+    font-size: 12px;
 
     font-weight: 600;
 
     text-decoration: none;
 
-    font-size: 13px;
-
-    border:
-        1px solid var(--primary);
-
-    padding: 7px 11px;
-
-    border-radius: 6px;
-
     white-space: nowrap;
 
     transition:
-        all 0.2s ease;
+        background 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
 .open-form-link:hover {
+    background: #0B8172;
 
-    background:
-        var(--accent);
+    color: #ffffff;
 
-    border-color:
-        var(--accent);
+    transform: translateY(-1px);
 
-    color: #FFFFFF;
+    box-shadow:
+        0 3px 8px rgba(15, 157, 138, 0.20);
 }
 
 
 /* =========================================================
-   OVERDUE TEXT
+   EMPTY TABLE MESSAGE
 ========================================================= */
 
-.overdue-text {
+.table-box tbody td[colspan] {
+    text-align: center;
 
-    color:
-        var(--red);
+    padding: 28px 15px;
 
-    font-size: 13px;
+    color: #7B8794;
 
-    font-weight: 600;
-}
+    font-size: 14px;
 
-
-/* =========================================================
-   PENDING TEXT
-========================================================= */
-
-.pending-text {
-
-    color:
-        var(--orange);
-
-    font-size: 13px;
-
-    font-weight: 600;
-}
-
-
-/* =========================================================
-   SUCCESS TEXT
-========================================================= */
-
-.success-text {
-
-    color:
-        var(--green);
-
-    font-size: 13px;
-
-    font-weight: 600;
+    font-weight: 500;
 }
 
 
@@ -986,51 +1050,19 @@ body {
 ========================================================= */
 
 .footer {
+    margin-top: 34px;
+
+    padding: 18px 0;
+
+    border-top: 1px solid #DDE5EC;
 
     text-align: center;
 
-    padding: 22px 0;
+    color: #8795A3;
 
     font-size: 13px;
 
-    color:
-        var(--text-muted);
-
-    border-top:
-        1px solid var(--border);
-
-    margin-top: 10px;
-}
-
-
-/* =========================================================
-   SCROLLBAR
-========================================================= */
-
-.table-box::-webkit-scrollbar {
-    height: 7px;
-}
-
-.table-box::-webkit-scrollbar-track {
-
-    background:
-        #E2E8F0;
-
-    border-radius: 10px;
-}
-
-.table-box::-webkit-scrollbar-thumb {
-
-    background:
-        #94A3B8;
-
-    border-radius: 10px;
-}
-
-.table-box::-webkit-scrollbar-thumb:hover {
-
-    background:
-        var(--accent);
+    line-height: 1.6;
 }
 
 
@@ -1038,32 +1070,21 @@ body {
    RESPONSIVE — TABLET
 ========================================================= */
 
-@media (max-width: 1200px) {
-
-    .summary-grid {
-
-        grid-template-columns:
-            repeat(2, 1fr);
-    }
-}
-
-
-@media (max-width: 992px) {
+@media (max-width: 1100px) {
 
     .sidebar {
-        width: 210px;
+        width: 230px;
     }
 
     .main-content {
-        padding: 25px 20px;
+        padding: 24px;
     }
 
-    .summary-grid,
-    .analytics-grid {
-
+    .summary-grid {
         grid-template-columns:
-            repeat(2, 1fr);
+            repeat(2, minmax(0, 1fr));
     }
+
 }
 
 
@@ -1074,52 +1095,56 @@ body {
 @media (max-width: 768px) {
 
     .dashboard {
-
         flex-direction: column;
     }
 
+    /* Sidebar */
+
     .sidebar {
+        position: relative;
 
         width: 100%;
-
         min-height: auto;
+        height: auto;
 
         padding: 12px 0;
     }
 
-    .sidebar.collapsed {
+    .sidebar .logo {
+        padding: 10px 18px 15px;
 
-        width: 100%;
+        margin-bottom: 8px;
     }
 
-    .sidebar-toggle-btn {
-
-        margin-left: 15px;
+    .sidebar .logo h2 {
+        font-size: 20px;
     }
 
-    .logo {
-
-        padding:
-            0 15px 15px;
-
-        margin-bottom: 10px;
+    .sidebar ul li {
+        margin-bottom: 2px;
     }
 
     .sidebar ul li a {
+        margin: 0 8px;
 
-        padding:
-            11px 15px;
+        padding: 11px 13px;
 
         font-size: 14px;
     }
 
-    .main-content {
 
-        padding: 22px 15px;
+    /* Main */
+
+    .main-content {
+        width: 100%;
+
+        padding: 20px 16px;
     }
 
-    .header {
 
+    /* Header */
+
+    .header {
         flex-direction: column;
 
         align-items: flex-start;
@@ -1128,83 +1153,151 @@ body {
     }
 
     .header h1 {
-
-        font-size: 23px;
+        font-size: 21px;
     }
 
-    .header span {
-
-        font-size: 14px;
+    .header-right {
+        width: 100%;
     }
+
+    .logout-btn {
+        width: 100%;
+    }
+
+
+    /* Welcome */
 
     .welcome-card {
-
         flex-direction: column;
 
         align-items: flex-start;
 
-        gap: 12px;
+        padding: 21px;
+
+        gap: 18px;
     }
 
-    .summary-grid {
-
-        grid-template-columns:
-            1fr;
-
-        gap: 14px;
-    }
-
-    .summary-card {
-
-        min-height: 110px;
-    }
-
-    .section-title h2 {
-
+    .welcome-card h2 {
         font-size: 19px;
     }
 
-    .table-box table {
-
-        min-width: 900px;
+    .welcome-card p {
+        font-size: 14px;
     }
+
+    .welcome-right {
+        width: 100%;
+
+        text-align: left;
+
+        padding-left: 0;
+    }
+
+    .welcome-right h1 {
+        font-size: 30px;
+    }
+
+
+    /* Summary */
+
+    .summary-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 12px;
+    }
+
+    .card {
+        padding: 17px 12px;
+    }
+
+    .card i {
+        font-size: 21px;
+    }
+
+    .card h2 {
+        font-size: 23px;
+    }
+
+    .card p {
+        font-size: 13px;
+    }
+
+
+    /* Section */
+
+    .section-title {
+        margin-top: 25px;
+    }
+
+    .section-title h2 {
+        font-size: 17px;
+    }
+
+
+    /* Search */
+
+    .search-box form {
+        max-width: 100%;
+    }
+
 }
 
 
 /* =========================================================
-   SMALL MOBILE
+   RESPONSIVE — SMALL MOBILE
 ========================================================= */
 
 @media (max-width: 480px) {
 
     .main-content {
-
-        padding:
-            18px 12px;
+        padding: 16px 12px;
     }
 
-    .header h1 {
 
-        font-size: 21px;
+    .summary-grid {
+        grid-template-columns: 1fr;
     }
+
 
     .welcome-card {
-
         padding: 18px;
     }
 
-    .welcome-card h2 {
 
+    .header h1 {
         font-size: 19px;
     }
 
-    .summary-card {
 
-        padding: 17px;
+    .search-box form {
+        display: grid;
+
+        grid-template-columns: 1fr auto auto;
+
+        gap: 6px;
     }
 
-    .summary-card .count {
 
-        font-size: 26px;
+    .search-box input {
+        width: 100%;
     }
+
+
+    .search-box form > button,
+    .search-box form a button {
+        width: 40px;
+        height: 40px;
+    }
+
+
+    .section-title h2 {
+        font-size: 16px;
+    }
+
+
+    .footer {
+        font-size: 12px;
+    }
+
 }
