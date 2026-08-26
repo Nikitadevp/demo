@@ -5159,8 +5159,6 @@ def crm_dashboard(request):
     # RENDER
     # ======================================================
 
-
-
 def store_keeper_dashboard(request):
 
     # ==========================================
@@ -5197,13 +5195,23 @@ def store_keeper_dashboard(request):
 
     # ==========================================
     # SEARCH / FILTERS
+    # (crm_dashboard jaisi style — .strip() + duplicate-safe)
     # ==========================================
 
-    search = request.GET.get("search", "").strip()
+    def get_param(name):
+        # Agar URL mein same param 2 baar aa jaye (duplicate),
+        # to pehli non-empty value uthao — warna empty string.
+        values = request.GET.getlist(name)
+        for v in values:
+            if v.strip():
+                return v.strip()
+        return ""
 
-    customer_filter = request.GET.get("customer", "")
-    block_filter = request.GET.get("block", "")
-    area_filter = request.GET.get("area", "")
+    search = get_param("search")
+
+    customer_filter = get_param("customer")
+    block_filter = get_param("block")
+    area_filter = get_param("area")
 
     block_options = (
         SiteInspection.objects
@@ -5499,4 +5507,3 @@ def store_keeper_dashboard(request):
         "store_keeper_dashboard.html",
         context
     )
-
