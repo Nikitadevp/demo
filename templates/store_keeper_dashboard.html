@@ -855,20 +855,38 @@
 
 <script>
     // Trigger submit for table column inputs while preserving global search parameters
-    function triggerFilterSubmit(paramName, paramValue) {
-        const form = document.getElementById('masterFilterForm');
-        let hiddenInput = form.querySelector(`input[name="${paramName}"]`);
-        
-        if (!hiddenInput) {
-            hiddenInput = document.createElement('input');
-            hiddenInput.type = 'hidden';
-            hiddenInput.name = paramName;
-            form.appendChild(hiddenInput);
-        }
-        
-        hiddenInput.value = paramValue;
-        form.submit();
+ function triggerFilterSubmit(paramName, paramValue) {
+    const form = document.getElementById('masterFilterForm');
+    
+    // Action URL me ID hash lagayein taaki reload ke baad browser wahin scroll kare
+    form.action = "{% url 'store_keeper_dashboard' %}#materialTableSection";
+
+    let hiddenInput = form.querySelector(`input[name="${paramName}"]`);
+    if (!hiddenInput) {
+        hiddenInput = document.createElement('input');
+        hiddenInput.type = 'hidden';
+        hiddenInput.name = paramName;
+        form.appendChild(hiddenInput);
     }
+    
+    hiddenInput.value = paramValue;
+    form.submit();
+}
+</script>
+<script>
+    // 1. Page reload hone se pehle scroll position save karo
+    window.addEventListener('beforeunload', function () {
+        localStorage.setItem('scrollPosition', window.scrollY);
+    });
+
+    // 2. Page load hone par scroll position restore karo
+    window.addEventListener('DOMContentLoaded', function () {
+        const savedPosition = localStorage.getItem('scrollPosition');
+        if (savedPosition !== null) {
+            window.scrollTo(0, parseInt(savedPosition, 10));
+            localStorage.removeItem('scrollPosition'); // Clean up
+        }
+    });
 </script>
 
 
