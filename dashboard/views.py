@@ -3080,6 +3080,7 @@ def maintenance_dashboard(request):
             # adjust field names below to match your QueryCloser model
             "resolved_by": getattr(item, "resolved_by", "-"),
             "remark": getattr(item, "remark", "-"),
+            "solution_provided": item.solution_provided,
             "created_at": item.created_at,
         })
 
