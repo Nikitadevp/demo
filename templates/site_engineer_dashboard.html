@@ -537,7 +537,7 @@
                         </th>
                         <th>
                             Block
-                            <select name="block" form="filterForm" onchange="document.getElementById('filterForm').submit()">
+                            <select name="block" form="pendingFilterForm" onchange="document.getElementById('filterForm').submit()">
                                 <option value="">All</option>
                                 {% for block in block_options %}
                                     <option value="{{ block }}" {% if block_filter == block %}selected{% endif %}>
@@ -552,7 +552,7 @@
                             <input
                                 type="text"
                                 name="area"
-                                form="filterForm"
+                                form="pendingFilterForm"
                                 placeholder="Search Area"
                                 value="{{ area_filter }}"
                                 onkeydown="if(event.key === 'Enter'){ event.preventDefault(); document.getElementById('filterForm').submit(); }"
@@ -562,7 +562,7 @@
 
                         <th>
                             Issue
-                            <select name="issue" form="filterForm" onchange="document.getElementById('filterForm').submit()">
+                            <select name="issue" form="pendingFilterForm" onchange="document.getElementById('filterForm').submit()">
                                 <option value="">All</option>
                                 {% for issue in issue_options %}
                                     <option value="{{ issue }}" {% if issue_filter == issue %}selected{% endif %}>
@@ -671,7 +671,7 @@
                             <input
                                 type="text"
                                 name="customer"
-                                form="filterForm"
+                                form="closedFilterForm"
                                 placeholder="Search Name"
                                 value="{{ customer_filter }}"
                                 onkeydown="if(event.key === 'Enter'){ event.preventDefault(); document.getElementById('filterForm').submit(); }"
@@ -684,7 +684,7 @@
                         <th>Engineer</th>
                         <th>
                             Block
-                            <select name="block" form="filterForm" onchange="document.getElementById('filterForm').submit()">
+                            <select name="block" form="closedFilterForm" onchange="document.getElementById('filterForm').submit()">
                                 <option value="">All</option>
                                 {% for block in block_options %}
                                     <option value="{{ block }}" {% if block_filter == block %}selected{% endif %}>
@@ -699,7 +699,7 @@
                             <input
                                 type="text"
                                 name="area"
-                                form="filterForm"
+                                form="closedFilterForm"
                                 placeholder="Search Area"
                                 value="{{ area_filter }}"
                                 onkeydown="if(event.key === 'Enter'){ event.preventDefault(); document.getElementById('filterForm').submit(); }"
