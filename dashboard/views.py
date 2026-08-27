@@ -4721,7 +4721,7 @@ def crm_dashboard(request):
             if timezone.localtime(due_time).date() == today:
 
                 is_due_today = True
-                due_today_count += 1
+               
 
         # ==================================================
         # OVERDUE
