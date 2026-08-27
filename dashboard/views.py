@@ -3490,7 +3490,8 @@ def admin_dashboard(request):
         customer_data.append(customer)
 
 
-      
+        crm_stages = ["S1", "S3", "S4", "S5", "S11"] 
+          # ya S0 agar tumhare project me wahi use hota hai
 
         
 
@@ -4715,7 +4716,7 @@ def crm_dashboard(request):
 
         is_due_today = False
 
-        if due_time and current_stage != "Completed":
+        if is_due_today and current_stage in crm_stages:
 
             if timezone.localtime(due_time).date() == today:
 
@@ -4895,7 +4896,6 @@ def crm_dashboard(request):
         crm_stages = ["S1", "S3", "S4", "S5", "S11"]   # ya S0 agar tumhare project me wahi use hota hai
 
         if current_stage in crm_stages:
-    
             crm_pending_data.append(customer)  
 
 
