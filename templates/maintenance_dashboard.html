@@ -25,7 +25,7 @@
 <div class="dashboard">
 
     <!-- ===========================
-            SIDEBAR
+            SIDEBAR (same as maintenance_dashboard.html)
     ============================ -->
 
     <aside class="sidebar">
@@ -98,7 +98,7 @@
 
     <main class="main-content">
 
-        <!-- HEADER -->
+        <!-- HEADER (same as maintenance_dashboard.html) -->
 
         <div class="header">
 
@@ -210,7 +210,7 @@
                     id="searchInput"
                     type="text"
                     name="search"
-                    placeholder="Search by Ticket ID, Customer, Block, Area"
+                    placeholder="Search by Ticket ID, Customer, Tower, Area"
                     value="{{ search }}"
                 >
 
@@ -262,18 +262,18 @@
 
                         <th>
                            <div class="d-flex flex-column gap-1">
-                                <span>Block</span>
+                                <span>Tower</span>
                                 <select
-                                    name="block"
+                                    name="tower"
                                     form="filterForm"
                                     class="form-select form-select-sm"
                                     onchange="document.getElementById('filterForm').submit();">
                                     <option value="">All</option>
-                                    {% for block in block_options %}
+                                    {% for tower in tower_options %}
                                         <option
-                                            value="{{ block }}"
-                                            {% if block_filter == block %}selected{% endif %}>
-                                            {{ block }}
+                                            value="{{ tower }}"
+                                            {% if tower_filter == tower %}selected{% endif %}>
+                                            {{ tower }}
                                         </option>
                                     {% endfor %}
                                 </select>
@@ -306,7 +306,7 @@
                     <tr>
                          <td>{{ item.case_id }}</td>
                          <td>{{ item.customer_name }}</td>
-                         <td>{{ item.block }}</td>
+                         <td>{{ item.tower }}</td>
                          <td>{{ item.area }}</td>
 
                          <td>
@@ -373,18 +373,18 @@
 
                         <th>
                            <div class="d-flex flex-column gap-1">
-                                <span>Block</span>
+                                <span>Tower</span>
                                 <select
-                                    name="block"
+                                    name="tower"
                                     form="filterForm"
                                     class="form-select form-select-sm"
                                     onchange="document.getElementById('filterForm').submit();">
                                     <option value="">All</option>
-                                    {% for block in block_options %}
+                                    {% for tower in tower_options %}
                                         <option
-                                            value="{{ block }}"
-                                            {% if block_filter == block %}selected{% endif %}>
-                                            {{ block }}
+                                            value="{{ tower }}"
+                                            {% if tower_filter == tower %}selected{% endif %}>
+                                            {{ tower }}
                                         </option>
                                     {% endfor %}
                                 </select>
@@ -417,7 +417,7 @@
                     <tr>
                          <td>{{ item.case_id }}</td>
                          <td>{{ item.customer_name }}</td>
-                         <td>{{ item.block }}</td>
+                         <td>{{ item.tower }}</td>
                          <td>{{ item.area }}</td>
 
                          <td>
@@ -466,10 +466,10 @@
                     <tr>
                         <th>Ticket ID</th>
                         <th>Customer</th>
-                        <th>Block</th>
+                        <th>Tower</th>
                         <th>Area</th>
                         <th>Resolved By</th>
-                        <th>Solution / Remark</th>
+                        <th>Remark</th>
                         <th>Date</th>
                     </tr>
                 </thead>
@@ -478,10 +478,10 @@
                     <tr>
                         <td>{{ item.case_id }}</td>
                         <td>{{ item.customer_name }}</td>
-                        <td>{{ item.block }}</td>
+                        <td>{{ item.tower }}</td>
                         <td>{{ item.area }}</td>
-                        <td>{{ item.resolved_by|default:"-" }}</td>
-                        <td>{{ item.solution_provided|default:"-" }}</td>
+                        <td>{{ item.resolved_by }}</td>
+                        <td>{{ item.remark }}</td>
                         <td>{{ item.created_at|date:"d M Y" }}</td>
                     </tr>
                 {% empty %}
