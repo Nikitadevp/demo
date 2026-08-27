@@ -3685,8 +3685,13 @@ def site_engineer_dashboard(request):
     ).distinct().order_by("customer_name")
 
     block_options = pending_site_inspection.values_list(
-        "block", flat=True
-    ).distinct().order_by("block")
+        "block", 
+        flat=True
+    ).exclude(
+        block__isnull=True
+    ).exclude(
+        block__exact=""
+    ).distinct().order_by("block")             
 
     area_options = pending_site_inspection.values_list(
         "location", flat=True
