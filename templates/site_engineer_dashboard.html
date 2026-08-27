@@ -398,14 +398,29 @@
         </div>
 
 
-        <form id="filterForm" method="GET" action="{% url 'site_engineer_dashboard' %}" style="display:none;">
-            <input type="hidden" name="search" value="{{ search }}">
-        </form>
+       
         <!-- ==========================================
         TODAY'S SITE INSPECTION
         =========================================== -->
 
+        <form id="pendingFilterForm"
+            method="GET"
+            action="{% url 'site_engineer_dashboard' %}"
+            style="display:none;">
 
+            <input type="hidden" name="search" value="{{ search }}">
+            
+        </form>
+
+
+        <form id="closedFilterForm"
+            method="GET"
+            action="{% url 'site_engineer_dashboard' %}"
+            style="display:none;">
+            <input type="hidden" name="search" value="{{ search }}">
+
+
+        </form>
 
         <!-- ==========================================
                 TODAY'S SITE INSPECTION
@@ -511,7 +526,7 @@
                             <input
                                 type="text"
                                 name="customer"
-                                form="filterForm"
+                                form="pendingFilterForm"
                                 placeholder="Search Name"
                                 value="{{ customer_filter }}"
                                 onkeydown="if(event.key === 'Enter'){ event.preventDefault(); document.getElementById('filterForm').submit(); }"

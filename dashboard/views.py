@@ -3745,6 +3745,39 @@ def site_engineer_dashboard(request):
             Q(area__icontains=search)
         )
 
+    if customer_filter:
+        recent_site_inspections = recent_site_inspections.filter(
+            customer_name__icontains=customer_filter
+        )
+
+    # Block Filter
+    if block_filter:
+        recent_site_inspections = recent_site_inspections.filter(
+            block=block_filter
+        )
+
+
+    # Area Filter
+    if area_filter:
+        recent_site_inspections = recent_site_inspections.filter(
+            area__icontains=area_filter
+    )
+
+
+    # Issue Filter
+    if issue_filter:
+        recent_site_inspections = recent_site_inspections.filter(
+            customer_query__issue=issue_filter
+    )
+
+
+
+
+
+
+
+
+
     recent_site_inspections = recent_site_inspections.select_related(
         "customer_query"
     ).order_by("-created_at")
