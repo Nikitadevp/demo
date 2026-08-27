@@ -363,7 +363,7 @@
 
         <div class="search-box">
 
-           <form method="GET" action="{% url 'store_keeper_dashboard' %}">
+           <form id="masterFilterForm" method="GET" action="{% url 'store_keeper_dashboard' %}"> 
                 <input 
                     id="searchInput"
                     type="text"
@@ -371,6 +371,9 @@
                     placeholder="Search by Case ID, Customer, Block, Area"
                     value="{{ search }}"
                 >
+                <input type="hidden" name="customer" value="{{ customer_filter }}">
+                <input type="hidden" name="block" value="{{ block_filter }}">
+                <input type="hidden" name="area" value="{{ area_filter }}">
 
                 <button type="submit">
 
@@ -849,6 +852,25 @@
     </main>
 
 </div>
+
+<script>
+    // Trigger submit for table column inputs while preserving global search parameters
+    function triggerFilterSubmit(paramName, paramValue) {
+        const form = document.getElementById('masterFilterForm');
+        let hiddenInput = form.querySelector(`input[name="${paramName}"]`);
+        
+        if (!hiddenInput) {
+            hiddenInput = document.createElement('input');
+            hiddenInput.type = 'hidden';
+            hiddenInput.name = paramName;
+            form.appendChild(hiddenInput);
+        }
+        
+        hiddenInput.value = paramValue;
+        form.submit();
+    }
+</script>
+
 
 </body>
 
