@@ -254,6 +254,7 @@ ul {
     font-size: var(--fs-lg);
     font-weight: 700;
     margin-bottom: 0.4rem;
+    color: #4A5A7A;
 }
 
 .welcome-card p {
@@ -297,7 +298,7 @@ ul {
 .section-title h2 {
     font-size: var(--fs-md);
     font-weight: 700;
-    color: var(--navy-900);
+    color: #4A5A7A;
     position: relative;
     padding-left: 0.9rem;
 }
