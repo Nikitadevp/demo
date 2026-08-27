@@ -1,53 +1,45 @@
 /* =====================================================
    MAINTENANCE INCHARGE DASHBOARD
-   Professional Light Slate Blue Theme
+   Design direction: industrial / workshop control-panel.
+   Palette  : Slate Navy (structure) + Misty Rose #FFE4E1
+              tint with Indian Red #CD5C5C accent (buttons/
+              active states) + Teal (resolved/success)
+   Type     : Inter (UI text) + JetBrains Mono (ticket IDs,
+              dates, numbers — gives the data a "logged" feel)
    ===================================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap');
 
-
-/* =====================================================
-   ROOT VARIABLES
-   ===================================================== */
-
 :root {
 
-    /* Main Colors */
+    /* ---- Palette ---- */
     --navy-900: #0F172A;
-    --navy-800: #16213C;
+    --navy-800: #3B4C6B;
     --navy-700: #1E293B;
     --navy-600: #334155;
     --navy-400: #64748B;
     --navy-200: #CBD5E1;
     --navy-100: #E2E8F0;
 
-    /* Page */
     --bg-page: #F4F6FA;
     --bg-card: #FFFFFF;
 
-    /* New Professional Table Color */
-    --table-header: #4A5A7A;
-    --table-header-hover: #40506F;
+    /* Accent — Misty Rose family */
+    --accent-600: #B24444;
+    --accent-500: #CD5C5C;
+    --accent-100: #FFE4E1;
 
-    /* Amber */
-    --amber-600: #D97706;
-    --amber-500: #F59E0B;
-    --amber-100: #FEF3C7;
-
-    /* Red */
     --red-600: #DC2626;
     --red-100: #FEE2E2;
 
-    /* Teal */
     --teal-600: #0D9488;
     --teal-500: #14B8A6;
     --teal-100: #CCFBF1;
 
-    /* Blue */
     --blue-600: #2563EB;
     --blue-100: #DBEAFE;
 
-    /* Typography */
+    /* ---- Type scale (bumped up per request) ---- */
     --fs-xs: 0.85rem;
     --fs-sm: 0.95rem;
     --fs-base: 1.05rem;
@@ -56,24 +48,16 @@
     --fs-xl: 2rem;
     --fs-2xl: 2.6rem;
 
-    /* Radius */
     --radius-sm: 8px;
     --radius-md: 14px;
     --radius-lg: 20px;
 
-    /* Shadows */
     --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06);
     --shadow-md: 0 6px 20px rgba(15, 23, 42, 0.08);
     --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.12);
 
-    /* Sidebar */
     --sidebar-w: 260px;
 }
-
-
-/* =====================================================
-   RESET
-   ===================================================== */
 
 * {
     margin: 0;
@@ -81,12 +65,9 @@
     box-sizing: border-box;
 }
 
-
-html,
-body {
+html, body {
     height: 100%;
 }
-
 
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -97,20 +78,17 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
-
 a {
     text-decoration: none;
     color: inherit;
 }
 
-
 ul {
     list-style: none;
 }
 
-
 /* =====================================================
-   MAIN LAYOUT
+   LAYOUT
    ===================================================== */
 
 .dashboard {
@@ -119,18 +97,15 @@ ul {
     width: 100%;
 }
 
-
 .main-content {
     flex: 1 1 auto;
     min-width: 0;
     margin-left: var(--sidebar-w);
     padding: 2rem 2.5rem 3rem;
-
     display: flex;
     flex-direction: column;
     gap: 2rem;
 }
-
 
 /* =====================================================
    SIDEBAR
@@ -140,28 +115,17 @@ ul {
     position: fixed;
     top: 0;
     left: 0;
-
     width: var(--sidebar-w);
     height: 100vh;
-
-    background: linear-gradient(
-        180deg,
-        var(--navy-900) 0%,
-        var(--navy-800) 100%
-    );
-
+    background: linear-gradient(180deg, var(--navy-900) 0%, var(--navy-800) 100%);
     color: #E9EDF5;
-
     padding: 1.75rem 1.25rem;
-
     display: flex;
     flex-direction: column;
     gap: 2rem;
-
     overflow-y: auto;
     z-index: 100;
 }
-
 
 .sidebar .logo h2 {
     font-size: var(--fs-lg);
@@ -170,16 +134,14 @@ ul {
     color: #FFFFFF;
 }
 
-
 .sidebar .logo p {
     font-size: var(--fs-xs);
-    color: var(--amber-500);
+    color: var(--accent-500);
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     margin-top: 0.2rem;
 }
-
 
 .sidebar ul {
     display: flex;
@@ -187,55 +149,39 @@ ul {
     gap: 0.35rem;
 }
 
-
 .sidebar ul li a {
     display: flex;
     align-items: center;
-
     gap: 0.85rem;
-
     padding: 0.85rem 1rem;
-
     border-radius: var(--radius-sm);
-
     font-size: var(--fs-sm);
     font-weight: 500;
-
     color: #C7D0E0;
-
-    transition:
-        background 0.15s ease,
-        color 0.15s ease;
+    transition: background 0.15s ease, color 0.15s ease;
 }
-
 
 .sidebar ul li a i {
     width: 1.2em;
     text-align: center;
-
-    color: var(--amber-500);
-
+    color: var(--accent-500);
     font-size: 1.05rem;
 }
 
-
 .sidebar ul li a:hover {
-    background: rgba(245, 158, 11, 0.12);
+    background: rgba(233, 150, 122, 0.14);
     color: #FFFFFF;
 }
 
-
 .sidebar ul li.active a {
-    background: var(--amber-500);
+    background: var(--accent-500);
     color: var(--navy-900);
     font-weight: 700;
 }
 
-
 .sidebar ul li.active a i {
     color: var(--navy-900);
 }
-
 
 /* =====================================================
    HEADER
@@ -245,11 +191,9 @@ ul {
     display: flex;
     align-items: center;
     justify-content: space-between;
-
     flex-wrap: wrap;
     gap: 1rem;
 }
-
 
 .header h1 {
     font-size: var(--fs-xl);
@@ -257,13 +201,11 @@ ul {
     color: var(--navy-900);
 }
 
-
 .header span {
     font-size: var(--fs-sm);
     color: var(--navy-400);
     font-weight: 500;
 }
-
 
 .header-right {
     display: flex;
@@ -271,39 +213,25 @@ ul {
     gap: 0.9rem;
 }
 
-
-/* Logout */
-
 .logout-btn {
     display: inline-flex;
     align-items: center;
-
     gap: 0.6rem;
-
     padding: 0.7rem 1.3rem;
-
     background: var(--bg-card);
-
     border: 1.5px solid var(--navy-100);
-
     border-radius: var(--radius-sm);
-
     font-size: var(--fs-sm);
     font-weight: 600;
-
     color: var(--navy-700);
-
     box-shadow: var(--shadow-sm);
-
     transition: all 0.15s ease;
 }
-
 
 .logout-btn:hover {
     border-color: var(--red-600);
     color: var(--red-600);
 }
-
 
 /* =====================================================
    WELCOME CARD
@@ -313,25 +241,14 @@ ul {
     display: flex;
     align-items: center;
     justify-content: space-between;
-
     flex-wrap: wrap;
     gap: 1.5rem;
-
-    background: linear-gradient(
-        120deg,
-        var(--navy-900) 0%,
-        var(--navy-700) 100%
-    );
-
+    background: linear-gradient(120deg, var(--navy-900) 0%, var(--navy-700) 100%);
     color: #F1F5F9;
-
     padding: 2rem 2.25rem;
-
     border-radius: var(--radius-lg);
-
     box-shadow: var(--shadow-lg);
 }
-
 
 .welcome-card h2 {
     font-size: var(--fs-lg);
@@ -339,45 +256,33 @@ ul {
     margin-bottom: 0.4rem;
 }
 
-
 .welcome-card p {
     font-size: var(--fs-sm);
     color: #AEB9CC;
     max-width: 46ch;
 }
 
-
 .welcome-right {
     text-align: right;
     flex-shrink: 0;
 }
 
-
 .welcome-right h1 {
     font-family: 'JetBrains Mono', monospace;
-
     font-size: var(--fs-2xl);
     font-weight: 700;
-
-    color: var(--amber-500);
-
+    color: var(--accent-500);
     line-height: 1;
 }
 
-
 .welcome-right span {
     display: block;
-
     margin-top: 0.4rem;
-
     font-size: var(--fs-xs);
-
     color: #AEB9CC;
-
     text-transform: uppercase;
     letter-spacing: 0.06em;
 }
-
 
 /* =====================================================
    SECTION TITLES
@@ -389,35 +294,24 @@ ul {
     gap: 0.75rem;
 }
 
-
 .section-title h2 {
     font-size: var(--fs-md);
     font-weight: 700;
-
     color: var(--navy-900);
-
     position: relative;
-
     padding-left: 0.9rem;
 }
 
-
 .section-title h2::before {
     content: "";
-
     position: absolute;
-
     left: 0;
     top: 0.15em;
     bottom: 0.15em;
-
     width: 5px;
-
     border-radius: 3px;
-
-    background: var(--amber-500);
+    background: var(--accent-500);
 }
-
 
 /* =====================================================
    SUMMARY CARDS
@@ -425,506 +319,298 @@ ul {
 
 .summary-grid {
     display: grid;
-
-    grid-template-columns:
-        repeat(auto-fit, minmax(240px, 1fr));
-
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 1.25rem;
 }
 
-
 .card {
     background: var(--bg-card);
-
     border-radius: var(--radius-md);
-
     padding: 1.5rem 1.6rem;
-
     display: flex;
     align-items: center;
-
     gap: 1.1rem;
-
     box-shadow: var(--shadow-sm);
-
     border: 1px solid var(--navy-100);
-
     min-width: 0;
-
-    transition:
-        transform 0.15s ease,
-        box-shadow 0.15s ease;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
-
 
 .card:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-md);
 }
 
-
 .card i {
     flex-shrink: 0;
-
     width: 3.1rem;
     height: 3.1rem;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     border-radius: var(--radius-sm);
-
     font-size: 1.35rem;
 }
 
-
 .card h2 {
     font-family: 'JetBrains Mono', monospace;
-
     font-size: var(--fs-xl);
     font-weight: 700;
-
     color: var(--navy-900);
-
     line-height: 1.1;
 }
 
-
 .card p {
     font-size: var(--fs-sm);
-
     color: var(--navy-400);
-
     font-weight: 500;
-
     margin-top: 0.15rem;
 }
 
-
-.card.open-card i {
-    background: var(--amber-100);
-    color: var(--amber-600);
-}
-
-
-.card.pending-card i {
-    background: var(--blue-100);
-    color: var(--blue-600);
-}
-
-
-.card.progress-card i {
-    background: var(--red-100);
-    color: var(--red-600);
-}
-
-
-.card.closed-card i {
-    background: var(--teal-100);
-    color: var(--teal-600);
-}
-
+.card.open-card i        { background: var(--accent-100); color: var(--accent-600); }
+.card.pending-card i     { background: var(--blue-100);  color: var(--blue-600); }
+.card.progress-card i    { background: var(--red-100);   color: var(--red-600); }
+.card.closed-card i      { background: var(--teal-100);  color: var(--teal-600); }
 
 /* =====================================================
    SEARCH BOX
-   SMALLER / COMPACT VERSION
    ===================================================== */
 
 .search-box {
-    width: 100%;
-    max-width: 650px;
-
     background: var(--bg-card);
-
     border: 1px solid var(--navy-100);
-
-    border-radius: var(--radius-md);
-
-    padding: 0.4rem 0.5rem;
-
+    border-radius: var(--radius-sm);
+    padding: 0.3rem 0.35rem;
     box-shadow: var(--shadow-sm);
+    max-width: 380px;
 }
-
 
 .search-box form {
     display: flex;
     align-items: center;
-    gap: 0.45rem;
+    gap: 0.4rem;
 }
-
 
 .search-box input {
-    flex: 1;
-
+    flex: 1 1 auto;
     min-width: 0;
-
     border: none;
     outline: none;
-
     background: transparent;
-
     font-size: var(--fs-sm);
-
     font-family: inherit;
-
     color: var(--navy-800);
-
-    padding: 0.55rem 0.7rem;
+    padding: 0.4rem 0.5rem;
 }
-
 
 .search-box input::placeholder {
     color: var(--navy-400);
 }
 
-
-/* Search + Reset Buttons */
-
 .search-box button {
     flex-shrink: 0;
-
-    width: 2.5rem;
-    height: 2.5rem;
-
+    width: 2.1rem;
+    height: 2.1rem;
     border: none;
-
-    border-radius: 7px;
-
+    border-radius: 6px;
     background: var(--navy-900);
-
     color: #FFFFFF;
-
-    font-size: 0.9rem;
-
+    font-size: 0.85rem;
     cursor: pointer;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
-    transition:
-        background 0.15s ease,
-        color 0.15s ease;
+    transition: background 0.15s ease;
 }
 
-
 .search-box button:hover {
-    background: var(--amber-500);
+    background: var(--accent-500);
     color: var(--navy-900);
 }
 
-
 /* =====================================================
-   TABLE CONTAINER
+   TABLES
    ===================================================== */
 
 .table-box {
     background: var(--bg-card);
-
     border-radius: var(--radius-md);
-
     border: 1px solid var(--navy-100);
-
     box-shadow: var(--shadow-sm);
-
     overflow-x: auto;
-
     width: 100%;
 }
-
-
-/* =====================================================
-   TABLE
-   ===================================================== */
 
 table {
     width: 100%;
-
     border-collapse: collapse;
-
     min-width: 720px;
 }
-
-
-/* =====================================================
-   TABLE HEADER
-   NEW COLOR: #4A5A7A
-   ===================================================== */
 
 thead tr {
     background: #4A5A7A;
 }
 
-
 thead th {
-    color: #FFFFFF;
-
+    color: #E9EDF5;
     font-size: var(--fs-xs);
-
     font-weight: 700;
-
     text-transform: uppercase;
-
     letter-spacing: 0.05em;
-
     text-align: left;
-
     padding: 1rem 1.2rem;
-
     white-space: nowrap;
-
     vertical-align: top;
 }
 
-
-/* Header text */
-
 thead th span {
     display: block;
-
     margin-bottom: 0.5rem;
-
-    color: #FFFFFF;
+    color: #E9EDF5;
 }
-
-
-/* =====================================================
-   TABLE BODY
-   ===================================================== */
 
 tbody tr {
     border-bottom: 1px solid var(--navy-100);
-
     transition: background 0.12s ease;
 }
-
 
 tbody tr:last-child {
     border-bottom: none;
 }
 
-
 tbody tr:hover {
     background: #F8FAFC;
 }
 
-
 tbody td {
     padding: 1rem 1.2rem;
-
     font-size: var(--fs-sm);
-
     color: var(--navy-700);
-
     white-space: nowrap;
 }
 
-
 tbody td:first-child {
     font-family: 'JetBrains Mono', monospace;
-
     font-weight: 600;
-
     color: var(--navy-900);
 }
 
-
 tbody td[colspan] {
     text-align: center;
-
     padding: 2.25rem 1rem;
-
     color: var(--navy-400);
-
     font-style: italic;
-
     white-space: normal;
 }
 
-
-/* =====================================================
-   TABLE FILTER AREA
-   ===================================================== */
+/* ---- filter inputs inside table headers ---- */
 
 .d-flex.flex-column.gap-1 {
     display: flex;
-
     flex-direction: column;
-
     gap: 0.5rem;
 }
-
 
 .form-control,
 .form-select,
 .form-control-sm,
 .form-select-sm {
     font-family: 'Inter', sans-serif;
-
     font-size: var(--fs-xs);
-
     font-weight: 500;
-
-    text-transform: none;
-
-    letter-spacing: normal;
-
     color: var(--navy-800);
-
     background: #FFFFFF;
-
     border: 1.5px solid var(--navy-200);
-
     border-radius: 7px;
-
     padding: 0.5rem 0.65rem;
-
     min-width: 130px;
-
     outline: none;
-
     transition: border-color 0.15s ease;
 }
 
-
 .form-control:focus,
 .form-select:focus {
-    border-color: var(--amber-500);
+    border-color: var(--accent-500);
 }
-
 
 .form-control::placeholder {
     color: var(--navy-400);
-
     font-weight: 400;
 }
 
-
-/* =====================================================
-   STATUS BADGES
-   ===================================================== */
+/* ---- status badges ---- */
 
 .badge {
     display: inline-block;
-
     padding: 0.35rem 0.75rem;
-
     border-radius: 999px;
-
     font-size: var(--fs-xs);
-
     font-weight: 700;
 }
 
-
 .badge.bg-warning {
-    background: var(--amber-100);
-
-    color: var(--amber-600) !important;
+    background: var(--accent-100);
+    color: var(--accent-600) !important;
 }
-
 
 .badge.bg-info {
     background: var(--blue-100);
-
     color: var(--blue-600);
 }
-
 
 .badge.status.approved,
 .status.approved {
     display: inline-block;
-
     padding: 0.35rem 0.75rem;
-
     border-radius: 999px;
-
     font-size: var(--fs-xs);
-
     font-weight: 700;
-
     background: var(--teal-100);
-
     color: var(--teal-600);
 }
-
-
-/* =====================================================
-   OVERDUE STATUS
-   ===================================================== */
 
 tbody td span[style*="color: red"],
 tbody td span[style*="color:red"] {
     background: var(--red-100);
-
     color: var(--red-600) !important;
-
     padding: 0.35rem 0.75rem;
-
     border-radius: 999px;
-
     font-size: var(--fs-xs);
-
     font-weight: 700 !important;
-
     white-space: nowrap;
 }
-
 
 tbody td span[style*="color: green"],
 tbody td span[style*="color:green"] {
     background: var(--teal-100);
-
     color: var(--teal-600) !important;
-
     padding: 0.35rem 0.75rem;
-
     border-radius: 999px;
-
     font-size: var(--fs-xs);
-
     font-weight: 700 !important;
-
     white-space: nowrap;
 }
 
-
-/* =====================================================
-   OPEN FORM BUTTON
-   ===================================================== */
+/* ---- open-form link ---- */
 
 .open-form-link {
     display: inline-flex;
-
     align-items: center;
-
     gap: 0.4rem;
-
     padding: 0.55rem 1.1rem;
-
     background: var(--navy-900);
-
     color: #FFFFFF !important;
-
     font-size: var(--fs-xs);
-
     font-weight: 700;
-
     border-radius: 999px;
-
     white-space: nowrap;
-
     transition: background 0.15s ease;
 }
 
-
 .open-form-link:hover {
-    background: var(--amber-500);
-
+    background: var(--accent-500);
     color: var(--navy-900) !important;
 }
-
 
 /* =====================================================
    FOOTER
@@ -932,14 +618,10 @@ tbody td span[style*="color:green"] {
 
 .footer {
     text-align: center;
-
     padding: 1.5rem 0 0.5rem;
-
     font-size: var(--fs-xs);
-
     color: var(--navy-400);
 }
-
 
 /* =====================================================
    RESPONSIVE
@@ -954,71 +636,46 @@ tbody td span[style*="color:green"] {
     .main-content {
         padding: 1.5rem;
     }
-
 }
-
 
 @media (max-width: 768px) {
 
     .sidebar {
         position: relative;
-
         width: 100%;
         height: auto;
-
         flex-direction: row;
-
         flex-wrap: wrap;
-
         align-items: center;
-
         justify-content: space-between;
-
         padding: 1rem 1.25rem;
     }
 
-
     .sidebar ul {
         flex-direction: row;
-
         flex-wrap: wrap;
-
         gap: 0.4rem;
     }
-
 
     .sidebar ul li a span {
         display: none;
     }
 
-
     .main-content {
         margin-left: 0;
-
         padding: 1.25rem;
     }
 
-
     .welcome-card {
         flex-direction: column;
-
         align-items: flex-start;
-
         text-align: left;
     }
-
 
     .welcome-right {
         text-align: left;
     }
-
-
-    .search-box {
-        max-width: 100%;
-    }
-
 }
-
 
 @media (max-width: 480px) {
 
@@ -1027,18 +684,9 @@ tbody td span[style*="color:green"] {
         --fs-xl: 1.6rem;
     }
 
-
     .card {
         flex-direction: column;
-
         align-items: flex-start;
-
         text-align: left;
     }
-
-
-    .search-box {
-        width: 100%;
-    }
-
 }
