@@ -468,8 +468,7 @@
                         <th>Customer</th>
                         <th>Tower</th>
                         <th>Area</th>
-                        <th>Resolved By</th>
-                        <th>Remark</th>
+                        <th>Solution Provided</th>
                         <th>Date</th>
                     </tr>
                 </thead>
@@ -480,8 +479,9 @@
                         <td>{{ item.customer_name }}</td>
                         <td>{{ item.tower }}</td>
                         <td>{{ item.area }}</td>
-                        <td>{{ item.resolved_by }}</td>
-                        <td>{{ item.remark }}</td>
+                        <td class="solution-cell">
+                            {{ item.solution_provided }}
+                        </td>
                         <td>{{ item.created_at|date:"d M Y" }}</td>
                     </tr>
                 {% empty %}
