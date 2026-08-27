@@ -3383,7 +3383,7 @@ def admin_dashboard(request):
 
         is_due_today = False
 
-        if is_due_today and current_stage in crm_stages:
+        if due_time and current_stage != "Completed":
 
             if timezone.localtime(due_time).date() == today:
 
@@ -4721,7 +4721,7 @@ def crm_dashboard(request):
             if timezone.localtime(due_time).date() == today:
 
                 is_due_today = True
-               
+                due_today_count += 1
 
         # ==================================================
         # OVERDUE
@@ -4911,7 +4911,7 @@ def crm_dashboard(request):
         # DUE TODAY TABLE
         # ==================================================
 
-        if is_due_today and current_stage != "Completed":
+        if is_due_today and current_stage in crm_stages:
 
             due_today_customers.append(customer)
 
