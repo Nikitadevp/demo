@@ -5151,6 +5151,7 @@ def store_keeper_dashboard(request):
             Q(area__icontains=search)|
             Q(category__icontains=search)
 
+
         )
 
     site_inspection_list = site_inspection_qs.order_by(
