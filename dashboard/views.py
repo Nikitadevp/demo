@@ -5121,12 +5121,40 @@ def store_keeper_dashboard(request):
                 Q(case_id__icontains=search) |
                 Q(customer_name__icontains=search) |
                 Q(block__icontains=search) |
-                Q(area__icontains=search) |
-                Q(category__icontains=search)
+                Q(area__icontains=search)
+
             )
         return queryset
 
 
+
+    site_inspection_qs = SiteInspection.objects.all()
+    if customer_filter:
+        site_inspection_qs = site_inspection_qs.filter(
+            customer_name__icontains=customer_filter
+        )
+    if block_filter:
+        site_inspection_qs = site_inspection_qs.filter(
+            block__icontains=block_filter
+        )
+    if area_filter:
+        site_inspection_qs = site_inspection_qs.filter(
+            area__icontains=area_filter
+        )
+
+    if search:
+        queryset = queryset.filter(
+            Q(case_id__icontains=search) |
+            Q(customer_name__icontains=search) |
+            Q(block__icontains=search) |
+            Q(area__icontains=search)|
+            Q(category__icontains=search)
+
+        )
+
+    site_inspection_list = site_inspection_qs.order_by(
+        "-created_at"
+    )
     # ==========================================================
     # SITE INSPECTION DETAILS
     # ==========================================================
