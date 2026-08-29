@@ -5121,7 +5121,13 @@ def store_keeper_dashboard(request):
                 Q(case_id__icontains=search) |
                 Q(customer_name__icontains=search) |
                 Q(block__icontains=search) |
-                Q(area__icontains=search)
+                Q(area__icontains=search) |
+                Q(category__icontains=search) |
+                Q(issue_found_remark__icontains=search) |
+                Q(issue_found_area__icontains=search) |
+                Q(material_required__icontains=search) |
+                Q(details_of_material_required__icontains=search) |
+                Q(under_scope__icontains=search)
 
             )
         return queryset
@@ -5148,13 +5154,9 @@ def store_keeper_dashboard(request):
             Q(case_id__icontains=search) |
             Q(customer_name__icontains=search) |
             Q(block__icontains=search) |
-            Q(area__icontains=search) |
+            Q(area__icontains=search)|
             Q(category__icontains=search) |
-            Q(issue_found_remark__icontains=search) |
-            Q(issue_found_area__icontains=search) |
-            Q(material_required__icontains=search) |
-            Q(details_of_material_required__icontains=search) |
-            Q(under_scope__icontains=search)
+            Q(issue_found_remark__icontains=search) 
 
 
         )
