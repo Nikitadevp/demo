@@ -5125,6 +5125,18 @@ def store_keeper_dashboard(request):
             )
         return queryset
 
+
+    # ==========================================================
+    # SITE INSPECTION DETAILS
+    # ==========================================================
+
+    site_inspection_qs = SiteInspection.objects.all().order_by("-created_at")
+
+    site_inspection_list = apply_dashboard_filters(
+    site_inspection_qs
+    )
+
+
     # 1. PENDING MATERIAL CHECK
     pending_material_qs = SiteInspection.objects.filter(
         material_required="Yes"
@@ -5206,6 +5218,7 @@ def store_keeper_dashboard(request):
         "area_filter": area_filter,
         "block_options": block_options,
         "area_options": area_options,
+        "site_inspection_list": site_inspection_list,
     }
 
     return render(request, "store_keeper_dashboard.html", context)
