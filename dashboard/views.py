@@ -5160,12 +5160,7 @@ def store_keeper_dashboard(request):
     # SITE INSPECTION DETAILS
     # ==========================================================
 
-    site_inspection_qs = SiteInspection.objects.all().order_by("-created_at")
-
-    site_inspection_list = apply_dashboard_filters(
-    site_inspection_qs
-    )
-
+   
 
     # 1. PENDING MATERIAL CHECK
     pending_material_qs = SiteInspection.objects.filter(
