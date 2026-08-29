@@ -331,11 +331,11 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Unique ID</th>
+                       
                         <th>Case ID</th>
                         <th>Customer Name</th>
-                        <th>Engineer Name</th>
-                        <th>Engineer Email</th>
+                        
+                        
                         <th>Block</th>
                         <th>Area</th>
                         <th>Issue Found</th>
@@ -353,11 +353,11 @@
                 <tbody>
                     {% for item in site_inspection_list %}
                     <tr>
-                        <td>{{ item.unique_id }}</td>
+                        
                         <td>{{ item.case_id }}</td>
                         <td>{{ item.customer_name }}</td>
-                        <td>{{ item.engineer_name }}</td>
-                        <td>{{ item.engineer_email }}</td>
+                        
+                        
                         <td>{{ item.block }}</td>
                         <td>{{ item.area|default:"-" }}</td>
                         <td>{{ item.issue_found_remark }}</td>
