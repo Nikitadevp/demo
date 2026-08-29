@@ -540,17 +540,20 @@ body {
     margin-bottom: 20px;
 }
 
-/* Table */
+/* Table Base Layout Fix */
 .table-box table {
     width: 100%;
-    min-width: 1050px;
+    min-width: 1000px;
     border-collapse: collapse;
-    table-layout: fixed;
+    table-layout: auto; /* Overlap fix: Fixed key hata kar Auto structural sizing lagaya hai */
 }
 
+/* Targeted Fix: Site Inspection Details (17 Columns Large Table) */
+#site-inspection-details + .table-box table {
+    min-width: 1950px; /* 17 columns ke clear space ke liye */
+}
 
 /* Table Header */
-
 .table-box thead {
     background: #1b2a4a;
     color: #fff;
@@ -558,7 +561,7 @@ body {
 
 .table-box th,
 .table-box td {
-    padding: 12px 10px;
+    padding: 12px 14px;
     text-align: left;
     font-size: 13px;
     border-bottom: 1px solid #eef0f3;
@@ -566,52 +569,92 @@ body {
     vertical-align: middle;
 }
 
-
-/* =========================================================
-   COLUMN WIDTHS
-========================================================= */
-
-/* Case ID */
-.table-box th:nth-child(1),
-.table-box td:nth-child(1) {
-    width: 90px;
+/* Table Hover */
+.table-box tbody tr:hover {
+    background: #f9fafb;
 }
 
-/* Customer Name */
-.table-box th:nth-child(2),
-.table-box td:nth-child(2) {
+/* =========================================================
+   COLUMN WIDTHS (Scoped ONLY to standard 7-column tables)
+========================================================= */
+
+#pending-material-check + .table-box th:nth-child(1),
+#pending-material-check + .table-box td:nth-child(1),
+#pending-indent + .table-box th:nth-child(1),
+#pending-indent + .table-box td:nth-child(1),
+#ready-to-issue + .table-box th:nth-child(1),
+#ready-to-issue + .table-box td:nth-child(1),
+#issued-material + .table-box th:nth-child(1),
+#issued-material + .table-box td:nth-child(1) {
+    width: 100px;
+}
+
+#pending-material-check + .table-box th:nth-child(2),
+#pending-material-check + .table-box td:nth-child(2),
+#pending-indent + .table-box th:nth-child(2),
+#pending-indent + .table-box td:nth-child(2),
+#ready-to-issue + .table-box th:nth-child(2),
+#ready-to-issue + .table-box td:nth-child(2),
+#issued-material + .table-box th:nth-child(2),
+#issued-material + .table-box td:nth-child(2) {
     width: 220px;
 }
 
-/* Block */
-.table-box th:nth-child(3),
-.table-box td:nth-child(3) {
+#pending-material-check + .table-box th:nth-child(3),
+#pending-material-check + .table-box td:nth-child(3),
+#pending-indent + .table-box th:nth-child(3),
+#pending-indent + .table-box td:nth-child(3),
+#ready-to-issue + .table-box th:nth-child(3),
+#ready-to-issue + .table-box td:nth-child(3),
+#issued-material + .table-box th:nth-child(3),
+#issued-material + .table-box td:nth-child(3) {
     width: 150px;
 }
 
-/* Area */
-.table-box th:nth-child(4),
-.table-box td:nth-child(4) {
+#pending-material-check + .table-box th:nth-child(4),
+#pending-material-check + .table-box td:nth-child(4),
+#pending-indent + .table-box th:nth-child(4),
+#pending-indent + .table-box td:nth-child(4),
+#ready-to-issue + .table-box th:nth-child(4),
+#ready-to-issue + .table-box td:nth-child(4),
+#issued-material + .table-box th:nth-child(4),
+#issued-material + .table-box td:nth-child(4) {
     width: 190px;
 }
 
-/* Status */
-.table-box th:nth-child(5),
-.table-box td:nth-child(5) {
+#pending-material-check + .table-box th:nth-child(5),
+#pending-material-check + .table-box td:nth-child(5),
+#pending-indent + .table-box th:nth-child(5),
+#pending-indent + .table-box td:nth-child(5),
+#ready-to-issue + .table-box th:nth-child(5),
+#ready-to-issue + .table-box td:nth-child(5),
+#issued-material + .table-box th:nth-child(5),
+#issued-material + .table-box td:nth-child(5) {
     width: 170px;
 }
 
-/* Form */
-.table-box th:nth-child(6),
-.table-box td:nth-child(6) {
+#pending-material-check + .table-box th:nth-child(6),
+#pending-material-check + .table-box td:nth-child(6),
+#pending-indent + .table-box th:nth-child(6),
+#pending-indent + .table-box td:nth-child(6),
+#ready-to-issue + .table-box th:nth-child(6),
+#ready-to-issue + .table-box td:nth-child(6),
+#issued-material + .table-box th:nth-child(6),
+#issued-material + .table-box td:nth-child(6) {
     width: 110px;
 }
 
-/* Date */
-.table-box th:nth-child(7),
-.table-box td:nth-child(7) {
+#pending-material-check + .table-box th:nth-child(7),
+#pending-material-check + .table-box td:nth-child(7),
+#pending-indent + .table-box th:nth-child(7),
+#pending-indent + .table-box td:nth-child(7),
+#ready-to-issue + .table-box th:nth-child(7),
+#ready-to-issue + .table-box td:nth-child(7),
+#issued-material + .table-box th:nth-child(7),
+#issued-material + .table-box td:nth-child(7) {
     width: 150px;
 }
+
 /* =========================================================
    HEADER FILTER INPUTS
 ========================================================= */
@@ -652,24 +695,6 @@ body {
     color: #9ca3af;
 }
 
-
-/* Table Hover */
-
-.table-box tbody tr:hover {
-    background: #f9fafb;
-}
-
-
-
-/* =========================================================
-   TABLE BODY
-========================================================= */
-
-.table-box tbody tr:hover {
-    background: #f9fafb;
-}
-
-
 /* =========================================================
    BADGES
 ========================================================= */
@@ -693,6 +718,16 @@ body {
 .bg-danger {
     background: #fca5a5;
     color: #7f1d1d;
+}
+
+.bg-success {
+    background: #a7f3d0;
+    color: #065f46;
+}
+
+.bg-info {
+    background: #bae6fd;
+    color: #075985;
 }
 
 /* =========================================================
@@ -721,6 +756,7 @@ body {
     background: #1b2a4a;
     color: #fff;
 }
+
 /* =========================================================
    FOOTER
 ========================================================= */
