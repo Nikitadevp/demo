@@ -5129,6 +5129,7 @@ def store_keeper_dashboard(request):
 
 
     site_inspection_qs = SiteInspection.objects.all()
+    
     if customer_filter:
         site_inspection_qs = site_inspection_qs.filter(
             customer_name__icontains=customer_filter
@@ -5143,7 +5144,7 @@ def store_keeper_dashboard(request):
         )
 
     if search:
-        queryset = queryset.filter(
+        site_inspection_qs = site_inspection_qs.filter(
             Q(case_id__icontains=search) |
             Q(customer_name__icontains=search) |
             Q(block__icontains=search) |
