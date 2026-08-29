@@ -378,7 +378,7 @@
                                 <span class="badge bg-success">No</span>
                             {% endif %}
                         </td>
-                        <td>{{ item.material_reason|default:"-" }}</td>
+                        <td>{{ item.details_of_material_required|default:"-" }}</td>
                         <td>{{ item.days_required }}</td>
                         <td>
                             {% if item.under_scope == "Yes" %}
