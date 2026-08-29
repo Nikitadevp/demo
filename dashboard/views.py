@@ -5102,18 +5102,18 @@ def store_keeper_dashboard(request):
     # 1. Base QuerySets
     site_inspection_list = SiteInspection.objects.all().order_by('-created_at')
     
-    # MaterialAvailability model se different status waali lists
-    # Note: Apne model ke status field name (e.g., status='pending') ke hisab se exact filter adapt kar sakte hain
-    pending_material_list = MaterialAvailability.objects.filter(status='pending_check').select_related("customer_query")
-    pending_indent_list = MaterialAvailability.objects.filter(status='pending_indent').select_related("customer_query")
-    ready_to_issue_list = MaterialAvailability.objects.filter(status='ready_to_issue')
-    recent_issued = MaterialAvailability.objects.filter(status='issued')
+    # Corrected filter: using 'material_available' instead of non-existent 'status'
+    # Note: Replace 'pending_check', 'pending_indent', etc. with your exact database choice values if different
+    pending_material_list = MaterialAvailability.objects.filter(material_available='pending_check').select_related("customer_query")
+    pending_indent_list = MaterialAvailability.objects.filter(material_available='pending_indent').select_related("customer_query")
+    ready_to_issue_list = MaterialAvailability.objects.filter(material_available='ready_to_issue').select_related("customer_query")
+    recent_issued = MaterialAvailability.objects.filter(material_available='issued').select_related("customer_query")
 
-    # 2. Universal Filter Function (Applies to all tables)
+    # 2. Dynamic Search & Filter Function
     def apply_dashboard_filters(queryset):
         model_name = queryset.model.__name__
 
-        # Common Column Filters across all tables
+        # Common Dropdown Filters
         if customer_filter:
             queryset = queryset.filter(customer_name__icontains=customer_filter)
         if block_filter:
@@ -5121,7 +5121,7 @@ def store_keeper_dashboard(request):
         if area_filter:
             queryset = queryset.filter(area__icontains=area_filter)
 
-        # Global Search Bar Logic (Executes for every query)
+        # Global Search Execution
         if search:
             if model_name == 'SiteInspection':
                 queryset = queryset.filter(
@@ -5144,20 +5144,21 @@ def store_keeper_dashboard(request):
                     Q(block__icontains=search) |
                     Q(area__icontains=search) |
                     Q(email__icontains=search) |
-                    Q(issued_by__icontains=search) |
-                    Q(remark__icontains=search)
+                    Q(material_available__icontains=search) |
+                    Q(customer_query__case_id__icontains=search) |
+                    Q(customer_query__customer_name__icontains=search)
                 )
 
         return queryset
 
-    # 3. Apply Filters to ALL Lists
+    # 3. Apply Filters Across All Queries
     site_inspection_list = apply_dashboard_filters(site_inspection_list)
     pending_material_list = apply_dashboard_filters(pending_material_list).order_by("created_at")
     pending_indent_list = apply_dashboard_filters(pending_indent_list).order_by("created_at")
     ready_to_issue_list = apply_dashboard_filters(ready_to_issue_list).order_by("-created_at")
     recent_issued = apply_dashboard_filters(recent_issued).order_by("-created_at")
 
-    # Analytics Counts (Filtered)
+    # Analytics Counts
     pending_material_check_count = pending_material_list.count()
     pending_indent_count = pending_indent_list.count()
     ready_to_issue_count = ready_to_issue_list.count()
@@ -5178,7 +5179,7 @@ def store_keeper_dashboard(request):
         'ready_to_issue_count': ready_to_issue_count,
         'material_issued_count': material_issued_count,
         
-        # Filters and Options
+        # Filters and Inputs
         'block_options': block_options,
         'area_options': area_options,
         'search': search,
