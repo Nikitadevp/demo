@@ -284,7 +284,7 @@
 
         <div class="search-box">
 
-           <form id="masterFilterForm" method="GET" action="{% url 'store_keeper_dashboard' %}"> 
+           <form id="masterFilterForm" method="GET" action="{% url 'store_keeper_dashboard' %}">
                 <input 
                     id="searchInput"
                     type="text"
@@ -563,7 +563,7 @@
                                 <input
                                     type="text"
                                     name="customer"
-                                    form="filterForm"
+                                    form="masterFilterForm"
                                     class="form-control form-control-sm"
                                     placeholder="Search Name"
                                     value="{{ customer_filter }}"
@@ -578,7 +578,7 @@
                                 <input
                                     type="text"
                                     name="block"
-                                    form="filterForm"
+                                    form="masterFilterForm"
                                     class="form-control form-control-sm"
                                     placeholder="Search Block"
                                     value="{{ block_filter }}"
@@ -593,7 +593,7 @@
                                 <input
                                     type="text"
                                     name="area"
-                                    form="filterForm"
+                                    form="masterFilterForm"
                                     class="form-control form-control-sm"
                                     placeholder="Search Area"
                                     value="{{ area_filter }}"
