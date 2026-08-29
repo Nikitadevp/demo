@@ -5104,6 +5104,19 @@ def store_keeper_dashboard(request):
     block_filter = get_param("block")
     area_filter = get_param("area")
 
+
+
+    site_inspection_list = SiteInspection.objects.select_related(
+        "customer_query"
+    ).order_by(
+        "-created_at"
+    )
+
+
+    pending_material_check = SiteInspection.objects.filter(
+    material_required="Yes"
+    )
+
     # Options for Select Dropdowns
     block_options = [b for b in SiteInspection.objects.values_list("block", flat=True).distinct().order_by("block") if b]
     area_options = [a for a in SiteInspection.objects.values_list("area", flat=True).distinct().order_by("area") if a]
@@ -5206,6 +5219,8 @@ def store_keeper_dashboard(request):
         "area_filter": area_filter,
         "block_options": block_options,
         "area_options": area_options,
+        "site_inspection_list": site_inspection_list,
+
     }
 
     return render(request, "store_keeper_dashboard.html", context)

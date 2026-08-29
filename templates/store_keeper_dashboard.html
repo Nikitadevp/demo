@@ -305,6 +305,97 @@
          
         </form>
 
+        <!-- ==========================================
+             SITE INSPECTION DETAILS
+        =========================================== -->
+        <div class="section-title" id="site-inspection-details">
+            <h2>Site Inspection Details</h2>
+        </div>
+
+        <div class="table-box">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Unique ID</th>
+                        <th>Case ID</th>
+                        <th>Customer Name</th>
+                        <th>Engineer Name</th>
+                        <th>Engineer Email</th>
+                        <th>Block</th>
+                        <th>Area</th>
+                        <th>Issue Found</th>
+                        <th>Issue Area</th>
+                        <th>Category</th>
+                        <th>Material Required</th>
+                        <th>Material Reason</th>
+                        <th>Days Required</th>
+                        <th>Under Scope</th>
+                        <th>Photo 1</th>
+                        <th>Photo 2</th>
+                        <th>Inspection Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in site_inspection_list %}
+                    <tr>
+                        <td>{{ item.unique_id }}</td>
+                        <td>{{ item.case_id }}</td>
+                        <td>{{ item.customer_name }}</td>
+                        <td>{{ item.engineer_name }}</td>
+                        <td>{{ item.engineer_email }}</td>
+                        <td>{{ item.block }}</td>
+                        <td>{{ item.area|default:"-" }}</td>
+                        <td>{{ item.issue_found_remark }}</td>
+                        <td>{{ item.issue_found_area }}</td>
+                        <td>
+                            {% if item.category == "Chargeable" %}
+                                <span class="badge bg-warning text-dark">Chargeable</span>
+                            {% else %}
+                                <span class="badge bg-success">Non Chargeable</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if item.material_required == "Yes" %}
+                                <span class="badge bg-danger">Yes</span>
+                            {% elif item.material_required == "Vendor Side" %}
+                                <span class="badge bg-info">Vendor Side</span>
+                            {% else %}
+                                <span class="badge bg-success">No</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ item.material_reason|default:"-" }}</td>
+                        <td>{{ item.days_required }}</td>
+                        <td>
+                            {% if item.under_scope == "Yes" %}
+                                <span class="badge bg-success">Yes</span>
+                            {% else %}
+                                <span class="badge bg-danger">No</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if item.photo1 %}
+                                <a href="{{ item.photo1.url }}" target="_blank" class="open-form-link">View Photo</a>
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if item.photo2 %}
+                                <a href="{{ item.photo2.url }}" target="_blank" class="open-form-link">View Photo</a>
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                        <td>{{ item.created_at|date:"d/m/Y h:i A" }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="17">No Site Inspection Records Found</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
 
         <!-- ==========================================
                 PENDING MATERIAL CHECK (S6)
