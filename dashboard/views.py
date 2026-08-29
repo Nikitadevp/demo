@@ -5087,74 +5087,140 @@ def crm_dashboard(request):
     # RENDER
     # ======================================================
 
-from django.db.models import Q
-from django.shortcuts import render
 
 def store_keeper_dashboard(request):
-    search = request.GET.get('search', '').strip()
-    customer_filter = request.GET.get('customer', '').strip()
-    block_filter = request.GET.get('block', '').strip()
-    area_filter = request.GET.get('area', '').strip()
+    if "admin_id" not in request.session or request.session.get("admin_role") != "Store Keeper":
+        return redirect("login")
 
-    block_options = ['A', 'Amenities', 'B', 'C', 'D', 'Non Tower']
-    area_options = ['102', 'Club House', 'Parking Area', 'STP Area', 'Temple Area']
+    def get_param(name):
+        values = request.GET.getlist(name)
+        for v in values:
+            if v.strip():
+                return v.strip()
+        return ""
 
-    site_inspection_list = SiteInspection.objects.all().order_by('-created_at')
-    pending_indent_qs = MaterialAvailability.objects.all()
+    search = get_param("search")
+    customer_filter = get_param("customer")
+    block_filter = get_param("block")
+    area_filter = get_param("area")
 
+
+
+    site_inspection_list = SiteInspection.objects.select_related(
+        "customer_query"
+    ).order_by(
+        "-created_at"
+    )
+
+
+    pending_material_check = SiteInspection.objects.filter(
+    material_required="Yes"
+    )
+
+    # Options for Select Dropdowns
+    block_options = [b for b in SiteInspection.objects.values_list("block", flat=True).distinct().order_by("block") if b]
+    area_options = [a for a in SiteInspection.objects.values_list("area", flat=True).distinct().order_by("area") if a]
+
+    # Helper function to apply combined search & column filters
     def apply_dashboard_filters(queryset):
-        model_name = queryset.model.__name__
-
-        # Common Filters across both models
         if customer_filter:
             queryset = queryset.filter(customer_name__icontains=customer_filter)
         if block_filter:
             queryset = queryset.filter(block__icontains=block_filter)
         if area_filter:
             queryset = queryset.filter(area__icontains=area_filter)
-
-        # Model-specific search fields fix
         if search:
-            if model_name == 'SiteInspection':
-                queryset = queryset.filter(
-                    Q(case_id__icontains=search) |
-                    Q(customer_name__icontains=search) |
-                    Q(block__icontains=search) |
-                    Q(area__icontains=search) |
-                    Q(engineer_name__icontains=search) |
-                    Q(category__icontains=search) |
-                    Q(material_required__icontains=search) |
-                    Q(under_scope__icontains=search) |
-                    Q(issue_found_remark__icontains=search) |
-                    Q(issue_found_area__icontains=search) |
-                    Q(details_of_material_required__icontains=search)  # Fixed field name
-                )
-            elif model_name == 'MaterialAvailability':
-                queryset = queryset.filter(
-                    Q(case_id__icontains=search) |
-                    Q(customer_name__icontains=search) |
-                    Q(block__icontains=search) |
-                    Q(area__icontains=search) |
-                    Q(email__icontains=search)  # Only available fields for MaterialAvailability
-                )
-
+            queryset = queryset.filter(
+                Q(case_id__icontains=search) |
+                Q(customer_name__icontains=search) |
+                Q(block__icontains=search) |
+                Q(area__icontains=search)
+            )
         return queryset
 
-    site_inspection_list = apply_dashboard_filters(site_inspection_list)
+    # 1. PENDING MATERIAL CHECK
+    pending_material_qs = SiteInspection.objects.filter(
+        material_required="Yes"
+    ).exclude(customer_query__materialavailability__isnull=False)
+    
+    pending_material_check_count = pending_material_qs.count()
+    pending_material_qs = apply_dashboard_filters(pending_material_qs).select_related("customer_query").order_by("created_at")
+
+    pending_material_list = []
+    for item in pending_material_qs:
+        due_date = item.created_at + timedelta(hours=2)
+        if timezone.now() > due_date:
+            delta = timezone.now() - due_date
+            item.overdue_text = f"Over Due by {delta.days}d {delta.seconds // 3600}h" if delta.days > 0 else f"Over Due by {delta.seconds // 3600}h"
+            item.status_type = "overdue"
+        else:
+            item.status_type = "pending"
+        pending_material_list.append(item)
+
+    # 2. PENDING INDENT
+    pending_indent_qs = MaterialAvailability.objects.filter(
+        material_available="No"
+    ).exclude(customer_query__raiseindent__isnull=False)
+    
+    pending_indent_count = pending_indent_qs.count()
     pending_indent_qs = apply_dashboard_filters(pending_indent_qs).select_related("customer_query").order_by("created_at")
 
-    pending_indent_count = pending_indent_qs.count()
+    pending_indent_list = []
+    for item in pending_indent_qs:
+        due_date = add_working_days(item.created_at, 2)
+        if timezone.now() > due_date:
+            delta = timezone.now() - due_date
+            item.overdue_text = f"Over Due by {delta.days}d {delta.seconds // 3600}h" if delta.days > 0 else f"Over Due by {delta.seconds // 3600}h"
+            item.status_type = "overdue"
+        else:
+            item.status_type = "pending"
+        pending_indent_list.append(item)
+
+    # 3. READY TO ISSUE
+    ready_avail = apply_dashboard_filters(
+        MaterialAvailability.objects.filter(material_available="Yes").exclude(customer_query__issuematerial__isnull=False).select_related("customer_query")
+    )
+    ready_ind = apply_dashboard_filters(
+        RaiseIndent.objects.exclude(customer_query__issuematerial__isnull=False).select_related("customer_query")
+    )
+
+    ready_to_issue_list = [
+        {"case_id": i.case_id, "customer_name": i.customer_name, "block": i.block, "area": i.area, "source": "Material Available", "created_at": i.created_at, "customer_query_id": i.customer_query_id}
+        for i in ready_avail
+    ] + [
+        {"case_id": i.case_id, "customer_name": i.customer_name, "block": i.block, "area": i.area, "source": "Indent Raised", "created_at": i.created_at, "customer_query_id": i.customer_query_id}
+        for i in ready_ind
+    ]
+    ready_to_issue_list.sort(key=lambda x: x["created_at"])
+    ready_to_issue_count = len(ready_to_issue_list)
+
+    # 4. RECENT ISSUED MATERIAL
+    recent_issued = apply_dashboard_filters(
+        IssueMaterial.objects.select_related("customer_query").order_by("-created_at")
+    )
 
     context = {
-        'site_inspection_list': site_inspection_list,
-        'pending_indent_qs': pending_indent_qs,
-        'pending_indent_count': pending_indent_count,
-        'block_options': block_options,
-        'area_options': area_options,
-        'search': search,
-        'customer_filter': customer_filter,
-        'block_filter': block_filter,
-        'area_filter': area_filter,
+        "total_material_checks": MaterialAvailability.objects.count(),
+        "available_count": MaterialAvailability.objects.filter(material_available="Yes").count(),
+        "not_available_count": MaterialAvailability.objects.filter(material_available="No").count(),
+        "indent_raised_count": RaiseIndent.objects.count(),
+        "material_issued_count": IssueMaterial.objects.count(),
+        "today_material_checks": MaterialAvailability.objects.filter(created_at__date=timezone.now().date()).count(),
+        "pending_material_check_count": pending_material_check_count,
+        "pending_material_list": pending_material_list,
+        "pending_indent_count": pending_indent_count,
+        "pending_indent_list": pending_indent_list,
+        "ready_to_issue_list": ready_to_issue_list,
+        "ready_to_issue_count": ready_to_issue_count,
+        "recent_issued": recent_issued,
+        "search": search,
+        "customer_filter": customer_filter,
+        "block_filter": block_filter,
+        "area_filter": area_filter,
+        "block_options": block_options,
+        "area_options": area_options,
+        "site_inspection_list": site_inspection_list,
+
     }
 
-    return render(request, 'store_keeper_dashboard.html', context)
+    return render(request, "store_keeper_dashboard.html", context)
