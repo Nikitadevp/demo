@@ -5141,7 +5141,7 @@ def store_keeper_dashboard(request):
                 Q(under_scope__icontains=search) |
                 Q(issue_found_remark__icontains=search) |
                 Q(issue_found_area__icontains=search) |
-                Q(material_reason__icontains=search)
+                Q(details_of_material_required__icontains=search)
             )
         return queryset
 
