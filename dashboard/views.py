@@ -5157,5 +5157,4 @@ def store_keeper_dashboard(request):
         'area_filter': area_filter,
     }
 
-
-
+    return render(request, 'store_keeper_dashboard.html', context)
