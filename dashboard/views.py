@@ -2934,10 +2934,34 @@ def maintenance_dashboard(request):
 
 
 
-    site_inspection_list = SiteInspection.objects.all().order_by(
+    site_inspection_list = SiteInspection.objects.all()
+
+
+    if customer_filter:
+        site_inspection_list = site_inspection_list.filter(
+            customer_name__icontains=customer_filter
+        )
+# Area Filter
+    if area_filter:
+        site_inspection_list = site_inspection_list.filter(
+            area__icontains=area_filter
+        )
+
+
+    if search:
+        site_inspection_list = site_inspection_list.filter(
+            Q(case_id__icontains=search)
+            |   Q(customer_name__icontains=search)
+            |   Q(block__icontains=search)
+            |   Q(area__icontains=search)
+            |   Q(category__icontains=search)
+        )
+
+
+    site_inspection_list = site_inspection_list.order_by(
         "-created_at"
     )
-
+    
 
     # ==========================================
     # S9 — PENDING MATERIAL RECEIVE
