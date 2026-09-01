@@ -5173,36 +5173,39 @@ def store_keeper_dashboard(request):
 
 
 
+
     site_inspection_qs = SiteInspection.objects.all()
-    
+
+
     if customer_filter:
         site_inspection_qs = site_inspection_qs.filter(
             customer_name__icontains=customer_filter
         )
-    if block_filter:
-        site_inspection_qs = site_inspection_qs.filter(
-            block__icontains=block_filter
-        )
+# Area Filter
     if area_filter:
         site_inspection_qs = site_inspection_qs.filter(
             area__icontains=area_filter
         )
 
-    if search:
+    # Tower / Block Filter
+    if area_filter:
         site_inspection_qs = site_inspection_qs.filter(
-            Q(case_id__icontains=search) |
-            Q(customer_name__icontains=search) |
-            Q(block__icontains=search) |
-            Q(area__icontains=search)|
-            Q(category__icontains=search) |
-            Q(issue_found_remark__icontains=search) 
-
-
+            area__icontains=area_filter
         )
 
-    site_inspection_list = site_inspection_qs.order_by(
-        "-created_at"
-    )
+
+
+    if search:
+        site_inspection_qs = site_inspection_qs.filter(
+            Q(case_id__icontains=search)
+            |   Q(customer_name__icontains=search)
+            |   Q(block__icontains=search)
+            |   Q(area__icontains=search)
+            |   Q(category__icontains=search)
+        )
+
+
+  
     # ==========================================================
     # SITE INSPECTION DETAILS
     # ==========================================================
@@ -5290,7 +5293,7 @@ def store_keeper_dashboard(request):
         "area_filter": area_filter,
         "block_options": block_options,
         "area_options": area_options,
-        "site_inspection_list": site_inspection_list,
+        
     }
 
     return render(request, "store_keeper_dashboard.html", context)
