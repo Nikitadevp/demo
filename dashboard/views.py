@@ -5165,7 +5165,7 @@ def store_keeper_dashboard(request):
         site_inspection_qs = site_inspection_qs.filter(
             customer_name__icontains=customer_filter
         )
-# Area Filter
+   # Area Filter
     if area_filter:
         site_inspection_qs = site_inspection_qs.filter(
             area__icontains=area_filter
@@ -5188,7 +5188,9 @@ def store_keeper_dashboard(request):
             |   Q(category__icontains=search)
         )
 
-
+    site_inspection_list = site_inspection_qs.order_by(
+        "-created_at"
+    )
   
     # ==========================================================
     # SITE INSPECTION DETAILS
@@ -5277,6 +5279,7 @@ def store_keeper_dashboard(request):
         "area_filter": area_filter,
         "block_options": block_options,
         "area_options": area_options,
+        "site_inspection_list": site_inspection_list,
         
     }
 
