@@ -2934,22 +2934,29 @@ def maintenance_dashboard(request):
 
 
 
-    site_inspection_list = SiteInspection.objects.all()
+    site_inspection_qs = SiteInspection.objects.all()
 
 
     if customer_filter:
-        site_inspection_list = site_inspection_list.filter(
+        site_inspection_qs = site_inspection_qs.filter(
             customer_name__icontains=customer_filter
         )
 # Area Filter
     if area_filter:
-        site_inspection_list = site_inspection_list.filter(
+        site_inspection_qs = site_inspection_qs.filter(
+            area__icontains=area_filter
+        )
+
+    # Tower / Block Filter
+    if area_filter:
+        site_inspection_qs = site_inspection_qs.filter(
             area__icontains=area_filter
         )
 
 
+
     if search:
-        site_inspection_list = site_inspection_list.filter(
+        site_inspection_qs = site_inspection_qs.filter(
             Q(case_id__icontains=search)
             |   Q(customer_name__icontains=search)
             |   Q(block__icontains=search)
@@ -2958,9 +2965,10 @@ def maintenance_dashboard(request):
         )
 
 
-    site_inspection_list = site_inspection_list.order_by(
-        "-created_at"
+    site_inspection_list = site_inspection_qs.order_by(
+    "-created_at"
     )
+
     
 
     # ==========================================
@@ -2996,6 +3004,9 @@ def maintenance_dashboard(request):
             | Q(customer_query__tower__icontains=search)
             | Q(customer_query__area__icontains=search)
         )
+
+
+
 
     pending_material_receive_list = []
     for item in pending_receive_qs:
