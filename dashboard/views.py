@@ -2932,6 +2932,13 @@ def maintenance_dashboard(request):
 
     now = timezone.now()
 
+
+
+    site_inspection_list = SiteInspection.objects.all().order_by(
+        "-created_at"
+    )
+
+
     # ==========================================
     # S9 — PENDING MATERIAL RECEIVE
     # Material issued by Store Keeper (S8) but
@@ -3139,6 +3146,9 @@ def maintenance_dashboard(request):
         "tower_filter": tower_filter,
         "area_filter": area_filter,
         "tower_options": tower_options,
+
+
+        "site_inspection_list": site_inspection_list,
     }
 
     return render(
