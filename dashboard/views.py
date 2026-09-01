@@ -2551,6 +2551,7 @@ def issue_material_form(request, query_id):
 
         return redirect("store_keeper_dashboard")
 
+
     return render(
         request,
         "issue_material.html",
@@ -2604,15 +2605,7 @@ def receive_material_form(request, query_id):
 
         customer.save()
 
-        return render(
-            request,
-            "receive_material.html",
-            {
-                "customer": customer,
-                "popup_message":
-                "Receive Material Form Submitted Successfully"
-            }
-        )
+        return redirect("maintenance_dashboard")
 
     return render(
         request,
@@ -2665,15 +2658,7 @@ def query_closer_form(request, query_id):
 
         customer.save()
 
-        return render(
-            request,
-            "query_closer.html",
-            {
-                "customer": customer,
-                "popup_message":
-                "Query Closed Successfully"
-            }
-        )
+        return redirect("maintenance_dashboard")
 
     return render(
         request,
@@ -2745,15 +2730,14 @@ def customer_feedback_form(request, query_id):
 
         customer.save()
 
-        return render(
+        messages.success(
+            
             request,
-            "customer_feedback.html",
-            {
-                "customer": customer,
-                "popup_message":
-                "Customer Feedback Submitted Successfully"
-            }
+            "Customer Feedback Form Submitted Successfully"
         )
+
+
+        return redirect("crm_dashboard")
 
     return render(
         request,
