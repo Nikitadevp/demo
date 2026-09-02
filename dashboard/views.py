@@ -3678,13 +3678,7 @@ def site_engineer_dashboard(request):
         category="Non Chargeable"
     ).count()
 
-    material_required = SiteInspection.objects.filter(
-        material_required="Yes"
-    ).count()
-
-    material_not_required = SiteInspection.objects.filter(
-        material_required="No"
-    ).count()
+    
 
     vendor_side = SiteInspection.objects.filter(
         material_required="Vendor Side"
@@ -3910,8 +3904,7 @@ def site_engineer_dashboard(request):
         "chargeable": chargeable,
         "non_chargeable": non_chargeable,
 
-        "material_required": material_required,
-        "material_not_required": material_not_required,
+        
         "vendor_side": vendor_side,
 
 
