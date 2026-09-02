@@ -2502,64 +2502,40 @@ def raise_indent_form(request, query_id):
     )
 
 
-
+# Apne app ke models import karna na bhulein:
+# from .models import CustomerQuery, MaterialAvailability, RaiseIndent, IssueMaterial
 
 def issue_material_form(request, query_id):
-
-    customer = get_object_or_404(
-        CustomerQuery,
-        id=query_id
-    )
-
+    # CustomerQuery instance fetch karein
+    customer_query = get_object_or_404(CustomerQuery, id=query_id)
+    
+    # Material Availability aur Raise Indent dono models check karein
+    mat_avail = MaterialAvailability.objects.filter(customer_query=customer_query).first()
+    indent_raised = RaiseIndent.objects.filter(customer_query=customer_query).first()
+    
+    # POST request handle karein (jab store keeper form submit kare)
     if request.method == "POST":
-
+        issued_by = request.POST.get("issued_by")
+        remark = request.POST.get("remark")
+        
+        # IssueMaterial Entry Create karein
         IssueMaterial.objects.create(
-
-            customer_query=customer,
-
-            email=request.POST.get(
-                "email"
-            ),
-
-            uid=customer.id,
-
-            customer_name=customer.name,
-
-            block=customer.tower,
-
-            area=customer.area,
-
-            case_id=customer.ticket_id,
-
-            issued_by=request.POST.get(
-                "issued_by"
-            ),
-
-            remark=request.POST.get(
-                "remark"
-            )
+            customer_query=customer_query,
+            case_id=customer_query.case_id,
+            customer_name=customer_query.customer_name,
+            block=customer_query.block,
+            area=customer_query.area,
+            issued_by=issued_by,
+            remark=remark
         )
-
-        customer.status = "Material Issued"
-
-        customer.save()
-
-        messages.success(
-            request,
-            "Issue Material Form Submitted Successfully"
-        )
-
         return redirect("store_keeper_dashboard")
 
-
-    return render(
-        request,
-        "issue_material.html",
-        {
-            "customer": customer
-        }
-    )
-
+    context = {
+        'customer_query': customer_query,
+        'material_availability': mat_avail,
+        'indent_raised': indent_raised,
+    }
+    return render(request, 'issue_material_form.html', context)
 
 
 
@@ -5110,6 +5086,7 @@ def crm_dashboard(request):
     # ======================================================
 
 
+
 def store_keeper_dashboard(request):
     if "admin_id" not in request.session or request.session.get("admin_role") != "Store Keeper":
         return redirect("login")
@@ -5126,11 +5103,9 @@ def store_keeper_dashboard(request):
     block_filter = get_param("block")
     area_filter = get_param("area")
 
-    # Options for Select Dropdowns
     block_options = [b for b in SiteInspection.objects.values_list("block", flat=True).distinct().order_by("block") if b]
     area_options = [a for a in SiteInspection.objects.values_list("area", flat=True).distinct().order_by("area") if a]
 
-    # Helper function to apply combined search & column filters
     def apply_dashboard_filters(queryset):
         if customer_filter:
             queryset = queryset.filter(customer_name__icontains=customer_filter)
@@ -5144,53 +5119,12 @@ def store_keeper_dashboard(request):
                 Q(customer_name__icontains=search) |
                 Q(block__icontains=search) |
                 Q(area__icontains=search)
-
             )
         return queryset
 
-
-
-
-    site_inspection_qs = SiteInspection.objects.all()
-
-
-    if customer_filter:
-        site_inspection_qs = site_inspection_qs.filter(
-            customer_name__icontains=customer_filter
-        )
-   # Area Filter
-    if area_filter:
-        site_inspection_qs = site_inspection_qs.filter(
-            area__icontains=area_filter
-        )
-
-    # Tower / Block Filter
-    if area_filter:
-        site_inspection_qs = site_inspection_qs.filter(
-            area__icontains=area_filter
-        )
-
-
-
-    if search:
-        site_inspection_qs = site_inspection_qs.filter(
-            Q(case_id__icontains=search)
-            |   Q(customer_name__icontains=search)
-            |   Q(block__icontains=search)
-            |   Q(area__icontains=search)
-            |   Q(category__icontains=search)
-        )
-
-    site_inspection_list = site_inspection_qs.order_by(
-        "-created_at"
-    )
+    site_inspection_qs = apply_dashboard_filters(SiteInspection.objects.all())
+    site_inspection_list = site_inspection_qs.order_by("-created_at")
   
-    # ==========================================================
-    # SITE INSPECTION DETAILS
-    # ==========================================================
-
-   
-
     # 1. PENDING MATERIAL CHECK
     pending_material_qs = SiteInspection.objects.filter(
         material_required="Yes"
@@ -5229,21 +5163,41 @@ def store_keeper_dashboard(request):
             item.status_type = "pending"
         pending_indent_list.append(item)
 
-    # 3. READY TO ISSUE
+    # 3. READY TO ISSUE (Material Available + Indent Raised dono honge)
     ready_avail = apply_dashboard_filters(
-        MaterialAvailability.objects.filter(material_available="Yes").exclude(customer_query__issuematerial__isnull=False).select_related("customer_query")
+        MaterialAvailability.objects.filter(material_available="Yes")
+        .exclude(customer_query__issuematerial__isnull=False)
+        .select_related("customer_query")
     )
     ready_ind = apply_dashboard_filters(
-        RaiseIndent.objects.exclude(customer_query__issuematerial__isnull=False).select_related("customer_query")
+        RaiseIndent.objects.exclude(customer_query__issuematerial__isnull=False)
+        .select_related("customer_query")
     )
 
     ready_to_issue_list = [
-        {"case_id": i.case_id, "customer_name": i.customer_name, "block": i.block, "area": i.area, "source": "Material Available", "created_at": i.created_at, "customer_query_id": i.customer_query_id}
+        {
+            "case_id": i.case_id,
+            "customer_name": i.customer_name,
+            "block": i.block,
+            "area": i.area,
+            "source": "Material Available",
+            "created_at": i.created_at,
+            "customer_query_id": i.customer_query_id
+        }
         for i in ready_avail
     ] + [
-        {"case_id": i.case_id, "customer_name": i.customer_name, "block": i.block, "area": i.area, "source": "Indent Raised", "created_at": i.created_at, "customer_query_id": i.customer_query_id}
+        {
+            "case_id": i.case_id,
+            "customer_name": i.customer_name,
+            "block": i.block,
+            "area": i.area,
+            "source": "Indent Raised",
+            "created_at": i.created_at,
+            "customer_query_id": i.customer_query_id
+        }
         for i in ready_ind
     ]
+    
     ready_to_issue_list.sort(key=lambda x: x["created_at"])
     ready_to_issue_count = len(ready_to_issue_list)
 
@@ -5273,7 +5227,6 @@ def store_keeper_dashboard(request):
         "block_options": block_options,
         "area_options": area_options,
         "site_inspection_list": site_inspection_list,
-        
     }
 
     return render(request, "store_keeper_dashboard.html", context)

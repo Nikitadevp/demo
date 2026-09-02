@@ -55,7 +55,7 @@
 
             </li>
 
-           
+            
             <li>
                 <a href="#site-inspection-details">
                     <i class="fa-solid fa-list-check"></i>
@@ -63,12 +63,6 @@
                 </a>
             </li>
         
-
-
-
-
-
-
 
             <li>
 
@@ -279,7 +273,7 @@
 
 
         <!-- ==========================================
-                    SEARCH
+                    SEARCH & MASTER FILTER FORM
         =========================================== -->
 
         <div class="search-box">
@@ -292,9 +286,9 @@
                     placeholder="Search by Case ID, Customer, Block, Area"
                     value="{{ search }}"
                 >
-                <input type="hidden" name="customer" value="{{ customer_filter }}">
-                <input type="hidden" name="block" value="{{ block_filter }}">
-                <input type="hidden" name="area" value="{{ area_filter }}">
+                <input type="hidden" id="filter_customer" name="customer" value="{{ customer_filter }}">
+                <input type="hidden" id="filter_block" name="block" value="{{ block_filter }}">
+                <input type="hidden" id="filter_area" name="area" value="{{ area_filter }}">
 
                 <button type="submit">
 
@@ -315,11 +309,6 @@
         </div>
 
 
-        <form id="filterForm" method="GET" action="{% url 'store_keeper_dashboard' %}" style="display:none;">
-            <input type="hidden" name="search" value="{{ search }}">
-         
-        </form>
-
         <!-- ==========================================
              SITE INSPECTION DETAILS
         =========================================== -->
@@ -331,7 +320,7 @@
             <table>
                 <thead>
                     <tr>
-                       
+                        
                         <th>Case ID</th>
                         <th>Customer Name</th>
                         
@@ -405,7 +394,7 @@
                     </tr>
                     {% empty %}
                     <tr>
-                        <td colspan="17">No Site Inspection Records Found</td>
+                        <td colspan="14">No Site Inspection Records Found</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -433,54 +422,48 @@
 
                         <th>
                            <div class="d-flex flex-column gap-1">
-                                <span>Customer Name</span>
-                                <input
-                                    type="text"
-                                    name="customer"
-                                    form="filterForm"
-                                    class="form-control form-control-sm"
-                                    placeholder="Search Name"
-                                    value="{{ customer_filter }}"
-                                    onchange="document.getElementById('filterForm').submit();"
-                                    onkeydown="if(event.key === 'Enter'){ event.preventDefault(); document.getElementById('filterForm').submit(); }"
-                                >
-                            </div>
+                               <span>Customer Name</span>
+                               <input
+                                   type="text"
+                                   class="form-control form-control-sm"
+                                   placeholder="Search Name"
+                                   value="{{ customer_filter }}"
+                                   onchange="triggerFilterSubmit('customer', this.value, 'pending-material-check');"
+                                   onkeydown="if(event.key === 'Enter'){ event.preventDefault(); triggerFilterSubmit('customer', this.value, 'pending-material-check'); }"
+                               >
+                           </div>
                         </th>
 
                         <th>
                            <div class="d-flex flex-column gap-1">
-                                <span>Block</span>
-                                <select
-                                    name="block"
-                                    form="filterForm"
-                                    class="form-select form-select-sm"
-                                    onchange="document.getElementById('filterForm').submit();">
-                                    <option value="">All</option>
-                                    {% for block in block_options %}
-                                        <option
-                                            value="{{ block }}"
-                                            {% if block_filter == block %}selected{% endif %}>
-                                            {{ block }}
-                                        </option>
-                                    {% endfor %}
-                                </select>
-                            </div>
+                               <span>Block</span>
+                               <select
+                                   class="form-select form-select-sm"
+                                   onchange="triggerFilterSubmit('block', this.value, 'pending-material-check');">
+                                   <option value="">All</option>
+                                   {% for block in block_options %}
+                                       <option
+                                           value="{{ block }}"
+                                           {% if block_filter == block %}selected{% endif %}>
+                                           {{ block }}
+                                       </option>
+                                   {% endfor %}
+                               </select>
+                           </div>
                         </th>
 
                         <th>
                            <div class="d-flex flex-column gap-1">
-                                <span>Area</span>
-                                <input
-                                    type="text"
-                                    name="area"
-                                    form="filterForm"
-                                    class="form-control form-control-sm"
-                                    placeholder="Search Area"
-                                    value="{{ area_filter }}"
-                                    onchange="document.getElementById('filterForm').submit();"
-                                    onkeydown="if(event.key === 'Enter'){ event.preventDefault(); document.getElementById('filterForm').submit(); }"
-                                >
-                            </div>
+                               <span>Area</span>
+                               <input
+                                   type="text"
+                                   class="form-control form-control-sm"
+                                   placeholder="Search Area"
+                                   value="{{ area_filter }}"
+                                   onchange="triggerFilterSubmit('area', this.value, 'pending-material-check');"
+                                   onkeydown="if(event.key === 'Enter'){ event.preventDefault(); triggerFilterSubmit('area', this.value, 'pending-material-check'); }"
+                               >
+                           </div>
                         </th>
 
                         <th>Status</th>
@@ -559,47 +542,44 @@
 
                         <th>
                            <div class="d-flex flex-column gap-1">
-                                <span>Customer Name</span>
-                                <input
-                                    type="text"
-                                    name="customer"
-                                    form="masterFilterForm"
-                                    class="form-control form-control-sm"
-                                    placeholder="Search Name"
-                                    value="{{ customer_filter }}"
-                                    onkeydown="if(event.key === 'Enter'){ event.preventDefault(); document.getElementById('filterForm').submit(); }"
-                                >
-                            </div>
+                               <span>Customer Name</span>
+                               <input
+                                   type="text"
+                                   class="form-control form-control-sm"
+                                   placeholder="Search Name"
+                                   value="{{ customer_filter }}"
+                                   onchange="triggerFilterSubmit('customer', this.value, 'pending-indent');"
+                                   onkeydown="if(event.key === 'Enter'){ event.preventDefault(); triggerFilterSubmit('customer', this.value, 'pending-indent'); }"
+                               >
+                           </div>
                         </th>
 
                         <th>
                            <div class="d-flex flex-column gap-1">
-                                <span>Block</span>
-                                <input
-                                    type="text"
-                                    name="block"
-                                    form="masterFilterForm"
-                                    class="form-control form-control-sm"
-                                    placeholder="Search Block"
-                                    value="{{ block_filter }}"
-                                    onkeydown="if(event.key === 'Enter'){ event.preventDefault(); document.getElementById('filterForm').submit(); }"
-                                >
-                            </div>
+                               <span>Block</span>
+                               <input
+                                   type="text"
+                                   class="form-control form-control-sm"
+                                   placeholder="Search Block"
+                                   value="{{ block_filter }}"
+                                   onchange="triggerFilterSubmit('block', this.value, 'pending-indent');"
+                                   onkeydown="if(event.key === 'Enter'){ event.preventDefault(); triggerFilterSubmit('block', this.value, 'pending-indent'); }"
+                               >
+                           </div>
                         </th>
 
                         <th>
                            <div class="d-flex flex-column gap-1">
-                                <span>Area</span>
-                                <input
-                                    type="text"
-                                    name="area"
-                                    form="masterFilterForm"
-                                    class="form-control form-control-sm"
-                                    placeholder="Search Area"
-                                    value="{{ area_filter }}"
-                                    onkeydown="if(event.key === 'Enter'){ event.preventDefault(); document.getElementById('filterForm').submit(); }"
-                                >
-                            </div>
+                               <span>Area</span>
+                               <input
+                                   type="text"
+                                   class="form-control form-control-sm"
+                                   placeholder="Search Area"
+                                   value="{{ area_filter }}"
+                                   onchange="triggerFilterSubmit('area', this.value, 'pending-indent');"
+                                   onkeydown="if(event.key === 'Enter'){ event.preventDefault(); triggerFilterSubmit('area', this.value, 'pending-indent'); }"
+                               >
+                           </div>
                         </th>
 
                         <th>Status</th>
@@ -866,41 +846,40 @@
 </div>
 
 <script>
-    // Trigger submit for table column inputs while preserving global search parameters
- function triggerFilterSubmit(paramName, paramValue) {
-    const form = document.getElementById('masterFilterForm');
-    
-    // Action URL me ID hash lagayein taaki reload ke baad browser wahin scroll kare
-    form.action = "{% url 'store_keeper_dashboard' %}#materialTableSection";
+    // Trigger submit for inline table column filters while retaining all other GET parameters
+    function triggerFilterSubmit(paramName, paramValue, sectionAnchorId) {
+        const form = document.getElementById('masterFilterForm');
+        
+        // Append section anchor to scroll directly to the relevant table on load
+        const baseUrl = "{% url 'store_keeper_dashboard' %}";
+        form.action = sectionAnchorId ? `${baseUrl}#${sectionAnchorId}` : baseUrl;
 
-    let hiddenInput = form.querySelector(`input[name="${paramName}"]`);
-    if (!hiddenInput) {
-        hiddenInput = document.createElement('input');
-        hiddenInput.type = 'hidden';
-        hiddenInput.name = paramName;
-        form.appendChild(hiddenInput);
+        let hiddenInput = document.getElementById(`filter_${paramName}`);
+        if (!hiddenInput) {
+            hiddenInput = document.createElement('input');
+            hiddenInput.type = 'hidden';
+            hiddenInput.id = `filter_${paramName}`;
+            hiddenInput.name = paramName;
+            form.appendChild(hiddenInput);
+        }
+        
+        hiddenInput.value = paramValue;
+        form.submit();
     }
-    
-    hiddenInput.value = paramValue;
-    form.submit();
-}
-</script>
-<script>
-    // 1. Page reload hone se pehle scroll position save karo
+
+    // Scroll Position Restoration Logic
     window.addEventListener('beforeunload', function () {
         localStorage.setItem('scrollPosition', window.scrollY);
     });
 
-    // 2. Page load hone par scroll position restore karo
     window.addEventListener('DOMContentLoaded', function () {
         const savedPosition = localStorage.getItem('scrollPosition');
-        if (savedPosition !== null) {
+        if (savedPosition !== null && !window.location.hash) {
             window.scrollTo(0, parseInt(savedPosition, 10));
-            localStorage.removeItem('scrollPosition'); // Clean up
+            localStorage.removeItem('scrollPosition');
         }
     });
 </script>
-
 
 </body>
 
