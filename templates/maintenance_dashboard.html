@@ -560,6 +560,7 @@
                         <th>Tower</th>
                         <th>Area</th>
                         <th>Solution Provided</th>
+                        <th>Photo</th>
                         <th>Closed Date</th>
                     </tr>
                 </thead>
@@ -573,6 +574,18 @@
                         <td class="solution-cell">
                             {{ item.solution_provided }}
                         </td>
+
+                        <td>
+                            {% if item.closer_report %}
+                                <a href="{{ item.closer_report.url }}" target="_blank">
+                                    View Photo
+                                </a>
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+
+
                         <td>{{ item.created_at|date:"d M Y" }}</td>
                     </tr>
                 {% empty %}

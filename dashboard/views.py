@@ -3108,6 +3108,7 @@ def maintenance_dashboard(request):
             "remark": getattr(item, "remark", "-"),
             "solution_provided": item.solution_provided,
             "created_at": item.created_at,
+            "closer_report": item.closer_report,
         })
 
     # ==========================================
