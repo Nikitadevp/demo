@@ -683,72 +683,548 @@ tbody td span[style*="color:green"] {
     font-size: 12px;
     font-weight: 600;
 }
-
-
 /* =====================================================
-   RESPONSIVE
-   ===================================================== */
+   RESPONSIVE - TABLET & MOBILE
+===================================================== */
 
 @media (max-width: 1024px) {
 
     :root {
-        --sidebar-w: 220px;
+        --sidebar-w: 210px;
     }
 
     .main-content {
+        margin-left: var(--sidebar-w);
         padding: 1.5rem;
+        gap: 1.5rem;
     }
+
+    .summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .welcome-card {
+        padding: 1.6rem;
+    }
+
 }
+
+
+/* =====================================================
+   MOBILE / TABLET
+===================================================== */
 
 @media (max-width: 768px) {
 
-    .sidebar {
-        position: relative;
-        width: 100%;
-        height: auto;
-        flex-direction: row;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: space-between;
-        padding: 1rem 1.25rem;
+    :root {
+        --mobile-sidebar-w: 72px;
     }
 
-    .sidebar ul {
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: 0.4rem;
+
+    /* ------------------------------
+       DASHBOARD
+    ------------------------------ */
+
+    .dashboard {
+        display: block;
+        width: 100%;
+        min-height: 100vh;
     }
+
+
+    /* ------------------------------
+       MOBILE SIDEBAR
+    ------------------------------ */
+
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+
+        width: var(--mobile-sidebar-w);
+        height: 100vh;
+
+        padding: 0.9rem 0.55rem;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        gap: 1rem;
+
+        overflow-y: auto;
+
+        z-index: 999;
+
+        background: linear-gradient(
+            180deg,
+            var(--navy-900) 0%,
+            var(--navy-800) 100%
+        );
+    }
+
+
+    /* Logo hide on mobile */
+
+    .sidebar .logo {
+        display: none;
+    }
+
+
+    /* Sidebar Menu */
+
+    .sidebar ul {
+        width: 100%;
+
+        display: flex;
+        flex-direction: column;
+
+        align-items: center;
+
+        gap: 0.7rem;
+
+        margin-top: 0.5rem;
+    }
+
+
+    .sidebar ul li {
+        width: 100%;
+    }
+
+
+    .sidebar ul li a {
+        width: 100%;
+        height: 52px;
+
+        padding: 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 10px;
+    }
+
+
+    /* Hide menu text */
 
     .sidebar ul li a span {
         display: none;
     }
 
-    .main-content {
-        margin-left: 0;
-        padding: 1.25rem;
+
+    /* Sidebar icons */
+
+    .sidebar ul li a i {
+        width: auto;
+
+        font-size: 1.35rem;
+
+        margin: 0;
+
+        color: #C7D0E0;
     }
+
+
+    .sidebar ul li.active a {
+        background: var(--accent-500);
+    }
+
+
+    .sidebar ul li.active a i {
+        color: var(--navy-900);
+    }
+
+
+    /* ------------------------------
+       MAIN CONTENT
+    ------------------------------ */
+
+    .main-content {
+        width: calc(100% - var(--mobile-sidebar-w));
+
+        margin-left: var(--mobile-sidebar-w);
+
+        padding: 1rem;
+
+        gap: 1.5rem;
+
+        overflow-x: hidden;
+    }
+
+
+    /* ------------------------------
+       HEADER
+    ------------------------------ */
+
+    .header {
+        width: 100%;
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 0.8rem;
+    }
+
+
+    .header h1 {
+        font-size: 1.55rem;
+    }
+
+
+    .header span {
+        font-size: 0.85rem;
+    }
+
+
+    .header-right {
+        width: 100%;
+
+        justify-content: flex-end;
+    }
+
+
+    .logout-btn {
+        padding: 0.65rem 1rem;
+        font-size: 0.85rem;
+    }
+
+
+    /* ------------------------------
+       WELCOME CARD
+    ------------------------------ */
 
     .welcome-card {
+        width: 100%;
+
         flex-direction: column;
+
         align-items: flex-start;
+
+        text-align: left;
+
+        padding: 1.3rem;
+
+        gap: 1rem;
+
+        border-radius: 16px;
+    }
+
+
+    .welcome-card h2 {
+        font-size: 1.25rem;
+    }
+
+
+    .welcome-card p {
+        font-size: 0.85rem;
+    }
+
+
+    .welcome-right {
+        width: 100%;
+
         text-align: left;
     }
 
-    .welcome-right {
-        text-align: left;
+
+    .welcome-right h1 {
+        font-size: 2rem;
     }
+
+
+    /* ------------------------------
+       SECTION TITLE
+    ------------------------------ */
+
+    .section-title h2 {
+        font-size: 1.15rem;
+    }
+
+
+    /* ------------------------------
+       SUMMARY CARDS
+    ------------------------------ */
+
+    .summary-grid {
+        width: 100%;
+
+        grid-template-columns: 1fr;
+
+        gap: 1rem;
+    }
+
+
+    .card {
+        width: 100%;
+
+        min-height: 130px;
+
+        padding: 1.25rem;
+
+        flex-direction: row;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        gap: 1rem;
+
+        border-radius: 18px;
+    }
+
+
+    .card i {
+        width: 3.4rem;
+        height: 3.4rem;
+
+        font-size: 1.4rem;
+
+        order: 2;
+    }
+
+
+    .card > div {
+        order: 1;
+    }
+
+
+    .card h2 {
+        font-size: 2rem;
+    }
+
+
+    .card p {
+        font-size: 1rem;
+
+        margin-top: 0.25rem;
+    }
+
+
+    /* ------------------------------
+       SEARCH BOX
+    ------------------------------ */
+
+    .search-box {
+        width: 100%;
+
+        max-width: 100%;
+
+        padding: 0.35rem;
+    }
+
+
+    .search-box input {
+        width: 100%;
+
+        font-size: 0.9rem;
+    }
+
+
+    .search-box button {
+        width: 2.4rem;
+        height: 2.4rem;
+    }
+
+
+    /* ------------------------------
+       TABLE
+    ------------------------------ */
+
+    .table-box {
+        width: 100%;
+
+        overflow-x: auto;
+
+        -webkit-overflow-scrolling: touch;
+
+        border-radius: 14px;
+    }
+
+
+    table {
+        min-width: 650px;
+    }
+
+
+    thead th {
+        padding: 0.85rem 1rem;
+
+        font-size: 0.75rem;
+    }
+
+
+    tbody td {
+        padding: 0.85rem 1rem;
+
+        font-size: 0.85rem;
+    }
+
+
+    /* ------------------------------
+       FILTERS
+    ------------------------------ */
+
+    .form-control,
+    .form-select,
+    .form-control-sm,
+    .form-select-sm {
+        min-width: 110px;
+
+        font-size: 0.75rem;
+
+        padding: 0.45rem 0.5rem;
+    }
+
+
+    /* ------------------------------
+       BUTTONS
+    ------------------------------ */
+
+    .open-form-link {
+        padding: 0.5rem 0.9rem;
+
+        font-size: 0.75rem;
+    }
+
+
+    .view-photo-btn {
+        padding: 7px 10px;
+
+        font-size: 12px;
+    }
+
+
+    /* ------------------------------
+       FOOTER
+    ------------------------------ */
+
+    .footer {
+        padding: 1rem 0;
+
+        font-size: 0.75rem;
+    }
+
 }
+
+
+/* =====================================================
+   SMALL MOBILE
+   480px and below
+===================================================== */
 
 @media (max-width: 480px) {
 
     :root {
-        --fs-2xl: 2rem;
-        --fs-xl: 1.6rem;
+        --mobile-sidebar-w: 62px;
     }
 
-    .card {
-        flex-direction: column;
-        align-items: flex-start;
-        text-align: left;
+
+    .sidebar {
+        width: var(--mobile-sidebar-w);
+
+        padding: 0.8rem 0.4rem;
     }
+
+
+    .sidebar ul li a {
+        height: 48px;
+    }
+
+
+    .sidebar ul li a i {
+        font-size: 1.2rem;
+    }
+
+
+    .main-content {
+        width: calc(100% - var(--mobile-sidebar-w));
+
+        margin-left: var(--mobile-sidebar-w);
+
+        padding: 0.8rem;
+
+        gap: 1.2rem;
+    }
+
+
+    /* Header */
+
+    .header h1 {
+        font-size: 1.35rem;
+    }
+
+
+    /* Welcome Card */
+
+    .welcome-card {
+        padding: 1.1rem;
+    }
+
+
+    .welcome-card h2 {
+        font-size: 1.1rem;
+    }
+
+
+    .welcome-card p {
+        font-size: 0.8rem;
+    }
+
+
+    .welcome-right h1 {
+        font-size: 1.7rem;
+    }
+
+
+    /* Cards */
+
+    .summary-grid {
+        gap: 0.9rem;
+    }
+
+
+    .card {
+        min-height: 115px;
+
+        padding: 1rem;
+
+        border-radius: 16px;
+    }
+
+
+    .card h2 {
+        font-size: 1.8rem;
+    }
+
+
+    .card p {
+        font-size: 0.9rem;
+    }
+
+
+    .card i {
+        width: 3rem;
+        height: 3rem;
+
+        font-size: 1.2rem;
+    }
+
+
+    /* Logout */
+
+    .logout-btn {
+        padding: 0.6rem 0.85rem;
+
+        font-size: 0.8rem;
+    }
+
+
+    /* Table */
+
+    table {
+        min-width: 600px;
+    }
+
 }
