@@ -21,12 +21,32 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Force Mobile to Render PC Layout Exactly */
+/* ==========================================
+   MOBILE FORCE-FIX
+   PC layout freeze — mobile pe koi bhi card/table
+   tight/squeeze nahi hoga. Horizontal scroll allow.
+=========================================== */
+html {
+    -webkit-text-size-adjust: 100%; /* iOS auto font-boost rokta hai */
+}
+
 html, body {
-    min-width: 1300px; /* PC layout freeze for Mobile */
+    min-width: 1300px;              /* PC layout freeze for Mobile */
     background-color: var(--bg-color);
     color: var(--text-color);
-    overflow-x: auto; /* Enables smooth PC scrolling on mobile */
+    overflow-x: auto;               /* smooth PC scrolling on mobile */
+    -webkit-overflow-scrolling: touch; /* iOS momentum scroll */
+}
+
+/* thin scrollbar so it's visible but not intrusive */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+    height: 6px;
+}
+html::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
 }
 
 .dashboard {
