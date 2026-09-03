@@ -2192,3 +2192,404 @@ html{
 /* ==========================================================
    END OF FILE
 ========================================================== */
+
+/* ==========================================================
+   CRM DASHBOARD MOBILE SIDEBAR
+   Store Keeper Style
+   DESKTOP CSS WILL NOT CHANGE
+========================================================== */
+
+@media (max-width: 768px) {
+
+    /* ==========================================
+       SIDEBAR
+    ========================================== */
+
+    .sidebar {
+        position: relative !important;
+
+        top: auto !important;
+        left: auto !important;
+
+        width: 100% !important;
+        height: auto !important;
+        min-height: auto !important;
+
+        overflow: visible !important;
+
+        background: #1f2937 !important;
+
+        z-index: 1000;
+
+        transition: none !important;
+    }
+
+
+    /* ==========================================
+       COLLAPSED SIDEBAR MOBILE ME BHI FULL WIDTH
+    ========================================== */
+
+    .sidebar.collapsed {
+        width: 100% !important;
+    }
+
+
+    /* ==========================================
+       LOGO
+    ========================================== */
+
+    .sidebar .logo {
+        display: block !important;
+
+        padding: 28px 32px 22px !important;
+
+        text-align: left !important;
+
+        border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+
+    /* Agar logo me heading hai */
+
+    .sidebar .logo h2,
+    .sidebar .logo h3,
+    .sidebar .logo h4 {
+        display: block !important;
+
+        color: #ffffff !important;
+
+        font-size: 28px !important;
+
+        font-weight: 700 !important;
+
+        margin-bottom: 6px !important;
+    }
+
+
+    /* Logo paragraph */
+
+    .sidebar .logo p {
+        display: block !important;
+
+        color: #f59e0b !important;
+
+        font-size: 17px !important;
+
+        margin: 0 !important;
+
+        font-weight: 500 !important;
+    }
+
+
+    /* ==========================================
+       COLLAPSED LOGO HIDE RULE KO OVERRIDE
+    ========================================== */
+
+    .sidebar.collapsed .sidebar-logo p,
+    .sidebar.collapsed .sidebar-logo h3 {
+        display: block !important;
+    }
+
+
+    /* ==========================================
+       SIDEBAR MENU
+    ========================================== */
+
+    .sidebar ul {
+        display: flex !important;
+
+        flex-direction: column !important;
+
+        width: 100% !important;
+
+        margin: 0 !important;
+
+        padding: 12px 0 20px !important;
+
+        gap: 4px !important;
+    }
+
+
+    .sidebar ul li {
+        width: 100% !important;
+
+        margin: 0 !important;
+    }
+
+
+    /* ==========================================
+       MENU LINK
+    ========================================== */
+
+    .sidebar ul li a {
+        display: flex !important;
+
+        align-items: center !important;
+
+        justify-content: flex-start !important;
+
+        width: 100% !important;
+
+        min-height: 58px !important;
+
+        padding: 14px 32px !important;
+
+        gap: 18px !important;
+
+        font-size: 18px !important;
+
+        color: #cbd5e1 !important;
+
+        text-decoration: none !important;
+
+        background: transparent !important;
+
+        border-radius: 0 !important;
+
+        white-space: normal !important;
+    }
+
+
+    /* ==========================================
+       MENU ICON
+    ========================================== */
+
+    .sidebar ul li a i {
+        display: inline-block !important;
+
+        width: 24px !important;
+
+        min-width: 24px !important;
+
+        text-align: center !important;
+
+        font-size: 20px !important;
+
+        color: #cbd5e1 !important;
+    }
+
+
+    /* ==========================================
+       MENU TEXT
+       IMPORTANT - MOBILE ME TEXT HIDE NAHI HOGA
+    ========================================== */
+
+    .sidebar ul li a span,
+    .sidebar.collapsed .sidebar-menu span {
+        display: inline !important;
+
+        visibility: visible !important;
+
+        opacity: 1 !important;
+    }
+
+
+    /* ==========================================
+       ACTIVE MENU
+    ========================================== */
+
+    .sidebar ul li a.active,
+    .sidebar ul li.active a {
+        background: #f59e0b !important;
+
+        color: #1f2937 !important;
+
+        font-weight: 700 !important;
+    }
+
+
+    .sidebar ul li a.active i,
+    .sidebar ul li.active a i {
+        color: #1f2937 !important;
+    }
+
+
+    /* ==========================================
+       HOVER
+    ========================================== */
+
+    .sidebar ul li a:hover {
+        background: rgba(245, 158, 11, 0.15) !important;
+
+        color: #ffffff !important;
+    }
+
+
+    /* Active hover same rahe */
+
+    .sidebar ul li a.active:hover,
+    .sidebar ul li.active a:hover {
+        background: #f59e0b !important;
+
+        color: #1f2937 !important;
+    }
+
+
+    /* ==========================================
+       MAIN CONTENT
+    ========================================== */
+
+    .main-content {
+        width: 100% !important;
+
+        margin-left: 0 !important;
+
+        padding: 20px 15px !important;
+
+        min-height: auto !important;
+    }
+
+
+    .sidebar.collapsed ~ .main-content {
+        margin-left: 0 !important;
+    }
+
+
+    /* ==========================================
+       CONTAINER
+    ========================================== */
+
+    .container-fluid {
+        padding: 0 !important;
+    }
+
+
+    /* ==========================================
+       HEADER
+    ========================================== */
+
+    h2 {
+        font-size: 26px;
+    }
+
+
+    /* ==========================================
+       DASHBOARD CARDS
+    ========================================== */
+
+    .card {
+        min-height: auto !important;
+
+        margin-bottom: 15px;
+    }
+
+
+    .card-body {
+        padding: 20px !important;
+    }
+
+
+    .card h2 {
+        font-size: 32px !important;
+    }
+
+
+    /* ==========================================
+       SEARCH BAR
+    ========================================== */
+
+    .input-group {
+        width: 100%;
+
+        margin-top: 15px;
+    }
+
+
+    /* ==========================================
+       TABLE
+    ========================================== */
+
+    .table-responsive {
+        width: 100%;
+
+        overflow-x: auto !important;
+
+        -webkit-overflow-scrolling: touch;
+    }
+
+
+    .table {
+        min-width: 1000px !important;
+    }
+
+}
+
+
+/* ==========================================================
+   SMALL MOBILE
+========================================================== */
+
+@media (max-width: 480px) {
+
+    /* Sidebar */
+
+    .sidebar .logo {
+        padding: 24px 20px 18px !important;
+    }
+
+
+    .sidebar .logo h2,
+    .sidebar .logo h3,
+    .sidebar .logo h4 {
+        font-size: 25px !important;
+    }
+
+
+    .sidebar .logo p {
+        font-size: 15px !important;
+    }
+
+
+    /* Menu */
+
+    .sidebar ul {
+        padding-top: 10px !important;
+    }
+
+
+    .sidebar ul li a {
+        min-height: 54px !important;
+
+        padding: 13px 20px !important;
+
+        gap: 16px !important;
+
+        font-size: 16px !important;
+    }
+
+
+    .sidebar ul li a i {
+        font-size: 18px !important;
+
+        width: 22px !important;
+
+        min-width: 22px !important;
+    }
+
+
+    /* Main content */
+
+    .main-content {
+        padding: 15px 12px !important;
+    }
+
+
+    /* Cards */
+
+    .card-body {
+        padding: 18px !important;
+    }
+
+
+    .card h2 {
+        font-size: 28px !important;
+    }
+
+
+    /* Table */
+
+    .table {
+        min-width: 950px !important;
+    }
+
+}
