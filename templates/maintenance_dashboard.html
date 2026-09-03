@@ -577,11 +577,19 @@
 
                         <td>
                             {% if item.closer_report %}
-                                <a href="{{ item.closer_report.url }}" target="_blank">
+                               <a 
+                                    href="{{ item.closer_report.url }}" 
+                                    target="_blank" 
+                                    class="view-photo-btn"
+                                >
+                                    <i class="fa-solid fa-image"></i>
                                     View Photo
-                                </a>
+                                </a>    
                             {% else %}
-                                -
+                                <span class="no-photo">
+                                    <i class="fa-solid fa-image"></i>
+                                    No Photo
+                                </span>
                             {% endif %}
                         </td>
 
