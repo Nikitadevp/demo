@@ -623,6 +623,68 @@ tbody td span[style*="color:green"] {
     color: var(--navy-400);
 }
 
+/* ==========================================
+   CLOSED QUERIES - VIEW PHOTO BUTTON
+========================================== */
+
+.view-photo-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+
+    padding: 8px 14px;
+
+    background: #1B2A4A;
+    color: #ffffff !important;
+
+    border: 1px solid #1B2A4A;
+    border-radius: 7px;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    text-decoration: none;
+
+    white-space: nowrap;
+
+    transition: 0.3s ease;
+}
+
+
+.view-photo-btn:hover {
+    background: #F59E0B;
+    border-color: #F59E0B;
+
+    color: #ffffff !important;
+
+    transform: translateY(-1px);
+}
+
+
+.view-photo-btn i {
+    font-size: 14px;
+}
+
+
+/* No Photo */
+
+.no-photo {
+    display: inline-block;
+
+    padding: 7px 12px;
+
+    background: #f1f5f9;
+    color: #64748b;
+
+    border: 1px solid #cbd5e1;
+    border-radius: 7px;
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
+
 /* =====================================================
    RESPONSIVE
    ===================================================== */
