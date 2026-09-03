@@ -966,7 +966,7 @@ class IssueMaterial(models.Model):
         max_length=100
     )
 
-    remark = models.TextField(
+    issue_material_details = models.TextField(
         blank=True,
         null=True
     )

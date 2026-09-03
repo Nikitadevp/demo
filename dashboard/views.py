@@ -2535,8 +2535,8 @@ def issue_material_form(request, query_id):
                 "issued_by"
             ),
 
-            remark=request.POST.get(
-                "remark"
+            issue_material_details=request.POST.get(
+                "issue_material_details"
             )
         )
 
