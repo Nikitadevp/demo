@@ -2438,11 +2438,7 @@ def material_availability_form(request, query_id):
 
         customer.save()
 
-        messages.success(
-            request,
-            "Material Availability Form Submitted Successfully"
-        )
-
+       
         return redirect("store_keeper_dashboard")
 
     return render(
@@ -2486,10 +2482,7 @@ def raise_indent_form(request, query_id):
 
         customer.save()
 
-        messages.success(
-            request,
-            "Raise Indent Form Submitted Successfully"
-        )
+       
 
         return redirect("store_keeper_dashboard")
 
@@ -2544,10 +2537,7 @@ def issue_material_form(request, query_id):
 
         customer.save()
 
-        messages.success(
-            request,
-            "Issue Material Form Submitted Successfully"
-        )
+        
 
         return redirect("store_keeper_dashboard")
 
