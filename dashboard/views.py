@@ -3642,7 +3642,7 @@ def site_engineer_dashboard(request):
     # SITE INSPECTION SUMMARY  
     # ==========================================  
   
-    completed_site_inspection = SiteInspection.objects.count()
+    
   
     today_site_inspection = SiteInspection.objects.filter(  
         created_at__date=timezone.now().date()  
@@ -3680,7 +3680,9 @@ def site_engineer_dashboard(request):
     ).exclude(  
         customer_query__siteinspection__isnull=False  
     )  
-    inspection_pending = pending_site_inspection.count()  
+    inspection_pending = pending_site_inspection.count() 
+
+    completed_site_inspection = SiteInspection.objects.count() 
       
     total_inspection = (
     completed_site_inspection +
