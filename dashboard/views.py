@@ -3639,6 +3639,8 @@ def site_engineer_dashboard(request):
     # SITE INSPECTION SUMMARY
     # ==========================================
 
+    total_site_inspection = SiteInspection.objects.count()
+
     total_site_inspection = SiteInspection.objects.filter(
         under_scope="Yes"
     ).count()
