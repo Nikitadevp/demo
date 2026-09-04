@@ -2084,22 +2084,16 @@ Thank You.
 
             )
 
-            popup_message = (
-                "Form Submitted Successfully. "
-                "Site Engineer Has Been Notified."
-            )
+            
 
         else:
 
             customer.status = "Closed"
 
-            popup_message = (
-                "Maintenance Ticket And Form Is Closed. "
-                "Thank You."
-            )
+            
 
         customer.save()
-        messages.success(request, popup_message)
+       
         return redirect("crm_dashboard")
        
 
