@@ -2316,18 +2316,12 @@ def customer_approval_form(request, query_id):
         if approval_type == "Reject":
 
             customer.status = "Closed"
-            popup_message = "Customer Rejected. Form Closed Successfully."
 
-        else:
-
-            popup_message = "Customer Approved. Form Submitted Successfully."    
+            
 
         customer.save()
 
-        messages.success(
-            request,
-            popup_message
-        )
+       
         return redirect("crm_dashboard")
     
     return render(
@@ -2377,10 +2371,6 @@ def advance_collection_form(request, query_id):
             )
         )
 
-        messages.success(
-            request,
-            "Advance Collection Form Submitted Successfully"
-        )
 
         return redirect("crm_dashboard")
 
