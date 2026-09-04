@@ -3645,7 +3645,16 @@ def site_engineer_dashboard(request):
 
    
 
-    
+    chargeable_site_inspection = SiteInspection.objects.filter(
+        under_scope="Yes",
+        chargeable="Chargeable"
+    ).count()
+
+
+    non_chargeable_site_inspection = SiteInspection.objects.filter(
+        under_scope="Yes",
+        chargeable="Non-Chargeable"
+    ).count()
 
     # ==========================================
     # WORKFLOW
@@ -3883,7 +3892,8 @@ def site_engineer_dashboard(request):
         "issue_filter": issue_filter,
         "total_site_inspection": total_site_inspection,
       
-
+        "chargeable_site_inspection": chargeable_site_inspection,
+        "non_chargeable_site_inspection": non_chargeable_site_inspection,
        
         
 
