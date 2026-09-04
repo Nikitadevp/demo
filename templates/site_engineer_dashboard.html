@@ -206,52 +206,26 @@
 
         <div class="summary-grid">
 
-            <div class="card blue-card">
 
-                <i class="fa-solid fa-house-circle-check"></i>
+            <div class="card open-card">
 
+                <i class="fas fa-clipboard-check"></i>
                 <h2>{{ total_site_inspection }}</h2>
 
-                <p>Total Inspection</p>
+                <p>Total Site Inspections</p>
+            </div>  
 
-            </div>
 
-           
+            <div class="card pending-card">
 
-            <div class="card orange-card">
+                <i class="fa-solid fa-clock"></i>
 
-                <i class="fa-solid fa-sack-dollar"></i>
+                <h2>{{ inspection_pending }}</h2>
 
-                <h2>{{ chargeable }}</h2>
-
-                <p>Chargeable</p>
-
-            </div>
-
-            <div class="card purple-card">
-
-                <i class="fa-solid fa-ban"></i>
-
-                <h2>{{ non_chargeable }}</h2>
-
-                <p>Non Chargeable</p>
-
+                <p>Pending Inspection</p>
             </div>
 
             
-
-           
-
-            <div class="card yellow-card">
-
-                <i class="fa-solid fa-truck"></i>
-
-                <h2>{{ vendor_side }}</h2>
-
-                <p>Vendor Side</p>
-
-            </div>
-
             <div class="card pink-card">
 
                 <i class="fa-solid fa-calendar-day"></i>
@@ -262,15 +236,7 @@
 
             </div>
 
-            <div class="card dark-card">
-
-                <i class="fa-solid fa-clock"></i>
-
-                <h2>{{ pending_site_inspection.count }}</h2>
-
-                <p>Pending Inspection</p>
-
-            </div>
+            
 
         </div>
 
