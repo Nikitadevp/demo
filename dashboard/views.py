@@ -3629,7 +3629,7 @@ def site_engineer_dashboard(request):
     # CUSTOMER QUERY SUMMARY  
     # ==========================================  
   
-    total_inspection = inspection_pending + completed_site_inspection
+    
   
     # ==========================================  
     # MAINTENANCE SCOPE  
@@ -3685,8 +3685,8 @@ def site_engineer_dashboard(request):
     completed_site_inspection = SiteInspection.objects.count() 
       
     total_inspection = (
-    completed_site_inspection +
-    inspection_pending
+        completed_site_inspection +
+        inspection_pending
     )
     # ==========================================  
     # PENDING INSPECTION FILTERS  
@@ -3913,7 +3913,7 @@ def site_engineer_dashboard(request):
   
   
          
-        "inspection_pending": inspection_pending,  
+        
   
         # Charts  
         "customer_options": customer_options,  
