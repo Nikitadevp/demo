@@ -3607,236 +3607,332 @@ def admin_dashboard(request):
 
 
 
-
-
-def site_engineer_dashboard(request):
-
-    # ==========================================
-    # LOGIN CHECK
-    # ==========================================
-
-    if "admin_id" not in request.session:
-        return redirect("login")
-
-    if request.session.get("admin_role") != "Site Engineer":
-        return redirect("login")
-
-
-    # ==========================================
-    # CUSTOMER QUERY SUMMARY
-    # ==========================================
-
-    
-
-    # ==========================================
-    # MAINTENANCE SCOPE
-    # ==========================================
-
-    maintenance_scope = MaintenanceScope.objects.count()
-
-
-    # ==========================================
-    # SITE INSPECTION SUMMARY
-    # ==========================================
-
-    total_site_inspection = SiteInspection.objects.count()
-
-    total_site_inspection = SiteInspection.objects.filter(
-        under_scope="Yes"
-    ).count()
-
-   
-
-    chargeable = SiteInspection.objects.filter(
-        category="Chargeable"
-    ).count()
-
-    non_chargeable = SiteInspection.objects.filter(
-        category="Non Chargeable"
-    ).count()
-
-    # ==========================================
-    # WORKFLOW
-    # ==========================================                                         
-
-
-    pending_site_inspection = MaintenanceScope.objects.filter(
-        scope_status="Yes"
-    ).exclude(
-        customer_query__siteinspection__isnull=False
-    )
-    inspection_pending = pending_site_inspection.count()
-    
-
-    # ==========================================
-    # PENDING INSPECTION FILTERS
-    # ==========================================
-
-    customer_options = pending_site_inspection.values_list(
-        "customer_name", flat=True
-    ).distinct().order_by("customer_name")
-
-    block_options = pending_site_inspection.values_list(
-        "block", 
-        flat=True
-    ).exclude(
-        block__isnull=True
-    ).exclude(
-        block__exact=""
-    ).distinct().order_by("block")             
-
-    area_options = pending_site_inspection.values_list(
-        "location", flat=True
-    ).distinct().order_by("location")
-
-    issue_options = pending_site_inspection.values_list(
-        "issue_related", flat=True
-    ).distinct().order_by("issue_related")
-
-    customer_filter = request.GET.get("customer", "")
-    block_filter = request.GET.get("block", "")
-    area_filter = request.GET.get("area", "")
-    issue_filter = request.GET.get("issue", "")
-
-
-    block_options = [
-        block for block in block_options
-        if block
-    ]
-
-    if customer_filter:
-        pending_site_inspection = pending_site_inspection.filter(
-            customer_name__icontains=customer_filter
-        )
-
-    if block_filter:
-        pending_site_inspection = pending_site_inspection.filter(
-            block=block_filter
-        )
-
-    if area_filter:
-        pending_site_inspection = pending_site_inspection.filter(
-            location__icontains=area_filter
-        )
-
-    if issue_filter:
-        pending_site_inspection = pending_site_inspection.filter(
-            issue_related=issue_filter
-        )
-    # ==========================================
-    # SEARCH
-    # ==========================================
-
-    search = request.GET.get("search", "")
-
-    recent_site_inspections = SiteInspection.objects.filter(
-        under_scope="Yes"
-    )
-
-    if search:
-        recent_site_inspections = recent_site_inspections.filter(
-            Q(case_id__icontains=search) |
-            Q(customer_name__icontains=search) |
-            Q(engineer_name__icontains=search) |
-            Q(block__icontains=search) |
-            Q(area__icontains=search)
-        )
-
-    if customer_filter:
-        recent_site_inspections = recent_site_inspections.filter(
-            customer_name__icontains=customer_filter
-        )
-
-    # Block Filter
-    if block_filter:
-        recent_site_inspections = recent_site_inspections.filter(
-            block=block_filter
-        )
-
-
-    # Area Filter
-    if area_filter:
-        recent_site_inspections = recent_site_inspections.filter(
-            area__icontains=area_filter
-    )
-
-
-    # Issue Filter
-    if issue_filter:
-        recent_site_inspections = recent_site_inspections.filter(
-            customer_query__issue=issue_filter
-    )
-
-
-
-
-
-
-
-
-
-    recent_site_inspections = recent_site_inspections.select_related(
-        "customer_query"
-    ).order_by("-created_at")
-
-
-    maintenance_scope_list = MaintenanceScope.objects.filter(
-    scope_status="Yes"
-    )
-
-    if search:
-        pending_site_inspection = pending_site_inspection.filter(
-            Q(case_id__icontains=search) |
-            Q(customer_name__icontains=search) |
-            Q(block__icontains=search) |
-            Q(location__icontains=search)
-        )
-        
-    pending_site_inspection = pending_site_inspection.select_related(
-        "customer_query"
-    ).order_by("created_at")   
-
-
-
-    if search:
+  
+  
+  
+  
+  
+def site_engineer_dashboard(request):  
+  
+    # ==========================================  
+    # LOGIN CHECK  
+    # ==========================================  
+  
+    if "admin_id" not in request.session:  
+        return redirect("login")  
+  
+    if request.session.get("admin_role") != "Site Engineer":  
+        return redirect("login")  
+  
+  
+    # ==========================================  
+    # CUSTOMER QUERY SUMMARY  
+    # ==========================================  
+  
       
-      maintenance_scope_list = maintenance_scope_list.filter(    
-      Q(case_id__icontains=search) |
-      Q(customer_name__icontains=search) |
-      Q(block__icontains=search) |
-      Q(location__icontains=search)
-    )
-
-    maintenance_scope_list = maintenance_scope_list.select_related(
-    "customer_query"
-    ).order_by("-created_at")
-
-    
-
-    pending_overdue_list = []
-   
-    for scope in pending_site_inspection:  
-
+  
+    # ==========================================  
+    # MAINTENANCE SCOPE  
+    # ==========================================  
+  
+    maintenance_scope = MaintenanceScope.objects.count()  
+  
+  
+    # ==========================================  
+    # SITE INSPECTION SUMMARY  
+    # ==========================================  
+  
+    total_site_inspection = SiteInspection.objects.count()  
+  
+    today_site_inspection = SiteInspection.objects.filter(  
+        created_at__date=timezone.now().date()  
+    ).count()  
+  
+  
+    today_site_inspections = SiteInspection.objects.filter(  
+        created_at__date=timezone.now().date()  
+    ).order_by("-created_at")      
+  
+  
+    chargeable = SiteInspection.objects.filter(  
+        category="Chargeable"  
+    ).count()  
+  
+    non_chargeable = SiteInspection.objects.filter(  
+        category="Non Chargeable"  
+    ).count()  
+  
+      
+  
+    vendor_side = SiteInspection.objects.filter(  
+        material_required="Vendor Side"  
+    ).count()  
+  
+      
+  
+    # ==========================================  
+    # WORKFLOW  
+    # ==========================================                                           
+  
+    site_inspection = total_site_inspection  
+    pending_site_inspection = MaintenanceScope.objects.filter(  
+        scope_status="Yes"  
+    ).exclude(  
+        customer_query__siteinspection__isnull=False  
+    )  
+    inspection_pending = pending_site_inspection.count()  
+      
+  
+    # ==========================================  
+    # PENDING INSPECTION FILTERS  
+    # ==========================================  
+  
+    customer_options = pending_site_inspection.values_list(  
+        "customer_name", flat=True  
+    ).distinct().order_by("customer_name")  
+  
+    block_options = pending_site_inspection.values_list(  
+        "block",   
+        flat=True  
+    ).exclude(  
+        block__isnull=True  
+    ).exclude(  
+        block__exact=""  
+    ).distinct().order_by("block")               
+  
+    area_options = pending_site_inspection.values_list(  
+        "location", flat=True  
+    ).distinct().order_by("location")  
+  
+    issue_options = pending_site_inspection.values_list(  
+        "issue_related", flat=True  
+    ).distinct().order_by("issue_related")  
+  
+    customer_filter = request.GET.get("customer", "")  
+    block_filter = request.GET.get("block", "")  
+    area_filter = request.GET.get("area", "")  
+    issue_filter = request.GET.get("issue", "")  
+  
+  
+    block_options = [  
+        block for block in block_options  
+        if block  
+    ]  
+  
+    if customer_filter:  
+        pending_site_inspection = pending_site_inspection.filter(  
+            customer_name__icontains=customer_filter  
+        )  
+  
+    if block_filter:  
+        pending_site_inspection = pending_site_inspection.filter(  
+            block=block_filter  
+        )  
+  
+    if area_filter:  
+        pending_site_inspection = pending_site_inspection.filter(  
+            location__icontains=area_filter  
+        )  
+  
+    if issue_filter:  
+        pending_site_inspection = pending_site_inspection.filter(  
+            issue_related=issue_filter  
+        )  
+    # ==========================================  
+    # SEARCH  
+    # ==========================================  
+  
+    search = request.GET.get("search", "")  
+  
+    recent_site_inspections = SiteInspection.objects.filter(  
+        under_scope="Yes"  
+    )  
+  
+    if search:  
+        recent_site_inspections = recent_site_inspections.filter(  
+            Q(case_id__icontains=search) |  
+            Q(customer_name__icontains=search) |  
+            Q(engineer_name__icontains=search) |  
+            Q(block__icontains=search) |  
+            Q(area__icontains=search)  
+        )  
+  
+    if customer_filter:  
+        recent_site_inspections = recent_site_inspections.filter(  
+            customer_name__icontains=customer_filter  
+        )  
+  
+    # Block Filter  
+    if block_filter:  
+        recent_site_inspections = recent_site_inspections.filter(  
+            block=block_filter  
+        )  
+  
+  
+    # Area Filter  
+    if area_filter:  
+        recent_site_inspections = recent_site_inspections.filter(  
+            area__icontains=area_filter  
+    )  
+  
+  
+    # Issue Filter  
+    if issue_filter:  
+        recent_site_inspections = recent_site_inspections.filter(  
+            customer_query__issue=issue_filter  
+    )  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    recent_site_inspections = recent_site_inspections.select_related(  
+        "customer_query"  
+    ).order_by("-created_at")  
+  
+  
+    maintenance_scope_list = MaintenanceScope.objects.filter(  
+    scope_status="Yes"  
+    )  
+  
+    if search:  
+        pending_site_inspection = pending_site_inspection.filter(  
+            Q(case_id__icontains=search) |  
+            Q(customer_name__icontains=search) |  
+            Q(block__icontains=search) |  
+            Q(location__icontains=search)  
+        )  
+          
+    pending_site_inspection = pending_site_inspection.select_related(  
+        "customer_query"  
+    ).order_by("created_at")     
+  
+  
+  
+    if search:  
         
-            
-        due_date = add_working_days(
-            scope.created_at,
-            1
-        )
+      maintenance_scope_list = maintenance_scope_list.filter(      
+      Q(case_id__icontains=search) |  
+      Q(customer_name__icontains=search) |  
+      Q(block__icontains=search) |  
+      Q(location__icontains=search)  
+    )  
+  
+    maintenance_scope_list = maintenance_scope_list.select_related(  
+    "customer_query"  
+    ).order_by("-created_at")  
+  
+      
+  
+    pending_overdue_list = []  
+     
+    for scope in pending_site_inspection:    
+  
+          
+              
+        due_date = add_working_days(  
+            scope.created_at,  
+            1  
+        )  
+  
+        if timezone.now() > due_date:  
+            delta = timezone.now() - due_date  
+            days = delta.days  
+            hours = delta.seconds // 3600  
+  
+            if days > 0:  
+                scope.overdue_text = f"Over Due by {days}d {hours}h"  
+            else:  
+                scope.overdue_text = f"Over Due by {hours}h"  
+            scope.status_type = "overdue"          
+        else:  
+            scope.status_type = "pending"  
+        pending_overdue_list.append(scope)      
+  
+  
+  
+  
+  
+       
+  
+  
+  
+  
+  
+  
+    # ==========================================  
+    # CONTEXT  
+    # ==========================================  
+  
+    context = {  
+  
+        # Complaint Summary  
+  
+          
+  
+        # Workflow  
+  
+        "maintenance_scope": maintenance_scope,  
+        "site_inspection": site_inspection,  
+        
+  
+        # Site Inspection Summary  
+  
+        "total_site_inspection": total_site_inspection,  
+        "today_site_inspection": today_site_inspection,  
+  
+        "chargeable": chargeable,  
+        "non_chargeable": non_chargeable,  
+  
+          
+        "vendor_side": vendor_side,  
+  
+  
+        # Tables  
+  
+          
+        "recent_site_inspections": recent_site_inspections,  
+        "maintenance_scope_list": maintenance_scope_list,  
+        "search": search,  
+  
+        "pending_overdue_list": pending_overdue_list,  
+        "pending_site_inspection": pending_site_inspection,  
+  
+  
+        "site_inspection": site_inspection,  
+        "inspection_pending": inspection_pending,  
+  
+        # Charts  
+        "customer_options": customer_options,  
+        "block_options": block_options,  
+        "area_options": area_options,  
+        "issue_options": issue_options,  
+  
+        "customer_filter": customer_filter,  
+        "block_filter": block_filter,  
+        "area_filter": area_filter,  
+        "issue_filter": issue_filter,  
+        "today_site_inspections": today_site_inspections,  
+  
+         
+          
+  
+         
+  
+    }  
+  
+    return render(  
+        request,  
+        "site_engineer_dashboard.html",  
+        context  
+    )  
+  
+  
 
-        if timezone.now() > due_date:
-            delta = timezone.now() - due_date
-            days = delta.days
-            hours = delta.seconds // 3600
-
-            if days > 0:
-                scope.overdue_text = f"Over Due by {days}d {hours}h"
-            else:
-                scope.overdue_text = f"Over Due by {hours}h"
-            scope.status_type = "overdue"        
-        else:
-            scope.status_type = "pending"
-        pending_overdue_list.append(scope)    
 
 
 
