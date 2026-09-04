@@ -2186,12 +2186,7 @@ def site_inspection_form(request, query_id):
 
         customer.save()
 
-        messages.success(
-            request,
-            "Site Inspection Form Submitted Successfully"
-        )
-
-
+       
         return redirect("site_engineer_dashboard")   
 
     return render(
@@ -2253,11 +2248,7 @@ def estimate_form(request, query_id):
             customer.save()
 
             # Success popup
-            messages.success(
-                request,
-                "Estimate Form Submitted Successfully"
-            )
-
+            # messages.success(request, "Estimate Form Submitted Successfully")
             # CRM Dashboard
             return redirect("crm_dashboard")
 
