@@ -3642,7 +3642,7 @@ def site_engineer_dashboard(request):
     # SITE INSPECTION SUMMARY  
     # ==========================================  
   
-    total_site_inspection = SiteInspection.objects.count()  
+    completed_site_inspection = SiteInspection.objects.count()
   
     today_site_inspection = SiteInspection.objects.filter(  
         created_at__date=timezone.now().date()  
@@ -3674,7 +3674,7 @@ def site_engineer_dashboard(request):
     # WORKFLOW  
     # ==========================================                                           
   
-    site_inspection = total_site_inspection  
+     
     pending_site_inspection = MaintenanceScope.objects.filter(  
         scope_status="Yes"  
     ).exclude(  
@@ -3682,7 +3682,10 @@ def site_engineer_dashboard(request):
     )  
     inspection_pending = pending_site_inspection.count()  
       
-  
+    total_inspection = (
+    completed_site_inspection +
+    inspection_pending
+    )
     # ==========================================  
     # PENDING INSPECTION FILTERS  
     # ==========================================  
@@ -3877,12 +3880,16 @@ def site_engineer_dashboard(request):
         # Workflow  
   
         "maintenance_scope": maintenance_scope,  
-        "site_inspection": site_inspection,  
+         
         
   
         # Site Inspection Summary  
   
-        "total_site_inspection": total_site_inspection,  
+        "completed_site_inspection": completed_site_inspection,
+
+        "total_inspection": total_inspection,
+
+        "inspection_pending": inspection_pending, 
         "today_site_inspection": today_site_inspection,  
   
         "chargeable": chargeable,  
@@ -3903,7 +3910,7 @@ def site_engineer_dashboard(request):
         "pending_site_inspection": pending_site_inspection,  
   
   
-        "site_inspection": site_inspection,  
+         
         "inspection_pending": inspection_pending,  
   
         # Charts  
