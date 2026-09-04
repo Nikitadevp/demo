@@ -3629,7 +3629,7 @@ def site_engineer_dashboard(request):
     # CUSTOMER QUERY SUMMARY  
     # ==========================================  
   
-      
+    total_inspection = inspection_pending + completed_site_inspection
   
     # ==========================================  
     # MAINTENANCE SCOPE  
