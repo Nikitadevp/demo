@@ -488,7 +488,7 @@
 
 
             <!-- ================================================= -->
-            <!-- CUSTOMER QUERY DETAILS -->
+            <!-- CUSTOMER QUERY DETAILS (CRM Pending Activities style, no Link column) -->
             <!-- ================================================= -->
 
             <div
@@ -535,8 +535,9 @@
 
                         <table class="table table-hover table-bordered align-middle mb-0">
 
-
+                            <!-- ============================================= -->
                             <!-- TABLE HEAD -->
+                            <!-- ============================================= -->
 
                             <thead class="table-dark">
 
@@ -637,8 +638,9 @@
                             </thead>
 
 
-
+                            <!-- ============================================= -->
                             <!-- TABLE DATA -->
+                            <!-- ============================================= -->
 
                             <tbody>
 
@@ -646,160 +648,215 @@
 
                                 <tr>
 
-                                    <!-- TICKET ID -->
+                                    <!-- Ticket -->
+
                                     <td>
+
                                         <strong class="text-primary">
+
                                             {{ customer.ticket }}
+
                                         </strong>
+
                                     </td>
 
-                                    <!-- CUSTOMER -->
-                                    <td>{{ customer.customer }}</td>
+                                    <!-- Customer -->
 
-                                    <!-- CONTACT -->
-                                    <td>{{ customer.contact }}</td>
-
-                                    <!-- EMAIL -->
-                                    <td>{{ customer.email }}</td>
-
-                                    <!-- TOWER -->
-                                    <td>{{ customer.tower }}</td>
-
-                                    <!-- AREA -->
-                                    <td>{{ customer.area }}</td>
-
-                                    <!-- ISSUE -->
-                                    <td>{{ customer.issue }}</td>
-
-                                    <!-- ISSUE DESCRIPTION (Updated with Fallback Checks) -->
                                     <td>
-                                        {% if customer.issue_description %}
-                                            {{ customer.issue_description }}
-                                        {% elif customer.description %}
-                                            {{ customer.description }}
-                                        {% elif customer.details %}
-                                            {{ customer.details }}
-                                        {% else %}
-                                            <span class="text-muted small">N/A</span>
-                                        {% endif %}
+
+                                        {{ customer.customer }}
+
                                     </td>
 
-                                    <!-- PHOTO / FILES (Updated for direct URLs and file arrays) -->
+                                    <!-- Contact -->
+
+                                    <td>
+
+                                        {{ customer.contact }}
+
+                                    </td>
+
+                                    <!-- Email -->
+
+                                    <td>
+
+                                        {{ customer.email }}
+
+                                    </td>
+
+                                    <!-- Tower -->
+
+                                    <td>
+
+                                        {{ customer.tower }}
+
+                                    </td>
+
+                                    <!-- Area -->
+
+                                    <td>
+
+                                        {{ customer.area }}
+
+                                    </td>
+
+                                    <!-- Issue -->
+
+                                    <td>
+
+                                        {{ customer.issue }}
+
+                                    </td>
+
+                                    <!-- Issue Description -->
+
+                                    <td>{{ customer.issue_description }}</td>
+
+                                    <!-- Photo -->
+
                                     <td class="text-center">
                                         {% if customer.all_files %}
                                             <div class="d-flex flex-wrap gap-2 justify-content-center">
                                                 {% for file in customer.all_files %}
-                                                    {% if file.type == "image" or ".jpg" in file.url|lower or ".png" in file.url|lower or ".jpeg" in file.url|lower %}
+                                                    {% if file.type == "image" %}
                                                         <a href="#"
-                                                           data-bs-toggle="modal"
-                                                           data-bs-target="#imageModal"
-                                                           onclick="document.getElementById('modalImage').src='{{ file.url }}';
-                                                                    document.getElementById('modalImageLabel').innerText='{{ file.label|default:"Image Preview" }}';"
-                                                           class="btn btn-sm btn-outline-primary p-1"
-                                                           title="{{ file.label|default:'View Image' }}">
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#imageModal"
+                                                            onclick="document.getElementById('modalImage').src='{{ file.url }}';
+                                                                     document.getElementById('modalImageLabel').innerText='{{ file.label }}';"
+                                                            class="btn btn-sm btn-primary p-1"
+                                                            title="{{ file.label }}">
+
                                                             <img
                                                                 src="{{ file.url }}"
                                                                 alt="{{ file.label }}"
-                                                                class="crm-table-image rounded"
-                                                                style="width: 45px; height: 45px; object-fit: cover;"
+                                                                class="crm-table-image"
                                                             >
+
                                                         </a>
                                                     {% else %}
                                                         <a href="{{ file.url }}"
-                                                           target="_blank"
-                                                           class="btn btn-sm btn-primary"
-                                                           title="{{ file.label }}">
+                                                            target="_blank"
+                                                            class="btn btn-sm btn-primary"
+                                                            title="{{ file.label }}">
                                                             <i class="fa-solid fa-file-pdf me-1"></i>
                                                             Open File
                                                         </a>
                                                     {% endif %}
                                                 {% endfor %}
                                             </div>
-                                        {% elif customer.photo_url or customer.image or customer.photo %}
-                                            <a href="#"
-                                               data-bs-toggle="modal"
-                                               data-bs-target="#imageModal"
-                                               onclick="document.getElementById('modalImage').src='{{ customer.photo_url|default:customer.image|default:customer.photo }}';
-                                                        document.getElementById('modalImageLabel').innerText='Ticket #{{ customer.ticket }} Image';"
-                                               class="btn btn-sm btn-outline-primary p-1">
-                                                <img
-                                                    src="{{ customer.photo_url|default:customer.image|default:customer.photo }}"
-                                                    alt="Photo"
-                                                    class="crm-table-image rounded"
-                                                    style="width: 45px; height: 45px; object-fit: cover;"
-                                                >
-                                            </a>
                                         {% else %}
-                                            <span class="text-muted small">No Image</span>
+                                            <span class="text-muted">No Image</span>
                                         {% endif %}
                                     </td>
 
-                                    <!-- STAGE -->
+                                    <!-- Current Stage -->
+
                                     <td>
+
                                         <span class="badge bg-secondary">
+
                                             {{ customer.current_stage }}
+
                                         </span>
+
                                         <br>
+
                                         <small class="text-muted">
+
                                             {{ customer.stage_name }}
+
                                         </small>
+
                                     </td>
 
-                                    <!-- PENDING WITH -->
+                                    <!-- Pending With -->
+
                                     <td>
+
                                         {{ customer.pending_with }}
                                         <br>
                                         <small class="text-muted">
-                                            {% if customer.pending_with == "Site Engineer" %}
-                                                Dipesh Chaudhary
-                                            {% elif customer.pending_with == "CRM" %}
-                                                Varsha Sahu
-                                            {% elif customer.pending_with == "Store Incharge" %}
-                                                Bhola
-                                            {% elif customer.pending_with == "Maintenance Incharge" %}
-                                                Dharmendra
-                                            {% endif %}
-                                        </small>
-                                    </td>
-
-                                    <!-- PROGRESS -->
-                                    <td>
-                                        {% if customer.progress == "Closed" %}
-                                            <span class="badge bg-success">
-                                                {{ customer.progress }}
-                                            </span>
-                                        {% elif customer.progress == "Open" %}
-                                            <span class="badge bg-primary">
-                                                {{ customer.progress }}
-                                            </span>
-                                        {% else %}
-                                            <span class="badge bg-warning text-dark">
-                                                {{ customer.progress }}
-                                            </span>
+                                        {% if customer.pending_with == "Site Engineer" %}
+                                            Dipesh Chaudhary
+                                        {% elif customer.pending_with == "CRM" %}
+                                            Varsha Sahu
+                                        {% elif customer.pending_with == "Store Incharge" %}
+                                            Bhola
+                                        {% elif customer.pending_with == "Maintenance Incharge" %}
+                                            Dharmendra
                                         {% endif %}
+                                        </small>
+
                                     </td>
 
-                                    <!-- QUERY RAISED -->
+                                    <!-- Progress -->
+
+                                    <td>
+
+                                        {% if customer.progress == "Closed" %}
+
+                                            <span class="badge bg-success">
+
+                                                {{ customer.progress }}
+
+                                            </span>
+
+                                        {% else %}
+
+                                            <span class="badge bg-warning text-dark">
+
+                                                {{ customer.progress }}
+
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+                                    <!-- Query Raised -->
+
                                     <td>{{ customer.query_raised }}</td>
 
-                                    <!-- DUE TIME -->
-                                    <td>{{ customer.due_time }}</td>
+                                    <!-- Due Time -->
 
-                                    <!-- REMAINING -->
                                     <td>
-                                        {% if customer.is_overdue %}
-                                            <span class="fw-bold text-danger">
-                                                {{ customer.remaining }}
-                                            </span>
-                                        {% else %}
-                                            <span class="text-success">
-                                                {{ customer.remaining }}
-                                            </span>
-                                        {% endif %}
+
+                                        {{ customer.due_time }}
+
                                     </td>
 
-                                    <!-- CLOSED DATE -->
-                                    <td>{{ customer.closed_date }}</td>
+                                    <!-- Remaining -->
+
+                                    <td>
+
+                                        {% if customer.is_overdue %}
+
+                                            <span class="fw-bold text-danger">
+
+                                                {{ customer.remaining }}
+
+                                            </span>
+
+                                        {% else %}
+
+                                            <span class="text-success">
+
+                                                {{ customer.remaining }}
+
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+                                    <!-- Closed Date -->
+
+                                    <td>
+
+                                        {{ customer.closed_date }}
+
+                                    </td>
 
                                 </tr>
 
@@ -807,7 +864,7 @@
                                 {% empty %}
 
                                 <tr>
-                                    <td colspan="16" class="text-center py-5">
+                                    <td colspan="15" class="text-center py-5">
                                         <h5 class="text-muted">
                                             No Customer Queries Found
                                         </h5>
