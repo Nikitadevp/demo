@@ -3160,7 +3160,6 @@ from .models import (
     CustomerFeedback,
 )
 
-
 def admin_dashboard(request):
 
     # ==========================================
@@ -3357,15 +3356,16 @@ def admin_dashboard(request):
             progress = "In Progress"
 
         # COLLECT ALL FILES/PHOTOS
+        # FIX: CustomerQuery model ka field "photo" hai, "image" nahi.
 
         all_files = []
-        if hasattr(customer, "image") and customer.image:
+        if getattr(customer, "photo", None):
             all_files.append(
                 {
-                    "url": customer.image.url,
+                    "url": customer.photo.url,
                     "type": (
                         "image"
-                        if customer.image.url.lower().endswith(
+                        if customer.photo.url.lower().endswith(
                             (".png", ".jpg", ".jpeg", ".webp")
                         )
                         else "file"
@@ -3385,9 +3385,9 @@ def admin_dashboard(request):
                 "tower": customer.tower,
                 "area": customer.area,
                 "issue": customer.issue,
-                "issue_description": getattr(
-                    customer, "issue_description", getattr(customer, "description", "-")
-                ),
+                # FIX: CustomerQuery model ka field "problem" hai,
+                # "issue_description"/"description" nahi.
+                "issue_description": getattr(customer, "problem", "-"),
                 "all_files": all_files,
                 "current_stage": current_stage,
                 "stage_name": stage_name,
