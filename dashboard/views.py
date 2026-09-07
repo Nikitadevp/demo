@@ -5271,7 +5271,7 @@ def admin_dashboard(request):
     closed_count = 0
 
     overdue_count = 0
-    due_today_count = 0
+    
 
     # ======================================================
     # TABLE DATA
@@ -5280,7 +5280,7 @@ def admin_dashboard(request):
     customer_data = []
     crm_pending_data = []
     overdue_customers = []
-    due_today_customers = []
+    
 
     closed_customer_data = []
 
@@ -5694,9 +5694,6 @@ def admin_dashboard(request):
         # DUE TODAY TABLE
         # ==================================================
 
-        if is_due_today and current_stage in crm_stages:
-
-            due_today_customers.append(customer)
 
     customer_data.sort(
         key=lambda x: x["query_created_at"],
@@ -5711,11 +5708,6 @@ def admin_dashboard(request):
         key=lambda x: x["query_created_at"]
     )
 
-    due_today_customers.sort(
-        key=lambda x: x["query_created_at"]
-    )
-
-    due_today_count = len(due_today_customers)
     
 
 
@@ -5782,7 +5774,7 @@ def admin_dashboard(request):
         "overdue_customers": overdue_customers,
 
         # Due Today Table
-        "due_today_customers": due_today_customers,
+       
 
         "issue_labels": issue_labels,
         
