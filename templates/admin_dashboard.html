@@ -73,9 +73,7 @@
     <aside class="sidebar">
 
 
-        <!-- ===================================================== -->
         <!-- LOGO -->
-        <!-- ===================================================== -->
 
         <div class="sidebar-logo">
 
@@ -86,14 +84,10 @@
         </div>
 
 
-        <!-- ===================================================== -->
         <!-- SIDEBAR MENU -->
-        <!-- ===================================================== -->
 
         <ul class="sidebar-menu">
 
-
-            <!-- DASHBOARD -->
 
             <li class="active">
 
@@ -108,15 +102,26 @@
             </li>
 
 
-            <!-- CUSTOMER QUERY DETAILS -->
-
             <li>
 
-                <a href="#customer-query">
+                <a href="#crm-pending-work">
 
                     <i class="fa-solid fa-users"></i>
 
                     <span>Customer Query Details</span>
+
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a href="#overdue-customers">
+
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+
+                    <span>Overdue Customers</span>
 
                 </a>
 
@@ -136,9 +141,7 @@
     <div class="main-content">
 
 
-        <!-- ===================================================== -->
         <!-- HEADER IMAGE -->
-        <!-- ===================================================== -->
 
         <div class="crm-header-image-wrapper">
 
@@ -152,9 +155,7 @@
 
 
 
-        <!-- ===================================================== -->
-        <!-- DASHBOARD -->
-        <!-- ===================================================== -->
+        <!-- DASHBOARD CONTAINER -->
 
         <div
             id="dashboard"
@@ -162,17 +163,12 @@
         >
 
 
-            <!-- ================================================= -->
             <!-- PAGE HEADER -->
-            <!-- ================================================= -->
 
             <div class="row align-items-center mb-4">
 
 
-                <!-- LEFT SIDE -->
-
                 <div class="col-md-6">
-
 
                     <h2 class="fw-bold mb-1">
 
@@ -182,30 +178,21 @@
 
                     </h2>
 
-
                     <p class="text-muted mb-0">
 
                         Customer Query Tracking Dashboard
 
                     </p>
 
-
                 </div>
 
 
 
-                <!-- RIGHT SIDE -->
-
                 <div class="col-md-6">
-
 
                     <form method="GET">
 
-
                         <div class="input-group">
-
-
-                            <!-- SEARCH INPUT -->
 
                             <input
                                 type="text"
@@ -214,9 +201,6 @@
                                 class="form-control"
                                 placeholder="Search Ticket, Customer, Contact, Email..."
                             >
-
-
-                            <!-- SEARCH BUTTON -->
 
                             <button
                                 type="submit"
@@ -229,10 +213,6 @@
 
                             </button>
 
-
-
-                            <!-- CLEAR BUTTON -->
-
                             <a
                                 href="{% url 'admin_dashboard' %}"
                                 class="btn btn-secondary"
@@ -243,10 +223,6 @@
                                 Clear
 
                             </a>
-
-
-
-                            <!-- LOGOUT BUTTON -->
 
                             <a
                                 href="{% url 'logout' %}"
@@ -259,12 +235,9 @@
 
                             </a>
 
-
                         </div>
 
-
                     </form>
-
 
                 </div>
 
@@ -273,14 +246,10 @@
 
 
 
-            <!-- ================================================= -->
             <!-- DASHBOARD CARDS -->
-            <!-- ================================================= -->
 
             <div class="row g-4 mb-4">
 
-
-                <!-- TOTAL QUERIES -->
 
                 <div class="col-xl-4 col-lg-4 col-md-6">
 
@@ -314,8 +283,6 @@
 
 
 
-                <!-- OPEN -->
-
                 <div class="col-xl-4 col-lg-4 col-md-6">
 
                     <div class="card shadow border-0 h-100">
@@ -347,8 +314,6 @@
                 </div>
 
 
-
-                <!-- IN PROGRESS -->
 
                 <div class="col-xl-4 col-lg-4 col-md-6">
 
@@ -382,8 +347,6 @@
 
 
 
-                <!-- CLOSED -->
-
                 <div class="col-xl-4 col-lg-4 col-md-6">
 
                     <div class="card shadow border-0 h-100">
@@ -416,8 +379,6 @@
 
 
 
-                <!-- DUE TODAY -->
-
                 <div class="col-xl-4 col-lg-4 col-md-6">
 
                     <div class="card shadow border-0 h-100 border-warning">
@@ -449,8 +410,6 @@
                 </div>
 
 
-
-                <!-- OVERDUE -->
 
                 <div class="col-xl-4 col-lg-4 col-md-6">
 
@@ -487,17 +446,11 @@
 
 
 
-            <!-- ================================================= -->
-            <!-- CUSTOMER QUERY DETAILS -->
-            <!-- ================================================= -->
+            <!-- ========================================================= -->
+            <!-- MAIN CUSTOMER TABLE (CRM PENDING STYLE) -->
+            <!-- ========================================================= -->
 
-            <div
-                id="customer-query"
-                class="card shadow border-0"
-            >
-
-
-                <!-- TABLE HEADER -->
+            <div id="crm-pending-work" class="card shadow border-0 mt-4">
 
                 <div class="card-header bg-primary text-white">
 
@@ -505,7 +458,7 @@
 
                         <h5 class="mb-0">
 
-                            <i class="fas fa-users me-2"></i>
+                            <i class="fa-solid fa-user-clock me-2"></i>
 
                             Customer Query Details
 
@@ -521,10 +474,6 @@
 
                 </div>
 
-
-
-                <!-- TABLE BODY -->
-
                 <div class="card-body p-0">
 
                     <div class="table-responsive">
@@ -535,15 +484,12 @@
 
                         <table class="table table-hover table-bordered align-middle mb-0">
 
-
-                            <!-- TABLE HEAD -->
-
                             <thead class="table-dark">
 
                                 <tr>
 
                                     <th>Ticket ID</th>
-
+                                    
                                     <th>
                                         <div class="d-flex flex-column gap-1">
                                             <span>Customer Name</span>
@@ -579,7 +525,7 @@
                                                 {% endfor %}
                                             </select>
                                         </div>
-                                    </th>
+                                    </th>  
 
                                     <th>
                                         <div class="d-flex flex-column gap-1">
@@ -620,9 +566,11 @@
 
                                     <th>Stage</th>
 
+                                    <th>Link</th>
+
                                     <th>Pending With</th>
 
-                                    <th>Progress</th>
+                                    <th>Progress</th> 
 
                                     <th>Query Raised</th>
 
@@ -636,79 +584,73 @@
 
                             </thead>
 
-
-
-                            <!-- TABLE DATA -->
-
                             <tbody>
 
                                 {% for customer in customer_data %}
 
                                 <tr>
 
-                                    <!-- TICKET ID -->
+                                    <!-- Ticket -->
                                     <td>
                                         <strong class="text-primary">
                                             {{ customer.ticket }}
                                         </strong>
                                     </td>
 
-                                    <!-- CUSTOMER -->
+                                    <!-- Customer -->
                                     <td>{{ customer.customer }}</td>
 
-                                    <!-- CONTACT -->
+                                    <!-- Contact -->
                                     <td>{{ customer.contact }}</td>
 
-                                    <!-- EMAIL -->
+                                    <!-- Email -->
                                     <td>{{ customer.email }}</td>
 
-                                    <!-- TOWER -->
+                                    <!-- Tower -->
                                     <td>{{ customer.tower }}</td>
 
-                                    <!-- AREA -->
+                                    <!-- Area -->
                                     <td>{{ customer.area }}</td>
 
-                                    <!-- ISSUE -->
+                                    <!-- Issue -->
                                     <td>{{ customer.issue }}</td>
 
-                                    <!-- ISSUE DESCRIPTION (Updated with Fallback Checks) -->
+                                    <!-- Issue Description -->
                                     <td>
                                         {% if customer.issue_description %}
                                             {{ customer.issue_description }}
                                         {% elif customer.description %}
                                             {{ customer.description }}
-                                        {% elif customer.details %}
-                                            {{ customer.details }}
                                         {% else %}
                                             <span class="text-muted small">N/A</span>
                                         {% endif %}
                                     </td>
-
-                                    <!-- PHOTO / FILES (Updated for direct URLs and file arrays) -->
+                                    
+                                    <!-- Photo / Files -->
                                     <td class="text-center">
                                         {% if customer.all_files %}
                                             <div class="d-flex flex-wrap gap-2 justify-content-center">
                                                 {% for file in customer.all_files %}
                                                     {% if file.type == "image" or ".jpg" in file.url|lower or ".png" in file.url|lower or ".jpeg" in file.url|lower %}
                                                         <a href="#"
-                                                           data-bs-toggle="modal"
-                                                           data-bs-target="#imageModal"
-                                                           onclick="document.getElementById('modalImage').src='{{ file.url }}';
-                                                                    document.getElementById('modalImageLabel').innerText='{{ file.label|default:"Image Preview" }}';"
-                                                           class="btn btn-sm btn-outline-primary p-1"
-                                                           title="{{ file.label|default:'View Image' }}">
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#imageModal"
+                                                            onclick="document.getElementById('modalImage').src='{{ file.url }}';
+                                                                     document.getElementById('modalImageLabel').innerText='{{ file.label|default:"Image Preview" }}';"
+                                                            class="btn btn-sm btn-primary p-1"
+                                                            title="{{ file.label }}">
                                                             <img
                                                                 src="{{ file.url }}"
                                                                 alt="{{ file.label }}"
                                                                 class="crm-table-image rounded"
-                                                                style="width: 45px; height: 45px; object-fit: cover;"
+                                                                style="width: 40px; height: 40px; object-fit: cover;"
                                                             >
                                                         </a>
                                                     {% else %}
                                                         <a href="{{ file.url }}"
-                                                           target="_blank"
-                                                           class="btn btn-sm btn-primary"
-                                                           title="{{ file.label }}">
+                                                            target="_blank"
+                                                            class="btn btn-sm btn-primary"
+                                                            title="{{ file.label }}">
                                                             <i class="fa-solid fa-file-pdf me-1"></i>
                                                             Open File
                                                         </a>
@@ -726,7 +668,7 @@
                                                     src="{{ customer.photo_url|default:customer.image|default:customer.photo }}"
                                                     alt="Photo"
                                                     class="crm-table-image rounded"
-                                                    style="width: 45px; height: 45px; object-fit: cover;"
+                                                    style="width: 40px; height: 40px; object-fit: cover;"
                                                 >
                                             </a>
                                         {% else %}
@@ -734,7 +676,7 @@
                                         {% endif %}
                                     </td>
 
-                                    <!-- STAGE -->
+                                    <!-- Current Stage -->
                                     <td>
                                         <span class="badge bg-secondary">
                                             {{ customer.current_stage }}
@@ -745,12 +687,41 @@
                                         </small>
                                     </td>
 
-                                    <!-- PENDING WITH -->
+                                    <!-- Link Form -->
+                                    <td>
+                                        {% if customer.current_stage == "S1" %}
+                                            <a href="{% url 'maintenance_scope_form' customer.id %}" class="btn btn-sm btn-primary">Open Form</a>
+                                        {% elif customer.current_stage == "S2" %}
+                                            <a href="{% url 'site_inspection_form' customer.id %}" class="btn btn-sm btn-primary">Open Form</a>
+                                        {% elif customer.current_stage == "S3" %}
+                                            <a href="{% url 'estimate_form' customer.id %}" class="btn btn-sm btn-primary">Open Form</a>
+                                        {% elif customer.current_stage == "S4" %}
+                                            <a href="{% url 'customer_approval_form' customer.id %}" class="btn btn-sm btn-primary">Open Form</a>
+                                        {% elif customer.current_stage == "S5" %}
+                                            <a href="{% url 'advance_collection_form' customer.id %}" class="btn btn-sm btn-primary">Open Form</a>
+                                        {% elif customer.current_stage == "S6" %}
+                                            <a href="{% url 'material_availability_form' customer.id %}" class="btn btn-sm btn-primary">Open Form</a>    
+                                        {% elif customer.current_stage == "S7" %}
+                                            <a href="{% url 'raise_indent_form' customer.id %}" class="btn btn-sm btn-primary">Open Form</a>    
+                                        {% elif customer.current_stage == "S8" %}
+                                            <a href="{% url 'issue_material_form' customer.id %}" class="btn btn-sm btn-primary">Open Form</a>    
+                                        {% elif customer.current_stage == "S9" %}
+                                            <a href="{% url 'receive_material_form' customer.id %}" class="btn btn-sm btn-primary">Open Form</a>    
+                                        {% elif customer.current_stage == "S10" %}
+                                            <a href="{% url 'query_closer_form' customer.id %}" class="btn btn-sm btn-primary">Open Form</a>    
+                                        {% elif customer.current_stage == "S11" %}
+                                            <a href="{% url 'customer_feedback_form' customer.id %}" class="btn btn-sm btn-primary">Open Form</a>    
+                                        {% else %}
+                                            <span class="text-muted small">No Form Available</span>
+                                        {% endif %}
+                                    </td>
+
+                                    <!-- Pending With -->
                                     <td>
                                         {{ customer.pending_with }}
                                         <br>
-                                        <small class="text-muted">
-                                            {% if customer.pending_with == "Site Engineer" %}
+                                        <small class="text-muted">     
+                                            {% if customer.pending_with == "Site Engineer" %}   
                                                 Dipesh Chaudhary
                                             {% elif customer.pending_with == "CRM" %}
                                                 Varsha Sahu
@@ -762,7 +733,7 @@
                                         </small>
                                     </td>
 
-                                    <!-- PROGRESS -->
+                                    <!-- Progress -->
                                     <td>
                                         {% if customer.progress == "Closed" %}
                                             <span class="badge bg-success">
@@ -779,13 +750,13 @@
                                         {% endif %}
                                     </td>
 
-                                    <!-- QUERY RAISED -->
+                                    <!-- Query Raised -->
                                     <td>{{ customer.query_raised }}</td>
 
-                                    <!-- DUE TIME -->
+                                    <!-- Due Time -->
                                     <td>{{ customer.due_time }}</td>
 
-                                    <!-- REMAINING -->
+                                    <!-- Remaining -->
                                     <td>
                                         {% if customer.is_overdue %}
                                             <span class="fw-bold text-danger">
@@ -798,16 +769,15 @@
                                         {% endif %}
                                     </td>
 
-                                    <!-- CLOSED DATE -->
+                                    <!-- Closed Date -->
                                     <td>{{ customer.closed_date }}</td>
 
                                 </tr>
 
-                                <!-- EMPTY DATA -->
                                 {% empty %}
 
                                 <tr>
-                                    <td colspan="16" class="text-center py-5">
+                                    <td colspan="17" class="text-center py-5">
                                         <h5 class="text-muted">
                                             No Customer Queries Found
                                         </h5>
@@ -826,6 +796,126 @@
 
             </div>
 
+
+            <!-- ========================================================= -->
+            <!-- OVERDUE CUSTOMER TABLE -->
+            <!-- ========================================================= -->
+
+            <div id="overdue-customers" class="card shadow border-0 mt-4">
+
+                <div class="card-header bg-danger text-white">
+
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <h5 class="mb-0">
+
+                            <i class="fas fa-triangle-exclamation me-2"></i>
+
+                            Overdue Customers
+
+                        </h5>
+
+                        <span class="badge bg-light text-danger">
+
+                            {{ overdue_count }}
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="card-body p-0">
+
+                    <div class="table-responsive">
+
+                        <table class="table table-bordered table-hover mb-0 align-middle">
+
+                            <thead class="table-danger">
+
+                                <tr>
+
+                                    <th>Ticket</th>
+
+                                    <th>Customer</th>
+
+                                    <th>Contact</th>
+
+                                    <th>Stage</th>
+
+                                    <th>Pending With</th>
+
+                                    <th>Due Time</th>
+
+                                    <th>Remaining</th>
+
+                                </tr>
+
+                            </thead>
+
+                            <tbody>
+
+                                {% for customer in overdue_customers %}
+
+                                <tr>
+
+                                    <td>
+                                        <strong class="text-danger">
+                                            {{ customer.ticket }}
+                                        </strong>
+                                    </td>
+
+                                    <td>{{ customer.customer }}</td>
+
+                                    <td>{{ customer.contact }}</td>
+
+                                    <td>
+                                        {{ customer.current_stage }}
+                                        <br>
+                                        <small class="text-muted">
+                                            {{ customer.stage_name }}
+                                        </small>
+                                    </td>
+
+                                    <td>{{ customer.pending_with }}</td>
+
+                                    <td>{{ customer.due_time }}</td>
+
+                                    <td>
+                                        <span class="fw-bold text-danger">
+                                            {{ customer.remaining }}
+                                        </span>
+                                    </td>
+
+                                </tr>
+
+                                {% empty %}
+
+                                <tr>
+
+                                    <td colspan="7" class="text-center py-4">
+
+                                        <span class="text-muted">
+
+                                            No Overdue Customers
+
+                                        </span>
+
+                                    </td>
+
+                                </tr>
+
+                                {% endfor %}
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
 
 
             <!-- FOOTER -->
