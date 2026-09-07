@@ -5711,21 +5711,6 @@ def admin_dashboard(request):
     
 
 
-  # ISSUE CATEGORY REPORT
-    issue_labels = []
-    issue_counts = []
-
-    issue_report = (
-        CustomerQuery.objects   
-        .values("issue")
-        .annotate(total=Count("id"))
-        .order_by("issue")
-    )
-    for item in issue_report:
-
-        issue_labels.append(item["issue"])
-
-        issue_counts.append(item["total"])
 
 
 
@@ -5776,9 +5761,7 @@ def admin_dashboard(request):
         # Due Today Table
        
 
-        "issue_labels": issue_labels,
-        
-        "issue_counts": issue_counts,
+   
 
         "feedback_data": feedback_list,
         "crm_pending_data": crm_pending_data,
