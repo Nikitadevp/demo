@@ -1,4 +1,5 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,56 +10,90 @@
     <!-- ========================================================= -->
 
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
 
     <!-- ========================================================= -->
     <!-- TITLE -->
     <!-- ========================================================= -->
 
-    <title>CRM Dashboard</title>
+    <title>Admin Dashboard</title>
+
 
     <!-- ========================================================= -->
     <!-- BOOTSTRAP -->
     <!-- ========================================================= -->
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
 
     <!-- ========================================================= -->
     <!-- FONT AWESOME -->
     <!-- ========================================================= -->
 
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
 
     <!-- ========================================================= -->
     <!-- CSS -->
     <!-- ========================================================= -->
 
-    <link rel="stylesheet"
-          href="{% static 'css/crm_dashboard.css' %}">
+    <link
+        rel="stylesheet"
+        href="{% static 'css/admin_dashboard.css' %}"
+    >
 
 </head>
+
 
 <body>
 
 
+<!-- ========================================================= -->
+<!-- DASHBOARD CONTAINER -->
+<!-- ========================================================= -->
+
 <div class="dashboard-container">
 
-    <!-- ========================================= -->
+
+    <!-- ========================================================= -->
     <!-- SIDEBAR -->
-    <!-- ========================================= -->
+    <!-- ========================================================= -->
 
     <aside class="sidebar">
+
+
+        <!-- ===================================================== -->
+        <!-- LOGO -->
+        <!-- ===================================================== -->
 
         <div class="sidebar-logo">
 
             <h3>Sampoorna</h3>
 
-            <p>CRM Portal</p>
+            <p>Admin Portal</p>
 
         </div>
 
+
+        <!-- ===================================================== -->
+        <!-- SIDEBAR MENU -->
+        <!-- ===================================================== -->
+
         <ul class="sidebar-menu">
+
+
+            <!-- DASHBOARD -->
 
             <li class="active">
 
@@ -73,1143 +108,979 @@
             </li>
 
 
-          
+            <!-- CUSTOMER QUERY DETAILS -->
 
-           
             <li>
 
                 <a href="#customer-query">
 
                     <i class="fa-solid fa-users"></i>
 
-                    <span>Customer Queries</span>
+                    <span>Customer Query Details</span>
 
                 </a>
 
             </li>
 
-            <li>
-
-                <a href="#overdue-customers">
-
-                    <i class="fa-solid fa-triangle-exclamation"></i>
-
-                    <span>Overdue Customers</span>
-
-                </a>
-
-            </li>
-
-            <li>
-
-                <a href="#due-today">
-
-                    <i class="fa-solid fa-calendar-day"></i>
-
-                    <span>Due Today</span>
-
-                </a>
-
-            </li>
-
-            <li>
-
-                <a href="#issue-category">
-
-                    <i class="fa-solid fa-chart-bar"></i>
-
-                    <span>Issue Category Report</span>
-
-                </a>
-            </li>
 
         </ul>
 
+
     </aside>
 
-    <!-- ========================================= -->
+
+    <!-- ========================================================= -->
     <!-- MAIN CONTENT -->
-    <!-- ========================================= -->
+    <!-- ========================================================= -->
 
     <div class="main-content">
 
 
-        <!-- IMAGE SABSE UPAR -->
+        <!-- ===================================================== -->
+        <!-- HEADER IMAGE -->
+        <!-- ===================================================== -->
 
         <div class="crm-header-image-wrapper">
 
-            <img  src="{% static 'images/ad1.jpg' %}" alt="CRM Header" class="img-fluid">
-        </div>
-
-
-
-<!-- ========================================================= -->
-<!-- DASHBOARD CONTAINER -->
-<!-- ========================================================= -->
-
-<div id="dashboard" class="container-fluid py-4">
-
-      
-     
-
-    <!-- ========================================================= -->
-    <!-- PAGE HEADER --> 
-    <!-- ========================================================= -->
-
-    <div class="row align-items-center mb-4">
-
-        <div class="col-md-6">   
-
-            <h2 class="fw-bold mb-1">
-
-                <i class="fas fa-chart-line text-primary"></i>
-
-                Admin Dashboard
-
-            </h2>
-
-            <p class="text-muted mb-0">
-
-                Customer Query Tracking Dashboard
-
-            </p>
+            <img
+                src="{% static 'images/ad1.jpg' %}"
+                alt="Admin Header"
+                class="img-fluid"
+            >
 
         </div>
 
-        <div class="col-md-6">
 
-            <form method="GET">
 
-                <div class="input-group">
+        <!-- ===================================================== -->
+        <!-- DASHBOARD -->
+        <!-- ===================================================== -->
 
-                    <input
-                        type="text"
-                        name="search"
-                        value="{{ search }}"
-                        class="form-control"
-                        placeholder="Search Ticket, Customer, Contact, Email...">
+        <div
+            id="dashboard"
+            class="container-fluid py-4"
+        >
 
-                    <button
-                        type="submit"
-                        class="btn btn-primary">
 
-                        <i class="fas fa-search"></i>
+            <!-- ================================================= -->
+            <!-- PAGE HEADER -->
+            <!-- ================================================= -->
 
-                        Search
+            <div class="row align-items-center mb-4">
 
-                    </button>
-                    <a
-                       href="{% url 'crm_dashboard' %}"
-                       class="btn btn-secondary">
-                       <i class="fas fa-times"></i>
 
-                       Clear
-                    </a>
-                    
-                    <a
-                       href="{% url 'logout' %}"
-                       class="btn btn-danger">
-                       <i class="fas fa-sign-out-alt me-1"></i>
-                        Logout
-                    </a>
+                <!-- LEFT SIDE -->
+
+                <div class="col-md-6">
+
+
+                    <h2 class="fw-bold mb-1">
+
+                        <i class="fas fa-chart-line text-primary"></i>
+
+                        Admin Dashboard
+
+                    </h2>
+
+
+                    <p class="text-muted mb-0">
+
+                        Customer Query Tracking Dashboard
+
+                    </p>
+
 
                 </div>
 
-            </form>
-           
-
-        </div>
-
-    </div>
 
 
+                <!-- RIGHT SIDE -->
 
-    <!-- ========================================================= -->
-    <!-- DASHBOARD CARDS -->
-    <!-- ========================================================= -->
+                <div class="col-md-6">
 
-    <div class="row g-4 mb-4">
 
-        <!-- Total -->
+                    <form method="GET">
 
-        <div class="col-xl-4 col-lg-4 col-md-6">
 
-            <div class="card shadow border-0 h-100">
+                        <div class="input-group">
 
-                <div class="card-body">
 
-                    <div class="d-flex justify-content-between">
+                            <!-- SEARCH INPUT -->
 
-                        <div>
+                            <input
+                                type="text"
+                                name="search"
+                                value="{{ search }}"
+                                class="form-control"
+                                placeholder="Search Ticket, Customer, Contact, Email..."
+                            >
 
-                            <h6 class="text-muted">
 
-                                Total Queries
+                            <!-- SEARCH BUTTON -->
 
-                            </h6>
+                            <button
+                                type="submit"
+                                class="btn btn-primary"
+                            >
 
-                            <h2 class="fw-bold">
+                                <i class="fas fa-search"></i>
 
-                                {{ total_queries }}
+                                Search
 
-                            </h2>
+                            </button>
+
+
+
+                            <!-- CLEAR BUTTON -->
+
+                            <a
+                                href="{% url 'admin_dashboard' %}"
+                                class="btn btn-secondary"
+                            >
+
+                                <i class="fas fa-times"></i>
+
+                                Clear
+
+                            </a>
+
+
+
+                            <!-- LOGOUT BUTTON -->
+
+                            <a
+                                href="{% url 'logout' %}"
+                                class="btn btn-danger"
+                            >
+
+                                <i class="fas fa-sign-out-alt me-1"></i>
+
+                                Logout
+
+                            </a>
+
 
                         </div>
 
-                        <div>
 
-                            <i class="fas fa-users fa-2x text-primary"></i>
+                    </form>
 
-                        </div>
-
-                    </div>
 
                 </div>
+
 
             </div>
 
-        </div>
 
-        <!-- Open -->
 
-        <div class="col-xl-4 col-lg-4 col-md-6">
+            <!-- ================================================= -->
+            <!-- DASHBOARD CARDS -->
+            <!-- ================================================= -->
 
-            <div class="card shadow border-0 h-100">
+            <div class="row g-4 mb-4">
 
-                <div class="card-body">
 
-                    <div class="d-flex justify-content-between">
+                <!-- ============================================= -->
+                <!-- TOTAL QUERIES -->
+                <!-- ============================================= -->
 
-                        <div>
+                <div class="col-xl-4 col-lg-4 col-md-6">
 
-                            <h6 class="text-muted">
 
-                                Open
+                    <div class="card shadow border-0 h-100">
 
-                            </h6>
 
-                            <h2 class="text-primary fw-bold">
+                        <div class="card-body">
 
-                                {{ open_count }}
 
-                            </h2>
+                            <div class="d-flex justify-content-between align-items-center">
+
+
+                                <div>
+
+
+                                    <h6 class="text-muted">
+
+                                        Total Queries
+
+                                    </h6>
+
+
+                                    <h2 class="fw-bold">
+
+                                        {{ total_queries }}
+
+                                    </h2>
+
+
+                                </div>
+
+
+
+                                <div>
+
+                                    <i class="fas fa-users fa-2x text-primary"></i>
+
+                                </div>
+
+
+                            </div>
+
 
                         </div>
 
-                        <div>
-
-                            <i class="fas fa-folder-open fa-2x text-primary"></i>
-
-                        </div>
 
                     </div>
 
+
                 </div>
 
-            </div>
-
-        </div>
 
 
+                <!-- ============================================= -->
+                <!-- OPEN -->
+                <!-- ============================================= -->
 
-        <!-- In Progress -->
+                <div class="col-xl-4 col-lg-4 col-md-6">
 
-        <div class="col-xl-4 col-lg-4 col-md-6">
 
-            <div class="card shadow border-0 h-100">
+                    <div class="card shadow border-0 h-100">
 
-                <div class="card-body">
 
-                    <div class="d-flex justify-content-between">
+                        <div class="card-body">
 
-                        <div>
 
-                            <h6 class="text-muted">
+                            <div class="d-flex justify-content-between align-items-center">
 
-                                In Progress
 
-                            </h6>
+                                <div>
 
-                            <h2 class="text-info fw-bold">
 
-                                {{ in_progress_count }}
+                                    <h6 class="text-muted">
 
-                            </h2>
+                                        Open
+
+                                    </h6>
+
+
+                                    <h2 class="text-primary fw-bold">
+
+                                        {{ open_count }}
+
+                                    </h2>
+
+
+                                </div>
+
+
+
+                                <div>
+
+                                    <i class="fas fa-folder-open fa-2x text-primary"></i>
+
+                                </div>
+
+
+                            </div>
+
 
                         </div>
 
-                        <div>
-
-                            <i class="fas fa-spinner fa-2x text-info"></i>
-
-                        </div>
 
                     </div>
 
+
                 </div>
+
+
+
+                <!-- ============================================= -->
+                <!-- IN PROGRESS -->
+                <!-- ============================================= -->
+
+                <div class="col-xl-4 col-lg-4 col-md-6">
+
+
+                    <div class="card shadow border-0 h-100">
+
+
+                        <div class="card-body">
+
+
+                            <div class="d-flex justify-content-between align-items-center">
+
+
+                                <div>
+
+
+                                    <h6 class="text-muted">
+
+                                        In Progress
+
+                                    </h6>
+
+
+                                    <h2 class="text-info fw-bold">
+
+                                        {{ in_progress_count }}
+
+                                    </h2>
+
+
+                                </div>
+
+
+
+                                <div>
+
+                                    <i class="fas fa-spinner fa-2x text-info"></i>
+
+                                </div>
+
+
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- ============================================= -->
+                <!-- CLOSED -->
+                <!-- ============================================= -->
+
+                <div class="col-xl-4 col-lg-4 col-md-6">
+
+
+                    <div class="card shadow border-0 h-100">
+
+
+                        <div class="card-body">
+
+
+                            <div class="d-flex justify-content-between align-items-center">
+
+
+                                <div>
+
+
+                                    <h6 class="text-muted">
+
+                                        Closed
+
+                                    </h6>
+
+
+                                    <h2 class="fw-bold text-dark">
+
+                                        {{ closed_count }}
+
+                                    </h2>
+
+
+                                </div>
+
+
+
+                                <div>
+
+                                    <i class="fas fa-lock fa-2x text-dark"></i>
+
+                                </div>
+
+
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- ============================================= -->
+                <!-- DUE TODAY -->
+                <!-- ============================================= -->
+
+                <div class="col-xl-4 col-lg-4 col-md-6">
+
+
+                    <div class="card shadow border-0 h-100 border-warning">
+
+
+                        <div class="card-body">
+
+
+                            <div class="d-flex justify-content-between align-items-center">
+
+
+                                <div>
+
+
+                                    <h6 class="text-muted">
+
+                                        Due Today
+
+                                    </h6>
+
+
+                                    <h2 class="fw-bold text-warning">
+
+                                        {{ due_today_count }}
+
+                                    </h2>
+
+
+                                </div>
+
+
+
+                                <div>
+
+                                    <i class="fas fa-calendar-day fa-2x text-warning"></i>
+
+                                </div>
+
+
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- ============================================= -->
+                <!-- OVERDUE -->
+                <!-- ============================================= -->
+
+                <div class="col-xl-4 col-lg-4 col-md-6">
+
+
+                    <div class="card shadow border-0 h-100 border-danger">
+
+
+                        <div class="card-body">
+
+
+                            <div class="d-flex justify-content-between align-items-center">
+
+
+                                <div>
+
+
+                                    <h6 class="text-muted">
+
+                                        Overdue
+
+                                    </h6>
+
+
+                                    <h2 class="fw-bold text-danger">
+
+                                        {{ overdue_count }}
+
+                                    </h2>
+
+
+                                </div>
+
+
+
+                                <div>
+
+                                    <i class="fas fa-triangle-exclamation fa-2x text-danger"></i>
+
+                                </div>
+
+
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
 
             </div>
 
-        </div>
 
-    </div>
-    <!-- ========================================================= -->
-    <!-- SECOND ROW DASHBOARD CARDS -->
-    <!-- ========================================================= -->
 
-    <div class="row g-4 mb-4">
+            <!-- ================================================= -->
+            <!-- CUSTOMER QUERY DETAILS -->
+            <!-- ================================================= -->
 
-        <!-- Resolved -->
+            <div
+                id="customer-query"
+                class="card shadow border-0"
+            >
 
-       
 
-        <!-- Closed -->
+                <!-- ============================================= -->
+                <!-- TABLE HEADER -->
+                <!-- ============================================= -->
 
-        <div class="col-xl-4 col-lg-4 col-md-6">
+                <div class="card-header bg-primary text-white">
 
-            <div class="card shadow border-0 h-100">
-
-                <div class="card-body">
 
                     <div class="d-flex justify-content-between align-items-center">
 
-                        <div>
 
-                            <h6 class="text-muted">Closed</h6>
+                        <h5 class="mb-0">
 
-                            <h2 class="fw-bold text-dark">
 
-                                {{ closed_count }}
+                            <i class="fas fa-users me-2"></i>
 
-                            </h2>
+                            Customer Query Details
 
-                        </div>
 
-                        <div>
+                        </h5>
 
-                            <i class="fas fa-lock fa-2x text-dark"></i>
 
-                        </div>
+
+                        <span class="badge bg-light text-dark">
+
+
+                            {{ total_queries }} Records
+
+
+                        </span>
+
 
                     </div>
 
+
                 </div>
 
-            </div>
 
-        </div>
 
-        <!-- Due Today -->
+                <!-- ============================================= -->
+                <!-- TABLE BODY -->
+                <!-- ============================================= -->
 
-        <div class="col-xl-4 col-lg-4 col-md-6">
+                <div class="card-body p-0">
 
-            <div class="card shadow border-0 h-100 border-warning">
 
-                <div class="card-body">
+                    <div class="table-responsive">
 
-                    <div class="d-flex justify-content-between align-items-center">
 
-                        <div>
+                        <table class="table table-hover table-bordered align-middle mb-0">
 
-                            <h6 class="text-muted">
 
-                                Due Today
+                            <!-- ================================= -->
+                            <!-- TABLE HEAD -->
+                            <!-- ================================= -->
 
-                            </h6>
+                            <thead class="table-dark">
 
-                            <h2 class="fw-bold text-warning">
 
-                                {{ due_today_count }}
+                                <tr>
 
-                            </h2>
 
-                        </div>
+                                    <th>Ticket ID</th>
 
-                        <div>
+                                    <th>Customer</th>
 
-                            <i class="fas fa-calendar-day fa-2x text-warning"></i>
+                                    <th>Contact</th>
 
-                        </div>
+                                    <th>Email</th>
+
+                                    <th>Tower</th>
+
+                                    <th>Area</th>
+
+                                    <th>Issue</th>
+
+                                    <th>Stage</th>
+
+                                    <th>Pending With</th>
+
+                                    <th>Progress</th>
+
+                                    <th>Due Time</th>
+
+                                    <th>Remaining</th>
+
+                                    <th>Query Raised</th>
+
+                                    <th>Closed Date</th>
+
+
+                                </tr>
+
+
+                            </thead>
+
+
+
+                            <!-- ================================= -->
+                            <!-- TABLE DATA -->
+                            <!-- ================================= -->
+
+                            <tbody>
+
+
+                                {% for customer in customer_data %}
+
+
+                                <tr>
+
+
+                                    <!-- TICKET ID -->
+
+                                    <td>
+
+
+                                        <strong class="text-primary">
+
+                                            {{ customer.ticket }}
+
+                                        </strong>
+
+
+                                    </td>
+
+
+
+                                    <!-- CUSTOMER -->
+
+                                    <td>
+
+                                        {{ customer.customer }}
+
+                                    </td>
+
+
+
+                                    <!-- CONTACT -->
+
+                                    <td>
+
+                                        {{ customer.contact }}
+
+                                    </td>
+
+
+
+                                    <!-- EMAIL -->
+
+                                    <td>
+
+                                        {{ customer.email }}
+
+                                    </td>
+
+
+
+                                    <!-- TOWER -->
+
+                                    <td>
+
+                                        {{ customer.tower }}
+
+                                    </td>
+
+
+
+                                    <!-- AREA -->
+
+                                    <td>
+
+                                        {{ customer.area }}
+
+                                    </td>
+
+
+
+                                    <!-- ISSUE -->
+
+                                    <td>
+
+                                        {{ customer.issue }}
+
+                                    </td>
+
+
+
+                                    <!-- STAGE -->
+
+                                    <td>
+
+
+                                        <span class="badge bg-secondary">
+
+                                            {{ customer.current_stage }}
+
+                                        </span>
+
+
+                                        <br>
+
+
+                                        <small class="text-muted">
+
+                                            {{ customer.stage_name }}
+
+                                        </small>
+
+
+                                    </td>
+
+
+
+                                    <!-- PENDING WITH -->
+
+                                    <td>
+
+
+                                        {{ customer.pending_with }}
+
+
+                                        <br>
+
+
+                                        <small class="text-muted">
+
+
+                                            {% if customer.pending_with == "Site Engineer" %}
+
+                                                Dipesh Chaudhary
+
+
+                                            {% elif customer.pending_with == "CRM" %}
+
+                                                Varsha Sahu
+
+
+                                            {% elif customer.pending_with == "Store Incharge" %}
+
+                                                Bhola
+
+
+                                            {% elif customer.pending_with == "Maintenance Incharge" %}
+
+                                                Dharmendra
+
+
+                                            {% endif %}
+
+
+                                        </small>
+
+
+                                    </td>
+
+
+
+                                    <!-- PROGRESS -->
+
+                                    <td>
+
+
+                                        {% if customer.progress == "Closed" %}
+
+
+                                            <span class="badge bg-success">
+
+                                                {{ customer.progress }}
+
+                                            </span>
+
+
+                                        {% elif customer.progress == "Open" %}
+
+
+                                            <span class="badge bg-primary">
+
+                                                {{ customer.progress }}
+
+                                            </span>
+
+
+                                        {% else %}
+
+
+                                            <span class="badge bg-warning text-dark">
+
+                                                {{ customer.progress }}
+
+                                            </span>
+
+
+                                        {% endif %}
+
+
+                                    </td>
+
+
+
+                                    <!-- DUE TIME -->
+
+                                    <td>
+
+                                        {{ customer.due_time }}
+
+                                    </td>
+
+
+
+                                    <!-- REMAINING -->
+
+                                    <td>
+
+
+                                        {% if customer.is_overdue %}
+
+
+                                            <span class="fw-bold text-danger">
+
+                                                {{ customer.remaining }}
+
+                                            </span>
+
+
+                                        {% else %}
+
+
+                                            <span class="text-success">
+
+                                                {{ customer.remaining }}
+
+                                            </span>
+
+
+                                        {% endif %}
+
+
+                                    </td>
+
+
+
+                                    <!-- QUERY RAISED -->
+
+                                    <td>
+
+                                        {{ customer.query_raised }}
+
+                                    </td>
+
+
+
+                                    <!-- CLOSED DATE -->
+
+                                    <td>
+
+                                        {{ customer.closed_date }}
+
+                                    </td>
+
+
+                                </tr>
+
+
+
+                                <!-- ================================= -->
+                                <!-- EMPTY DATA -->
+                                <!-- ================================= -->
+
+                                {% empty %}
+
+
+                                <tr>
+
+
+                                    <td
+                                        colspan="14"
+                                        class="text-center py-5"
+                                    >
+
+
+                                        <h5 class="text-muted">
+
+                                            No Customer Queries Found
+
+                                        </h5>
+
+
+                                    </td>
+
+
+                                </tr>
+
+
+                                {% endfor %}
+
+
+                            </tbody>
+
+
+                        </table>
+
 
                     </div>
 
-                </div>
-
-            </div>
-
-        </div>
-
-        <!-- Overdue -->
-
-        <div class="col-xl-4 col-lg-4 col-md-6">
-
-            <div class="card shadow border-0 h-100 border-danger">
-
-                <div class="card-body">
-
-                    <div class="d-flex justify-content-between align-items-center">
-
-                        <div>
-
-                            <h6 class="text-muted">
-
-                                Overdue
-
-                            </h6>
-
-                            <h2 class="fw-bold text-danger">
-
-                                {{ overdue_count }}
-
-                            </h2>
-
-                        </div>
-
-                        <div>
-
-                            <i class="fas fa-triangle-exclamation fa-2x text-danger"></i>
-
-                        </div>
-
-                    </div>
 
                 </div>
 
-            </div>
-
-        </div>
-
-    </div>
- 
-  
-
-
- 
-
-    <!-- ========================================================= -->
-    <!-- MAIN CUSTOMER TABLE -->
-    <!-- ========================================================= -->
-
-    <div id="customer-query" class="card shadow border-0">
-
-        <div class="card-header bg-primary text-white">
-
-            <div class="d-flex justify-content-between align-items-center">
-
-                <h5 class="mb-0">
-
-                    <i class="fas fa-users me-2"></i>
-
-                    Customer Query Details
-
-                </h5>
-
-                <span class="badge bg-light text-dark">
-
-                    {{ total_queries }} Records
-
-                </span>
 
             </div>
 
-        </div>
 
-        <div class="card-body p-0">
 
-            <div class="table-responsive">
+            <!-- ================================================= -->
+            <!-- FOOTER -->
+            <!-- ================================================= -->
 
-                <table class="table table-hover table-bordered align-middle mb-0">
+            <div class="text-center mt-4 mb-2">
 
-                    <!-- ============================================= -->
-                    <!-- TABLE HEADER -->
-                    <!-- ============================================= -->
 
-                    <thead class="table-dark">
+                <small class="text-muted">
 
-                        <tr>
+                    Admin Dashboard | Powered by Sampoorna Maintenance
 
-                            <th>Ticket ID</th>
+                </small>
 
-                            <th>Customer</th>
 
-                            <th>Contact</th>
+            </div>
 
-                            <th>Email</th>
-
-                            <th>Tower</th>
-
-                            <th>Area</th>
-
-                            <th>Issue</th>
-
-                            
-
-                            <th>Stage</th>
-
-                            <th>Pending With</th>
-
-                            <th>Progress</th>
-
-                            <th>Due Time</th>
-
-                            <th>Remaining</th>
-
-                            <th>Query Raised</th>
-
-                            <th>Closed Date</th>
-
-                            
-
-                            
-
-                        </tr>
-
-                    </thead>
-
-                    <tbody>
-                    <!-- ========================================================= -->
-                    <!-- CUSTOMER TABLE DATA -->
-                    <!-- ========================================================= -->
-
-                    {% for customer in customer_data %}
-
-                    <tr>
-
-                        <!-- Ticket -->
-
-                        <td>
-
-                            <strong class="text-primary">
-
-                                {{ customer.ticket }}
-
-                            </strong>
-
-                        </td>
-
-                        <!-- Customer -->
-
-                        <td>
-
-                            {{ customer.customer }}
-
-                        </td>
-
-                        <!-- Contact -->
-
-                        <td>
-
-                            {{ customer.contact }}
-
-                        </td>
-
-                        <!-- Email -->
-
-                        <td>
-
-                            {{ customer.email }}
-
-                        </td>
-
-                        <!-- Tower -->
-
-                        <td>
-
-                            {{ customer.tower }}
-
-                        </td>
-
-                        <!-- Area -->
-
-                        <td>
-
-                            {{ customer.area }}
-
-                        </td>
-
-                        <!-- Issue -->
-
-                        <td>
-
-                            {{ customer.issue }}
-
-                        </td>
-
-                        <!-- Status -->
-
-                        
-
-                        <!-- Current Stage -->
-
-                        <td>
-
-                            <span class="badge bg-secondary">
-
-                                {{ customer.current_stage }}
-
-                            </span>
-
-                            <br>
-
-                            <small class="text-muted">
-
-                                {{ customer.stage_name }}
-
-                            </small>
-
-                        </td>
-
-                        <!-- Pending With -->
-
-                        <td>
-
-                            {{ customer.pending_with }}
-                            <br>
-                            <small class="text-muted">      
-                            {% if customer.pending_with == "Site Engineer" %}   
-                                Dipesh Chaudhary
-                            {% elif customer.pending_with == "CRM" %}
-                                Varsha Sahu
-                            {% elif customer.pending_with == "Store Incharge" %}
-                                Bhola
-                            {% elif customer.pending_with == "Maintenance Incharge" %}
-                                Dharmendra
-                            
-                            {% endif %}
-                            </small>
-
-                        </td>
-
-                        <!-- Progress -->
-
-                        <td>
-
-                            {% if customer.progress == "Closed" %}
-
-                                <span class="badge bg-success">
-
-                                    {{ customer.progress }}
-
-                                </span>
-
-                            {% elif customer.progress == "Open" %}
-
-                                <span class="badge bg-primary">
-
-                                    {{ customer.progress }}
-
-                                </span>
-
-                            {% else %}
-
-                                <span class="badge bg-warning text-dark">
-
-                                    {{ customer.progress }}
-
-                                </span>
-
-                            {% endif %}
-
-                        </td>
-
-                        <!-- Due Time -->
-
-                        <td>
-
-                            {{ customer.due_time }}
-
-                        </td>
-
-                        <!-- Remaining -->
-
-                        <td>
-
-                            {% if customer.is_overdue %}
-
-                                <span class="fw-bold text-danger">
-
-                                    {{ customer.remaining }}
-
-                                </span>
-
-                            {% else %}
-
-                                <span class="text-success">
-
-                                    {{ customer.remaining }}
-
-                                </span>
-
-                            {% endif %}
-
-                        </td>
-                        <!-- ============================================== -->
-                        <!-- QUERY RAISED -->
-                        <!-- ============================================== -->
-
-                        <td>
-
-                            {{ customer.query_raised }}
-
-                        </td>
-
-                        <!-- ============================================== -->
-                        <!-- TIMELINE -->
-                        <!-- ============================================== -->
-
-                       <td>
-
-                            {{ customer.closed_date }}
-
-                        </td>
-                        
-
-                    </tr>
-
-                    {% empty %}
-
-                    <tr>
-
-                        <td colspan="13" class="text-center py-5">
-
-                            <h5 class="text-muted">
-
-                                No Customer Queries Found
-
-                            </h5>
-
-                        </td>
-
-                    </tr>
-
-                    {% endfor %}
-
-                </tbody>
-
-            </table>
 
         </div>
 
-    </div>
-
-</div>
-
-<!-- ========================================================= -->
-<!-- OVERDUE CUSTOMER TABLE -->
-<!-- ========================================================= -->
-
-<div id="overdue-customers" class="card shadow border-0 mt-4">
-
-    <div class="card-header bg-danger text-white">
-
-        <div class="d-flex justify-content-between align-items-center">
-
-            <h5 class="mb-0">
-
-                <i class="fas fa-triangle-exclamation me-2"></i>
-
-                Overdue Customers
-
-            </h5>
-
-            <span class="badge bg-light text-danger">
-
-                {{ overdue_count }}
-
-            </span>
-
-        </div>
 
     </div>
 
-    <div class="card-body p-0">
-
-        <div class="table-responsive">
-
-            <table class="table table-bordered table-hover mb-0">
-
-                <thead class="table-danger">
-
-                    <tr>
-
-                        <th>Ticket</th>
-
-                        <th>Customer</th>
-
-                        <th>Contact</th>
-
-                        <th>Stage</th>
-
-                        <th>Pending With</th>
-
-                        <th>Due Time</th>
-
-                        <th>Remaining</th>
-
-                    </tr>
-
-                </thead>
-
-                <tbody>
-
-                    {% for customer in overdue_customers %}
-                    <!-- ========================================================= -->
-                    <!-- OVERDUE CUSTOMER DATA -->
-                    <!-- ========================================================= -->
-
-                    <tr>
-
-                        <td>
-
-                            <strong class="text-danger">
-
-                                {{ customer.ticket }}
-
-                            </strong>
-
-                        </td>
-
-                        <td>
-
-                            {{ customer.customer }}
-
-                        </td>
-
-                        <td>
-
-                            {{ customer.contact }}
-
-                        </td>
-
-                        <td>
-
-                            {{ customer.current_stage }}
-
-                            <br>
-
-                            <small class="text-muted">
-
-                                {{ customer.stage_name }}
-
-                            </small>
-
-                        </td>
-
-                        <td>
-
-                            {{ customer.pending_with }}
-
-                        </td>
-
-                        <td>
-
-                            {{ customer.due_time }}
-
-                        </td>
-
-                        <td>
-
-                            <span class="fw-bold text-danger">
-
-                                {{ customer.remaining }}
-
-                            </span>
-
-                        </td>
-
-                    </tr>
-
-                    {% empty %}
-
-                    <tr>
-
-                        <td colspan="7" class="text-center py-4">
-
-                            <span class="text-muted">
-
-                                No Overdue Customers
-
-                            </span>
-
-                        </td>
-
-                    </tr>
-
-                    {% endfor %}
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-    </div>
 
 </div>
 
-<!-- ========================================================= -->
-<!-- DUE TODAY TABLE -->
-<!-- ========================================================= -->
 
-<div id="due-today" class="card shadow border-0 mt-4">
-
-    <div class="card-header bg-warning">
-
-        <div class="d-flex justify-content-between align-items-center">
-
-            <h5 class="mb-0 text-dark">
-
-                <i class="fas fa-calendar-day me-2"></i>
-
-                Due Today
-
-            </h5>
-
-            <span class="badge bg-dark">
-
-                {{ due_today_count }}
-
-            </span>
-
-        </div>
-
-    </div>
-
-    <div class="card-body p-0">
-
-        <div class="table-responsive">
-
-            <table class="table table-bordered table-hover mb-0">
-
-                <thead class="table-warning">
-
-                    <tr>
-
-                        <th>Ticket</th>
-
-                        <th>Customer</th>
-
-                        <th>Contact</th>
-
-                        <th>Stage</th>
-
-                        <th>Pending With</th>
-
-                        <th>Due Time</th>
-
-                        <th>Remaining</th>
-
-                    </tr>
-
-                </thead>
-
-                <tbody>
-
-                    {% for customer in due_today_customers %}
-                    <!-- ========================================================= -->
-                    <!-- DUE TODAY CUSTOMER DATA -->
-                    <!-- ========================================================= -->
-
-                    <tr>
-
-                        <td>
-
-                            <strong class="text-warning">
-
-                                {{ customer.ticket }}
-
-                            </strong>
-
-                        </td>
-
-                        <td>
-
-                            {{ customer.customer }}
-
-                        </td>
-
-                        <td>
-
-                            {{ customer.contact }}
-
-                        </td>
-
-                        <td>
-
-                            {{ customer.current_stage }}
-
-                            <br>
-
-                            <small class="text-muted">
-
-                                {{ customer.stage_name }}
-
-                            </small>
-
-                        </td>
-
-                        <td>
-
-                            {{ customer.pending_with }}
-
-                        </td>
-
-                        <td>
-
-                            {{ customer.due_time }}
-
-                        </td>
-
-                        <td>
-
-                            {% if customer.is_overdue %}
-
-                                <span class="fw-bold text-danger">
-
-                                    {{ customer.remaining }}
-
-                                </span>
-
-                            {% else %}
-
-                                <span class="fw-bold text-success">
-
-                                    {{ customer.remaining }}
-
-                                </span>
-
-                            {% endif %}
-
-                        </td>
-
-                    </tr>
-
-                    {% empty %}
-
-                    <tr>
-
-                        <td colspan="7" class="text-center py-4">
-
-                            <span class="text-muted">
-
-
-                                No Due Today Customers
-
-                            </span>
-
-                        </td>
-
-                    </tr>
-
-                    {% endfor %}
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-<div id="issue-category" class="card shadow border-0 mt-4">
-    <div class="card-header bg-info text-white">
-        <h5 class="mb-0">
-
-            <i class="fas fa-chart-bar me-2"></i>
-                Issue Category Report
-       </h5>
-    </div>
-    <div class="card-body">
-        <canvas id="issueChart" height="120"></canvas>
-    </div>
-</div>
-
-
-<!-- ========================================================= -->
-<!-- FOOTER -->
-<!-- ========================================================= -->
-
-<div class="text-center mt-4 mb-2">
-
-    <small class="text-muted">
-
-        CRM Dashboard | Powered by Sampoorna Maintenance
-
-    </small>
-
-</div>
-
-</div>
-
-</div>
-</div>
 
 <!-- ========================================================= -->
 <!-- BOOTSTRAP JS -->
 <!-- ========================================================= -->
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+></script>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<script>
-
-const ctx = document.getElementById("issueChart");
-
-new Chart(ctx, {
-
-    type: "bar",
-
-    data: {
-
-        labels: {{ issue_labels|safe }},
-
-        datasets: [{
-
-            label: "Issues",
-
-            data: {{ issue_counts|safe }},
-
-            backgroundColor: "#17a2b8",
-
-            borderRadius: 8
-
-        }]
-
-    },
-
-    options: {
-
-        responsive: true,
-
-        plugins: {
-
-            legend: {
-
-                display: false
-
-            }
-
-        },
-
-        scales: {
-
-            y: {
-
-                beginAtZero: true
-
-            }
-
-        }
-
-    }
-
-});
-
-</script>
 
 </body>
 
