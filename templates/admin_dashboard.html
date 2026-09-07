@@ -1,767 +1,1171 @@
-<!-- ================================================= -->
-<!-- CUSTOMER QUERY DETAILS -->
-<!-- ================================================= -->
+{% load static %}
 
-<div
-    id="customer-query"
-    class="card shadow border-0"
->
+<!DOCTYPE html>
+<html lang="en">
 
-    <!-- ============================================= -->
-    <!-- TABLE HEADER -->
-    <!-- ============================================= -->
+<head>
 
-    <div class="card-header bg-primary text-white">
+    <!-- ========================================================= -->
+    <!-- META -->
+    <!-- ========================================================= -->
 
-        <div class="d-flex justify-content-between align-items-center">
+    <meta charset="UTF-8">
 
-            <h5 class="mb-0">
-
-                <i class="fas fa-users me-2"></i>
-
-                Customer Query Details
-
-            </h5>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
 
-            <span class="badge bg-light text-dark">
+    <!-- ========================================================= -->
+    <!-- TITLE -->
+    <!-- ========================================================= -->
 
-                {{ total_queries }} Records
+    <title>Admin Dashboard</title>
 
-            </span>
+
+    <!-- ========================================================= -->
+    <!-- BOOTSTRAP -->
+    <!-- ========================================================= -->
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+
+    <!-- ========================================================= -->
+    <!-- FONT AWESOME -->
+    <!-- ========================================================= -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+
+    <!-- ========================================================= -->
+    <!-- CSS -->
+    <!-- ========================================================= -->
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/admin_dashboard.css' %}"
+    >
+
+</head>
+
+
+<body>
+
+
+<!-- ========================================================= -->
+<!-- DASHBOARD CONTAINER -->
+<!-- ========================================================= -->
+
+<div class="dashboard-container">
+
+
+    <!-- ========================================================= -->
+    <!-- SIDEBAR -->
+    <!-- ========================================================= -->
+
+    <aside class="sidebar">
+
+
+        <!-- ===================================================== -->
+        <!-- LOGO -->
+        <!-- ===================================================== -->
+
+        <div class="sidebar-logo">
+
+            <h3>Sampoorna</h3>
+
+            <p>Admin Portal</p>
 
         </div>
 
-    </div>
+
+        <!-- ===================================================== -->
+        <!-- SIDEBAR MENU -->
+        <!-- ===================================================== -->
+
+        <ul class="sidebar-menu">
 
 
-    <!-- ============================================= -->
-    <!-- TABLE BODY -->
-    <!-- ============================================= -->
+            <!-- DASHBOARD -->
 
-    <div class="card-body p-0">
+            <li class="active">
 
-        <div class="table-responsive">
+                <a href="#dashboard">
+
+                    <i class="fa-solid fa-chart-line"></i>
+
+                    <span>Dashboard</span>
+
+                </a>
+
+            </li>
 
 
-            <!-- ===================================== -->
-            <!-- FILTER FORM -->
-            <!-- ===================================== -->
+            <!-- CUSTOMER QUERY DETAILS -->
 
-            <form
-                id="filterForm"
-                method="GET"
-                action="{% url 'admin_dashboard' %}"
-                style="display:none;"
+            <li>
+
+                <a href="#customer-query">
+
+                    <i class="fa-solid fa-users"></i>
+
+                    <span>Customer Query Details</span>
+
+                </a>
+
+            </li>
+
+
+        </ul>
+
+
+    </aside>
+
+
+    <!-- ========================================================= -->
+    <!-- MAIN CONTENT -->
+    <!-- ========================================================= -->
+
+    <div class="main-content">
+
+
+        <!-- ===================================================== -->
+        <!-- HEADER IMAGE -->
+        <!-- ===================================================== -->
+
+        <div class="crm-header-image-wrapper">
+
+            <img
+                src="{% static 'images/ad1.jpg' %}"
+                alt="Admin Header"
+                class="img-fluid"
             >
 
-                <input
-                    type="hidden"
-                    name="search"
-                    value="{{ search }}"
-                >
+        </div>
 
-            </form>
 
 
-            <!-- ===================================== -->
-            <!-- TABLE -->
-            <!-- ===================================== -->
+        <!-- ===================================================== -->
+        <!-- DASHBOARD -->
+        <!-- ===================================================== -->
 
-            <table class="table table-hover table-bordered align-middle mb-0">
+        <div
+            id="dashboard"
+            class="container-fluid py-4"
+        >
 
 
-                <!-- ================================= -->
-                <!-- TABLE HEADER -->
-                <!-- ================================= -->
+            <!-- ================================================= -->
+            <!-- PAGE HEADER -->
+            <!-- ================================================= -->
 
-                <thead class="table-dark">
+            <div class="row align-items-center mb-4">
 
-                    <tr>
 
+                <!-- LEFT SIDE -->
 
-                        <!-- TICKET -->
+                <div class="col-md-6">
 
-                        <th>
 
-                            Ticket ID
+                    <h2 class="fw-bold mb-1">
 
-                        </th>
+                        <i class="fas fa-chart-line text-primary"></i>
 
+                        Admin Dashboard
 
-                        <!-- CUSTOMER NAME -->
+                    </h2>
 
-                        <th>
 
-                            <div class="d-flex flex-column gap-1">
+                    <p class="text-muted mb-0">
 
-                                <span>
+                        Customer Query Tracking Dashboard
 
-                                    Customer Name
+                    </p>
 
-                                </span>
 
+                </div>
 
-                                <input
-                                    type="text"
-                                    name="customer_name"
-                                    form="filterForm"
-                                    class="form-control form-control-sm"
-                                    placeholder="Search Name"
-                                    value="{{ customer_name_filter }}"
-                                    onkeydown="
-                                        if(event.key === 'Enter'){
-                                            event.preventDefault();
-                                            document.getElementById('filterForm').submit();
-                                        }
-                                    "
-                                >
 
-                            </div>
 
-                        </th>
+                <!-- RIGHT SIDE -->
 
+                <div class="col-md-6">
 
-                        <!-- CONTACT -->
 
-                        <th>
+                    <form method="GET">
 
-                            Contact
 
-                        </th>
+                        <div class="input-group">
 
 
-                        <!-- EMAIL -->
+                            <!-- SEARCH INPUT -->
 
-                        <th>
+                            <input
+                                type="text"
+                                name="search"
+                                value="{{ search }}"
+                                class="form-control"
+                                placeholder="Search Ticket, Customer, Contact, Email..."
+                            >
 
-                            Email
 
-                        </th>
+                            <!-- SEARCH BUTTON -->
 
+                            <button
+                                type="submit"
+                                class="btn btn-primary"
+                            >
 
-                        <!-- TOWER -->
+                                <i class="fas fa-search"></i>
 
-                        <th>
+                                Search
 
-                            <div class="d-flex flex-column gap-1">
+                            </button>
 
-                                <span>
 
-                                    Tower
 
-                                </span>
+                            <!-- CLEAR BUTTON -->
 
+                            <a
+                                href="{% url 'admin_dashboard' %}"
+                                class="btn btn-secondary"
+                            >
 
-                                <select
-                                    name="tower"
-                                    form="filterForm"
-                                    class="form-select form-select-sm"
-                                    onchange="
-                                        document
-                                            .getElementById('filterForm')
-                                            .submit()
-                                    "
-                                >
+                                <i class="fas fa-times"></i>
 
-                                    <option value="">
+                                Clear
 
-                                        All
+                            </a>
 
-                                    </option>
 
 
-                                    {% for tower in tower_options %}
+                            <!-- LOGOUT BUTTON -->
 
-                                        <option
-                                            value="{{ tower }}"
-                                            {% if tower_filter == tower %}
-                                                selected
-                                            {% endif %}
-                                        >
+                            <a
+                                href="{% url 'logout' %}"
+                                class="btn btn-danger"
+                            >
 
-                                            {{ tower }}
+                                <i class="fas fa-sign-out-alt me-1"></i>
 
-                                        </option>
+                                Logout
 
-                                    {% endfor %}
+                            </a>
 
-                                </select>
 
-                            </div>
+                        </div>
 
-                        </th>
 
+                    </form>
 
-                        <!-- AREA -->
 
-                        <th>
+                </div>
 
-                            <div class="d-flex flex-column gap-1">
 
-                                <span>
+            </div>
 
-                                    Area
 
-                                </span>
 
+            <!-- ================================================= -->
+            <!-- DASHBOARD CARDS -->
+            <!-- ================================================= -->
 
-                                <input
-                                    type="text"
-                                    name="area"
-                                    form="filterForm"
-                                    class="form-control form-control-sm"
-                                    placeholder="Search Area"
-                                    value="{{ area_filter }}"
-                                    onkeydown="
-                                        if(event.key === 'Enter'){
-                                            event.preventDefault();
-                                            document.getElementById('filterForm').submit();
-                                        }
-                                    "
-                                >
+            <div class="row g-4 mb-4">
 
-                            </div>
 
-                        </th>
+                <!-- ============================================= -->
+                <!-- TOTAL QUERIES -->
+                <!-- ============================================= -->
 
+                <div class="col-xl-4 col-lg-4 col-md-6">
 
-                        <!-- ISSUE -->
 
-                        <th>
+                    <div class="card shadow border-0 h-100">
 
-                            <div class="d-flex flex-column gap-1">
 
-                                <span>
+                        <div class="card-body">
 
-                                    Issue
 
-                                </span>
+                            <div class="d-flex justify-content-between align-items-center">
 
 
-                                <select
-                                    name="issue"
-                                    form="filterForm"
-                                    class="form-select form-select-sm"
-                                    onchange="
-                                        document
-                                            .getElementById('filterForm')
-                                            .submit()
-                                    "
-                                >
+                                <div>
 
-                                    <option value="">
 
-                                        All
+                                    <h6 class="text-muted">
 
-                                    </option>
+                                        Total Queries
 
+                                    </h6>
 
-                                    {% for issue in issue_options %}
 
-                                        <option
-                                            value="{{ issue }}"
-                                            {% if issue_filter == issue %}
-                                                selected
-                                            {% endif %}
-                                        >
+                                    <h2 class="fw-bold">
 
-                                            {{ issue }}
+                                        {{ total_queries }}
 
-                                        </option>
-
-                                    {% endfor %}
-
-                                </select>
-
-                            </div>
-
-                        </th>
-
-
-                        <!-- ISSUE DESCRIPTION -->
-
-                        <th>
-
-                            Issue Description
-
-                        </th>
-
-
-                        <!-- PHOTO -->
-
-                        <th>
-
-                            Photo
-
-                        </th>
-
-
-                        <!-- STAGE -->
-
-                        <th>
-
-                            Stage
-
-                        </th>
-
-
-                        <!-- PENDING WITH -->
-
-                        <th>
-
-                            Pending With
-
-                        </th>
-
-
-                        <!-- PROGRESS -->
-
-                        <th>
-
-                            Progress
-
-                        </th>
-
-
-                        <!-- QUERY RAISED -->
-
-                        <th>
-
-                            Query Raised
-
-                        </th>
-
-
-                        <!-- DUE TIME -->
-
-                        <th>
-
-                            Due Time
-
-                        </th>
-
-
-                        <!-- REMAINING -->
-
-                        <th>
-
-                            Remaining
-
-                        </th>
-
-
-                        <!-- CLOSED DATE -->
-
-                        <th>
-
-                            Closed Date
-
-                        </th>
-
-
-                    </tr>
-
-                </thead>
-
-
-                <!-- ================================= -->
-                <!-- TABLE DATA -->
-                <!-- ================================= -->
-
-                <tbody>
-
-
-                    {% for customer in customer_data %}
-
-
-                    <tr>
-
-
-                        <!-- ================================= -->
-                        <!-- TICKET ID -->
-                        <!-- ================================= -->
-
-                        <td>
-
-                            <strong class="text-primary">
-
-                                {{ customer.ticket }}
-
-                            </strong>
-
-                        </td>
-
-
-                        <!-- ================================= -->
-                        <!-- CUSTOMER NAME -->
-                        <!-- ================================= -->
-
-                        <td>
-
-                            {{ customer.customer }}
-
-                        </td>
-
-
-                        <!-- ================================= -->
-                        <!-- CONTACT -->
-                        <!-- ================================= -->
-
-                        <td>
-
-                            {{ customer.contact }}
-
-                        </td>
-
-
-                        <!-- ================================= -->
-                        <!-- EMAIL -->
-                        <!-- ================================= -->
-
-                        <td>
-
-                            {{ customer.email }}
-
-                        </td>
-
-
-                        <!-- ================================= -->
-                        <!-- TOWER -->
-                        <!-- ================================= -->
-
-                        <td>
-
-                            {{ customer.tower }}
-
-                        </td>
-
-
-                        <!-- ================================= -->
-                        <!-- AREA -->
-                        <!-- ================================= -->
-
-                        <td>
-
-                            {{ customer.area }}
-
-                        </td>
-
-
-                        <!-- ================================= -->
-                        <!-- ISSUE -->
-                        <!-- ================================= -->
-
-                        <td>
-
-                            {{ customer.issue }}
-
-                        </td>
-
-
-                        <!-- ================================= -->
-                        <!-- ISSUE DESCRIPTION -->
-                        <!-- ================================= -->
-
-                        <td>
-
-                            {{ customer.issue_description|default:"-" }}
-
-                        </td>
-
-
-                        <!-- ================================= -->
-                        <!-- PHOTO -->
-                        <!-- ================================= -->
-
-                        <td class="text-center">
-
-
-                            {% if customer.all_files %}
-
-
-                                <div
-                                    class="
-                                        d-flex
-                                        flex-wrap
-                                        gap-2
-                                        justify-content-center
-                                    "
-                                >
-
-
-                                    {% for file in customer.all_files %}
-
-
-                                        {% if file.type == "image" %}
-
-
-                                            <a
-                                                href="{{ file.url }}"
-                                                target="_blank"
-                                                title="{{ file.label }}"
-                                            >
-
-
-                                                <img
-                                                    src="{{ file.url }}"
-                                                    alt="{{ file.label }}"
-                                                    class="crm-table-image"
-                                                >
-
-
-                                            </a>
-
-
-                                        {% else %}
-
-
-                                            <a
-                                                href="{{ file.url }}"
-                                                target="_blank"
-                                                class="btn btn-sm btn-primary"
-                                            >
-
-
-                                                <i class="fa-solid fa-file me-1"></i>
-
-                                                Open File
-
-
-                                            </a>
-
-
-                                        {% endif %}
-
-
-                                    {% endfor %}
+                                    </h2>
 
 
                                 </div>
 
 
-                            {% else %}
 
+                                <div>
 
-                                <span class="text-muted">
+                                    <i class="fas fa-users fa-2x text-primary"></i>
 
-                                    No Image
+                                </div>
 
-                                </span>
 
+                            </div>
 
-                            {% endif %}
 
+                        </div>
 
-                        </td>
 
+                    </div>
 
-                        <!-- ================================= -->
-                        <!-- STAGE -->
-                        <!-- ================================= -->
 
-                        <td>
+                </div>
 
 
-                            <span class="badge bg-secondary">
 
-                                {{ customer.current_stage }}
+                <!-- ============================================= -->
+                <!-- OPEN -->
+                <!-- ============================================= -->
 
-                            </span>
+                <div class="col-xl-4 col-lg-4 col-md-6">
 
 
-                            <br>
+                    <div class="card shadow border-0 h-100">
 
 
-                            <small class="text-muted">
+                        <div class="card-body">
 
-                                {{ customer.stage_name }}
 
-                            </small>
+                            <div class="d-flex justify-content-between align-items-center">
 
 
-                        </td>
+                                <div>
 
 
-                        <!-- ================================= -->
-                        <!-- PENDING WITH -->
-                        <!-- ================================= -->
+                                    <h6 class="text-muted">
 
-                        <td>
+                                        Open
 
+                                    </h6>
 
-                            {{ customer.pending_with }}
 
+                                    <h2 class="text-primary fw-bold">
 
-                            <br>
+                                        {{ open_count }}
 
+                                    </h2>
 
-                            <small class="text-muted">
 
+                                </div>
 
-                                {% if customer.pending_with == "Site Engineer" %}
 
-                                    Dipesh Chaudhary
 
+                                <div>
 
-                                {% elif customer.pending_with == "CRM" %}
+                                    <i class="fas fa-folder-open fa-2x text-primary"></i>
 
-                                    Varsha Sahu
+                                </div>
 
 
-                                {% elif customer.pending_with == "Store Incharge" %}
+                            </div>
 
-                                    Bhola
 
+                        </div>
 
-                                {% elif customer.pending_with == "Maintenance Incharge" %}
 
-                                    Dharmendra
+                    </div>
 
 
-                                {% endif %}
+                </div>
 
 
-                            </small>
 
+                <!-- ============================================= -->
+                <!-- IN PROGRESS -->
+                <!-- ============================================= -->
 
-                        </td>
+                <div class="col-xl-4 col-lg-4 col-md-6">
 
 
-                        <!-- ================================= -->
-                        <!-- PROGRESS -->
-                        <!-- ================================= -->
+                    <div class="card shadow border-0 h-100">
 
-                        <td>
 
+                        <div class="card-body">
 
-                            {% if customer.progress == "Closed" %}
 
+                            <div class="d-flex justify-content-between align-items-center">
 
-                                <span class="badge bg-success">
 
-                                    Closed
+                                <div>
 
-                                </span>
 
+                                    <h6 class="text-muted">
 
-                            {% else %}
+                                        In Progress
 
+                                    </h6>
 
-                                <span class="badge bg-warning text-dark">
 
-                                    In Progress
+                                    <h2 class="text-info fw-bold">
 
-                                </span>
+                                        {{ in_progress_count }}
 
+                                    </h2>
 
-                            {% endif %}
 
+                                </div>
 
-                        </td>
 
 
-                        <!-- ================================= -->
-                        <!-- QUERY RAISED -->
-                        <!-- ================================= -->
+                                <div>
 
-                        <td>
+                                    <i class="fas fa-spinner fa-2x text-info"></i>
 
-                            {{ customer.query_raised }}
+                                </div>
 
-                        </td>
 
+                            </div>
 
-                        <!-- ================================= -->
-                        <!-- DUE TIME -->
-                        <!-- ================================= -->
 
-                        <td>
+                        </div>
 
-                            {{ customer.due_time }}
 
-                        </td>
+                    </div>
 
 
-                        <!-- ================================= -->
-                        <!-- REMAINING -->
-                        <!-- ================================= -->
+                </div>
 
-                        <td>
 
 
-                            {% if customer.is_overdue %}
+                <!-- ============================================= -->
+                <!-- CLOSED -->
+                <!-- ============================================= -->
 
+                <div class="col-xl-4 col-lg-4 col-md-6">
 
-                                <span class="fw-bold text-danger">
 
-                                    {{ customer.remaining }}
+                    <div class="card shadow border-0 h-100">
 
-                                </span>
 
+                        <div class="card-body">
 
-                            {% else %}
 
+                            <div class="d-flex justify-content-between align-items-center">
 
-                                <span class="text-success">
 
-                                    {{ customer.remaining }}
+                                <div>
 
-                                </span>
 
+                                    <h6 class="text-muted">
 
-                            {% endif %}
+                                        Closed
 
+                                    </h6>
 
-                        </td>
 
+                                    <h2 class="fw-bold text-dark">
 
-                        <!-- ================================= -->
-                        <!-- CLOSED DATE -->
-                        <!-- ================================= -->
+                                        {{ closed_count }}
 
-                        <td>
+                                    </h2>
 
-                            {{ customer.closed_date }}
 
-                        </td>
+                                </div>
 
 
-                    </tr>
 
+                                <div>
 
-                    {% empty %}
+                                    <i class="fas fa-lock fa-2x text-dark"></i>
 
+                                </div>
 
-                    <!-- ================================= -->
-                    <!-- EMPTY DATA -->
-                    <!-- ================================= -->
 
-                    <tr>
+                            </div>
 
-                        <td
-                            colspan="15"
-                            class="text-center py-5"
-                        >
 
-                            <h5 class="text-muted">
+                        </div>
 
-                                No Customer Queries Found
 
-                            </h5>
+                    </div>
 
-                        </td>
 
-                    </tr>
+                </div>
 
 
-                    {% endfor %}
 
+                <!-- ============================================= -->
+                <!-- DUE TODAY -->
+                <!-- ============================================= -->
 
-                </tbody>
+                <div class="col-xl-4 col-lg-4 col-md-6">
 
 
-            </table>
+                    <div class="card shadow border-0 h-100 border-warning">
+
+
+                        <div class="card-body">
+
+
+                            <div class="d-flex justify-content-between align-items-center">
+
+
+                                <div>
+
+
+                                    <h6 class="text-muted">
+
+                                        Due Today
+
+                                    </h6>
+
+
+                                    <h2 class="fw-bold text-warning">
+
+                                        {{ due_today_count }}
+
+                                    </h2>
+
+
+                                </div>
+
+
+
+                                <div>
+
+                                    <i class="fas fa-calendar-day fa-2x text-warning"></i>
+
+                                </div>
+
+
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- ============================================= -->
+                <!-- OVERDUE -->
+                <!-- ============================================= -->
+
+                <div class="col-xl-4 col-lg-4 col-md-6">
+
+
+                    <div class="card shadow border-0 h-100 border-danger">
+
+
+                        <div class="card-body">
+
+
+                            <div class="d-flex justify-content-between align-items-center">
+
+
+                                <div>
+
+
+                                    <h6 class="text-muted">
+
+                                        Overdue
+
+                                    </h6>
+
+
+                                    <h2 class="fw-bold text-danger">
+
+                                        {{ overdue_count }}
+
+                                    </h2>
+
+
+                                </div>
+
+
+
+                                <div>
+
+                                    <i class="fas fa-triangle-exclamation fa-2x text-danger"></i>
+
+                                </div>
+
+
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- ================================================= -->
+            <!-- CUSTOMER QUERY DETAILS -->
+            <!-- ================================================= -->
+
+            <div
+                id="customer-query"
+                class="card shadow border-0"
+            >
+
+
+                <!-- ============================================= -->
+                <!-- TABLE HEADER -->
+                <!-- ============================================= -->
+
+                <div class="card-header bg-primary text-white">
+
+
+                    <div class="d-flex justify-content-between align-items-center">
+
+
+                        <h5 class="mb-0">
+
+
+                            <i class="fas fa-users me-2"></i>
+
+                            Customer Query Details
+
+
+                        </h5>
+
+
+
+                        <span class="badge bg-light text-dark">
+
+
+                            {{ total_queries }} Records
+
+
+                        </span>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- ============================================= -->
+                <!-- TABLE BODY -->
+                <!-- ============================================= -->
+
+                <div class="card-body p-0">
+
+
+                    <div class="table-responsive">
+
+                        <form id="filterForm" method="GET" action="{% url 'admin_dashboard' %}" style="display:none;">
+                            <input type="hidden" name="search" value="{{ search }}">
+                        </form>
+
+                        <table class="table table-hover table-bordered align-middle mb-0">
+
+
+                            <!-- ================================= -->
+                            <!-- TABLE HEAD -->
+                            <!-- ================================= -->
+
+                            <thead class="table-dark">
+
+
+                                <tr>
+
+                                    <th>Ticket ID</th>
+
+                                    <th>
+                                        <div class="d-flex flex-column gap-1">
+                                            <span>Customer Name</span>
+                                            <input
+                                                type="text"
+                                                name="customer_name"
+                                                form="filterForm"
+                                                class="form-control form-control-sm"
+                                                placeholder="Search Name"
+                                                value="{{ customer_name_filter }}"
+                                                onkeydown="if(event.key === 'Enter'){ event.preventDefault(); document.getElementById('filterForm').submit(); }"
+                                            >
+                                        </div>
+                                    </th>
+
+                                    <th>Contact</th>
+
+                                    <th>Email</th>
+
+                                    <th>
+                                        <div class="d-flex flex-column gap-1">
+                                            <span>Tower</span>
+                                            <select
+                                                name="tower"
+                                                form="filterForm"
+                                                class="form-select form-select-sm"
+                                                onchange="document.getElementById('filterForm').submit()">
+                                                <option value="">All</option>
+                                                {% for tower in tower_options %}
+                                                    <option value="{{ tower }}" {% if tower_filter == tower %}selected{% endif %}>
+                                                        {{ tower }}
+                                                    </option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </th>
+
+                                    <th>
+                                        <div class="d-flex flex-column gap-1">
+                                            <span>Area</span>
+                                            <input
+                                                type="text"
+                                                name="area"
+                                                form="filterForm"
+                                                class="form-control form-control-sm"
+                                                placeholder="Search Area"
+                                                value="{{ area_filter }}"
+                                                onkeydown="if(event.key === 'Enter'){ event.preventDefault(); document.getElementById('filterForm').submit(); }"
+                                            >
+                                        </div>
+                                    </th>
+
+                                    <th>
+                                        <div class="d-flex flex-column gap-1">
+                                            <span>Issue</span>
+                                            <select
+                                                name="issue"
+                                                form="filterForm"
+                                                class="form-select form-select-sm"
+                                                onchange="document.getElementById('filterForm').submit()">
+                                                <option value="">All</option>
+                                                {% for issue in issue_options %}
+                                                    <option value="{{ issue }}" {% if issue_filter == issue %}selected{% endif %}>
+                                                        {{ issue }}
+                                                    </option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </th>
+
+                                    <th>Issue Description</th>
+
+                                    <th>Photo</th>
+
+                                    <th>Stage</th>
+
+                                    <th>Pending With</th>
+
+                                    <th>Progress</th>
+
+                                    <th>Query Raised</th>
+
+                                    <th>Due Time</th>
+
+                                    <th>Remaining</th>
+
+                                    <th>Closed Date</th>
+
+                                </tr>
+
+
+                            </thead>
+
+
+
+                            <!-- ================================= -->
+                            <!-- TABLE DATA -->
+                            <!-- ================================= -->
+
+                            <tbody>
+
+
+                                {% for customer in customer_data %}
+
+
+                                <tr>
+
+
+                                    <!-- TICKET ID -->
+
+                                    <td>
+
+                                        <strong class="text-primary">
+
+                                            {{ customer.ticket }}
+
+                                        </strong>
+
+                                    </td>
+
+
+
+                                    <!-- CUSTOMER -->
+
+                                    <td>
+
+                                        {{ customer.customer }}
+
+                                    </td>
+
+
+
+                                    <!-- CONTACT -->
+
+                                    <td>
+
+                                        {{ customer.contact }}
+
+                                    </td>
+
+
+
+                                    <!-- EMAIL -->
+
+                                    <td>
+
+                                        {{ customer.email }}
+
+                                    </td>
+
+
+
+                                    <!-- TOWER -->
+
+                                    <td>
+
+                                        {{ customer.tower }}
+
+                                    </td>
+
+
+
+                                    <!-- AREA -->
+
+                                    <td>
+
+                                        {{ customer.area }}
+
+                                    </td>
+
+
+
+                                    <!-- ISSUE -->
+
+                                    <td>
+
+                                        {{ customer.issue }}
+
+                                    </td>
+
+
+                                    <!-- ISSUE DESCRIPTION -->
+
+                                    <td>
+                                        {{ customer.issue_description }}
+                                    </td>
+
+
+                                    <!-- PHOTO / FILES -->
+
+                                    <td class="text-center">
+                                        {% if customer.all_files %}
+                                            <div class="d-flex flex-wrap gap-2 justify-content-center">
+                                                {% for file in customer.all_files %}
+                                                    {% if file.type == "image" %}
+                                                        <a href="#"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#imageModal"
+                                                            onclick="document.getElementById('modalImage').src='{{ file.url }}';
+                                                                     document.getElementById('modalImageLabel').innerText='{{ file.label }}';"
+                                                            class="btn btn-sm btn-primary p-1"
+                                                            title="{{ file.label }}">
+                                                            <img
+                                                                src="{{ file.url }}"
+                                                                alt="{{ file.label }}"
+                                                                class="crm-table-image"
+                                                            >
+                                                        </a>
+                                                    {% else %}
+                                                        <a href="{{ file.url }}"
+                                                            target="_blank"
+                                                            class="btn btn-sm btn-primary"
+                                                            title="{{ file.label }}">
+                                                            <i class="fa-solid fa-file-pdf me-1"></i>
+                                                            Open File
+                                                        </a>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            <span class="text-muted">No Image</span>
+                                        {% endif %}
+                                    </td>
+
+
+
+                                    <!-- STAGE -->
+
+                                    <td>
+
+
+                                        <span class="badge bg-secondary">
+
+                                            {{ customer.current_stage }}
+
+                                        </span>
+
+
+                                        <br>
+
+
+                                        <small class="text-muted">
+
+                                            {{ customer.stage_name }}
+
+                                        </small>
+
+
+                                    </td>
+
+
+
+                                    <!-- PENDING WITH -->
+
+                                    <td>
+
+
+                                        {{ customer.pending_with }}
+
+
+                                        <br>
+
+
+                                        <small class="text-muted">
+
+
+                                            {% if customer.pending_with == "Site Engineer" %}
+
+                                                Dipesh Chaudhary
+
+
+                                            {% elif customer.pending_with == "CRM" %}
+
+                                                Varsha Sahu
+
+
+                                            {% elif customer.pending_with == "Store Incharge" %}
+
+                                                Bhola
+
+
+                                            {% elif customer.pending_with == "Maintenance Incharge" %}
+
+                                                Dharmendra
+
+
+                                            {% endif %}
+
+
+                                        </small>
+
+
+                                    </td>
+
+
+
+                                    <!-- PROGRESS -->
+
+                                    <td>
+
+
+                                        {% if customer.progress == "Closed" %}
+
+
+                                            <span class="badge bg-success">
+
+                                                {{ customer.progress }}
+
+                                            </span>
+
+
+                                        {% elif customer.progress == "Open" %}
+
+
+                                            <span class="badge bg-primary">
+
+                                                {{ customer.progress }}
+
+                                            </span>
+
+
+                                        {% else %}
+
+
+                                            <span class="badge bg-warning text-dark">
+
+                                                {{ customer.progress }}
+
+                                            </span>
+
+
+                                        {% endif %}
+
+
+                                    </td>
+
+
+
+                                    <!-- QUERY RAISED -->
+
+                                    <td>
+
+                                        {{ customer.query_raised }}
+
+                                    </td>
+
+
+
+                                    <!-- DUE TIME -->
+
+                                    <td>
+
+                                        {{ customer.due_time }}
+
+                                    </td>
+
+
+
+                                    <!-- REMAINING -->
+
+                                    <td>
+
+
+                                        {% if customer.is_overdue %}
+
+
+                                            <span class="fw-bold text-danger">
+
+                                                {{ customer.remaining }}
+
+                                            </span>
+
+
+                                        {% else %}
+
+
+                                            <span class="text-success">
+
+                                                {{ customer.remaining }}
+
+                                            </span>
+
+
+                                        {% endif %}
+
+
+                                    </td>
+
+
+
+                                    <!-- CLOSED DATE -->
+
+                                    <td>
+
+                                        {{ customer.closed_date }}
+
+                                    </td>
+
+
+                                </tr>
+
+
+
+                                <!-- ================================= -->
+                                <!-- EMPTY DATA -->
+                                <!-- ================================= -->
+
+                                {% empty %}
+
+
+                                <tr>
+
+
+                                    <td
+                                        colspan="16"
+                                        class="text-center py-5"
+                                    >
+
+
+                                        <h5 class="text-muted">
+
+                                            No Customer Queries Found
+
+                                        </h5>
+
+
+                                    </td>
+
+
+                                </tr>
+
+
+                                {% endfor %}
+
+
+                            </tbody>
+
+
+                        </table>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- ================================================= -->
+            <!-- FOOTER -->
+            <!-- ================================================= -->
+
+            <div class="text-center mt-4 mb-2">
+
+
+                <small class="text-muted">
+
+                    Admin Dashboard | Powered by Sampoorna Maintenance
+
+                </small>
+
+
+            </div>
 
 
         </div>
@@ -771,3 +1175,38 @@
 
 
 </div>
+
+
+
+<!-- ========================================================= -->
+<!-- IMAGE MODAL FOR PREVIEW -->
+<!-- ========================================================= -->
+
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="modalImageLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalImageLabel">Image Preview</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <img id="modalImage" src="" alt="Preview" class="img-fluid rounded">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- ========================================================= -->
+<!-- BOOTSTRAP JS -->
+<!-- ========================================================= -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+></script>
+
+
+</body>
+
+</html>
