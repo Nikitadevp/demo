@@ -3160,268 +3160,268 @@ from .models import (
     CustomerFeedback,
 )
 
-def admin_dashboard(request):
+# def admin_dashboard(request):
 
-    # ==========================================
-    # LOGIN CHECK
-    # ==========================================
+#     # ==========================================
+#     # LOGIN CHECK
+#     # ==========================================
 
-    if "admin_id" not in request.session:
-        return redirect("login")
+#     if "admin_id" not in request.session:
+#         return redirect("login")
 
-    if request.session.get("admin_role") != "Admin":
-        return redirect("login")
+#     if request.session.get("admin_role") != "Admin":
+#         return redirect("login")
 
-    # ==========================================
-    # GET FILTER & SEARCH PARAMETERS
-    # ==========================================
+#     # ==========================================
+#     # GET FILTER & SEARCH PARAMETERS
+#     # ==========================================
 
-    search = request.GET.get("search", "")
-    customer_name_filter = request.GET.get("customer_name", "")
-    tower_filter = request.GET.get("tower", "")
-    area_filter = request.GET.get("area", "")
-    issue_filter = request.GET.get("issue", "")
+#     search = request.GET.get("search", "")
+#     customer_name_filter = request.GET.get("customer_name", "")
+#     tower_filter = request.GET.get("tower", "")
+#     area_filter = request.GET.get("area", "")
+#     issue_filter = request.GET.get("issue", "")
 
-    # ==========================================
-    # CUSTOMER QUERY BASE QUERYSET
-    # ==========================================
+#     # ==========================================
+#     # CUSTOMER QUERY BASE QUERYSET
+#     # ==========================================
 
-    customers = CustomerQuery.objects.all().order_by("-created_at")
+#     customers = CustomerQuery.objects.all().order_by("-created_at")
 
-    # Dropdown Options for Filters
-    tower_options = (
-        CustomerQuery.objects.values_list("tower", flat=True)
-        .distinct()
-        .exclude(tower__isnull=True)
-        .exclude(tower="")
-    )
-    issue_options = (
-        CustomerQuery.objects.values_list("issue", flat=True)
-        .distinct()
-        .exclude(issue__isnull=True)
-        .exclude(issue="")
-    )
+#     # Dropdown Options for Filters
+#     tower_options = (
+#         CustomerQuery.objects.values_list("tower", flat=True)
+#         .distinct()
+#         .exclude(tower__isnull=True)
+#         .exclude(tower="")
+#     )
+#     issue_options = (
+#         CustomerQuery.objects.values_list("issue", flat=True)
+#         .distinct()
+#         .exclude(issue__isnull=True)
+#         .exclude(issue="")
+#     )
 
-    # ==========================================
-    # APPLY FILTERS & SEARCH
-    # ==========================================
+#     # ==========================================
+#     # APPLY FILTERS & SEARCH
+#     # ==========================================
 
-    if search:
-        customers = customers.filter(
-            Q(ticket_id__icontains=search)
-            | Q(name__icontains=search)
-            | Q(contact__icontains=search)
-            | Q(email__icontains=search)
-            | Q(tower__icontains=search)
-            | Q(area__icontains=search)
-        )
+#     if search:
+#         customers = customers.filter(
+#             Q(ticket_id__icontains=search)
+#             | Q(name__icontains=search)
+#             | Q(contact__icontains=search)
+#             | Q(email__icontains=search)
+#             | Q(tower__icontains=search)
+#             | Q(area__icontains=search)
+#         )
 
-    if customer_name_filter:
-        customers = customers.filter(name__icontains=customer_name_filter)
+#     if customer_name_filter:
+#         customers = customers.filter(name__icontains=customer_name_filter)
 
-    if tower_filter:
-        customers = customers.filter(tower=tower_filter)
+#     if tower_filter:
+#         customers = customers.filter(tower=tower_filter)
 
-    if area_filter:
-        customers = customers.filter(area__icontains=area_filter)
+#     if area_filter:
+#         customers = customers.filter(area__icontains=area_filter)
 
-    if issue_filter:
-        customers = customers.filter(issue=issue_filter)
+#     if issue_filter:
+#         customers = customers.filter(issue=issue_filter)
 
-    # ==========================================
-    # DASHBOARD COUNTS (OPEN REMOVED)
-    # ==========================================
+#     # ==========================================
+#     # DASHBOARD COUNTS (OPEN REMOVED)
+#     # ==========================================
 
-    total_queries = CustomerQuery.objects.count()
+#     total_queries = CustomerQuery.objects.count()
 
-    # Closed Count
-    closed_count = CustomerQuery.objects.filter(status="Closed").count()
+#     # Closed Count
+#     closed_count = CustomerQuery.objects.filter(status="Closed").count()
 
-    # In Progress Count (Includes non-closed status)
-    in_progress_count = total_queries - closed_count
+#     # In Progress Count (Includes non-closed status)
+#     in_progress_count = total_queries - closed_count
 
-    # ==========================================
-    # CUSTOMER DATA PROCESS
-    # ==========================================
+#     # ==========================================
+#     # CUSTOMER DATA PROCESS
+#     # ==========================================
 
-    customer_data = []
-    overdue_count = 0
-    due_today_count = 0
+#     customer_data = []
+#     overdue_count = 0
+#     due_today_count = 0
 
-    for customer in customers:
+#     for customer in customers:
 
-        # Default Values
-        current_stage = "S1"
-        stage_name = "Customer Query"
-        pending_with = "CRM"
-        due_time = "-"
-        remaining = "-"
-        is_overdue = False
-        closed_date = "-"
+#         # Default Values
+#         current_stage = "S1"
+#         stage_name = "Customer Query"
+#         pending_with = "CRM"
+#         due_time = "-"
+#         remaining = "-"
+#         is_overdue = False
+#         closed_date = "-"
 
-        # STAGE & PENDING WITH CALCULATIONS
+#         # STAGE & PENDING WITH CALCULATIONS
 
-        if customer.status == "Closed":
-            current_stage = "Completed"
-            stage_name = "Query Closed"
-            pending_with = "-"
-            due_time = "-"
-            remaining = "-"
-            closed_date = getattr(customer, "updated_at", "-")
+#         if customer.status == "Closed":
+#             current_stage = "Completed"
+#             stage_name = "Query Closed"
+#             pending_with = "-"
+#             due_time = "-"
+#             remaining = "-"
+#             closed_date = getattr(customer, "updated_at", "-")
 
-        elif CustomerFeedback.objects.filter(customer_query=customer).exists():
-            current_stage = "S11"
-            stage_name = "Customer Feedback"
-            pending_with = "CRM"
+#         elif CustomerFeedback.objects.filter(customer_query=customer).exists():
+#             current_stage = "S11"
+#             stage_name = "Customer Feedback"
+#             pending_with = "CRM"
 
-        elif QueryCloser.objects.filter(customer_query=customer).exists():
-            current_stage = "S10"
-            stage_name = "Query Closer"
-            pending_with = "CRM"
+#         elif QueryCloser.objects.filter(customer_query=customer).exists():
+#             current_stage = "S10"
+#             stage_name = "Query Closer"
+#             pending_with = "CRM"
 
-        elif ReceiveMaterial.objects.filter(customer_query=customer).exists():
-            current_stage = "S9"
-            stage_name = "Receive Material"
-            pending_with = "Store Incharge"
+#         elif ReceiveMaterial.objects.filter(customer_query=customer).exists():
+#             current_stage = "S9"
+#             stage_name = "Receive Material"
+#             pending_with = "Store Incharge"
 
-        elif IssueMaterial.objects.filter(customer_query=customer).exists():
-            current_stage = "S8"
-            stage_name = "Issue Material"
-            pending_with = "Store Incharge"
+#         elif IssueMaterial.objects.filter(customer_query=customer).exists():
+#             current_stage = "S8"
+#             stage_name = "Issue Material"
+#             pending_with = "Store Incharge"
 
-        elif RaiseIndent.objects.filter(customer_query=customer).exists():
-            current_stage = "S7"
-            stage_name = "Raise Indent"
-            pending_with = "Store Incharge"
+#         elif RaiseIndent.objects.filter(customer_query=customer).exists():
+#             current_stage = "S7"
+#             stage_name = "Raise Indent"
+#             pending_with = "Store Incharge"
 
-        elif MaterialAvailability.objects.filter(customer_query=customer).exists():
-            current_stage = "S6"
-            stage_name = "Material Availability"
-            pending_with = "Store Incharge"
+#         elif MaterialAvailability.objects.filter(customer_query=customer).exists():
+#             current_stage = "S6"
+#             stage_name = "Material Availability"
+#             pending_with = "Store Incharge"
 
-        elif AdvanceCollection.objects.filter(customer_query=customer).exists():
-            current_stage = "S5"
-            stage_name = "Advance Collection"
-            pending_with = "CRM"
+#         elif AdvanceCollection.objects.filter(customer_query=customer).exists():
+#             current_stage = "S5"
+#             stage_name = "Advance Collection"
+#             pending_with = "CRM"
 
-        elif CustomerApproval.objects.filter(customer_query=customer).exists():
-            current_stage = "S4"
-            stage_name = "Customer Approval"
-            pending_with = "CRM"
+#         elif CustomerApproval.objects.filter(customer_query=customer).exists():
+#             current_stage = "S4"
+#             stage_name = "Customer Approval"
+#             pending_with = "CRM"
 
-        elif EstimateForm.objects.filter(customer_query=customer).exists():
-            current_stage = "S3"
-            stage_name = "Estimate"
-            pending_with = "Site Engineer"
+#         elif EstimateForm.objects.filter(customer_query=customer).exists():
+#             current_stage = "S3"
+#             stage_name = "Estimate"
+#             pending_with = "Site Engineer"
 
-        elif SiteInspection.objects.filter(customer_query=customer).exists():
-            current_stage = "S2"
-            stage_name = "Site Inspection"
-            pending_with = "Site Engineer"
+#         elif SiteInspection.objects.filter(customer_query=customer).exists():
+#             current_stage = "S2"
+#             stage_name = "Site Inspection"
+#             pending_with = "Site Engineer"
 
-        elif MaintenanceScope.objects.filter(customer_query=customer).exists():
-            current_stage = "S1"
-            stage_name = "Maintenance Scope"
-            pending_with = "Site Engineer"
+#         elif MaintenanceScope.objects.filter(customer_query=customer).exists():
+#             current_stage = "S1"
+#             stage_name = "Maintenance Scope"
+#             pending_with = "Site Engineer"
 
-        # CALCULATE DUE TIME & REMAINING TIME
+#         # CALCULATE DUE TIME & REMAINING TIME
 
-        if current_stage != "Completed":
-            try:
-                due_datetime = calculate_due_time(
-                    current_stage, customer.created_at
-                )
-                due_time = due_datetime.strftime("%d-%m-%Y %I:%M %p")
+#         if current_stage != "Completed":
+#             try:
+#                 due_datetime = calculate_due_time(
+#                     current_stage, customer.created_at
+#                 )
+#                 due_time = due_datetime.strftime("%d-%m-%Y %I:%M %p")
 
-                remaining_text, overdue = calculate_remaining_time(due_datetime)
-                remaining = remaining_text
-                is_overdue = overdue
+#                 remaining_text, overdue = calculate_remaining_time(due_datetime)
+#                 remaining = remaining_text
+#                 is_overdue = overdue
 
-                if overdue:
-                    overdue_count += 1
+#                 if overdue:
+#                     overdue_count += 1
 
-                if due_datetime.date() == timezone.now().date():
-                    due_today_count += 1
+#                 if due_datetime.date() == timezone.now().date():
+#                     due_today_count += 1
 
-            except Exception:
-                due_time = "-"
-                remaining = "-"
-                is_overdue = False
+#             except Exception:
+#                 due_time = "-"
+#                 remaining = "-"
+#                 is_overdue = False
 
-        # PROGRESS STATUS (ONLY IN PROGRESS OR CLOSED)
+#         # PROGRESS STATUS (ONLY IN PROGRESS OR CLOSED)
 
-        if customer.status == "Closed":
-            progress = "Closed"
-        else:
-            progress = "In Progress"
+#         if customer.status == "Closed":
+#             progress = "Closed"
+#         else:
+#             progress = "In Progress"
 
-        # COLLECT ALL FILES/PHOTOS
-        # FIX: CustomerQuery model ka field "photo" hai, "image" nahi.
+#         # COLLECT ALL FILES/PHOTOS
+#         # FIX: CustomerQuery model ka field "photo" hai, "image" nahi.
 
-        all_files = []
-        if getattr(customer, "photo", None):
-            all_files.append(
-                {
-                    "url": customer.photo.url,
-                    "type": (
-                        "image"
-                        if customer.photo.url.lower().endswith(
-                            (".png", ".jpg", ".jpeg", ".webp")
-                        )
-                        else "file"
-                    ),
-                    "label": "Query Image",
-                }
-            )
+#         all_files = []
+#         if getattr(customer, "photo", None):
+#             all_files.append(
+#                 {
+#                     "url": customer.photo.url,
+#                     "type": (
+#                         "image"
+#                         if customer.photo.url.lower().endswith(
+#                             (".png", ".jpg", ".jpeg", ".webp")
+#                         )
+#                         else "file"
+#                     ),
+#                     "label": "Query Image",
+#                 }
+#             )
 
-        # ADD TO CUSTOMER DATA LIST
+#         # ADD TO CUSTOMER DATA LIST
 
-        customer_data.append(
-            {
-                "ticket": customer.ticket_id,
-                "customer": customer.name,
-                "contact": customer.contact,
-                "email": customer.email,
-                "tower": customer.tower,
-                "area": customer.area,
-                "issue": customer.issue,
-                # FIX: CustomerQuery model ka field "problem" hai,
-                # "issue_description"/"description" nahi.
-                "issue_description": getattr(customer, "problem", "-"),
-                "all_files": all_files,
-                "current_stage": current_stage,
-                "stage_name": stage_name,
-                "pending_with": pending_with,
-                "progress": progress,
-                "due_time": due_time,
-                "remaining": remaining,
-                "is_overdue": is_overdue,
-                "query_raised": customer.created_at,
-                "closed_date": closed_date,
-            }
-        )
+#         customer_data.append(
+#             {
+#                 "ticket": customer.ticket_id,
+#                 "customer": customer.name,
+#                 "contact": customer.contact,
+#                 "email": customer.email,
+#                 "tower": customer.tower,
+#                 "area": customer.area,
+#                 "issue": customer.issue,
+#                 # FIX: CustomerQuery model ka field "problem" hai,
+#                 # "issue_description"/"description" nahi.
+#                 "issue_description": getattr(customer, "problem", "-"),
+#                 "all_files": all_files,
+#                 "current_stage": current_stage,
+#                 "stage_name": stage_name,
+#                 "pending_with": pending_with,
+#                 "progress": progress,
+#                 "due_time": due_time,
+#                 "remaining": remaining,
+#                 "is_overdue": is_overdue,
+#                 "query_raised": customer.created_at,
+#                 "closed_date": closed_date,
+#             }
+#         )
 
-    # ==========================================
-    # CONTEXT
-    # ==========================================
+#     # ==========================================
+#     # CONTEXT
+#     # ==========================================
 
-    context = {
-        "total_queries": total_queries,
-        "in_progress_count": in_progress_count,
-        "closed_count": closed_count,
-        "overdue_count": overdue_count,
-        "due_today_count": due_today_count,
-        "customer_data": customer_data,
-        "search": search,
-        "tower_options": tower_options,
-        "issue_options": issue_options,
-        "customer_name_filter": customer_name_filter,
-        "tower_filter": tower_filter,
-        "area_filter": area_filter,
-        "issue_filter": issue_filter,
-    }
+#     context = {
+#         "total_queries": total_queries,
+#         "in_progress_count": in_progress_count,
+#         "closed_count": closed_count,
+#         "overdue_count": overdue_count,
+#         "due_today_count": due_today_count,
+#         "customer_data": customer_data,
+#         "search": search,
+#         "tower_options": tower_options,
+#         "issue_options": issue_options,
+#         "customer_name_filter": customer_name_filter,
+#         "tower_filter": tower_filter,
+#         "area_filter": area_filter,
+#         "issue_filter": issue_filter,
+#     }
 
-    return render(request, "admin_dashboard.html", context)
+#     return render(request, "admin_dashboard.html", context)
   
   
   
@@ -5155,3 +5155,713 @@ def store_keeper_dashboard(request):
     }
 
     return render(request, "store_keeper_dashboard.html", context)
+
+
+
+
+
+
+def admin_dashboard(request):
+
+    # ======================================================
+    # LOGIN CHECK
+    # ======================================================
+
+    if "admin_id" not in request.session:
+        return redirect("login")
+
+    if request.session.get("admin_role") != "Admin":
+        return redirect("login")
+
+    # ======================================================
+    # SEARCH
+    # ======================================================
+
+    search = request.GET.get("search", "").strip()
+
+
+    customer_name_filter = request.GET.get("customer_name", "").strip()
+    tower_filter = request.GET.get("tower", "").strip()
+    area_filter = request.GET.get("area", "").strip()
+    issue_filter = request.GET.get("issue", "").strip()
+
+
+    # ======================================================
+    # CUSTOMER QUERY
+    # ======================================================
+
+    queries = CustomerQuery.objects.all().order_by("-created_at")
+
+    if search:
+        queries = queries.filter(
+            
+        Q(ticket_id__icontains=search) |
+        Q(name__icontains=search) |
+        Q(contact__icontains=search) |
+        Q(email__icontains=search) |
+        Q(tower__icontains=search) |
+        Q(other_tower__icontains=search) |
+        Q(area__icontains=search) |
+        Q(other_area__icontains=search) |
+        Q(issue__icontains=search) |
+        Q(problem__icontains=search) |
+        Q(status__icontains=search) 
+        )
+
+
+
+
+    if tower_filter:
+        queries = queries.filter(tower=tower_filter)
+    if area_filter:
+        queries = queries.filter(area__icontains=area_filter)
+    if issue_filter:
+        queries = queries.filter(issue=issue_filter)
+    if customer_name_filter:
+       queries = queries.filter(name__icontains=customer_name_filter)
+
+
+    customer_name_options = sorted(
+        set(
+            CustomerQuery.objects
+            .values_list("name", flat=True)
+            .exclude(name="")
+        )
+    )
+
+
+
+    tower_options = sorted(
+        set(
+            CustomerQuery.objects
+            .values_list("tower", flat=True)
+            .exclude(tower="")
+        )   
+    )    
+
+    area_options = sorted(
+        set(
+            CustomerQuery.objects
+            .values_list("area", flat=True)
+            .exclude(area="")
+        )
+    )
+
+    issue_options = sorted(
+        
+        
+        set(
+            CustomerQuery.objects
+            .values_list("issue", flat=True)
+            .exclude(issue="")        
+        )
+    )
+
+
+    # ======================================================
+    # DASHBOARD COUNTS
+    # ======================================================
+
+    total_queries = queries.count()
+
+  
+    
+    in_progress_count = 0
+   
+    closed_count = 0
+
+    overdue_count = 0
+    due_today_count = 0
+
+    # ======================================================
+    # TABLE DATA
+    # ======================================================
+
+    customer_data = []
+    crm_pending_data = []
+    overdue_customers = []
+    due_today_customers = []
+
+    closed_customer_data = []
+
+
+    
+
+    today = timezone.localdate()
+
+    # ======================================================
+    # CUSTOMER LOOP
+    # ======================================================
+    
+    
+
+
+
+
+
+    for query in queries:
+
+        # ==============================================
+        # RELATED OBJECTS
+        # ==============================================
+      
+        scope = safe_related(query, "scope_form")
+
+        inspection = SiteInspection.objects.filter(
+            customer_query=query
+        ).first()
+
+        estimate = EstimateForm.objects.filter(
+            customer_query=query
+        ).first()
+
+        approval = CustomerApproval.objects.filter(
+            customer_query=query
+        ).first()
+
+        advance = AdvanceCollection.objects.filter(
+            customer_query=query
+        ).first()
+
+        material = MaterialAvailability.objects.filter(
+            customer_query=query
+        ).first()
+
+        indent = RaiseIndent.objects.filter(
+            customer_query=query
+        ).first()
+
+        issue_material = IssueMaterial.objects.filter(
+            customer_query=query
+        ).first()
+
+        receive_material = ReceiveMaterial.objects.filter(
+            customer_query=query
+        ).first()
+
+        closer = QueryCloser.objects.filter(
+            customer_query=query
+        ).first()
+
+        feedback = CustomerFeedback.objects.filter(
+            customer_query=query
+        ).first()
+
+        # ==============================================
+        # CURRENT STAGE
+        # ==============================================
+
+        current_stage = "S1"
+        stage_start = query.created_at
+
+        if scope:
+            current_stage = "S2"
+            stage_start = scope.created_at
+
+        if inspection:
+            current_stage = "S3"
+            stage_start = inspection.created_at
+
+        if estimate:
+            current_stage = "S4"
+            stage_start = estimate.created_at
+
+        if approval:
+            current_stage = "S5"
+            stage_start = approval.created_at
+
+        if advance:
+            current_stage = "S6"
+            stage_start = advance.created_at
+
+        if material:
+            current_stage = "S7"
+            stage_start = material.created_at
+
+        if indent:
+            current_stage = "S8"
+            stage_start = indent.created_at
+
+        if issue_material:
+            current_stage = "S9"
+            stage_start = issue_material.created_at
+
+        if receive_material:
+            current_stage = "S10"
+            stage_start = receive_material.created_at
+
+        if closer:
+            current_stage = "S11"
+            stage_start = closer.created_at
+
+        if feedback:
+            current_stage = "Completed"
+            stage_start = feedback.created_at
+            
+        if current_stage == "Completed":
+            
+            closed_customer_data.append({
+                "ticket": query.ticket_id,
+                "customer": query.name,
+                "contact": query.contact,
+                "email": query.email,
+                "tower": query.tower,
+                "area": query.area,
+                "issue": query.issue,
+                "issue_description": query.problem,
+                "current_stage": "Completed",
+                "query_raised": timezone.localtime(
+                    query.created_at).strftime("%d-%m-%Y %I:%M %p"),
+                "closed_date": timezone.localtime(
+                    feedback.created_at).strftime("%d-%m-%Y %I:%M %p") if feedback else None,
+            })
+
+        # ==================================================
+        # ALL UPLOADED FILES (SABHI STAGES SE)
+        # ==================================================
+
+        all_files = []
+
+        def get_file_type(url):
+            if url.lower().endswith((".png", ".jpg", ".jpeg", ".gif", ".webp")):
+                return "image"
+            return "file"
+
+        def add_file(field, label, file_type="image"):
+            if field:
+                try:
+                    if os.path.exists(field.path):
+                        all_files.append({
+                            "url": request.build_absolute_uri(field.url),
+                            "type": file_type if file_type == "image" else get_file_type(field.url),
+                            "label": label
+                        })
+                except (ValueError, OSError):
+                    pass
+
+        add_file(query.photo, "Customer Photo (S1)")
+
+        if inspection:
+            add_file(inspection.photo1, "Inspection Photo 1 (S2)")
+            add_file(inspection.photo2, "Inspection Photo 2 (S2)")
+
+        if estimate:
+            add_file(estimate.proforma_invoice, "Proforma Invoice (S3)", file_type="file")
+
+        if closer:
+            add_file(closer.closer_report, "Closer Report (S10)", file_type="file")
+
+        # ==============================================
+        # STAGE DETAILS
+        # ==============================================
+
+        stage_name = get_stage_name(current_stage)
+        pending_with = get_pending_with(current_stage)
+        progress = get_progress(current_stage)
+       
+
+        # ==============================================
+        # DUE TIME
+        # ==============================================
+
+        due_time = calculate_due_time(
+            current_stage,
+            stage_start
+        )
+        
+        # ==================================================
+        # DUE TIME DISPLAY
+        # ==================================================
+
+        due_time_display = "-"
+        remaining_time = "-"
+        is_overdue = False
+
+        if due_time:
+
+            due_time_display = timezone.localtime(
+                due_time
+            ).strftime("%d-%m-%Y %I:%M %p")
+
+            remaining_time, is_overdue = calculate_remaining_time(
+                due_time
+            )
+
+        # ==================================================
+        # QUERY RAISED
+        # ==================================================
+
+        query_raised = timezone.localtime(
+            query.created_at
+        ).strftime("%d-%m-%Y %I:%M %p")
+
+
+        
+        closed_date = "-" 
+        if feedback:
+            closed_date = timezone.localtime(
+                feedback.created_at
+            ).strftime("%d-%m-%Y %I:%M %p")                      
+
+        # ==================================================
+        # DUE TODAY
+        # ==================================================
+
+        is_due_today = False
+
+        if due_time and current_stage != "Completed":
+
+            if timezone.localtime(due_time).date() == today:
+
+                is_due_today = True
+                due_today_count += 1
+
+        # ==================================================
+        # OVERDUE
+        # ==================================================
+
+        if is_overdue and current_stage != "Completed":
+
+            overdue_count += 1
+
+        # ==================================================
+        # STATUS COUNT
+        # ==================================================
+
+      
+
+        if current_stage == "Completed":
+
+            closed_count += 1
+
+
+        else:
+
+            in_progress_count += 1
+
+        # ==================================================
+        # PROGRESS
+        # ==================================================
+
+        if current_stage == "Completed":
+
+            progress = "Closed"
+        else:
+
+            progress = "In Progress"
+
+
+        stage_form_url = None
+        
+        if current_stage == "S1":
+            stage_form_url = reverse(
+               "maintenance_scope_form",
+                args=[query.id]
+            )
+        elif current_stage == "S2":
+            stage_form_url = reverse(
+                "site_inspection_form",
+                args=[query.id]
+            )
+        elif current_stage == "S3":
+            stage_form_url = reverse(
+                "estimate_form",
+                args=[query.id]
+            )
+        elif current_stage == "S4":
+            stage_form_url = reverse(
+                "customer_approval_form",
+                args=[query.id]
+            )
+        elif current_stage == "S5":
+            stage_form_url = reverse(
+                "advance_collection_form",
+                args=[query.id]
+            )
+
+        elif current_stage == "S6":
+            stage_form_url = reverse(
+                "material_availability_form",
+                args=[query.id]
+            )
+
+        elif current_stage == "S7":
+            stage_form_url = reverse(
+                "raise_indent_form",
+                args=[query.id]
+            )
+
+        elif current_stage == "S8":
+            stage_form_url = reverse(
+                "issue_material_form",
+                args=[query.id]
+            )
+
+        elif current_stage == "S9":
+            stage_form_url = reverse(
+                "receive_material_form",
+                args=[query.id]
+            )
+
+        elif current_stage == "S10":    
+            stage_form_url = reverse(
+                "query_closer_form",
+                args=[query.id]
+            )
+
+
+        elif current_stage == "S11":            
+            stage_form_url = reverse(
+                "customer_feedback_form",
+                args=[query.id]
+            )                                
+
+  
+               
+                
+        # ==================================================
+        # CUSTOMER DATA
+        # ==================================================
+
+        customer = {
+
+            "id": query.id,
+
+            "ticket": query.ticket_id,
+
+            "customer": query.name,
+
+            "contact": query.contact,
+
+            "email": query.email,
+
+            "tower": query.tower,
+
+            "area": query.area,
+
+            "issue": query.issue,
+
+            "query_created_at": query.created_at,
+
+            "issue_description": query.problem,
+
+            "query_raised": query_raised,
+
+            "all_files": all_files,
+
+            "current_stage": current_stage,
+
+            "stage_name": stage_name,
+
+            "stage_form_url": stage_form_url,
+
+            "pending_with": pending_with,
+
+            "progress": progress,
+
+            "due_time": due_time_display,
+
+            "remaining": remaining_time,
+
+            "is_overdue": is_overdue,
+
+            "closed_date": closed_date,
+
+            "customer_name_options": customer_name_options,
+
+            "customer_name_filter": customer_name_filter,
+
+        }
+
+        customer_data.append(customer)
+
+
+        crm_stages = ["S1", "S3", "S4", "S5", "S11"]   # ya S0 agar tumhare project me wahi use hota hai
+
+        if current_stage in crm_stages:
+            crm_pending_data.append(customer)  
+
+
+        # ==================================================
+        # OVERDUE TABLE
+        # ==================================================
+
+        if is_overdue and current_stage != "Completed":
+
+            overdue_customers.append(customer)
+
+        # ==================================================
+        # DUE TODAY TABLE
+        # ==================================================
+
+        if is_due_today and current_stage in crm_stages:
+
+            due_today_customers.append(customer)
+
+    customer_data.sort(
+        key=lambda x: x["query_created_at"],
+        reverse=True
+    )
+
+    crm_pending_data.sort(
+        key=lambda x: x["query_created_at"]
+    )
+
+    overdue_customers.sort(
+        key=lambda x: x["query_created_at"]
+    )
+
+    due_today_customers.sort(
+        key=lambda x: x["query_created_at"]
+    )
+
+    due_today_count = len(due_today_customers)
+    
+
+
+  # ISSUE CATEGORY REPORT
+    issue_labels = []
+    issue_counts = []
+
+    issue_report = (
+        CustomerQuery.objects   
+        .values("issue")
+        .annotate(total=Count("id"))
+        .order_by("issue")
+    )
+    for item in issue_report:
+
+        issue_labels.append(item["issue"])
+
+        issue_counts.append(item["total"])
+
+
+
+
+    customer_feedback_data = CustomerFeedback.objects.all().order_by("-id")
+
+
+    feedback_list = []
+    for feedback in customer_feedback_data:
+        feedback_list.append({
+            "ticket_id": feedback.case_id,
+            "customer_name": feedback.customer_name,
+
+            "block": feedback.block,
+            "area": feedback.area,
+            "issue_resolved": feedback.issue_resolved,
+            "service_satisfied": feedback.service_satisfied,
+            "customer_remark": feedback.customer_remark,
+            "date": feedback.created_at,
+        })
+
+    # ======================================================
+    # CONTEXT
+    # ======================================================
+
+    context = {
+
+        # Search
+        "search": search,
+
+        # Dashboard Counts
+        "total_queries": total_queries,
+       
+        
+        "in_progress_count": in_progress_count,
+        
+        "closed_count": closed_count,
+        "overdue_count": overdue_count,
+        "due_today_count": due_today_count,
+
+        # Main Table
+        "customer_data": customer_data,
+        "crm_pending_data": crm_pending_data,
+
+        # Overdue Table
+        "overdue_customers": overdue_customers,
+
+        # Due Today Table
+        "due_today_customers": due_today_customers,
+
+        "issue_labels": issue_labels,
+        
+        "issue_counts": issue_counts,
+
+        "feedback_data": feedback_list,
+        "crm_pending_data": crm_pending_data,
+        "total_queries": total_queries,
+        "closed_customer_data": closed_customer_data, 
+
+        
+
+        "tower_options": tower_options,
+        "area_options": area_options,
+        "issue_options": issue_options,
+
+        "tower_filter": tower_filter,
+        "area_filter": area_filter,
+        "issue_filter": issue_filter,
+
+
+
+        "customer_name_options": customer_name_options,
+        "customer_name_filter": customer_name_filter,
+
+    }
+
+
+
+    # =========================================================
+    # CUSTOMER QUERY DETAILS PAGE
+    # =========================================================
+
+    if request.GET.get("page") == "customer_queries":
+
+        return render(
+            request,
+            "customer_query_details.html",
+            context
+        )
+
+    if request.GET.get("page") == "customer_feedback":
+        
+        return render(
+            request,
+            "crm_feedback.html",
+            context
+        )
+
+
+
+    
+
+
+    if request.GET.get("page") == "issue_category":
+
+        return render(
+            request,
+            "issue_category_report.html",
+            context
+        )
+
+
+    if request.GET.get("page") == "closed_queries":
+
+        return render(
+            request,
+            "closed_customer_queries.html",
+            context
+        )
+
+
+
+    # =========================================================
+    # NORMAL CRM DASHBOARD
+    # =========================================================
+
+    return render(
+        request,
+        "admin_dashboard.html",
+        context
+    )
