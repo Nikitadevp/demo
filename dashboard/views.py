@@ -3359,14 +3359,20 @@ def admin_dashboard(request):
         # COLLECT ALL FILES/PHOTOS
 
         all_files = []
-        if customer.photo:
+        if hasattr(customer, "image") and customer.image:
             all_files.append(
                 {
-                    "url": customer.photo.url,
-                    "type": "image",    
-                    "label": "Query Photo",
+                    "url": customer.image.url,
+                    "type": (
+                        "image"
+                        if customer.image.url.lower().endswith(
+                            (".png", ".jpg", ".jpeg", ".webp")
+                        )
+                        else "file"
+                    ),
+                    "label": "Query Image",
                 }
-            )    
+            )
 
         # ADD TO CUSTOMER DATA LIST
 
@@ -3379,7 +3385,9 @@ def admin_dashboard(request):
                 "tower": customer.tower,
                 "area": customer.area,
                 "issue": customer.issue,
-                "issue_description": customer.problem or "-",
+                "issue_description": getattr(
+                    customer, "issue_description", getattr(customer, "description", "-")
+                ),
                 "all_files": all_files,
                 "current_stage": current_stage,
                 "stage_name": stage_name,
