@@ -4899,7 +4899,7 @@ def crm_dashboard(request):
         "overdue_customers": overdue_customers,
 
         # Due Today Table
-        "due_today_customers": due_today_customers,
+       
 
         "issue_labels": issue_labels,
         
@@ -5764,7 +5764,7 @@ def admin_dashboard(request):
         
         "closed_count": closed_count,
         "overdue_count": overdue_count,
-        "due_today_count": due_today_count,
+        
 
         # Main Table
         "customer_data": customer_data,
