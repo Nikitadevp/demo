@@ -202,7 +202,7 @@
 
         <div class="col-md-6">
 
-            <form method="GET" action="{% url 'crm_dashboard' %}" class="d-flex">
+            <form method="GET" action="{% url 'admin_dashboard' %}" class="d-flex">
 
                 <div class="input-group">
 
@@ -223,7 +223,7 @@
 
                     </button>
                     <a
-                       href="{% url 'crm_dashboard' %}"
+                       href="{% url 'admin_dashboard' %}"
                        class="btn btn-secondary">
                        <i class="fas fa-times"></i>
 
@@ -435,7 +435,7 @@
 
             <div class="table-responsive">
 
-                <form id="filterForm" method="GET" action="{% url 'crm_dashboard' %}" style="display:none;">
+                <form id="filterForm" method="GET" action="{% url 'admin_dashboard' %}" style="display:none;">
                     <input type="hidden" name="search" value="{{ search }}">
                 </form>
 
