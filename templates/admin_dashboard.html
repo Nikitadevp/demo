@@ -682,6 +682,9 @@
 
                     <div class="table-responsive">
 
+                        <form id="filterForm" method="GET" action="{% url 'admin_dashboard' %}" style="display:none;">
+                            <input type="hidden" name="search" value="{{ search }}">
+                        </form>
 
                         <table class="table table-hover table-bordered align-middle mb-0">
 
@@ -695,20 +698,81 @@
 
                                 <tr>
 
-
                                     <th>Ticket ID</th>
 
-                                    <th>Customer</th>
+                                    <th>
+                                        <div class="d-flex flex-column gap-1">
+                                            <span>Customer Name</span>
+                                            <input
+                                                type="text"
+                                                name="customer_name"
+                                                form="filterForm"
+                                                class="form-control form-control-sm"
+                                                placeholder="Search Name"
+                                                value="{{ customer_name_filter }}"
+                                                onkeydown="if(event.key === 'Enter'){ event.preventDefault(); document.getElementById('filterForm').submit(); }"
+                                            >
+                                        </div>
+                                    </th>
 
                                     <th>Contact</th>
 
                                     <th>Email</th>
 
-                                    <th>Tower</th>
+                                    <th>
+                                        <div class="d-flex flex-column gap-1">
+                                            <span>Tower</span>
+                                            <select
+                                                name="tower"
+                                                form="filterForm"
+                                                class="form-select form-select-sm"
+                                                onchange="document.getElementById('filterForm').submit()">
+                                                <option value="">All</option>
+                                                {% for tower in tower_options %}
+                                                    <option value="{{ tower }}" {% if tower_filter == tower %}selected{% endif %}>
+                                                        {{ tower }}
+                                                    </option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </th>
 
-                                    <th>Area</th>
+                                    <th>
+                                        <div class="d-flex flex-column gap-1">
+                                            <span>Area</span>
+                                            <input
+                                                type="text"
+                                                name="area"
+                                                form="filterForm"
+                                                class="form-control form-control-sm"
+                                                placeholder="Search Area"
+                                                value="{{ area_filter }}"
+                                                onkeydown="if(event.key === 'Enter'){ event.preventDefault(); document.getElementById('filterForm').submit(); }"
+                                            >
+                                        </div>
+                                    </th>
 
-                                    <th>Issue</th>
+                                    <th>
+                                        <div class="d-flex flex-column gap-1">
+                                            <span>Issue</span>
+                                            <select
+                                                name="issue"
+                                                form="filterForm"
+                                                class="form-select form-select-sm"
+                                                onchange="document.getElementById('filterForm').submit()">
+                                                <option value="">All</option>
+                                                {% for issue in issue_options %}
+                                                    <option value="{{ issue }}" {% if issue_filter == issue %}selected{% endif %}>
+                                                        {{ issue }}
+                                                    </option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </th>
+
+                                    <th>Issue Description</th>
+
+                                    <th>Photo</th>
 
                                     <th>Stage</th>
 
@@ -716,14 +780,13 @@
 
                                     <th>Progress</th>
 
+                                    <th>Query Raised</th>
+
                                     <th>Due Time</th>
 
                                     <th>Remaining</th>
 
-                                    <th>Query Raised</th>
-
                                     <th>Closed Date</th>
-
 
                                 </tr>
 
@@ -749,13 +812,11 @@
 
                                     <td>
 
-
                                         <strong class="text-primary">
 
                                             {{ customer.ticket }}
 
                                         </strong>
-
 
                                     </td>
 
@@ -817,6 +878,50 @@
 
                                         {{ customer.issue }}
 
+                                    </td>
+
+
+                                    <!-- ISSUE DESCRIPTION -->
+
+                                    <td>
+                                        {{ customer.issue_description }}
+                                    </td>
+
+
+                                    <!-- PHOTO / FILES -->
+
+                                    <td class="text-center">
+                                        {% if customer.all_files %}
+                                            <div class="d-flex flex-wrap gap-2 justify-content-center">
+                                                {% for file in customer.all_files %}
+                                                    {% if file.type == "image" %}
+                                                        <a href="#"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#imageModal"
+                                                            onclick="document.getElementById('modalImage').src='{{ file.url }}';
+                                                                     document.getElementById('modalImageLabel').innerText='{{ file.label }}';"
+                                                            class="btn btn-sm btn-primary p-1"
+                                                            title="{{ file.label }}">
+                                                            <img
+                                                                src="{{ file.url }}"
+                                                                alt="{{ file.label }}"
+                                                                class="crm-table-image"
+                                                            >
+                                                        </a>
+                                                    {% else %}
+                                                        <a href="{{ file.url }}"
+                                                            target="_blank"
+                                                            class="btn btn-sm btn-primary"
+                                                            title="{{ file.label }}">
+                                                            <i class="fa-solid fa-file-pdf me-1"></i>
+                                                            Open File
+                                                        </a>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            <span class="text-muted">No Image</span>
+                                        {% endif %}
                                     </td>
 
 
@@ -933,6 +1038,16 @@
 
 
 
+                                    <!-- QUERY RAISED -->
+
+                                    <td>
+
+                                        {{ customer.query_raised }}
+
+                                    </td>
+
+
+
                                     <!-- DUE TIME -->
 
                                     <td>
@@ -975,16 +1090,6 @@
 
 
 
-                                    <!-- QUERY RAISED -->
-
-                                    <td>
-
-                                        {{ customer.query_raised }}
-
-                                    </td>
-
-
-
                                     <!-- CLOSED DATE -->
 
                                     <td>
@@ -1009,7 +1114,7 @@
 
 
                                     <td
-                                        colspan="14"
+                                        colspan="16"
                                         class="text-center py-5"
                                     >
 
@@ -1069,6 +1174,26 @@
     </div>
 
 
+</div>
+
+
+
+<!-- ========================================================= -->
+<!-- IMAGE MODAL FOR PREVIEW -->
+<!-- ========================================================= -->
+
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="modalImageLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalImageLabel">Image Preview</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <img id="modalImage" src="" alt="Preview" class="img-fluid rounded">
+            </div>
+        </div>
+    </div>
 </div>
 
 
