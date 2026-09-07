@@ -890,39 +890,6 @@
 
                                     <!-- PHOTO / FILES -->
 
-                                    <td class="text-center">
-                                        {% if customer.all_files %}
-                                            <div class="d-flex flex-wrap gap-2 justify-content-center">
-                                                {% for file in customer.all_files %}
-                                                    {% if file.type == "image" %}
-                                                        <a href="#"
-                                                            data-bs-toggle="modal"
-                                                            data-bs-target="#imageModal"
-                                                            onclick="document.getElementById('modalImage').src='{{ file.url }}';
-                                                                     document.getElementById('modalImageLabel').innerText='{{ file.label }}';"
-                                                            class="btn btn-sm btn-primary p-1"
-                                                            title="{{ file.label }}">
-                                                            <img
-                                                                src="{{ file.url }}"
-                                                                alt="{{ file.label }}"
-                                                                class="crm-table-image"
-                                                            >
-                                                        </a>
-                                                    {% else %}
-                                                        <a href="{{ file.url }}"
-                                                            target="_blank"
-                                                            class="btn btn-sm btn-primary"
-                                                            title="{{ file.label }}">
-                                                            <i class="fa-solid fa-file-pdf me-1"></i>
-                                                            Open File
-                                                        </a>
-                                                    {% endif %}
-                                                {% endfor %}
-                                            </div>
-                                        {% else %}
-                                            <span class="text-muted">No Image</span>
-                                        {% endif %}
-                                    </td>
 
 
 
