@@ -1,990 +1,286 @@
-/* =========================================================
-   ADMIN DASHBOARD
-========================================================= */
-
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-
-
-/* =========================================================
-   RESET
-========================================================= */
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+/* ========================================================= */
+/* BASE & VARIABLE STYLES */
+/* ========================================================= */
+:root {
+  --primary-color: #3b82f6;
+  --primary-dark: #1d4ed8;
+  --secondary-color: #64748b;
+  --bg-light: #f8fafc;
+  --card-bg: #ffffff;
+  --text-dark: #1e293b;
+  --text-muted: #64748b;
+  --border-color: #e2e8f0;
+  --sidebar-width: 260px;
+  --sidebar-collapsed-width: 80px;
+  --transition-speed: 0.3s;
 }
-
-
-/* =========================================================
-   BODY
-========================================================= */
 
 body {
-    font-family: 'Poppins', sans-serif;
-    background: #f4f7fb;
-    color: #1e293b;
+  background-color: var(--bg-light);
+  color: var(--text-dark);
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  overflow-x: hidden;
 }
 
-
-/* =========================================================
-   DASHBOARD CONTAINER
-========================================================= */
-
+/* ========================================================= */
+/* LAYOUT & SIDEBAR */
+/* ========================================================= */
 .dashboard-container {
-    display: flex;
-    min-height: 100vh;
+  display: flex;
+  min-height: 100vh;
 }
-
-
-/* =========================================================
-   SIDEBAR
-========================================================= */
 
 .sidebar {
-    width: 260px;
-    min-height: 100vh;
-
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-
-    background: #1b2a4a;
-
-    color: #ffffff;
-
-    overflow-y: auto;
-
-    z-index: 1000;
-
-    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.08);
+  width: var(--sidebar-width);
+  background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+  color: #fff;
+  padding: 1.5rem 1rem;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
+  transition: all var(--transition-speed) ease;
+  box-shadow: 4px 0 15px rgba(0, 0, 0, 0.05);
 }
 
+.sidebar.collapsed {
+  width: var(--sidebar-collapsed-width);
+}
 
-/* =========================================================
-   SIDEBAR LOGO
-========================================================= */
+.sidebar-toggle-btn {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  font-size: 1.25rem;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  transition: color var(--transition-speed);
+}
+
+.sidebar-toggle-btn:hover {
+  color: #fff;
+}
 
 .sidebar-logo {
-    padding: 30px 20px;
-
-    text-align: center;
-
-    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  text-align: center;
+  margin-bottom: 2rem;
+  white-space: nowrap;
 }
-
 
 .sidebar-logo h3 {
-    font-size: 26px;
-
-    font-weight: 700;
-
-    margin-bottom: 5px;
-
-    color: #ffffff;
+  font-weight: 700;
+  font-size: 1.5rem;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+  margin: 0;
 }
-
 
 .sidebar-logo p {
-    margin: 0;
-
-    font-size: 13px;
-
-    color: #cbd5e1;
+  font-size: 0.8rem;
+  color: #94a3b8;
+  margin: 0;
 }
 
-
-/* =========================================================
-   SIDEBAR MENU
-========================================================= */
+.sidebar.collapsed .sidebar-logo p,
+.sidebar.collapsed .sidebar-logo h3 {
+  display: none;
+}
 
 .sidebar-menu {
-    list-style: none;
-
-    padding: 25px 15px;
-
-    margin: 0;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
-
 
 .sidebar-menu li {
-    margin-bottom: 10px;
+  margin-bottom: 0.5rem;
 }
 
-
-.sidebar-menu li a {
-    display: flex;
-
-    align-items: center;
-
-    gap: 14px;
-
-    padding: 14px 16px;
-
-    border-radius: 10px;
-
-    color: #e2e8f0;
-
-    text-decoration: none;
-
-    font-size: 15px;
-
-    font-weight: 500;
-
-    transition: all 0.3s ease;
+.sidebar-menu a {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  color: #94a3b8;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: all var(--transition-speed);
+  white-space: nowrap;
 }
 
-
-.sidebar-menu li a i {
-    width: 20px;
-
-    text-align: center;
-
-    font-size: 17px;
+.sidebar-menu a i {
+  font-size: 1.2rem;
+  min-width: 30px;
 }
 
-
-.sidebar-menu li a:hover {
-    background: #f59e0b;
-
-    color: #ffffff;
-
-    transform: translateX(4px);
+.sidebar-menu a span {
+  margin-left: 0.5rem;
+  font-weight: 500;
 }
 
-
-.sidebar-menu li.active a {
-    background: #f59e0b;
-
-    color: #ffffff;
-
-    box-shadow: 0 5px 15px rgba(245, 158, 11, 0.25);
+.sidebar.collapsed .sidebar-menu a span {
+  display: none;
 }
 
+.sidebar-menu li.active a,
+.sidebar-menu a:hover {
+  background: var(--primary-color);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
 
-/* =========================================================
-   MAIN CONTENT
-========================================================= */
-
+/* MAIN CONTENT AREA */
 .main-content {
-    margin-left: 260px;
-
-    width: calc(100% - 260px);
-
-    min-height: 100vh;
-
-    padding: 0 25px 30px;
+  margin-left: var(--sidebar-width);
+  width: calc(100% - var(--sidebar-width));
+  transition: all var(--transition-speed) ease;
 }
 
+.sidebar.collapsed + .main-content {
+  margin-left: var(--sidebar-collapsed-width);
+  width: calc(100% - var(--sidebar-collapsed-width));
+}
 
-/* =========================================================
-   HEADER IMAGE
-========================================================= */
-
+/* ========================================================= */
+/* HEADER IMAGE & BANNER */
+/* ========================================================= */
 .crm-header-image-wrapper {
-    width: 100%;
-
-    margin: 0 -25px 25px;
-
-    width: calc(100% + 50px);
-
-    overflow: hidden;
-
-    background: #ffffff;
+  width: 100%;
+  max-height: 220px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
-
 
 .crm-header-image-wrapper img {
-    width: 100%;
-
-    height: 220px;
-
-    object-fit: cover;
-
-    display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-
-/* =========================================================
-   DASHBOARD TITLE
-========================================================= */
-
-#dashboard h2 {
-    font-size: 28px;
-
-    color: #1b2a4a;
-
-    font-weight: 700;
-}
-
-
-#dashboard h2 i {
-    color: #f59e0b !important;
-}
-
-
-#dashboard p {
-    font-size: 14px;
-}
-
-
-/* =========================================================
-   SEARCH BAR
-========================================================= */
-
-.input-group {
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
-
-    border-radius: 8px;
-}
-
-
-.input-group .form-control {
-    height: 45px;
-
-    border: 1px solid #dbe2ea;
-
-    font-size: 14px;
-
-    box-shadow: none;
-}
-
-
-.input-group .form-control:focus {
-    border-color: #1b2a4a;
-
-    box-shadow: 0 0 0 0.2rem rgba(27, 42, 74, 0.12);
-}
-
-
-.input-group .btn {
-    height: 45px;
-
-    font-size: 14px;
-
-    font-weight: 500;
-}
-
-
-/* =========================================================
-   SEARCH BUTTON
-========================================================= */
-
-.btn-primary {
-    background: #1b2a4a;
-
-    border-color: #1b2a4a;
-}
-
-
-.btn-primary:hover {
-    background: #13203a;
-
-    border-color: #13203a;
-}
-
-
-/* =========================================================
-   CLEAR BUTTON
-========================================================= */
-
-.btn-secondary {
-    background: #64748b;
-
-    border-color: #64748b;
-}
-
-
-.btn-secondary:hover {
-    background: #475569;
-
-    border-color: #475569;
-}
-
-
-/* =========================================================
-   LOGOUT BUTTON
-========================================================= */
-
-.btn-danger {
-    background: #dc3545;
-
-    border-color: #dc3545;
-}
-
-
-.btn-danger:hover {
-    background: #b02a37;
-
-    border-color: #b02a37;
-}
-
-
-/* =========================================================
-   DASHBOARD CARDS
-========================================================= */
-
+/* ========================================================= */
+/* STATS CARDS */
+/* ========================================================= */
 .card {
-    border-radius: 15px;
-
-    overflow: hidden;
-
-    transition: all 0.3s ease;
-
-    border: none;
+  border: none;
+  border-radius: 12px;
+  background-color: var(--card-bg);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03) !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-
 
 .card:hover {
-    transform: translateY(-5px);
-
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.10) !important;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08) !important;
 }
 
-
-.card-body {
-    padding: 24px;
+.card-header {
+  border-top-left-radius: 12px !important;
+  border-top-right-radius: 12px !important;
+  border-bottom: none;
+  padding: 1rem 1.25rem;
+  font-weight: 600;
 }
 
-
-.card h6 {
-    font-size: 14px;
-
-    font-weight: 500;
-
-    margin-bottom: 8px;
-}
-
-
-.card h2 {
-    font-size: 30px;
-
-    margin: 0;
-
-    font-weight: 700;
-}
-
-
-.card i.fa-2x {
-    font-size: 32px;
-}
-
-
-/* =========================================================
-   CARD COLORS
-========================================================= */
-
-.text-primary {
-    color: #1b2a4a !important;
-}
-
-
-.text-info {
-    color: #0ea5e9 !important;
-}
-
-
-.text-warning {
-    color: #f59e0b !important;
-}
-
-
-.text-danger {
-    color: #dc3545 !important;
-}
-
-
-.text-dark {
-    color: #334155 !important;
-}
-
-
-/* =========================================================
-   CUSTOMER QUERY TABLE CARD
-========================================================= */
-
-#customer-query {
-    border-radius: 15px;
-
-    margin-top: 30px;
-
-    background: #ffffff;
-}
-
-
-/* =========================================================
-   TABLE HEADER
-========================================================= */
-
-#customer-query .card-header {
-    background: #1b2a4a !important;
-
-    padding: 18px 22px;
-
-    border: none;
-}
-
-
-#customer-query .card-header h5 {
-    font-size: 17px;
-
-    font-weight: 600;
-}
-
-
-#customer-query .card-header .badge {
-    font-size: 13px;
-
-    padding: 8px 12px;
-}
-
-
-/* =========================================================
-   TABLE RESPONSIVE
-========================================================= */
-
+/* ========================================================= */
+/* TABLES & FILTERS */
+/* ========================================================= */
 .table-responsive {
-    overflow-x: auto;
-
-    width: 100%;
+  border-radius: 0 0 12px 12px;
 }
-
-
-/* =========================================================
-   TABLE
-========================================================= */
 
 .table {
-    margin: 0;
-
-    min-width: 1500px;
-
-    font-size: 14px;
+  margin-bottom: 0;
+  vertical-align: middle;
 }
-
-
-.table thead {
-    background: #24395f;
-}
-
 
 .table thead th {
-    background: #24395f !important;
-
-    color: #ffffff !important;
-
-    padding: 16px 14px;
-
-    font-size: 13px;
-
-    font-weight: 600;
-
-    white-space: nowrap;
-
-    border: none;
-
-    vertical-align: middle;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 1rem;
+  border-bottom: none;
 }
-
 
 .table tbody td {
-    padding: 15px 14px;
-
-    vertical-align: middle;
-
-    color: #334155;
-
-    border-color: #edf1f5;
-
-    white-space: nowrap;
+  padding: 0.85rem 1rem;
+  font-size: 0.9rem;
+  border-color: var(--border-color);
 }
 
-
-.table tbody tr {
-    transition: all 0.2s ease;
+.table-hover tbody tr:hover {
+  background-color: #f1f5f9;
 }
 
-
-.table tbody tr:hover {
-    background: #f8fafc;
+/* Dynamic Filter Inputs inside Table Headings */
+.table thead input.form-control-sm,
+.table thead select.form-select-sm {
+  background-color: #ffffff;
+  border: 1px solid var(--border-color);
+  font-size: 0.8rem;
+  border-radius: 6px;
+  box-shadow: none;
 }
 
-
-/* =========================================================
-   LONG TEXT COLUMNS
-========================================================= */
-
-.table th:nth-child(7),
-.table td:nth-child(7) {
-    min-width: 160px;
-
-    white-space: normal;
+.table thead input.form-control-sm:focus,
+.table thead select.form-select-sm:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
 }
 
-
-.table th:nth-child(9),
-.table td:nth-child(9) {
-    min-width: 140px;
-
-    white-space: normal;
-}
-
-
-/* =========================================================
-   TICKET ID
-========================================================= */
-
-.table tbody td strong {
-    font-weight: 600;
-}
-
-
-/* =========================================================
-   BADGES
-========================================================= */
-
-.badge {
-    padding: 7px 11px;
-
-    border-radius: 20px;
-
-    font-size: 12px;
-
-    font-weight: 600;
-}
-
-
-/* =========================================================
-   STAGE BADGE
-========================================================= */
-
-.badge.bg-secondary {
-    background: #64748b !important;
-}
-
-
-/* CLOSED */
-
-.badge.bg-success {
-    background: #16a34a !important;
-}
-
-
-/* OPEN */
-
-.badge.bg-primary {
-    background: #1b2a4a !important;
-}
-
-
-/* IN PROGRESS */
-
-.badge.bg-warning {
-    background: #f59e0b !important;
-
-    color: #ffffff !important;
-}
-
-
-/* =========================================================
-   REMAINING TIME
-========================================================= */
-
-.fw-bold.text-danger {
-    color: #dc2626 !important;
-}
-
-
-.text-success {
-    color: #16a34a !important;
-}
-
-
-/* =========================================================
-   SMALL TEXT
-========================================================= */
-
-.table small {
-    font-size: 12px;
-
-    line-height: 1.5;
-
-    display: inline-block;
-
-    margin-top: 3px;
-}
-
-
-/* =========================================================
-   EMPTY TABLE MESSAGE
-========================================================= */
-
-.table tbody td.text-center {
-    padding: 45px 20px;
-}
-
-
-/* =========================================================
-   FOOTER
-========================================================= */
-
-.text-center.mt-4.mb-2 {
-    padding: 15px;
-
-    color: #64748b;
-}
-
-
-/* =========================================================
-   SCROLLBAR
-========================================================= */
-
-::-webkit-scrollbar {
-    width: 8px;
-
-    height: 8px;
-}
-
-
-::-webkit-scrollbar-track {
-    background: #e5e7eb;
-}
-
-
-::-webkit-scrollbar-thumb {
-    background: #1b2a4a;
-
-    border-radius: 20px;
-}
-
-
-::-webkit-scrollbar-thumb:hover {
-    background: #f59e0b;
-}
-
-
+/* Images inside Table */
 .crm-table-image {
-    width: 40px;
-    height: 40px;
-    object-fit: cover;
-    border-radius: 6px;
+  width: 42px;
+  height: 42px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  transition: transform 0.2s ease;
 }
 
-/* =========================================================
-   ANIMATION
-========================================================= */
-
-.card {
-    animation: fadeUp 0.5s ease;
+.crm-table-image:hover {
+  transform: scale(1.1);
 }
 
-
-@keyframes fadeUp {
-
-    from {
-        opacity: 0;
-
-        transform: translateY(15px);
-    }
-
-    to {
-        opacity: 1;
-
-        transform: translateY(0);
-    }
-
+/* ========================================================= */
+/* BADGES & BUTTONS */
+/* ========================================================= */
+.badge {
+  padding: 0.45em 0.75em;
+  font-weight: 600;
+  border-radius: 6px;
 }
 
+.btn-sm {
+  padding: 0.35rem 0.65rem;
+  font-size: 0.8rem;
+  border-radius: 6px;
+  font-weight: 500;
+}
 
-/* =========================================================
-   TABLET RESPONSIVE
-========================================================= */
+/* ========================================================= */
+/* MODAL & RESPONSIVE DESIGN */
+/* ========================================================= */
+.modal-content {
+  border: none;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.modal-header {
+  border-bottom: 1px solid var(--border-color);
+}
 
 @media (max-width: 992px) {
-
-    .sidebar {
-        width: 220px;
-    }
-
-
-    .main-content {
-        margin-left: 220px;
-
-        width: calc(100% - 220px);
-
-        padding: 0 20px 25px;
-    }
-
-
-    .crm-header-image-wrapper {
-        margin-left: -20px;
-
-        width: calc(100% + 40px);
-    }
-
-
-    .crm-header-image-wrapper img {
-        height: 180px;
-    }
-
-
-    #dashboard h2 {
-        font-size: 24px;
-    }
-
-}
-
-
-/* =========================================================
-   MOBILE RESPONSIVE
-   SIDEBAR TOP PAR AAYEGA
-========================================================= */
-
-@media (max-width: 768px) {
-
-    /* Dashboard vertical */
-
-    .dashboard-container {
-        display: block;
-    }
-
-
-    /* Sidebar top */
-
-    .sidebar {
-        position: relative;
-
-        top: auto;
-        left: auto;
-        bottom: auto;
-
-        width: 100%;
-
-        min-height: auto;
-
-        height: auto;
-
-        overflow: visible;
-    }
-
-
-    /* Logo */
-
-    .sidebar-logo {
-        padding: 18px 15px;
-    }
-
-
-    .sidebar-logo h3 {
-        font-size: 22px;
-    }
-
-
-    /* Menu horizontal */
-
-    .sidebar-menu {
-        display: flex;
-
-        flex-wrap: wrap;
-
-        justify-content: center;
-
-        gap: 8px;
-
-        padding: 12px;
-    }
-
-
-    .sidebar-menu li {
-        margin: 0;
-    }
-
-
-    .sidebar-menu li a {
-        padding: 10px 12px;
-
-        font-size: 13px;
-
-        gap: 7px;
-    }
-
-
-    .sidebar-menu li a:hover {
-        transform: none;
-    }
-
-
-    /* Main content */
-
-    .main-content {
-        margin-left: 0;
-
-        width: 100%;
-
-        padding: 0 15px 25px;
-    }
-
-
-    /* Header image */
-
-    .crm-header-image-wrapper {
-        margin-left: -15px;
-
-        margin-right: -15px;
-
-        width: calc(100% + 30px);
-
-        margin-bottom: 20px;
-    }
-
-
-    .crm-header-image-wrapper img {
-        height: 140px;
-
-        object-fit: cover;
-    }
-
-
-    /* Page header */
-
-    #dashboard .row.align-items-center {
-        gap: 18px;
-    }
-
-
-    #dashboard h2 {
-        font-size: 22px;
-    }
-
-
-    /* Search */
-
-    .input-group {
-        display: flex;
-
-        flex-wrap: wrap;
-
-        gap: 8px;
-
-        box-shadow: none;
-    }
-
-
-    .input-group .form-control {
-        width: 100% !important;
-
-        flex: none;
-
-        border-radius: 8px !important;
-    }
-
-
-    .input-group .btn {
-        border-radius: 8px !important;
-
-        flex: 1;
-    }
-
-
-    /* Dashboard cards */
-
-    .card-body {
-        padding: 20px;
-    }
-
-
-    .card h2 {
-        font-size: 26px;
-    }
-
-
-    /* Table */
-
-    .table {
-        font-size: 13px;
-    }
-
-
-    #customer-query .card-header {
-        padding: 15px;
-    }
-
-
-    #customer-query .card-header h5 {
-        font-size: 15px;
-    }
-
-}
-
-
-/* =========================================================
-   SMALL MOBILE
-========================================================= */
-
-@media (max-width: 480px) {
-
-    .sidebar-logo h3 {
-        font-size: 20px;
-    }
-
-
-    .sidebar-logo p {
-        font-size: 11px;
-    }
-
-
-    .sidebar-menu {
-        flex-direction: column;
-
-        padding: 10px;
-    }
-
-
-    .sidebar-menu li {
-        width: 100%;
-    }
-
-
-    .sidebar-menu li a {
-        justify-content: flex-start;
-
-        width: 100%;
-    }
-
-
-    #dashboard {
-        padding-top: 15px !important;
-    }
-
-
-    #dashboard h2 {
-        font-size: 20px;
-    }
-
-
-    #dashboard p {
-        font-size: 12px;
-    }
-
-
-    .input-group .btn {
-        min-width: 30%;
-    }
-
-
-    .card h6 {
-        font-size: 13px;
-    }
-
-
-    .card h2 {
-        font-size: 24px;
-    }
-
-
-    .crm-header-image-wrapper img {
-        height: 110px;
-    }
-
+  .sidebar {
+    width: var(--sidebar-collapsed-width);
+  }
+  .sidebar .sidebar-logo p,
+  .sidebar .sidebar-logo h3,
+  .sidebar .sidebar-menu a span {
+    display: none;
+  }
+  .main-content {
+    margin-left: var(--sidebar-collapsed-width);
+    width: calc(100% - var(--sidebar-collapsed-width));
+  }
 }
