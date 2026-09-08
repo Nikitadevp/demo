@@ -5550,72 +5550,6 @@ def admin_dashboard(request):
 
             progress = "In Progress"
 
-
-        stage_form_url = None
-        
-        if current_stage == "S1":
-            stage_form_url = reverse(
-               "maintenance_scope_form",
-                args=[query.id]
-            )
-        elif current_stage == "S2":
-            stage_form_url = reverse(
-                "site_inspection_form",
-                args=[query.id]
-            )
-        elif current_stage == "S3":
-            stage_form_url = reverse(
-                "estimate_form",
-                args=[query.id]
-            )
-        elif current_stage == "S4":
-            stage_form_url = reverse(
-                "customer_approval_form",
-                args=[query.id]
-            )
-        elif current_stage == "S5":
-            stage_form_url = reverse(
-                "advance_collection_form",
-                args=[query.id]
-            )
-
-        elif current_stage == "S6":
-            stage_form_url = reverse(
-                "material_availability_form",
-                args=[query.id]
-            )
-
-        elif current_stage == "S7":
-            stage_form_url = reverse(
-                "raise_indent_form",
-                args=[query.id]
-            )
-
-        elif current_stage == "S8":
-            stage_form_url = reverse(
-                "issue_material_form",
-                args=[query.id]
-            )
-
-        elif current_stage == "S9":
-            stage_form_url = reverse(
-                "receive_material_form",
-                args=[query.id]
-            )
-
-        elif current_stage == "S10":    
-            stage_form_url = reverse(
-                "query_closer_form",
-                args=[query.id]
-            )
-
-
-        elif current_stage == "S11":            
-            stage_form_url = reverse(
-                "customer_feedback_form",
-                args=[query.id]
-            )                                
-
   
                
                 
@@ -5653,7 +5587,7 @@ def admin_dashboard(request):
 
             "stage_name": stage_name,
 
-            "stage_form_url": stage_form_url,
+           
 
             "pending_with": pending_with,
 
