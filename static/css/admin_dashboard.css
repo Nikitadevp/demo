@@ -1,13 +1,22 @@
 /* =========================================================
-   ADMIN DASHBOARD
+   ADMIN DASHBOARD - CUSTOM THEME
 ========================================================= */
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
-
 /* =========================================================
-   RESET
+   RESET & VARIABLES
 ========================================================= */
+
+:root {
+    --sidebar-bg: #0F3D4C;          /* Deep Teal / Blue */
+    --sidebar-active: #1597B8;      /* Cyan Blue */
+    --page-bg: #F5F7FA;             /* Soft Grey */
+    --table-header-bg: #4682B4;     /* Steel Blue */
+    --card-bg: #FFFFFF;
+    --text-dark: #243447;
+    --text-muted: #718096;
+}
 
 * {
     margin: 0;
@@ -15,17 +24,15 @@
     box-sizing: border-box;
 }
 
-
 /* =========================================================
    BODY
 ========================================================= */
 
 body {
     font-family: 'Poppins', sans-serif;
-    background: #f3f6f8;
-    color: #243447;
+    background: var(--page-bg);
+    color: var(--text-dark);
 }
-
 
 /* =========================================================
    DASHBOARD CONTAINER
@@ -36,7 +43,6 @@ body {
     min-height: 100vh;
 }
 
-
 /* =========================================================
    SIDEBAR
 ========================================================= */
@@ -44,25 +50,17 @@ body {
 .sidebar {
     width: 260px;
     min-height: 100vh;
-
     position: fixed;
     top: 0;
     left: 0;
     bottom: 0;
-
-    background: #0f3d4c;
-
+    background: var(--sidebar-bg);
     color: #ffffff;
-
     overflow-y: auto;
-
     z-index: 1000;
-
     box-shadow: 4px 0 20px rgba(15, 61, 76, 0.12);
-
     transition: all 0.3s ease;
 }
-
 
 /* =========================================================
    SIDEBAR TOGGLE BUTTON
@@ -72,28 +70,20 @@ body {
     position: absolute;
     top: 18px;
     right: 18px;
-
     width: 38px;
     height: 38px;
-
     border: none;
     border-radius: 10px;
-
     background: rgba(255, 255, 255, 0.12);
-
     color: #ffffff;
-
     font-size: 17px;
-
     cursor: pointer;
-
     transition: all 0.3s ease;
 }
 
 .sidebar-toggle-btn:hover {
-    background: #1597b8;
+    background: var(--sidebar-active);
 }
-
 
 /* =========================================================
    SIDEBAR COLLAPSED
@@ -123,43 +113,30 @@ body {
     width: calc(100% - 80px);
 }
 
-
 /* =========================================================
    SIDEBAR LOGO
 ========================================================= */
 
 .sidebar-logo {
     padding: 32px 20px 26px;
-
     text-align: center;
-
     border-bottom: 1px solid rgba(255, 255, 255, 0.12);
 }
 
-
 .sidebar-logo h3 {
     font-size: 26px;
-
     font-weight: 700;
-
     margin-bottom: 5px;
-
     color: #ffffff;
-
     letter-spacing: 0.4px;
 }
 
-
 .sidebar-logo p {
     margin: 0;
-
     font-size: 13px;
-
     color: #b8d5dc;
-
     letter-spacing: 0.5px;
 }
-
 
 /* =========================================================
    SIDEBAR MENU
@@ -167,67 +144,44 @@ body {
 
 .sidebar-menu {
     list-style: none;
-
     padding: 24px 14px;
-
     margin: 0;
 }
-
 
 .sidebar-menu li {
     margin-bottom: 9px;
 }
 
-
 .sidebar-menu li a {
     display: flex;
-
     align-items: center;
-
     gap: 14px;
-
     padding: 14px 16px;
-
     border-radius: 10px;
-
     color: #d8e8eb;
-
     text-decoration: none;
-
     font-size: 15px;
-
     font-weight: 500;
-
     transition: all 0.3s ease;
 }
 
-
 .sidebar-menu li a i {
     width: 20px;
-
     text-align: center;
-
     font-size: 17px;
 }
 
-
 .sidebar-menu li a:hover {
     background: rgba(21, 151, 184, 0.22);
-
     color: #ffffff;
-
     transform: translateX(4px);
 }
 
-
 .sidebar-menu li.active a {
-    background: #1597b8;
-
+    background: var(--sidebar-active);
     color: #ffffff;
-
     box-shadow: 0 8px 20px rgba(21, 151, 184, 0.28);
 }
-
 
 /* =========================================================
    MAIN CONTENT
@@ -235,16 +189,12 @@ body {
 
 .main-content {
     margin-left: 260px;
-
     width: calc(100% - 260px);
-
     min-height: 100vh;
-
     padding: 0 25px 30px;
-
+    background: var(--page-bg);
     transition: all 0.3s ease;
 }
-
 
 /* =========================================================
    HEADER IMAGE
@@ -252,27 +202,18 @@ body {
 
 .crm-header-image-wrapper {
     width: calc(100% + 50px);
-
     margin: 0 -25px 28px;
-
     overflow: hidden;
-
     background: #ffffff;
-
     border-bottom: 1px solid #e4eaee;
 }
 
-
 .crm-header-image-wrapper img {
     width: 100%;
-
     height: 220px;
-
     object-fit: cover;
-
     display: block;
 }
-
 
 /* =========================================================
    DASHBOARD TITLE
@@ -280,24 +221,18 @@ body {
 
 #dashboard h2 {
     font-size: 29px;
-
-    color: #0f3d4c;
-
+    color: var(--sidebar-bg);
     font-weight: 700;
 }
 
-
 #dashboard h2 i {
-    color: #1597b8 !important;
+    color: var(--sidebar-active) !important;
 }
-
 
 #dashboard p {
     font-size: 14px;
-
-    color: #718096 !important;
+    color: var(--text-muted) !important;
 }
-
 
 /* =========================================================
    SEARCH BAR
@@ -305,85 +240,61 @@ body {
 
 .input-group {
     box-shadow: 0 5px 18px rgba(15, 61, 76, 0.08);
-
     border-radius: 10px;
 }
 
-
 .input-group .form-control {
     height: 46px;
-
     border: 1px solid #d8e1e5;
-
     font-size: 14px;
-
     box-shadow: none;
-
-    color: #243447;
+    color: var(--text-dark);
 }
 
-
 .input-group .form-control:focus {
-    border-color: #1597b8;
-
+    border-color: var(--sidebar-active);
     box-shadow: 0 0 0 0.2rem rgba(21, 151, 184, 0.12);
 }
 
-
 .input-group .btn {
     height: 46px;
-
     font-size: 14px;
-
     font-weight: 500;
 }
-
 
 /* =========================================================
    BUTTONS
 ========================================================= */
 
 .btn-primary {
-    background: #0f6f84;
-
-    border-color: #0f6f84;
+    background: var(--sidebar-bg);
+    border-color: var(--sidebar-bg);
 }
-
 
 .btn-primary:hover {
-    background: #0b596a;
-
-    border-color: #0b596a;
+    background: #0b2e39;
+    border-color: #0b2e39;
 }
-
 
 .btn-secondary {
     background: #64748b;
-
     border-color: #64748b;
 }
 
-
 .btn-secondary:hover {
     background: #475569;
-
     border-color: #475569;
 }
 
-
 .btn-danger {
     background: #d9534f;
-
     border-color: #d9534f;
 }
 
-
 .btn-danger:hover {
     background: #bd3f3b;
-
     border-color: #bd3f3b;
 }
-
 
 /* =========================================================
    DASHBOARD CARDS
@@ -391,96 +302,73 @@ body {
 
 .card {
     border-radius: 14px;
-
     overflow: hidden;
-
     transition: all 0.3s ease;
-
     border: 1px solid #e3eaed;
-
-    background: #ffffff;
-
+    background: var(--card-bg);
     box-shadow: 0 5px 20px rgba(15, 61, 76, 0.06);
 }
 
-
 .card:hover {
     transform: translateY(-4px);
-
     box-shadow: 0 15px 32px rgba(15, 61, 76, 0.12) !important;
 }
-
 
 .card-body {
     padding: 24px;
 }
 
-
 .card h6 {
     font-size: 14px;
-
     font-weight: 500;
-
     margin-bottom: 8px;
-
-    color: #718096;
+    color: var(--text-muted);
 }
-
 
 .card h2 {
     font-size: 31px;
-
     margin: 0;
-
     font-weight: 700;
 }
-
 
 .card i.fa-2x {
     font-size: 32px;
 }
-
 
 /* =========================================================
    CARD COLORS
 ========================================================= */
 
 .text-primary {
-    color: #0f6f84 !important;
+    color: var(--sidebar-bg) !important;
 }
-
 
 .text-info {
-    color: #1597b8 !important;
+    color: var(--sidebar-active) !important;
 }
-
 
 .text-warning {
     color: #e89b2d !important;
 }
 
-
 .text-danger {
     color: #d9534f !important;
 }
 
-
 .text-dark {
-    color: #243447 !important;
+    color: var(--text-dark) !important;
 }
-
 
 .text-success {
     color: #198754 !important;
 }
-
 
 /* =========================================================
    CARD TOP ACCENTS
 ========================================================= */
 
 .row.g-4.mb-4 > div:nth-child(1) .card {
-    border-top: 4px solid #1597b8;
+    border-top: 4px solid var(--sidebar-active);
 }
 
 .row.g-4.mb-4 > div:nth-child(2) .card {
@@ -491,48 +379,50 @@ body {
     border-top: 4px solid #d9534f;
 }
 
-
 /* =========================================================
    CRM PENDING ACTIVITIES TABLE CARD
 ========================================================= */
 
 #crm-pending-work {
     border-radius: 14px;
-
     margin-top: 30px;
-
-    background: #ffffff;
-
-    border: 1px solid #dfe8eb;
+    background: transparent;
+    border: none;
+    box-shadow: none;
 }
-
 
 #crm-pending-work .card-header {
-    background: #0f3d4c !important;
-
-    padding: 18px 22px;
-
+    background: transparent !important;
+    padding: 12px 0;
     border: none;
+    color: var(--text-dark);
 }
-
 
 #crm-pending-work .card-header h5 {
-    font-size: 17px;
-
-    font-weight: 600;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-dark);
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
+#crm-pending-work .card-header h5::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 18px;
+    background: var(--sidebar-active);
+    border-radius: 3px;
+}
 
 #crm-pending-work .card-header .badge {
     font-size: 13px;
-
-    padding: 8px 12px;
-
-    background: #ffffff !important;
-
-    color: #0f3d4c !important;
+    padding: 6px 12px;
+    background: #EBF8FF !important;
+    color: var(--sidebar-active) !important;
+    border-radius: 20px;
 }
-
 
 /* =========================================================
    OVERDUE CUSTOMER TABLE CARD
@@ -540,35 +430,42 @@ body {
 
 #overdue-customers {
     border-radius: 14px;
-
-    border: 1px solid #f1d6d5;
+    margin-top: 30px;
+    background: transparent;
+    border: none;
+    box-shadow: none;
 }
 
-
 #overdue-customers .card-header {
-    background: #c94b4b !important;
-
-    padding: 18px 22px;
-
+    background: transparent !important;
+    padding: 12px 0;
     border: none;
 }
 
-
 #overdue-customers .card-header h5 {
-    font-size: 17px;
-
-    font-weight: 600;
+    font-size: 18px;
+    font-weight: 700;
+    color: #c94b4b;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
+#overdue-customers .card-header h5::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 18px;
+    background: #c94b4b;
+    border-radius: 3px;
+}
 
 #overdue-customers .card-header .badge {
-    background: #ffffff !important;
-
+    background: #FDF2F2 !important;
     color: #c94b4b !important;
-
-    padding: 8px 12px;
+    padding: 6px 12px;
+    border-radius: 20px;
 }
-
 
 /* =========================================================
    TABLE RESPONSIVE
@@ -576,10 +473,11 @@ body {
 
 .table-responsive {
     overflow-x: auto;
-
     width: 100%;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
 }
-
 
 /* =========================================================
    TABLE
@@ -587,248 +485,194 @@ body {
 
 .table {
     margin: 0;
-
     min-width: 1500px;
-
     font-size: 14px;
-
     background: #ffffff;
+    border-collapse: separate;
+    border-spacing: 0;
 }
 
-
 /* =========================================================
-   TABLE HEADER
+   TABLE HEADER (Steel Blue with Round Corners like Design)
 ========================================================= */
 
 .table thead {
-    background: #174b5b;
+    background: var(--table-header-bg);
 }
-
 
 .table thead th {
-    background: #174b5b !important;
-
+    background: var(--table-header-bg) !important;
     color: #ffffff !important;
-
-    padding: 16px 14px;
-
+    padding: 14px 16px;
     font-size: 13px;
-
     font-weight: 600;
-
     white-space: nowrap;
-
     border: none;
-
     vertical-align: middle;
-
-    letter-spacing: 0.1px;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
 }
 
+/* Header Curved Corners */
+.table thead tr th:first-child {
+    border-top-left-radius: 12px;
+}
+
+.table thead tr th:last-child {
+    border-top-right-radius: 12px;
+}
 
 /* =========================================================
    TABLE BODY
 ========================================================= */
 
 .table tbody td {
-    padding: 15px 14px;
-
+    padding: 15px 16px;
     vertical-align: middle;
-
-    color: #334155;
-
-    border-color: #e8eef0;
-
+    color: var(--text-dark);
+    border-bottom: 1px solid #f0f4f7;
+    border-top: none;
     white-space: nowrap;
-
     background: #ffffff;
 }
 
+.table tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 12px;
+}
+
+.table tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 12px;
+}
 
 .table tbody tr {
     transition: all 0.2s ease;
 }
 
-
-.table tbody tr:nth-child(even) td {
-    background: #f8fbfc;
-}
-
-
 .table tbody tr:hover td {
-    background: #eaf5f7 !important;
+    background: #f0f7fb !important;
 }
-
 
 /* =========================================================
    TABLE DARK HEADER
 ========================================================= */
 
 .table-dark {
-    --bs-table-bg: #174b5b !important;
-
+    --bs-table-bg: var(--table-header-bg) !important;
     --bs-table-color: #ffffff !important;
 }
-
 
 /* =========================================================
    OVERDUE TABLE HEADER
 ========================================================= */
 
 .table-danger {
-    --bs-table-bg: #fbe9e9 !important;
-
-    --bs-table-color: #8b3030 !important;
+    --bs-table-bg: #E57373 !important;
+    --bs-table-color: #ffffff !important;
 }
-
 
 .table-danger th {
-    background: #fbe9e9 !important;
-
-    color: #8b3030 !important;
-
-    border-color: #efd2d2 !important;
+    background: #E57373 !important;
+    color: #ffffff !important;
+    border: none !important;
 }
-
 
 /* =========================================================
    LONG TEXT COLUMNS
-   LINK COLUMN REMOVE HONE KE BAAD UPDATED
 ========================================================= */
 
 .table th:nth-child(8),
 .table td:nth-child(8) {
     min-width: 220px;
-
     max-width: 320px;
-
     white-space: normal;
 }
-
 
 .table th:nth-child(11),
 .table td:nth-child(11) {
     min-width: 150px;
-
     white-space: normal;
 }
-
 
 /* =========================================================
    TICKET ID
 ========================================================= */
 
 .table tbody td strong {
-    font-weight: 600;
+    font-weight: 700;
 }
-
 
 .table tbody td strong.text-primary {
-    color: #0f6f84 !important;
+    color: var(--sidebar-bg) !important;
 }
-
 
 .table tbody td strong.text-danger {
     color: #c94b4b !important;
 }
 
-
 /* =========================================================
-   FILTER INPUTS INSIDE TABLE
+   FILTER INPUTS INSIDE TABLE HEADER
 ========================================================= */
 
 .table thead .form-control,
 .table thead .form-select {
     font-size: 12px;
-
-    min-height: 34px;
-
-    border: 1px solid rgba(255, 255, 255, 0.35);
-
+    min-height: 32px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
     background: #ffffff;
-
-    color: #243447;
-
+    color: var(--text-dark);
     box-shadow: none;
-
     border-radius: 6px;
 }
 
-
 .table thead .form-control:focus,
 .table thead .form-select:focus {
-    border-color: #1597b8;
-
-    box-shadow: 0 0 0 0.15rem rgba(21, 151, 184, 0.18);
+    border-color: #ffffff;
+    box-shadow: 0 0 0 0.15rem rgba(255, 255, 255, 0.3);
 }
 
-
 /* =========================================================
-   BADGES
+   BADGES (Pill Badges from Image)
 ========================================================= */
 
 .badge {
-    padding: 7px 11px;
-
-    border-radius: 20px;
-
+    padding: 6px 14px;
+    border-radius: 50px;
     font-size: 12px;
-
     font-weight: 600;
 }
 
-
-/* =========================================================
-   STAGE BADGE
-========================================================= */
-
+/* Stage & Progress Badges */
 .badge.bg-secondary {
-    background: #5f6f7a !important;
+    background: #e2e8f0 !important;
+    color: #475569 !important;
 }
-
-
-/* =========================================================
-   CLOSED BADGE
-========================================================= */
 
 .badge.bg-success {
-    background: #198754 !important;
+    background: #d1fae5 !important;
+    color: #065f46 !important;
 }
-
-
-/* =========================================================
-   PRIMARY BADGE
-========================================================= */
 
 .badge.bg-primary {
-    background: #0f6f84 !important;
+    background: #E0F2FE !important;
+    color: #0369A1 !important;
 }
-
-
-/* =========================================================
-   IN PROGRESS BADGE
-========================================================= */
 
 .badge.bg-warning {
-    background: #f0a53a !important;
-
-    color: #ffffff !important;
+    background: #FEF3C7 !important;
+    color: #92400E !important;
 }
-
 
 /* =========================================================
    REMAINING TIME
 ========================================================= */
 
 .fw-bold.text-danger {
-    color: #c94b4b !important;
+    color: #d9534f !important;
 }
-
 
 .text-success {
-    color: #198754 !important;
+    color: #10B981 !important;
 }
-
 
 /* =========================================================
    SMALL TEXT
@@ -836,40 +680,28 @@ body {
 
 .table small {
     font-size: 12px;
-
     line-height: 1.5;
-
     display: inline-block;
-
     margin-top: 3px;
-
-    color: #718096 !important;
+    color: var(--text-muted) !important;
 }
 
-
 /* =========================================================
-   PHOTO
+   PHOTO THUMBNAILS
 ========================================================= */
 
 .crm-table-image {
     width: 42px;
-
     height: 42px;
-
     object-fit: cover;
-
     border-radius: 8px;
-
     border: 2px solid #e5eef0;
-
     transition: all 0.2s ease;
 }
-
 
 .crm-table-image:hover {
     transform: scale(1.08);
 }
-
 
 /* =========================================================
    IMAGE BUTTON
@@ -877,12 +709,9 @@ body {
 
 .table .btn-sm {
     border-radius: 7px;
-
     font-size: 12px;
-
     font-weight: 500;
 }
-
 
 /* =========================================================
    EMPTY TABLE MESSAGE
@@ -890,10 +719,8 @@ body {
 
 .table tbody td.text-center {
     padding: 45px 20px;
-
     background: #ffffff !important;
 }
-
 
 /* =========================================================
    FOOTER
@@ -901,10 +728,8 @@ body {
 
 .text-center.mt-4.mb-2 {
     padding: 16px;
-
-    color: #718096;
+    color: var(--text-muted);
 }
-
 
 /* =========================================================
    SCROLLBAR
@@ -912,27 +737,21 @@ body {
 
 ::-webkit-scrollbar {
     width: 8px;
-
     height: 8px;
 }
-
 
 ::-webkit-scrollbar-track {
     background: #e8eef0;
 }
 
-
 ::-webkit-scrollbar-thumb {
-    background: #0f6f84;
-
+    background: var(--table-header-bg);
     border-radius: 20px;
 }
 
-
 ::-webkit-scrollbar-thumb:hover {
-    background: #1597b8;
+    background: var(--sidebar-active);
 }
-
 
 /* =========================================================
    ANIMATION
@@ -942,112 +761,82 @@ body {
     animation: fadeUp 0.45s ease;
 }
 
-
 @keyframes fadeUp {
-
     from {
         opacity: 0;
-
         transform: translateY(12px);
     }
-
     to {
         opacity: 1;
-
         transform: translateY(0);
     }
-
 }
-
 
 /* =========================================================
    TABLET RESPONSIVE
 ========================================================= */
 
 @media (max-width: 992px) {
-
     .sidebar {
         width: 220px;
     }
 
-
     .main-content {
         margin-left: 220px;
-
         width: calc(100% - 220px);
-
         padding: 0 20px 25px;
     }
-
 
     .sidebar.collapsed {
         width: 70px;
     }
 
-
     .sidebar.collapsed + .main-content {
         margin-left: 70px;
-
         width: calc(100% - 70px);
     }
 
-
     .crm-header-image-wrapper {
         margin-left: -20px;
-
         width: calc(100% + 40px);
     }
-
 
     .crm-header-image-wrapper img {
         height: 180px;
     }
 
-
     #dashboard h2 {
         font-size: 25px;
     }
-
 }
-
 
 /* =========================================================
    MOBILE RESPONSIVE
 ========================================================= */
 
 @media (max-width: 768px) {
-
     .dashboard-container {
         display: block;
     }
 
-
     .sidebar {
         position: relative;
-
         top: auto;
         left: auto;
         bottom: auto;
-
         width: 100% !important;
-
         min-height: auto;
-
         height: auto;
-
         overflow: visible;
     }
-
 
     .sidebar-toggle-btn {
         display: none;
     }
 
-
     .sidebar.collapsed {
         width: 100% !important;
     }
-
 
     .sidebar.collapsed .sidebar-logo h3,
     .sidebar.collapsed .sidebar-logo p,
@@ -1055,210 +844,156 @@ body {
         display: block;
     }
 
-
     .sidebar-logo {
         padding: 20px 15px;
     }
-
 
     .sidebar-logo h3 {
         font-size: 23px;
     }
 
-
     .sidebar-menu {
         display: flex;
-
         flex-wrap: wrap;
-
         justify-content: center;
-
         gap: 8px;
-
         padding: 12px;
     }
-
 
     .sidebar-menu li {
         margin: 0;
     }
 
-
     .sidebar-menu li a {
         padding: 10px 13px;
-
         font-size: 13px;
-
         gap: 7px;
     }
-
 
     .sidebar-menu li a:hover {
         transform: none;
     }
 
-
     .main-content,
     .sidebar.collapsed + .main-content {
         margin-left: 0;
-
         width: 100%;
-
         padding: 0 15px 25px;
     }
 
-
     .crm-header-image-wrapper {
         margin-left: -15px;
-
         margin-right: -15px;
-
         width: calc(100% + 30px);
-
         margin-bottom: 20px;
     }
 
-
     .crm-header-image-wrapper img {
         height: 145px;
-
         object-fit: cover;
     }
-
 
     #dashboard .row.align-items-center {
         gap: 18px;
     }
 
-
     #dashboard h2 {
         font-size: 22px;
     }
 
-
     .input-group {
         display: flex;
-
         flex-wrap: wrap;
-
         gap: 8px;
-
         box-shadow: none;
     }
 
-
     .input-group .form-control {
         width: 100% !important;
-
         flex: none;
-
         border-radius: 8px !important;
     }
-
 
     .input-group .btn {
         border-radius: 8px !important;
-
         flex: 1;
     }
-
 
     .card-body {
         padding: 20px;
     }
 
-
     .card h2 {
         font-size: 27px;
     }
-
 
     .table {
         font-size: 13px;
     }
 
-
     #crm-pending-work .card-header,
     #overdue-customers .card-header {
-        padding: 15px;
+        padding: 12px;
     }
-
 
     #crm-pending-work .card-header h5,
     #overdue-customers .card-header h5 {
-        font-size: 15px;
+        font-size: 16px;
     }
-
 }
-
 
 /* =========================================================
    SMALL MOBILE
 ========================================================= */
 
 @media (max-width: 480px) {
-
     .sidebar-logo h3 {
         font-size: 20px;
     }
-
 
     .sidebar-logo p {
         font-size: 11px;
     }
 
-
     .sidebar-menu {
         flex-direction: column;
-
         padding: 10px;
     }
-
 
     .sidebar-menu li {
         width: 100%;
     }
 
-
     .sidebar-menu li a {
         justify-content: flex-start;
-
         width: 100%;
     }
-
 
     #dashboard {
         padding-top: 15px !important;
     }
 
-
     #dashboard h2 {
         font-size: 20px;
     }
-
 
     #dashboard p {
         font-size: 12px;
     }
 
-
     .input-group .btn {
         min-width: 30%;
     }
-
 
     .card h6 {
         font-size: 13px;
     }
 
-
     .card h2 {
         font-size: 24px;
     }
 
-
     .crm-header-image-wrapper img {
         height: 110px;
     }
-
 }
