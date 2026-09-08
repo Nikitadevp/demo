@@ -22,8 +22,8 @@
 
 body {
     font-family: 'Poppins', sans-serif;
-    background: #f3f6f8;
-    color: #243447;
+    background: #f4f7fb;
+    color: #1e293b;
 }
 
 
@@ -50,7 +50,7 @@ body {
     left: 0;
     bottom: 0;
 
-    background: #0f3d4c;
+    background: #101828;
 
     color: #ffffff;
 
@@ -58,69 +58,7 @@ body {
 
     z-index: 1000;
 
-    box-shadow: 4px 0 20px rgba(15, 61, 76, 0.12);
-
-    transition: all 0.3s ease;
-}
-
-
-/* =========================================================
-   SIDEBAR TOGGLE BUTTON
-========================================================= */
-
-.sidebar-toggle-btn {
-    position: absolute;
-    top: 18px;
-    right: 18px;
-
-    width: 38px;
-    height: 38px;
-
-    border: none;
-    border-radius: 10px;
-
-    background: rgba(255, 255, 255, 0.12);
-
-    color: #ffffff;
-
-    font-size: 17px;
-
-    cursor: pointer;
-
-    transition: all 0.3s ease;
-}
-
-.sidebar-toggle-btn:hover {
-    background: #1597b8;
-}
-
-
-/* =========================================================
-   SIDEBAR COLLAPSED
-========================================================= */
-
-.sidebar.collapsed {
-    width: 80px;
-}
-
-.sidebar.collapsed .sidebar-logo h3,
-.sidebar.collapsed .sidebar-logo p,
-.sidebar.collapsed .sidebar-menu li a span {
-    display: none;
-}
-
-.sidebar.collapsed .sidebar-menu li a {
-    justify-content: center;
-    padding: 14px 10px;
-}
-
-.sidebar.collapsed .sidebar-menu li a i {
-    margin: 0;
-}
-
-.sidebar.collapsed + .main-content {
-    margin-left: 80px;
-    width: calc(100% - 80px);
+    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.08);
 }
 
 
@@ -129,7 +67,7 @@ body {
 ========================================================= */
 
 .sidebar-logo {
-    padding: 32px 20px 26px;
+    padding: 30px 20px;
 
     text-align: center;
 
@@ -145,8 +83,6 @@ body {
     margin-bottom: 5px;
 
     color: #ffffff;
-
-    letter-spacing: 0.4px;
 }
 
 
@@ -155,9 +91,7 @@ body {
 
     font-size: 13px;
 
-    color: #b8d5dc;
-
-    letter-spacing: 0.5px;
+    color: #94a3b8;
 }
 
 
@@ -168,14 +102,14 @@ body {
 .sidebar-menu {
     list-style: none;
 
-    padding: 24px 14px;
+    padding: 25px 15px;
 
     margin: 0;
 }
 
 
 .sidebar-menu li {
-    margin-bottom: 9px;
+    margin-bottom: 10px;
 }
 
 
@@ -190,7 +124,7 @@ body {
 
     border-radius: 10px;
 
-    color: #d8e8eb;
+    color: #cbd5e1;
 
     text-decoration: none;
 
@@ -212,7 +146,7 @@ body {
 
 
 .sidebar-menu li a:hover {
-    background: rgba(21, 151, 184, 0.22);
+    background: #14b8a6;
 
     color: #ffffff;
 
@@ -221,11 +155,11 @@ body {
 
 
 .sidebar-menu li.active a {
-    background: #1597b8;
+    background: #14b8a6;
 
     color: #ffffff;
 
-    box-shadow: 0 8px 20px rgba(21, 151, 184, 0.28);
+    box-shadow: 0 5px 15px rgba(20, 184, 166, 0.3);
 }
 
 
@@ -241,8 +175,6 @@ body {
     min-height: 100vh;
 
     padding: 0 25px 30px;
-
-    transition: all 0.3s ease;
 }
 
 
@@ -251,15 +183,15 @@ body {
 ========================================================= */
 
 .crm-header-image-wrapper {
-    width: calc(100% + 50px);
+    width: 100%;
 
-    margin: 0 -25px 28px;
+    margin: 0 -25px 25px;
+
+    width: calc(100% + 50px);
 
     overflow: hidden;
 
     background: #ffffff;
-
-    border-bottom: 1px solid #e4eaee;
 }
 
 
@@ -279,23 +211,21 @@ body {
 ========================================================= */
 
 #dashboard h2 {
-    font-size: 29px;
+    font-size: 28px;
 
-    color: #0f3d4c;
+    color: #101828;
 
     font-weight: 700;
 }
 
 
 #dashboard h2 i {
-    color: #1597b8 !important;
+    color: #14b8a6 !important;
 }
 
 
 #dashboard p {
     font-size: 14px;
-
-    color: #718096 !important;
 }
 
 
@@ -304,34 +234,32 @@ body {
 ========================================================= */
 
 .input-group {
-    box-shadow: 0 5px 18px rgba(15, 61, 76, 0.08);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
 
-    border-radius: 10px;
+    border-radius: 8px;
 }
 
 
 .input-group .form-control {
-    height: 46px;
+    height: 45px;
 
-    border: 1px solid #d8e1e5;
+    border: 1px solid #dbe2ea;
 
     font-size: 14px;
 
     box-shadow: none;
-
-    color: #243447;
 }
 
 
 .input-group .form-control:focus {
-    border-color: #1597b8;
+    border-color: #101828;
 
-    box-shadow: 0 0 0 0.2rem rgba(21, 151, 184, 0.12);
+    box-shadow: 0 0 0 0.2rem rgba(16, 24, 40, 0.12);
 }
 
 
 .input-group .btn {
-    height: 46px;
+    height: 45px;
 
     font-size: 14px;
 
@@ -340,22 +268,26 @@ body {
 
 
 /* =========================================================
-   BUTTONS
+   SEARCH BUTTON
 ========================================================= */
 
 .btn-primary {
-    background: #0f6f84;
+    background: #101828;
 
-    border-color: #0f6f84;
+    border-color: #101828;
 }
 
 
 .btn-primary:hover {
-    background: #0b596a;
+    background: #0a0f1a;
 
-    border-color: #0b596a;
+    border-color: #0a0f1a;
 }
 
+
+/* =========================================================
+   CLEAR BUTTON
+========================================================= */
 
 .btn-secondary {
     background: #64748b;
@@ -371,17 +303,21 @@ body {
 }
 
 
-.btn-danger {
-    background: #d9534f;
+/* =========================================================
+   LOGOUT BUTTON
+========================================================= */
 
-    border-color: #d9534f;
+.btn-danger {
+    background: #dc3545;
+
+    border-color: #dc3545;
 }
 
 
 .btn-danger:hover {
-    background: #bd3f3b;
+    background: #b02a37;
 
-    border-color: #bd3f3b;
+    border-color: #b02a37;
 }
 
 
@@ -390,24 +326,20 @@ body {
 ========================================================= */
 
 .card {
-    border-radius: 14px;
+    border-radius: 15px;
 
     overflow: hidden;
 
     transition: all 0.3s ease;
 
-    border: 1px solid #e3eaed;
-
-    background: #ffffff;
-
-    box-shadow: 0 5px 20px rgba(15, 61, 76, 0.06);
+    border: none;
 }
 
 
 .card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-5px);
 
-    box-shadow: 0 15px 32px rgba(15, 61, 76, 0.12) !important;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.10) !important;
 }
 
 
@@ -422,13 +354,11 @@ body {
     font-weight: 500;
 
     margin-bottom: 8px;
-
-    color: #718096;
 }
 
 
 .card h2 {
-    font-size: 31px;
+    font-size: 30px;
 
     margin: 0;
 
@@ -446,107 +376,49 @@ body {
 ========================================================= */
 
 .text-primary {
-    color: #0f6f84 !important;
+    color: #101828 !important;
 }
 
 
 .text-info {
-    color: #1597b8 !important;
+    color: #0ea5e9 !important;
 }
 
 
 .text-warning {
-    color: #e89b2d !important;
+    color: #14b8a6 !important;
 }
 
 
 .text-danger {
-    color: #d9534f !important;
+    color: #dc3545 !important;
 }
 
 
 .text-dark {
-    color: #243447 !important;
-}
-
-
-.text-success {
-    color: #198754 !important;
+    color: #334155 !important;
 }
 
 
 /* =========================================================
-   CARD TOP ACCENTS
+   CUSTOMER QUERY TABLE CARD
 ========================================================= */
 
-.row.g-4.mb-4 > div:nth-child(1) .card {
-    border-top: 4px solid #1597b8;
-}
-
-.row.g-4.mb-4 > div:nth-child(2) .card {
-    border-top: 4px solid #198754;
-}
-
-.row.g-4.mb-4 > div:nth-child(3) .card {
-    border-top: 4px solid #d9534f;
-}
-
-
-/* =========================================================
-   CRM PENDING ACTIVITIES TABLE CARD
-========================================================= */
-
-#crm-pending-work {
-    border-radius: 14px;
+#customer-query {
+    border-radius: 15px;
 
     margin-top: 30px;
 
     background: #ffffff;
-
-    border: 1px solid #dfe8eb;
-}
-
-
-#crm-pending-work .card-header {
-    background: #0f3d4c !important;
-
-    padding: 18px 22px;
-
-    border: none;
-}
-
-
-#crm-pending-work .card-header h5 {
-    font-size: 17px;
-
-    font-weight: 600;
-}
-
-
-#crm-pending-work .card-header .badge {
-    font-size: 13px;
-
-    padding: 8px 12px;
-
-    background: #ffffff !important;
-
-    color: #0f3d4c !important;
 }
 
 
 /* =========================================================
-   OVERDUE CUSTOMER TABLE CARD
+   TABLE HEADER
 ========================================================= */
 
-#overdue-customers {
-    border-radius: 14px;
-
-    border: 1px solid #f1d6d5;
-}
-
-
-#overdue-customers .card-header {
-    background: #c94b4b !important;
+#customer-query .card-header {
+    background: #101828 !important;
 
     padding: 18px 22px;
 
@@ -554,17 +426,15 @@ body {
 }
 
 
-#overdue-customers .card-header h5 {
+#customer-query .card-header h5 {
     font-size: 17px;
 
     font-weight: 600;
 }
 
 
-#overdue-customers .card-header .badge {
-    background: #ffffff !important;
-
-    color: #c94b4b !important;
+#customer-query .card-header .badge {
+    font-size: 13px;
 
     padding: 8px 12px;
 }
@@ -591,22 +461,16 @@ body {
     min-width: 1500px;
 
     font-size: 14px;
-
-    background: #ffffff;
 }
 
 
-/* =========================================================
-   TABLE HEADER
-========================================================= */
-
 .table thead {
-    background: #174b5b;
+    background: #1e293b;
 }
 
 
 .table thead th {
-    background: #174b5b !important;
+    background: #1e293b !important;
 
     color: #ffffff !important;
 
@@ -621,14 +485,8 @@ body {
     border: none;
 
     vertical-align: middle;
-
-    letter-spacing: 0.1px;
 }
 
-
-/* =========================================================
-   TABLE BODY
-========================================================= */
 
 .table tbody td {
     padding: 15px 14px;
@@ -637,11 +495,9 @@ body {
 
     color: #334155;
 
-    border-color: #e8eef0;
+    border-color: #edf1f5;
 
     white-space: nowrap;
-
-    background: #ffffff;
 }
 
 
@@ -650,65 +506,26 @@ body {
 }
 
 
-.table tbody tr:nth-child(even) td {
-    background: #f8fbfc;
-}
-
-
-.table tbody tr:hover td {
-    background: #eaf5f7 !important;
-}
-
-
-/* =========================================================
-   TABLE DARK HEADER
-========================================================= */
-
-.table-dark {
-    --bs-table-bg: #174b5b !important;
-
-    --bs-table-color: #ffffff !important;
-}
-
-
-/* =========================================================
-   OVERDUE TABLE HEADER
-========================================================= */
-
-.table-danger {
-    --bs-table-bg: #fbe9e9 !important;
-
-    --bs-table-color: #8b3030 !important;
-}
-
-
-.table-danger th {
-    background: #fbe9e9 !important;
-
-    color: #8b3030 !important;
-
-    border-color: #efd2d2 !important;
+.table tbody tr:hover {
+    background: #f0fdfa;
 }
 
 
 /* =========================================================
    LONG TEXT COLUMNS
-   LINK COLUMN REMOVE HONE KE BAAD UPDATED
 ========================================================= */
 
-.table th:nth-child(8),
-.table td:nth-child(8) {
-    min-width: 220px;
-
-    max-width: 320px;
+.table th:nth-child(7),
+.table td:nth-child(7) {
+    min-width: 160px;
 
     white-space: normal;
 }
 
 
-.table th:nth-child(11),
-.table td:nth-child(11) {
-    min-width: 150px;
+.table th:nth-child(9),
+.table td:nth-child(9) {
+    min-width: 140px;
 
     white-space: normal;
 }
@@ -720,46 +537,6 @@ body {
 
 .table tbody td strong {
     font-weight: 600;
-}
-
-
-.table tbody td strong.text-primary {
-    color: #0f6f84 !important;
-}
-
-
-.table tbody td strong.text-danger {
-    color: #c94b4b !important;
-}
-
-
-/* =========================================================
-   FILTER INPUTS INSIDE TABLE
-========================================================= */
-
-.table thead .form-control,
-.table thead .form-select {
-    font-size: 12px;
-
-    min-height: 34px;
-
-    border: 1px solid rgba(255, 255, 255, 0.35);
-
-    background: #ffffff;
-
-    color: #243447;
-
-    box-shadow: none;
-
-    border-radius: 6px;
-}
-
-
-.table thead .form-control:focus,
-.table thead .form-select:focus {
-    border-color: #1597b8;
-
-    box-shadow: 0 0 0 0.15rem rgba(21, 151, 184, 0.18);
 }
 
 
@@ -783,34 +560,28 @@ body {
 ========================================================= */
 
 .badge.bg-secondary {
-    background: #5f6f7a !important;
+    background: #64748b !important;
 }
 
 
-/* =========================================================
-   CLOSED BADGE
-========================================================= */
+/* CLOSED */
 
 .badge.bg-success {
-    background: #198754 !important;
+    background: #16a34a !important;
 }
 
 
-/* =========================================================
-   PRIMARY BADGE
-========================================================= */
+/* OPEN */
 
 .badge.bg-primary {
-    background: #0f6f84 !important;
+    background: #101828 !important;
 }
 
 
-/* =========================================================
-   IN PROGRESS BADGE
-========================================================= */
+/* IN PROGRESS */
 
 .badge.bg-warning {
-    background: #f0a53a !important;
+    background: #14b8a6 !important;
 
     color: #ffffff !important;
 }
@@ -821,12 +592,12 @@ body {
 ========================================================= */
 
 .fw-bold.text-danger {
-    color: #c94b4b !important;
+    color: #dc2626 !important;
 }
 
 
 .text-success {
-    color: #198754 !important;
+    color: #16a34a !important;
 }
 
 
@@ -842,45 +613,6 @@ body {
     display: inline-block;
 
     margin-top: 3px;
-
-    color: #718096 !important;
-}
-
-
-/* =========================================================
-   PHOTO
-========================================================= */
-
-.crm-table-image {
-    width: 42px;
-
-    height: 42px;
-
-    object-fit: cover;
-
-    border-radius: 8px;
-
-    border: 2px solid #e5eef0;
-
-    transition: all 0.2s ease;
-}
-
-
-.crm-table-image:hover {
-    transform: scale(1.08);
-}
-
-
-/* =========================================================
-   IMAGE BUTTON
-========================================================= */
-
-.table .btn-sm {
-    border-radius: 7px;
-
-    font-size: 12px;
-
-    font-weight: 500;
 }
 
 
@@ -890,8 +622,6 @@ body {
 
 .table tbody td.text-center {
     padding: 45px 20px;
-
-    background: #ffffff !important;
 }
 
 
@@ -900,9 +630,9 @@ body {
 ========================================================= */
 
 .text-center.mt-4.mb-2 {
-    padding: 16px;
+    padding: 15px;
 
-    color: #718096;
+    color: #64748b;
 }
 
 
@@ -918,28 +648,35 @@ body {
 
 
 ::-webkit-scrollbar-track {
-    background: #e8eef0;
+    background: #e5e7eb;
 }
 
 
 ::-webkit-scrollbar-thumb {
-    background: #0f6f84;
+    background: #101828;
 
     border-radius: 20px;
 }
 
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #1597b8;
+    background: #14b8a6;
 }
 
+
+.crm-table-image {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 6px;
+}
 
 /* =========================================================
    ANIMATION
 ========================================================= */
 
 .card {
-    animation: fadeUp 0.45s ease;
+    animation: fadeUp 0.5s ease;
 }
 
 
@@ -948,7 +685,7 @@ body {
     from {
         opacity: 0;
 
-        transform: translateY(12px);
+        transform: translateY(15px);
     }
 
     to {
@@ -980,18 +717,6 @@ body {
     }
 
 
-    .sidebar.collapsed {
-        width: 70px;
-    }
-
-
-    .sidebar.collapsed + .main-content {
-        margin-left: 70px;
-
-        width: calc(100% - 70px);
-    }
-
-
     .crm-header-image-wrapper {
         margin-left: -20px;
 
@@ -1005,7 +730,7 @@ body {
 
 
     #dashboard h2 {
-        font-size: 25px;
+        font-size: 24px;
     }
 
 }
@@ -1013,14 +738,19 @@ body {
 
 /* =========================================================
    MOBILE RESPONSIVE
+   SIDEBAR TOP PAR AAYEGA
 ========================================================= */
 
 @media (max-width: 768px) {
+
+    /* Dashboard vertical */
 
     .dashboard-container {
         display: block;
     }
 
+
+    /* Sidebar top */
 
     .sidebar {
         position: relative;
@@ -1029,7 +759,7 @@ body {
         left: auto;
         bottom: auto;
 
-        width: 100% !important;
+        width: 100%;
 
         min-height: auto;
 
@@ -1039,32 +769,19 @@ body {
     }
 
 
-    .sidebar-toggle-btn {
-        display: none;
-    }
-
-
-    .sidebar.collapsed {
-        width: 100% !important;
-    }
-
-
-    .sidebar.collapsed .sidebar-logo h3,
-    .sidebar.collapsed .sidebar-logo p,
-    .sidebar.collapsed .sidebar-menu li a span {
-        display: block;
-    }
-
+    /* Logo */
 
     .sidebar-logo {
-        padding: 20px 15px;
+        padding: 18px 15px;
     }
 
 
     .sidebar-logo h3 {
-        font-size: 23px;
+        font-size: 22px;
     }
 
+
+    /* Menu horizontal */
 
     .sidebar-menu {
         display: flex;
@@ -1085,7 +802,7 @@ body {
 
 
     .sidebar-menu li a {
-        padding: 10px 13px;
+        padding: 10px 12px;
 
         font-size: 13px;
 
@@ -1098,8 +815,9 @@ body {
     }
 
 
-    .main-content,
-    .sidebar.collapsed + .main-content {
+    /* Main content */
+
+    .main-content {
         margin-left: 0;
 
         width: 100%;
@@ -1107,6 +825,8 @@ body {
         padding: 0 15px 25px;
     }
 
+
+    /* Header image */
 
     .crm-header-image-wrapper {
         margin-left: -15px;
@@ -1120,11 +840,13 @@ body {
 
 
     .crm-header-image-wrapper img {
-        height: 145px;
+        height: 140px;
 
         object-fit: cover;
     }
 
+
+    /* Page header */
 
     #dashboard .row.align-items-center {
         gap: 18px;
@@ -1135,6 +857,8 @@ body {
         font-size: 22px;
     }
 
+
+    /* Search */
 
     .input-group {
         display: flex;
@@ -1163,29 +887,31 @@ body {
     }
 
 
+    /* Dashboard cards */
+
     .card-body {
         padding: 20px;
     }
 
 
     .card h2 {
-        font-size: 27px;
+        font-size: 26px;
     }
 
+
+    /* Table */
 
     .table {
         font-size: 13px;
     }
 
 
-    #crm-pending-work .card-header,
-    #overdue-customers .card-header {
+    #customer-query .card-header {
         padding: 15px;
     }
 
 
-    #crm-pending-work .card-header h5,
-    #overdue-customers .card-header h5 {
+    #customer-query .card-header h5 {
         font-size: 15px;
     }
 
