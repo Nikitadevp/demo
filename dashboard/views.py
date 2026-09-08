@@ -4790,6 +4790,13 @@ def crm_dashboard(request):
 
         }
 
+
+
+        if current_stage != "Completed":
+
+            customer_data.append(customer)
+
+
         customer_data.append(customer)
 
 
