@@ -1,705 +1,1656 @@
 /* =========================================================
-   CRM / STORE DASHBOARD - EXACT IMAGE COLOR MATCH
+   ADMIN DASHBOARD
 ========================================================= */
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
+
 /* =========================================================
-   COLOR VARIABLES (EXACT MATCH FROM UI IMAGES)
+   COLOR VARIABLES
 ========================================================= */
 
 :root {
-    --sidebar-bg: #0B414B;           /* Deep Teal (From Sidebar) */
-    --sidebar-active: #1AA3C1;       /* Cyan Teal (From Active Menu) */
-    --welcome-card-bg: #0D4955;      /* Dark Teal Card */
-    --cyan-stat-color: #169BB6;      /* Bright Cyan for Numbers */
-    --table-header-bg: #407DAA;      /* Steel Blue (From Table Header) */
-    --accent-bar-color: #0096C7;      /* Section Bar Accent Blue */
-    --page-bg: #F4F7FB;              /* Light Grey/Blue Background */
-    --card-bg: #FFFFFF;              /* White for Cards */
-    --badge-bg: #E1F2F7;             /* Soft Cyan Badge */
-    --badge-text: #0C5E70;           /* Dark Cyan Badge Text */
-    --text-dark: #1E293B;            /* Main Dark Text */
-    --text-muted: #64748B;           /* Subtitle Text Color */
+
+    /* Sidebar */
+
+    --sidebar-color: #0F3D4C;
+
+    --sidebar-dark: #0B313D;
+
+    --sidebar-active: #1597B8;
+
+    --sidebar-hover: #136F87;
+
+
+    /* Page */
+
+    --page-bg: #F5F7FA;
+
+    --card-bg: #FFFFFF;
+
+
+    /* Table */
+
+    --table-header: #4682B4;
+
+    --table-hover: #EAF5F8;
+
+
+    /* Accent */
+
+    --accent-color: #1597B8;
+
+    --accent-light: #D9EEF4;
+
+
+    /* Text */
+
+    --text-dark: #1E293B;
+
+    --text-muted: #718096;
+
+
+    /* Border */
+
+    --border-color: #E2E8F0;
+
 }
 
+
+/* =========================================================
+   RESET
+========================================================= */
+
 * {
+
     margin: 0;
+
     padding: 0;
+
     box-sizing: border-box;
+
 }
+
 
 /* =========================================================
    BODY
 ========================================================= */
 
 body {
+
     font-family: 'Poppins', sans-serif;
-    background-color: var(--page-bg);
+
+    background: var(--page-bg);
+
     color: var(--text-dark);
+
 }
+
 
 /* =========================================================
    DASHBOARD CONTAINER
 ========================================================= */
 
 .dashboard-container {
+
     display: flex;
+
     min-height: 100vh;
+
 }
+
 
 /* =========================================================
    SIDEBAR
 ========================================================= */
 
 .sidebar {
+
     width: 260px;
+
     min-height: 100vh;
+
     position: fixed;
+
     top: 0;
+
     left: 0;
+
     bottom: 0;
-    background-color: var(--sidebar-bg);
+
+    background: var(--sidebar-color);
+
     color: #ffffff;
+
     overflow-y: auto;
+
     z-index: 1000;
-    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.05);
+
+    box-shadow: 4px 0 15px rgba(15, 61, 76, 0.12);
+
     transition: all 0.3s ease;
+
 }
 
-/* SIDEBAR TOGGLE BUTTON */
+
+/* =========================================================
+   SIDEBAR TOGGLE BUTTON
+========================================================= */
+
 .sidebar-toggle-btn {
-    position: absolute;
-    top: 18px;
-    right: 18px;
-    width: 38px;
-    height: 38px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 46px;
+
+    height: 46px;
+
+    margin: 18px 20px 0;
+
     border: none;
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.1);
+
+    border-radius: 10px;
+
+    background: rgba(255, 255, 255, 0.12);
+
     color: #ffffff;
-    font-size: 16px;
+
+    font-size: 18px;
+
     cursor: pointer;
+
     transition: all 0.3s ease;
+
 }
+
 
 .sidebar-toggle-btn:hover {
+
     background: var(--sidebar-active);
+
 }
 
-/* SIDEBAR COLLAPSED STATE */
-.sidebar.collapsed {
-    width: 80px;
-}
 
-.sidebar.collapsed .sidebar-logo h3,
-.sidebar.collapsed .sidebar-logo p,
-.sidebar.collapsed .sidebar-menu li a span {
-    display: none;
-}
+/* =========================================================
+   SIDEBAR LOGO
+========================================================= */
 
-.sidebar.collapsed .sidebar-menu li a {
-    justify-content: center;
-    padding: 14px 10px;
-}
-
-.sidebar.collapsed .sidebar-menu li a i {
-    margin: 0;
-}
-
-.sidebar.collapsed + .main-content {
-    margin-left: 80px;
-    width: calc(100% - 80px);
-}
-
-/* SIDEBAR LOGO */
 .sidebar-logo {
-    padding: 28px 20px 22px;
-    text-align: left;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+    padding: 30px 20px;
+
+    text-align: center;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+
 }
+
 
 .sidebar-logo h3 {
-    font-size: 22px;
+
+    font-size: 26px;
+
     font-weight: 700;
-    margin-bottom: 2px;
+
+    margin-bottom: 5px;
+
     color: #ffffff;
-    letter-spacing: 0.3px;
+
 }
+
 
 .sidebar-logo p {
+
     margin: 0;
-    font-size: 11px;
-    font-weight: 600;
-    color: #79A3AB;
-    letter-spacing: 0.8px;
-    text-transform: uppercase;
+
+    font-size: 13px;
+
+    letter-spacing: 1px;
+
+    color: #77C7DD;
+
 }
 
-/* SIDEBAR MENU */
+
+/* =========================================================
+   SIDEBAR MENU
+========================================================= */
+
 .sidebar-menu {
+
     list-style: none;
-    padding: 20px 14px;
+
+    padding: 25px 15px;
+
     margin: 0;
+
 }
+
 
 .sidebar-menu li {
-    margin-bottom: 8px;
+
+    margin-bottom: 10px;
+
 }
+
 
 .sidebar-menu li a {
+
     display: flex;
+
     align-items: center;
-    gap: 12px;
-    padding: 12px 16px;
-    border-radius: 8px;
-    color: #A0C2C8;
+
+    gap: 14px;
+
+    padding: 14px 16px;
+
+    border-radius: 10px;
+
+    color: #D9E7EC;
+
     text-decoration: none;
-    font-size: 14px;
+
+    font-size: 15px;
+
     font-weight: 500;
-    transition: all 0.25s ease;
+
+    transition: all 0.3s ease;
+
 }
+
 
 .sidebar-menu li a i {
+
     width: 20px;
+
     text-align: center;
-    font-size: 16px;
+
+    font-size: 17px;
+
+    color: #49B8D4;
+
 }
+
 
 .sidebar-menu li a:hover {
-    background: rgba(255, 255, 255, 0.08);
+
+    background: rgba(21, 151, 184, 0.22);
+
     color: #ffffff;
+
+    transform: translateX(4px);
+
 }
 
-.sidebar-menu li.active a {
-    background-color: var(--sidebar-active);
+
+.sidebar-menu li a:hover i {
+
     color: #ffffff;
-    font-weight: 600;
-    box-shadow: 0 4px 12px rgba(26, 163, 193, 0.3);
+
 }
+
+
+.sidebar-menu li.active a {
+
+    background: var(--sidebar-active);
+
+    color: #ffffff;
+
+    box-shadow: 0 5px 15px rgba(21, 151, 184, 0.25);
+
+}
+
+
+.sidebar-menu li.active a i {
+
+    color: #ffffff;
+
+}
+
+
+/* =========================================================
+   COLLAPSED SIDEBAR
+========================================================= */
+
+.sidebar.collapsed {
+
+    width: 80px;
+
+}
+
+
+.sidebar.collapsed .sidebar-logo {
+
+    padding-left: 10px;
+
+    padding-right: 10px;
+
+}
+
+
+.sidebar.collapsed .sidebar-logo h3 {
+
+    font-size: 0;
+
+}
+
+
+.sidebar.collapsed .sidebar-logo h3::after {
+
+    content: "S";
+
+    font-size: 26px;
+
+}
+
+
+.sidebar.collapsed .sidebar-logo p {
+
+    display: none;
+
+}
+
+
+.sidebar.collapsed .sidebar-menu {
+
+    padding-left: 10px;
+
+    padding-right: 10px;
+
+}
+
+
+.sidebar.collapsed .sidebar-menu li a {
+
+    justify-content: center;
+
+    padding: 14px 10px;
+
+}
+
+
+.sidebar.collapsed .sidebar-menu li a span {
+
+    display: none;
+
+}
+
+
+.sidebar.collapsed + .main-content {
+
+    margin-left: 80px;
+
+    width: calc(100% - 80px);
+
+}
+
 
 /* =========================================================
    MAIN CONTENT
 ========================================================= */
 
 .main-content {
+
     margin-left: 260px;
+
     width: calc(100% - 260px);
+
     min-height: 100vh;
-    padding: 0 30px 30px;
-    background-color: var(--page-bg);
+
+    padding: 0 25px 30px;
+
     transition: all 0.3s ease;
+
 }
 
+
 /* =========================================================
-   HEADER IMAGE WRAPPER
+   HEADER IMAGE
 ========================================================= */
 
 .crm-header-image-wrapper {
-    width: calc(100% + 60px);
-    margin: 0 -30px 24px;
+
+    width: 100%;
+
+    margin: 0 -25px 25px;
+
+    width: calc(100% + 50px);
+
     overflow: hidden;
+
     background: #ffffff;
-    border-bottom: 1px solid #E2E8F0;
+
 }
+
 
 .crm-header-image-wrapper img {
+
     width: 100%;
-    height: 180px;
+
+    height: 220px;
+
     object-fit: cover;
+
     display: block;
+
 }
 
+
 /* =========================================================
-   DASHBOARD TITLE & SECTION HEADINGS
+   DASHBOARD TITLE
 ========================================================= */
 
 #dashboard h2 {
-    font-size: 26px;
+
+    font-size: 28px;
+
     color: var(--text-dark);
+
     font-weight: 700;
+
 }
+
+
+#dashboard h2 i {
+
+    color: var(--accent-color) !important;
+
+}
+
 
 #dashboard p {
+
     font-size: 14px;
-    color: var(--text-muted) !important;
+
+    color: var(--text-muted);
+
 }
 
-/* Vertical Bar Section Accent (as seen in image) */
-.section-title,
-#crm-pending-work .card-header h5,
-#overdue-customers .card-header h5 {
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--text-dark);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.section-title::before,
-#crm-pending-work .card-header h5::before {
-    content: '';
-    display: inline-block;
-    width: 5px;
-    height: 20px;
-    background-color: var(--accent-bar-color);
-    border-radius: 4px;
-}
-
-#overdue-customers .card-header h5::before {
-    content: '';
-    display: inline-block;
-    width: 5px;
-    height: 20px;
-    background-color: #DC2626;
-    border-radius: 4px;
-}
 
 /* =========================================================
    SEARCH BAR
 ========================================================= */
 
 .input-group {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+
+    box-shadow: 0 4px 15px rgba(15, 61, 76, 0.08);
+
     border-radius: 8px;
+
 }
+
 
 .input-group .form-control {
-    height: 42px;
-    border: 1px solid #CBD5E1;
+
+    height: 45px;
+
+    border: 1px solid #D5E1E6;
+
     font-size: 14px;
-    box-shadow: none;
+
     color: var(--text-dark);
+
+    box-shadow: none;
+
 }
+
 
 .input-group .form-control:focus {
-    border-color: var(--sidebar-active);
-    box-shadow: 0 0 0 0.15rem rgba(26, 163, 193, 0.2);
+
+    border-color: var(--accent-color);
+
+    box-shadow: 0 0 0 0.2rem rgba(21, 151, 184, 0.12);
+
 }
+
 
 .input-group .btn {
-    height: 42px;
+
+    height: 45px;
+
     font-size: 14px;
+
     font-weight: 500;
+
 }
 
+
 /* =========================================================
-   BUTTONS
+   SEARCH BUTTON
 ========================================================= */
 
 .btn-primary {
-    background-color: var(--sidebar-bg);
-    border-color: var(--sidebar-bg);
+
+    background: var(--sidebar-color);
+
+    border-color: var(--sidebar-color);
+
 }
+
 
 .btn-primary:hover {
-    background-color: #08333B;
-    border-color: #08333B;
+
+    background: var(--sidebar-dark);
+
+    border-color: var(--sidebar-dark);
+
 }
 
-.btn-secondary {
-    background-color: #64748B;
-    border-color: #64748B;
-}
-
-.btn-secondary:hover {
-    background-color: #475569;
-    border-color: #475569;
-}
-
-.btn-danger {
-    background-color: #DC2626;
-    border-color: #DC2626;
-}
-
-.btn-danger:hover {
-    background-color: #B91C1C;
-    border-color: #B91C1C;
-}
 
 /* =========================================================
-   WELCOME / SUMMARY DARK TEAL CARD (As seen in image 2)
+   CLEAR BUTTON
 ========================================================= */
 
-.welcome-summary-card {
-    background-color: var(--welcome-card-bg);
-    color: #ffffff;
-    border-radius: 16px;
-    padding: 28px;
-    box-shadow: 0 10px 25px rgba(13, 73, 85, 0.15);
-    margin-bottom: 24px;
+.btn-secondary {
+
+    background: #64748B;
+
+    border-color: #64748B;
+
 }
 
-.welcome-summary-card h3 {
-    font-size: 22px;
-    font-weight: 700;
-    margin-bottom: 8px;
+
+.btn-secondary:hover {
+
+    background: #475569;
+
+    border-color: #475569;
+
 }
 
-.welcome-summary-card p {
-    color: #A3C9D0;
-    font-size: 14px;
-    margin-bottom: 20px;
-}
-
-.welcome-summary-card .stat-number {
-    font-size: 38px;
-    font-weight: 700;
-    color: var(--cyan-stat-color);
-    line-height: 1;
-}
-
-.welcome-summary-card .stat-label {
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    color: #A3C9D0;
-    text-transform: uppercase;
-    margin-top: 6px;
-}
 
 /* =========================================================
-   DASHBOARD METRIC CARDS
+   LOGOUT BUTTON
+========================================================= */
+
+.btn-danger {
+
+    background: #D9534F;
+
+    border-color: #D9534F;
+
+}
+
+
+.btn-danger:hover {
+
+    background: #B9403D;
+
+    border-color: #B9403D;
+
+}
+
+
+/* =========================================================
+   DASHBOARD CARDS
 ========================================================= */
 
 .card {
-    border-radius: 14px;
+
+    border-radius: 15px;
+
     overflow: hidden;
-    transition: all 0.25s ease;
-    border: 1px solid #E2E8F0;
+
+    transition: all 0.3s ease;
+
+    border: 1px solid var(--border-color);
+
     background: var(--card-bg);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+
 }
+
 
 .card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.07) !important;
+
+    transform: translateY(-5px);
+
+    box-shadow: 0 15px 30px rgba(15, 61, 76, 0.10) !important;
+
 }
+
 
 .card-body {
-    padding: 20px 24px;
+
+    padding: 24px;
+
 }
+
 
 .card h6 {
-    font-size: 13px;
+
+    font-size: 14px;
+
     font-weight: 500;
-    margin-bottom: 6px;
+
+    margin-bottom: 8px;
+
     color: var(--text-muted);
+
 }
+
 
 .card h2 {
-    font-size: 28px;
+
+    font-size: 30px;
+
     margin: 0;
+
     font-weight: 700;
-    color: var(--text-dark);
+
 }
 
+
+.card i.fa-2x {
+
+    font-size: 32px;
+
+}
+
+
 /* =========================================================
-   TABLE CARDS & CONTAINERS
+   CARD COLORS
 ========================================================= */
 
-#crm-pending-work,
-#overdue-customers {
-    border-radius: 14px;
-    margin-top: 28px;
-    background: transparent;
-    border: none;
-    box-shadow: none;
+.text-primary {
+
+    color: var(--accent-color) !important;
+
 }
 
-#crm-pending-work .card-header,
-#overdue-customers .card-header {
-    background: transparent !important;
-    padding: 12px 0;
-    border: none;
+
+.text-info {
+
+    color: #4682B4 !important;
+
 }
 
-#crm-pending-work .card-header .badge {
-    font-size: 12px;
-    padding: 6px 12px;
-    background: #E0F2FE !important;
-    color: #0369A1 !important;
-    border-radius: 20px;
-    font-weight: 600;
+
+.text-warning {
+
+    color: #D69E2E !important;
+
 }
 
-#overdue-customers .card-header .badge {
-    font-size: 12px;
-    padding: 6px 12px;
-    background: #FEE2E2 !important;
-    color: #DC2626 !important;
-    border-radius: 20px;
-    font-weight: 600;
+
+.text-danger {
+
+    color: #D9534F !important;
+
 }
+
+
+.text-dark {
+
+    color: var(--text-dark) !important;
+
+}
+
+
+.text-muted {
+
+    color: var(--text-muted) !important;
+
+}
+
 
 /* =========================================================
-   TABLE RESPONSIVE & CONTAINER
+   CARD TOP ACCENT COLORS
+========================================================= */
+
+.row.g-4.mb-4 > div:nth-child(1) .card {
+
+    border-top: 4px solid var(--accent-color);
+
+}
+
+
+.row.g-4.mb-4 > div:nth-child(2) .card {
+
+    border-top: 4px solid #4682B4;
+
+}
+
+
+.row.g-4.mb-4 > div:nth-child(3) .card {
+
+    border-top: 4px solid #D9534F;
+
+}
+
+
+/* =========================================================
+   CUSTOMER QUERY TABLE CARD
+========================================================= */
+
+#customer-query,
+
+#crm-pending-work,
+
+#overdue-customers {
+
+    border-radius: 15px;
+
+    margin-top: 30px;
+
+    background: #ffffff;
+
+    border: 1px solid var(--border-color);
+
+}
+
+
+/* =========================================================
+   TABLE CARD HEADER
+========================================================= */
+
+#customer-query .card-header,
+
+#crm-pending-work .card-header {
+
+    background: var(--sidebar-color) !important;
+
+    padding: 18px 22px;
+
+    border: none;
+
+}
+
+
+#overdue-customers .card-header {
+
+    background: #D9534F !important;
+
+    padding: 18px 22px;
+
+    border: none;
+
+}
+
+
+#customer-query .card-header h5,
+
+#crm-pending-work .card-header h5,
+
+#overdue-customers .card-header h5 {
+
+    font-size: 17px;
+
+    font-weight: 600;
+
+}
+
+
+#customer-query .card-header .badge,
+
+#crm-pending-work .card-header .badge,
+
+#overdue-customers .card-header .badge {
+
+    font-size: 13px;
+
+    padding: 8px 12px;
+
+}
+
+
+/* =========================================================
+   TABLE RESPONSIVE
 ========================================================= */
 
 .table-responsive {
+
     overflow-x: auto;
+
     width: 100%;
-    border-radius: 14px;
-    background: #ffffff;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+
 }
 
+
 /* =========================================================
-   TABLE STYLING (EXACT DESIGN MATCH)
+   TABLE
 ========================================================= */
 
 .table {
+
     margin: 0;
-    min-width: 1200px;
+
+    min-width: 1500px;
+
     font-size: 14px;
+
     background: #ffffff;
-    border-collapse: separate;
-    border-spacing: 0;
+
 }
 
-/* TABLE HEADER: Steel Blue Background with Rounded Corners */
+
 .table thead {
-    background-color: var(--table-header-bg);
+
+    background: var(--table-header);
+
 }
+
 
 .table thead th {
-    background-color: var(--table-header-bg) !important;
+
+    background: var(--table-header) !important;
+
     color: #ffffff !important;
-    padding: 16px 18px;
+
+    padding: 16px 14px;
+
     font-size: 13px;
+
     font-weight: 600;
+
     white-space: nowrap;
+
     border: none;
+
     vertical-align: middle;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
+
 }
 
-/* Top Rounded Corners for Headers */
-.table thead tr th:first-child {
-    border-top-left-radius: 14px;
-}
 
-.table thead tr th:last-child {
-    border-top-right-radius: 14px;
-}
+.table tbody {
 
-/* TABLE BODY */
-.table tbody td {
-    padding: 16px 18px;
-    vertical-align: middle;
-    color: var(--text-dark);
-    border-bottom: 1px solid #F1F5F9;
-    border-top: none;
-    white-space: nowrap;
     background: #ffffff;
+
 }
 
-.table tbody tr:hover td {
-    background-color: #F8FAFC !important;
+
+.table tbody td {
+
+    padding: 15px 14px;
+
+    vertical-align: middle;
+
+    color: #334155;
+
+    border-color: #E7EDF1;
+
+    white-space: nowrap;
+
 }
 
-.table tbody tr:last-child td:first-child {
-    border-bottom-left-radius: 14px;
+
+.table tbody tr {
+
+    transition: all 0.2s ease;
+
 }
 
-.table tbody tr:last-child td:last-child {
-    border-bottom-right-radius: 14px;
+
+.table tbody tr:hover {
+
+    background: var(--table-hover) !important;
+
 }
 
-/* DARK TABLE HEADER OVERRIDE */
-.table-dark {
-    --bs-table-bg: var(--table-header-bg) !important;
-    --bs-table-color: #ffffff !important;
-}
-
-/* OVERDUE TABLE HEADER (Muted Red) */
-.table-danger {
-    --bs-table-bg: #E57373 !important;
-    --bs-table-color: #ffffff !important;
-}
-
-.table-danger th {
-    background-color: #E57373 !important;
-    color: #ffffff !important;
-    border: none !important;
-}
 
 /* =========================================================
-   TEXT STYLES IN TABLE
+   OVERDUE TABLE HEADER
 ========================================================= */
 
-.table tbody td strong {
-    font-weight: 700;
-    color: #0F172A;
+#overdue-customers .table thead th {
+
+    background: #E9F1F7 !important;
+
+    color: #315A78 !important;
+
 }
 
-.table tbody td strong.text-primary {
-    color: var(--sidebar-bg) !important;
-}
-
-.table tbody td strong.text-danger {
-    color: #DC2626 !important;
-}
-
-/* Overdue Text Highlight in Table */
-.text-overdue {
-    color: #DC2626;
-    font-weight: 600;
-}
 
 /* =========================================================
-   FILTER INPUTS & SELECTS IN TABLE HEADER
+   TABLE FILTER INPUT
 ========================================================= */
 
 .table thead .form-control,
+
 .table thead .form-select {
+
+    border: 1px solid rgba(255, 255, 255, 0.65);
+
     font-size: 12px;
-    min-height: 32px;
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    background: #ffffff;
-    color: var(--text-dark);
-    box-shadow: none;
-    border-radius: 6px;
+
+    color: #334155;
+
+    min-height: 34px;
+
 }
+
 
 .table thead .form-control:focus,
+
 .table thead .form-select:focus {
+
     border-color: #ffffff;
-    box-shadow: 0 0 0 0.15rem rgba(255, 255, 255, 0.3);
+
+    box-shadow: 0 0 0 0.15rem rgba(255, 255, 255, 0.25);
+
 }
 
+
 /* =========================================================
-   PILL BADGES (Matching Image Style)
+   LONG TEXT COLUMNS
+========================================================= */
+
+.table th:nth-child(7),
+
+.table td:nth-child(7) {
+
+    min-width: 160px;
+
+    white-space: normal;
+
+}
+
+
+.table th:nth-child(9),
+
+.table td:nth-child(9) {
+
+    min-width: 140px;
+
+    white-space: normal;
+
+}
+
+
+/* =========================================================
+   TICKET ID
+========================================================= */
+
+.table tbody td strong {
+
+    font-weight: 600;
+
+}
+
+
+/* =========================================================
+   BADGES
 ========================================================= */
 
 .badge {
-    padding: 6px 16px;
-    border-radius: 50px;
-    font-size: 13px;
-    font-weight: 500;
+
+    padding: 7px 11px;
+
+    border-radius: 20px;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
 }
 
-/* Status: Pending (Soft Light Blue/Cyan Pill) */
-.badge.bg-pending,
-.badge-pending {
-    background-color: var(--badge-bg) !important;
-    color: var(--badge-text) !important;
-}
-
-.badge.bg-secondary {
-    background-color: #E2E8F0 !important;
-    color: #475569 !important;
-}
-
-.badge.bg-success {
-    background-color: #D1FAE5 !important;
-    color: #065F46 !important;
-}
-
-.badge.bg-warning {
-    background-color: #FEF3C7 !important;
-    color: #92400E !important;
-}
 
 /* =========================================================
-   PHOTO THUMBNAILS
+   STAGE BADGE
+========================================================= */
+
+.badge.bg-secondary {
+
+    background: #64748B !important;
+
+}
+
+
+/* CLOSED */
+
+.badge.bg-success {
+
+    background: #2F9E78 !important;
+
+}
+
+
+/* OPEN */
+
+.badge.bg-primary {
+
+    background: var(--accent-color) !important;
+
+}
+
+
+/* IN PROGRESS */
+
+.badge.bg-warning {
+
+    background: #E0A72F !important;
+
+    color: #ffffff !important;
+
+}
+
+
+/* =========================================================
+   REMAINING TIME
+========================================================= */
+
+.fw-bold.text-danger {
+
+    color: #C0392B !important;
+
+}
+
+
+.text-success {
+
+    color: #2F9E78 !important;
+
+}
+
+
+/* =========================================================
+   SMALL TEXT
+========================================================= */
+
+.table small {
+
+    font-size: 12px;
+
+    line-height: 1.5;
+
+    display: inline-block;
+
+    margin-top: 3px;
+
+}
+
+
+/* =========================================================
+   EMPTY TABLE MESSAGE
+========================================================= */
+
+.table tbody td.text-center {
+
+    padding: 45px 20px;
+
+}
+
+
+/* =========================================================
+   IMAGE IN TABLE
 ========================================================= */
 
 .crm-table-image {
+
     width: 40px;
+
     height: 40px;
+
     object-fit: cover;
-    border-radius: 8px;
-    border: 1px solid #E2E8F0;
-    transition: transform 0.2s ease;
+
+    border-radius: 6px;
+
+    border: 1px solid var(--border-color);
+
 }
 
-.crm-table-image:hover {
-    transform: scale(1.1);
-}
 
 /* =========================================================
-   SCROLLBAR (Custom Styled Scrollbar as seen in image)
+   MODAL
+========================================================= */
+
+.modal-content {
+
+    border-radius: 15px;
+
+    border: 1px solid var(--border-color);
+
+}
+
+
+.modal-header {
+
+    background: var(--sidebar-color);
+
+    color: #ffffff;
+
+    border: none;
+
+}
+
+
+.modal-header .btn-close {
+
+    filter: invert(1);
+
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.text-center.mt-4.mb-2 {
+
+    padding: 15px;
+
+    color: var(--text-muted);
+
+}
+
+
+/* =========================================================
+   SCROLLBAR
 ========================================================= */
 
 ::-webkit-scrollbar {
-    width: 7px;
-    height: 7px;
+
+    width: 8px;
+
+    height: 8px;
+
 }
+
 
 ::-webkit-scrollbar-track {
-    background: #F1F5F9;
+
+    background: #E5EDF0;
+
 }
+
 
 ::-webkit-scrollbar-thumb {
-    background: #94A3B8;
-    border-radius: 10px;
+
+    background: var(--sidebar-color);
+
+    border-radius: 20px;
+
 }
+
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #64748B;
+
+    background: var(--accent-color);
+
 }
 
+
 /* =========================================================
-   RESPONSIVE MEDIA QUERIES
+   ANIMATION
+========================================================= */
+
+.card {
+
+    animation: fadeUp 0.5s ease;
+
+}
+
+
+@keyframes fadeUp {
+
+    from {
+
+        opacity: 0;
+
+        transform: translateY(15px);
+
+    }
+
+
+    to {
+
+        opacity: 1;
+
+        transform: translateY(0);
+
+    }
+
+}
+
+
+/* =========================================================
+   TABLET RESPONSIVE
 ========================================================= */
 
 @media (max-width: 992px) {
+
     .sidebar {
+
         width: 220px;
+
     }
+
 
     .main-content {
+
         margin-left: 220px;
+
         width: calc(100% - 220px);
+
         padding: 0 20px 25px;
+
     }
 
-    .sidebar.collapsed {
-        width: 70px;
-    }
 
     .sidebar.collapsed + .main-content {
-        margin-left: 70px;
-        width: calc(100% - 70px);
-    }
-}
 
-@media (max-width: 768px) {
-    .dashboard-container {
-        display: block;
+        margin-left: 80px;
+
+        width: calc(100% - 80px);
+
     }
 
-    .sidebar {
-        position: relative;
-        width: 100% !important;
-        min-height: auto;
-    }
-
-    .sidebar-toggle-btn {
-        display: none;
-    }
-
-    .sidebar-menu {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 6px;
-        padding: 10px;
-    }
-
-    .main-content,
-    .sidebar.collapsed + .main-content {
-        margin-left: 0;
-        width: 100%;
-        padding: 0 15px 25px;
-    }
 
     .crm-header-image-wrapper {
-        margin-left: -15px;
-        margin-right: -15px;
-        width: calc(100% + 30px);
+
+        margin-left: -20px;
+
+        width: calc(100% + 40px);
+
     }
+
+
+    .crm-header-image-wrapper img {
+
+        height: 180px;
+
+    }
+
+
+    #dashboard h2 {
+
+        font-size: 24px;
+
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE RESPONSIVE
+========================================================= */
+
+@media (max-width: 768px) {
+
+
+    /* Dashboard Vertical */
+
+    .dashboard-container {
+
+        display: block;
+
+    }
+
+
+    /* Sidebar Top */
+
+    .sidebar {
+
+        position: relative;
+
+        top: auto;
+
+        left: auto;
+
+        bottom: auto;
+
+        width: 100%;
+
+        min-height: auto;
+
+        height: auto;
+
+        overflow: visible;
+
+    }
+
+
+    .sidebar.collapsed {
+
+        width: 100%;
+
+    }
+
+
+    .sidebar.collapsed + .main-content {
+
+        margin-left: 0;
+
+        width: 100%;
+
+    }
+
+
+    /* Toggle */
+
+    .sidebar-toggle-btn {
+
+        margin: 12px 15px 0;
+
+    }
+
+
+    /* Logo */
+
+    .sidebar-logo {
+
+        padding: 18px 15px;
+
+    }
+
+
+    .sidebar-logo h3 {
+
+        font-size: 22px;
+
+    }
+
+
+    .sidebar.collapsed .sidebar-logo h3 {
+
+        font-size: 22px;
+
+    }
+
+
+    .sidebar.collapsed .sidebar-logo h3::after {
+
+        content: "";
+
+        font-size: 0;
+
+    }
+
+
+    .sidebar.collapsed .sidebar-logo p {
+
+        display: block;
+
+    }
+
+
+    /* Menu Horizontal */
+
+    .sidebar-menu {
+
+        display: flex;
+
+        flex-wrap: wrap;
+
+        justify-content: center;
+
+        gap: 8px;
+
+        padding: 12px;
+
+    }
+
+
+    .sidebar-menu li {
+
+        margin: 0;
+
+    }
+
+
+    .sidebar-menu li a {
+
+        padding: 10px 12px;
+
+        font-size: 13px;
+
+        gap: 7px;
+
+    }
+
+
+    .sidebar.collapsed .sidebar-menu li a {
+
+        justify-content: center;
+
+    }
+
+
+    .sidebar.collapsed .sidebar-menu li a span {
+
+        display: inline;
+
+    }
+
+
+    .sidebar-menu li a:hover {
+
+        transform: none;
+
+    }
+
+
+    /* Main Content */
+
+    .main-content {
+
+        margin-left: 0;
+
+        width: 100%;
+
+        padding: 0 15px 25px;
+
+    }
+
+
+    /* Header Image */
+
+    .crm-header-image-wrapper {
+
+        margin-left: -15px;
+
+        margin-right: -15px;
+
+        width: calc(100% + 30px);
+
+        margin-bottom: 20px;
+
+    }
+
+
+    .crm-header-image-wrapper img {
+
+        height: 140px;
+
+        object-fit: cover;
+
+    }
+
+
+    /* Page Header */
+
+    #dashboard .row.align-items-center {
+
+        gap: 18px;
+
+    }
+
+
+    #dashboard h2 {
+
+        font-size: 22px;
+
+    }
+
+
+    /* Search */
+
+    .input-group {
+
+        display: flex;
+
+        flex-wrap: wrap;
+
+        gap: 8px;
+
+        box-shadow: none;
+
+    }
+
+
+    .input-group .form-control {
+
+        width: 100% !important;
+
+        flex: none;
+
+        border-radius: 8px !important;
+
+    }
+
+
+    .input-group .btn {
+
+        border-radius: 8px !important;
+
+        flex: 1;
+
+    }
+
+
+    /* Dashboard Cards */
+
+    .card-body {
+
+        padding: 20px;
+
+    }
+
+
+    .card h2 {
+
+        font-size: 26px;
+
+    }
+
+
+    /* Table */
+
+    .table {
+
+        font-size: 13px;
+
+    }
+
+
+    #customer-query .card-header,
+
+    #crm-pending-work .card-header,
+
+    #overdue-customers .card-header {
+
+        padding: 15px;
+
+    }
+
+
+    #customer-query .card-header h5,
+
+    #crm-pending-work .card-header h5,
+
+    #overdue-customers .card-header h5 {
+
+        font-size: 15px;
+
+    }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+
+    .sidebar-logo h3 {
+
+        font-size: 20px;
+
+    }
+
+
+    .sidebar-logo p {
+
+        font-size: 11px;
+
+    }
+
+
+    .sidebar-menu {
+
+        flex-direction: column;
+
+        padding: 10px;
+
+    }
+
+
+    .sidebar-menu li {
+
+        width: 100%;
+
+    }
+
+
+    .sidebar-menu li a {
+
+        justify-content: flex-start;
+
+        width: 100%;
+
+    }
+
+
+    #dashboard {
+
+        padding-top: 15px !important;
+
+    }
+
+
+    #dashboard h2 {
+
+        font-size: 20px;
+
+    }
+
+
+    #dashboard p {
+
+        font-size: 12px;
+
+    }
+
+
+    .input-group .btn {
+
+        min-width: 30%;
+
+    }
+
+
+    .card h6 {
+
+        font-size: 13px;
+
+    }
+
+
+    .card h2 {
+
+        font-size: 24px;
+
+    }
+
+
+    .crm-header-image-wrapper img {
+
+        height: 110px;
+
+    }
+
 }
