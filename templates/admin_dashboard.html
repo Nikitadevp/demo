@@ -532,7 +532,7 @@
 
                             <th>Pending With</th>
 
-                            
+                            <th>Progress</th> 
 
                             <th>Query Raised</th>
 
@@ -542,7 +542,7 @@
 
                             
 
-                            
+                            <th>Closed Date</th>
 
                             
 
@@ -594,7 +594,11 @@
 
                         <!-- Tower -->
 
-                      
+                        <td>
+
+                            {{ customer.tower }}
+
+                        </td>
 
                         <!-- Area -->
 
@@ -699,7 +703,29 @@
 
                         <!-- Progress -->
 
-                        
+                        <td>
+
+                            {% if customer.progress == "Closed" %}
+
+                                <span class="badge bg-success">
+
+                                    {{ customer.progress }}
+
+                                </span>
+
+                            {% else %}
+
+                                <span class="badge bg-warning text-dark">
+
+                                    {{ customer.progress }}
+
+                                </span>
+
+                           
+
+                            {% endif %}
+
+                        </td>
 
                         <td>{{ customer.query_raised }}</td>
 
