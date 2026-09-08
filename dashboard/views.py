@@ -5613,8 +5613,9 @@ def admin_dashboard(request):
         }
 
         if current_stage != "Completed":
-
             customer_data.append(customer)
+
+        
             
 
         customer_data.append(customer)
@@ -5622,7 +5623,7 @@ def admin_dashboard(request):
 
         crm_stages = ["S1", "S3", "S4", "S5", "S11"]   # ya S0 agar tumhare project me wahi use hota hai
 
-        if current_stage in crm_stages:
+        if current_stage in crm_stages and current_stage != "Completed":
             crm_pending_data.append(customer)  
 
 
