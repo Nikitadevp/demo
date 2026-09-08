@@ -4792,9 +4792,7 @@ def crm_dashboard(request):
 
 
 
-        if current_stage != "Completed":
-
-            customer_data.append(customer)
+        
 
 
         customer_data.append(customer)
@@ -5613,6 +5611,11 @@ def admin_dashboard(request):
             "customer_name_filter": customer_name_filter,
 
         }
+
+        if current_stage != "Completed":
+
+            customer_data.append(customer)
+            
 
         customer_data.append(customer)
 
