@@ -6,48 +6,61 @@
 
 
 /* =========================================================
-   COLOR VARIABLES
+   COLOR VARIABLES (EXACT MATCH)
 ========================================================= */
 
 :root {
 
-    /* Sidebar */
+    /* Sidebar Colors */
 
-    --sidebar-color: #0F3D4C;
+    --sidebar-color: #0B414B;    /* Deep Teal / Dark Slate Teal */
 
-    --sidebar-dark: #0B313D;
+    --sidebar-dark: #072B32;     /* Darker Teal for Hover */
 
-    --sidebar-active: #1597B8;
+    --sidebar-active: #1AA3C1;   /* Bright Cyan / Blue Teal */
 
-    --sidebar-hover: #136F87;
+    --sidebar-hover: #137D94;
 
 
-    /* Page */
+    /* Welcome / Banner Card */
 
-    --page-bg: #F5F7FA;
+    --welcome-card-bg: #0D4955;  /* Dark Teal / Ocean Blue */
+
+    --stat-number: #169BB6;      /* Cyan Blue */
+
+
+    /* Page Colors */
+
+    --page-bg: #F4F7FB;          /* Ice White / Pale Blue-Grey */
 
     --card-bg: #FFFFFF;
 
 
-    /* Table */
+    /* Table Colors */
 
-    --table-header: #4682B4;
+    --table-header: #407DAA;     /* Steel Blue / Slate Blue */
 
-    --table-hover: #EAF5F8;
-
-
-    /* Accent */
-
-    --accent-color: #1597B8;
-
-    --accent-light: #D9EEF4;
+    --table-hover: #EBF3F8;
 
 
-    /* Text */
+    /* Accent & Badges */
+
+    --accent-color: #0096C7;     /* Cerulean Blue (Section Accent Line) */
+
+    --accent-light: #E1F2F7;    /* Soft Ice Blue */
+
+    --badge-bg: #E1F2F7;        /* Soft Ice Blue for Pill Badges */
+
+    --badge-text: #0C5E70;      /* Dark Cyan Badge Text */
+
+
+    /* Text & Status Colors */
 
     --text-dark: #1E293B;
 
-    --text-muted: #718096;
+    --text-muted: #64748B;
+
+    --danger-color: #DC2626;     /* Crimson Red */
 
 
     /* Border */
@@ -126,7 +139,7 @@ body {
 
     z-index: 1000;
 
-    box-shadow: 4px 0 15px rgba(15, 61, 76, 0.12);
+    box-shadow: 4px 0 15px rgba(11, 65, 75, 0.12);
 
     transition: all 0.3s ease;
 
@@ -211,7 +224,7 @@ body {
 
     letter-spacing: 1px;
 
-    color: #77C7DD;
+    color: #72B2BF;
 
 }
 
@@ -250,7 +263,7 @@ body {
 
     border-radius: 10px;
 
-    color: #D9E7EC;
+    color: #C8E3E9;
 
     text-decoration: none;
 
@@ -271,14 +284,14 @@ body {
 
     font-size: 17px;
 
-    color: #49B8D4;
+    color: var(--sidebar-active);
 
 }
 
 
 .sidebar-menu li a:hover {
 
-    background: rgba(21, 151, 184, 0.22);
+    background: rgba(26, 163, 193, 0.22);
 
     color: #ffffff;
 
@@ -300,7 +313,7 @@ body {
 
     color: #ffffff;
 
-    box-shadow: 0 5px 15px rgba(21, 151, 184, 0.25);
+    box-shadow: 0 5px 15px rgba(26, 163, 193, 0.3);
 
 }
 
@@ -441,7 +454,7 @@ body {
 
 
 /* =========================================================
-   DASHBOARD TITLE
+   DASHBOARD TITLE & SECTION BAR
 ========================================================= */
 
 #dashboard h2 {
@@ -471,13 +484,81 @@ body {
 }
 
 
+/* Section title vertical bar accent */
+
+.section-title,
+
+#customer-query .card-header h5,
+
+#crm-pending-work .card-header h5 {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+}
+
+
+.section-title::before,
+
+#customer-query .card-header h5::before,
+
+#crm-pending-work .card-header h5::before {
+
+    content: '';
+
+    display: inline-block;
+
+    width: 5px;
+
+    height: 20px;
+
+    background-color: var(--accent-color);
+
+    border-radius: 4px;
+
+}
+
+
+/* =========================================================
+   WELCOME BANNER CARD (Dark Teal Card)
+========================================================= */
+
+.welcome-card {
+
+    background-color: var(--welcome-card-bg);
+
+    color: #ffffff;
+
+    border-radius: 15px;
+
+    padding: 25px;
+
+    margin-bottom: 25px;
+
+}
+
+
+.welcome-card .stat-count {
+
+    font-size: 36px;
+
+    font-weight: 700;
+
+    color: var(--stat-number);
+
+}
+
+
 /* =========================================================
    SEARCH BAR
 ========================================================= */
 
 .input-group {
 
-    box-shadow: 0 4px 15px rgba(15, 61, 76, 0.08);
+    box-shadow: 0 4px 15px rgba(11, 65, 75, 0.08);
 
     border-radius: 8px;
 
@@ -501,9 +582,9 @@ body {
 
 .input-group .form-control:focus {
 
-    border-color: var(--accent-color);
+    border-color: var(--sidebar-active);
 
-    box-shadow: 0 0 0 0.2rem rgba(21, 151, 184, 0.12);
+    box-shadow: 0 0 0 0.2rem rgba(26, 163, 193, 0.15);
 
 }
 
@@ -569,18 +650,18 @@ body {
 
 .btn-danger {
 
-    background: #D9534F;
+    background: var(--danger-color);
 
-    border-color: #D9534F;
+    border-color: var(--danger-color);
 
 }
 
 
 .btn-danger:hover {
 
-    background: #B9403D;
+    background: #B91C1C;
 
-    border-color: #B9403D;
+    border-color: #B91C1C;
 
 }
 
@@ -608,7 +689,7 @@ body {
 
     transform: translateY(-5px);
 
-    box-shadow: 0 15px 30px rgba(15, 61, 76, 0.10) !important;
+    box-shadow: 0 15px 30px rgba(11, 65, 75, 0.08) !important;
 
 }
 
@@ -657,14 +738,14 @@ body {
 
 .text-primary {
 
-    color: var(--accent-color) !important;
+    color: var(--sidebar-active) !important;
 
 }
 
 
 .text-info {
 
-    color: #4682B4 !important;
+    color: var(--table-header) !important;
 
 }
 
@@ -678,7 +759,7 @@ body {
 
 .text-danger {
 
-    color: #D9534F !important;
+    color: var(--danger-color) !important;
 
 }
 
@@ -703,21 +784,21 @@ body {
 
 .row.g-4.mb-4 > div:nth-child(1) .card {
 
-    border-top: 4px solid var(--accent-color);
+    border-top: 4px solid var(--sidebar-active);
 
 }
 
 
 .row.g-4.mb-4 > div:nth-child(2) .card {
 
-    border-top: 4px solid #4682B4;
+    border-top: 4px solid var(--table-header);
 
 }
 
 
 .row.g-4.mb-4 > div:nth-child(3) .card {
 
-    border-top: 4px solid #D9534F;
+    border-top: 4px solid var(--danger-color);
 
 }
 
@@ -751,7 +832,7 @@ body {
 
 #crm-pending-work .card-header {
 
-    background: var(--sidebar-color) !important;
+    background: transparent !important;
 
     padding: 18px 22px;
 
@@ -762,7 +843,7 @@ body {
 
 #overdue-customers .card-header {
 
-    background: #D9534F !important;
+    background: transparent !important;
 
     padding: 18px 22px;
 
@@ -777,9 +858,11 @@ body {
 
 #overdue-customers .card-header h5 {
 
-    font-size: 17px;
+    font-size: 18px;
 
-    font-weight: 600;
+    font-weight: 700;
+
+    color: var(--text-dark);
 
 }
 
@@ -807,6 +890,8 @@ body {
 
     width: 100%;
 
+    border-radius: 12px;
+
 }
 
 
@@ -823,6 +908,10 @@ body {
     font-size: 14px;
 
     background: #ffffff;
+
+    border-collapse: separate;
+
+    border-spacing: 0;
 
 }
 
@@ -852,6 +941,24 @@ body {
 
     vertical-align: middle;
 
+    text-transform: uppercase;
+
+}
+
+
+/* Table Header Round Corners */
+
+.table thead tr th:first-child {
+
+    border-top-left-radius: 12px;
+
+}
+
+
+.table thead tr th:last-child {
+
+    border-top-right-radius: 12px;
+
 }
 
 
@@ -868,9 +975,11 @@ body {
 
     vertical-align: middle;
 
-    color: #334155;
+    color: var(--text-dark);
 
-    border-color: #E7EDF1;
+    border-bottom: 1px solid #F1F5F9;
+
+    border-top: none;
 
     white-space: nowrap;
 
@@ -897,9 +1006,9 @@ body {
 
 #overdue-customers .table thead th {
 
-    background: #E9F1F7 !important;
+    background: #E57373 !important;
 
-    color: #315A78 !important;
+    color: #ffffff !important;
 
 }
 
@@ -916,7 +1025,7 @@ body {
 
     font-size: 12px;
 
-    color: #334155;
+    color: var(--text-dark);
 
     min-height: 34px;
 
@@ -966,20 +1075,33 @@ body {
 
 .table tbody td strong {
 
+    font-weight: 700;
+
+}
+
+
+/* Overdue Status Text in Red */
+
+.text-overdue,
+
+.table tbody td span.text-danger {
+
+    color: var(--danger-color) !important;
+
     font-weight: 600;
 
 }
 
 
 /* =========================================================
-   BADGES
+   BADGES (Soft Ice Blue Pill Style)
 ========================================================= */
 
 .badge {
 
-    padding: 7px 11px;
+    padding: 6px 14px;
 
-    border-radius: 20px;
+    border-radius: 50px;
 
     font-size: 12px;
 
@@ -988,13 +1110,26 @@ body {
 }
 
 
-/* =========================================================
-   STAGE BADGE
-========================================================= */
+/* Pending Pill Badge */
+
+.badge-pending,
+
+.badge.bg-pending {
+
+    background: var(--badge-bg) !important;
+
+    color: var(--badge-text) !important;
+
+}
+
+
+/* STAGE BADGE */
 
 .badge.bg-secondary {
 
-    background: #64748B !important;
+    background: #E2E8F0 !important;
+
+    color: #475569 !important;
 
 }
 
@@ -1003,7 +1138,9 @@ body {
 
 .badge.bg-success {
 
-    background: #2F9E78 !important;
+    background: #D1FAE5 !important;
+
+    color: #065F46 !important;
 
 }
 
@@ -1012,7 +1149,9 @@ body {
 
 .badge.bg-primary {
 
-    background: var(--accent-color) !important;
+    background: var(--badge-bg) !important;
+
+    color: var(--badge-text) !important;
 
 }
 
@@ -1021,9 +1160,9 @@ body {
 
 .badge.bg-warning {
 
-    background: #E0A72F !important;
+    background: #FEF3C7 !important;
 
-    color: #ffffff !important;
+    color: #92400E !important;
 
 }
 
@@ -1034,14 +1173,14 @@ body {
 
 .fw-bold.text-danger {
 
-    color: #C0392B !important;
+    color: var(--danger-color) !important;
 
 }
 
 
 .text-success {
 
-    color: #2F9E78 !important;
+    color: #059669 !important;
 
 }
 
@@ -1059,6 +1198,8 @@ body {
     display: inline-block;
 
     margin-top: 3px;
+
+    color: var(--text-muted);
 
 }
 
@@ -1152,14 +1293,14 @@ body {
 
 ::-webkit-scrollbar-track {
 
-    background: #E5EDF0;
+    background: #F1F5F9;
 
 }
 
 
 ::-webkit-scrollbar-thumb {
 
-    background: var(--sidebar-color);
+    background: var(--table-header);
 
     border-radius: 20px;
 
@@ -1168,7 +1309,7 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
 
-    background: var(--accent-color);
+    background: var(--sidebar-active);
 
 }
 
