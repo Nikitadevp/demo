@@ -1,21 +1,26 @@
 /* =========================================================
-   ADMIN DASHBOARD - CUSTOM THEME
+   CRM / STORE DASHBOARD - EXACT IMAGE COLOR MATCH
 ========================================================= */
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 /* =========================================================
-   RESET & VARIABLES
+   COLOR VARIABLES (EXACT MATCH FROM UI IMAGES)
 ========================================================= */
 
 :root {
-    --sidebar-bg: #0F3D4C;          /* Deep Teal / Blue */
-    --sidebar-active: #1597B8;      /* Cyan Blue */
-    --page-bg: #F5F7FA;             /* Soft Grey */
-    --table-header-bg: #4682B4;     /* Steel Blue */
-    --card-bg: #FFFFFF;
-    --text-dark: #243447;
-    --text-muted: #718096;
+    --sidebar-bg: #0B414B;           /* Deep Teal (From Sidebar) */
+    --sidebar-active: #1AA3C1;       /* Cyan Teal (From Active Menu) */
+    --welcome-card-bg: #0D4955;      /* Dark Teal Card */
+    --cyan-stat-color: #169BB6;      /* Bright Cyan for Numbers */
+    --table-header-bg: #407DAA;      /* Steel Blue (From Table Header) */
+    --accent-bar-color: #0096C7;      /* Section Bar Accent Blue */
+    --page-bg: #F4F7FB;              /* Light Grey/Blue Background */
+    --card-bg: #FFFFFF;              /* White for Cards */
+    --badge-bg: #E1F2F7;             /* Soft Cyan Badge */
+    --badge-text: #0C5E70;           /* Dark Cyan Badge Text */
+    --text-dark: #1E293B;            /* Main Dark Text */
+    --text-muted: #64748B;           /* Subtitle Text Color */
 }
 
 * {
@@ -30,7 +35,7 @@
 
 body {
     font-family: 'Poppins', sans-serif;
-    background: var(--page-bg);
+    background-color: var(--page-bg);
     color: var(--text-dark);
 }
 
@@ -54,18 +59,15 @@ body {
     top: 0;
     left: 0;
     bottom: 0;
-    background: var(--sidebar-bg);
+    background-color: var(--sidebar-bg);
     color: #ffffff;
     overflow-y: auto;
     z-index: 1000;
-    box-shadow: 4px 0 20px rgba(15, 61, 76, 0.12);
+    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.05);
     transition: all 0.3s ease;
 }
 
-/* =========================================================
-   SIDEBAR TOGGLE BUTTON
-========================================================= */
-
+/* SIDEBAR TOGGLE BUTTON */
 .sidebar-toggle-btn {
     position: absolute;
     top: 18px;
@@ -73,10 +75,10 @@ body {
     width: 38px;
     height: 38px;
     border: none;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
     color: #ffffff;
-    font-size: 17px;
+    font-size: 16px;
     cursor: pointer;
     transition: all 0.3s ease;
 }
@@ -85,10 +87,7 @@ body {
     background: var(--sidebar-active);
 }
 
-/* =========================================================
-   SIDEBAR COLLAPSED
-========================================================= */
-
+/* SIDEBAR COLLAPSED STATE */
 .sidebar.collapsed {
     width: 80px;
 }
@@ -113,74 +112,70 @@ body {
     width: calc(100% - 80px);
 }
 
-/* =========================================================
-   SIDEBAR LOGO
-========================================================= */
-
+/* SIDEBAR LOGO */
 .sidebar-logo {
-    padding: 32px 20px 26px;
-    text-align: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 28px 20px 22px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .sidebar-logo h3 {
-    font-size: 26px;
+    font-size: 22px;
     font-weight: 700;
-    margin-bottom: 5px;
+    margin-bottom: 2px;
     color: #ffffff;
-    letter-spacing: 0.4px;
+    letter-spacing: 0.3px;
 }
 
 .sidebar-logo p {
     margin: 0;
-    font-size: 13px;
-    color: #b8d5dc;
-    letter-spacing: 0.5px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #79A3AB;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
 }
 
-/* =========================================================
-   SIDEBAR MENU
-========================================================= */
-
+/* SIDEBAR MENU */
 .sidebar-menu {
     list-style: none;
-    padding: 24px 14px;
+    padding: 20px 14px;
     margin: 0;
 }
 
 .sidebar-menu li {
-    margin-bottom: 9px;
+    margin-bottom: 8px;
 }
 
 .sidebar-menu li a {
     display: flex;
     align-items: center;
-    gap: 14px;
-    padding: 14px 16px;
-    border-radius: 10px;
-    color: #d8e8eb;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    color: #A0C2C8;
     text-decoration: none;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 500;
-    transition: all 0.3s ease;
+    transition: all 0.25s ease;
 }
 
 .sidebar-menu li a i {
     width: 20px;
     text-align: center;
-    font-size: 17px;
+    font-size: 16px;
 }
 
 .sidebar-menu li a:hover {
-    background: rgba(21, 151, 184, 0.22);
+    background: rgba(255, 255, 255, 0.08);
     color: #ffffff;
-    transform: translateX(4px);
 }
 
 .sidebar-menu li.active a {
-    background: var(--sidebar-active);
+    background-color: var(--sidebar-active);
     color: #ffffff;
-    box-shadow: 0 8px 20px rgba(21, 151, 184, 0.28);
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(26, 163, 193, 0.3);
 }
 
 /* =========================================================
@@ -191,42 +186,38 @@ body {
     margin-left: 260px;
     width: calc(100% - 260px);
     min-height: 100vh;
-    padding: 0 25px 30px;
-    background: var(--page-bg);
+    padding: 0 30px 30px;
+    background-color: var(--page-bg);
     transition: all 0.3s ease;
 }
 
 /* =========================================================
-   HEADER IMAGE
+   HEADER IMAGE WRAPPER
 ========================================================= */
 
 .crm-header-image-wrapper {
-    width: calc(100% + 50px);
-    margin: 0 -25px 28px;
+    width: calc(100% + 60px);
+    margin: 0 -30px 24px;
     overflow: hidden;
     background: #ffffff;
-    border-bottom: 1px solid #e4eaee;
+    border-bottom: 1px solid #E2E8F0;
 }
 
 .crm-header-image-wrapper img {
     width: 100%;
-    height: 220px;
+    height: 180px;
     object-fit: cover;
     display: block;
 }
 
 /* =========================================================
-   DASHBOARD TITLE
+   DASHBOARD TITLE & SECTION HEADINGS
 ========================================================= */
 
 #dashboard h2 {
-    font-size: 29px;
-    color: var(--sidebar-bg);
+    font-size: 26px;
+    color: var(--text-dark);
     font-weight: 700;
-}
-
-#dashboard h2 i {
-    color: var(--sidebar-active) !important;
 }
 
 #dashboard p {
@@ -234,18 +225,49 @@ body {
     color: var(--text-muted) !important;
 }
 
+/* Vertical Bar Section Accent (as seen in image) */
+.section-title,
+#crm-pending-work .card-header h5,
+#overdue-customers .card-header h5 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-dark);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.section-title::before,
+#crm-pending-work .card-header h5::before {
+    content: '';
+    display: inline-block;
+    width: 5px;
+    height: 20px;
+    background-color: var(--accent-bar-color);
+    border-radius: 4px;
+}
+
+#overdue-customers .card-header h5::before {
+    content: '';
+    display: inline-block;
+    width: 5px;
+    height: 20px;
+    background-color: #DC2626;
+    border-radius: 4px;
+}
+
 /* =========================================================
    SEARCH BAR
 ========================================================= */
 
 .input-group {
-    box-shadow: 0 5px 18px rgba(15, 61, 76, 0.08);
-    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    border-radius: 8px;
 }
 
 .input-group .form-control {
-    height: 46px;
-    border: 1px solid #d8e1e5;
+    height: 42px;
+    border: 1px solid #CBD5E1;
     font-size: 14px;
     box-shadow: none;
     color: var(--text-dark);
@@ -253,11 +275,11 @@ body {
 
 .input-group .form-control:focus {
     border-color: var(--sidebar-active);
-    box-shadow: 0 0 0 0.2rem rgba(21, 151, 184, 0.12);
+    box-shadow: 0 0 0 0.15rem rgba(26, 163, 193, 0.2);
 }
 
 .input-group .btn {
-    height: 46px;
+    height: 42px;
     font-size: 14px;
     font-weight: 500;
 }
@@ -267,338 +289,250 @@ body {
 ========================================================= */
 
 .btn-primary {
-    background: var(--sidebar-bg);
+    background-color: var(--sidebar-bg);
     border-color: var(--sidebar-bg);
 }
 
 .btn-primary:hover {
-    background: #0b2e39;
-    border-color: #0b2e39;
+    background-color: #08333B;
+    border-color: #08333B;
 }
 
 .btn-secondary {
-    background: #64748b;
-    border-color: #64748b;
+    background-color: #64748B;
+    border-color: #64748B;
 }
 
 .btn-secondary:hover {
-    background: #475569;
+    background-color: #475569;
     border-color: #475569;
 }
 
 .btn-danger {
-    background: #d9534f;
-    border-color: #d9534f;
+    background-color: #DC2626;
+    border-color: #DC2626;
 }
 
 .btn-danger:hover {
-    background: #bd3f3b;
-    border-color: #bd3f3b;
+    background-color: #B91C1C;
+    border-color: #B91C1C;
 }
 
 /* =========================================================
-   DASHBOARD CARDS
+   WELCOME / SUMMARY DARK TEAL CARD (As seen in image 2)
+========================================================= */
+
+.welcome-summary-card {
+    background-color: var(--welcome-card-bg);
+    color: #ffffff;
+    border-radius: 16px;
+    padding: 28px;
+    box-shadow: 0 10px 25px rgba(13, 73, 85, 0.15);
+    margin-bottom: 24px;
+}
+
+.welcome-summary-card h3 {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.welcome-summary-card p {
+    color: #A3C9D0;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.welcome-summary-card .stat-number {
+    font-size: 38px;
+    font-weight: 700;
+    color: var(--cyan-stat-color);
+    line-height: 1;
+}
+
+.welcome-summary-card .stat-label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: #A3C9D0;
+    text-transform: uppercase;
+    margin-top: 6px;
+}
+
+/* =========================================================
+   DASHBOARD METRIC CARDS
 ========================================================= */
 
 .card {
     border-radius: 14px;
     overflow: hidden;
-    transition: all 0.3s ease;
-    border: 1px solid #e3eaed;
+    transition: all 0.25s ease;
+    border: 1px solid #E2E8F0;
     background: var(--card-bg);
-    box-shadow: 0 5px 20px rgba(15, 61, 76, 0.06);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
 }
 
 .card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 15px 32px rgba(15, 61, 76, 0.12) !important;
+    transform: translateY(-3px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.07) !important;
 }
 
 .card-body {
-    padding: 24px;
+    padding: 20px 24px;
 }
 
 .card h6 {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 500;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
     color: var(--text-muted);
 }
 
 .card h2 {
-    font-size: 31px;
+    font-size: 28px;
     margin: 0;
     font-weight: 700;
-}
-
-.card i.fa-2x {
-    font-size: 32px;
-}
-
-/* =========================================================
-   CARD COLORS
-========================================================= */
-
-.text-primary {
-    color: var(--sidebar-bg) !important;
-}
-
-.text-info {
-    color: var(--sidebar-active) !important;
-}
-
-.text-warning {
-    color: #e89b2d !important;
-}
-
-.text-danger {
-    color: #d9534f !important;
-}
-
-.text-dark {
-    color: var(--text-dark) !important;
-}
-
-.text-success {
-    color: #198754 !important;
-}
-
-/* =========================================================
-   CARD TOP ACCENTS
-========================================================= */
-
-.row.g-4.mb-4 > div:nth-child(1) .card {
-    border-top: 4px solid var(--sidebar-active);
-}
-
-.row.g-4.mb-4 > div:nth-child(2) .card {
-    border-top: 4px solid #198754;
-}
-
-.row.g-4.mb-4 > div:nth-child(3) .card {
-    border-top: 4px solid #d9534f;
-}
-
-/* =========================================================
-   CRM PENDING ACTIVITIES TABLE CARD
-========================================================= */
-
-#crm-pending-work {
-    border-radius: 14px;
-    margin-top: 30px;
-    background: transparent;
-    border: none;
-    box-shadow: none;
-}
-
-#crm-pending-work .card-header {
-    background: transparent !important;
-    padding: 12px 0;
-    border: none;
     color: var(--text-dark);
 }
 
-#crm-pending-work .card-header h5 {
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--text-dark);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-#crm-pending-work .card-header h5::before {
-    content: '';
-    display: inline-block;
-    width: 6px;
-    height: 18px;
-    background: var(--sidebar-active);
-    border-radius: 3px;
-}
-
-#crm-pending-work .card-header .badge {
-    font-size: 13px;
-    padding: 6px 12px;
-    background: #EBF8FF !important;
-    color: var(--sidebar-active) !important;
-    border-radius: 20px;
-}
-
 /* =========================================================
-   OVERDUE CUSTOMER TABLE CARD
+   TABLE CARDS & CONTAINERS
 ========================================================= */
 
+#crm-pending-work,
 #overdue-customers {
     border-radius: 14px;
-    margin-top: 30px;
+    margin-top: 28px;
     background: transparent;
     border: none;
     box-shadow: none;
 }
 
+#crm-pending-work .card-header,
 #overdue-customers .card-header {
     background: transparent !important;
     padding: 12px 0;
     border: none;
 }
 
-#overdue-customers .card-header h5 {
-    font-size: 18px;
-    font-weight: 700;
-    color: #c94b4b;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-#overdue-customers .card-header h5::before {
-    content: '';
-    display: inline-block;
-    width: 6px;
-    height: 18px;
-    background: #c94b4b;
-    border-radius: 3px;
+#crm-pending-work .card-header .badge {
+    font-size: 12px;
+    padding: 6px 12px;
+    background: #E0F2FE !important;
+    color: #0369A1 !important;
+    border-radius: 20px;
+    font-weight: 600;
 }
 
 #overdue-customers .card-header .badge {
-    background: #FDF2F2 !important;
-    color: #c94b4b !important;
+    font-size: 12px;
     padding: 6px 12px;
+    background: #FEE2E2 !important;
+    color: #DC2626 !important;
     border-radius: 20px;
+    font-weight: 600;
 }
 
 /* =========================================================
-   TABLE RESPONSIVE
+   TABLE RESPONSIVE & CONTAINER
 ========================================================= */
 
 .table-responsive {
     overflow-x: auto;
     width: 100%;
-    border-radius: 12px;
+    border-radius: 14px;
     background: #ffffff;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
 }
 
 /* =========================================================
-   TABLE
+   TABLE STYLING (EXACT DESIGN MATCH)
 ========================================================= */
 
 .table {
     margin: 0;
-    min-width: 1500px;
+    min-width: 1200px;
     font-size: 14px;
     background: #ffffff;
     border-collapse: separate;
     border-spacing: 0;
 }
 
-/* =========================================================
-   TABLE HEADER (Steel Blue with Round Corners like Design)
-========================================================= */
-
+/* TABLE HEADER: Steel Blue Background with Rounded Corners */
 .table thead {
-    background: var(--table-header-bg);
+    background-color: var(--table-header-bg);
 }
 
 .table thead th {
-    background: var(--table-header-bg) !important;
+    background-color: var(--table-header-bg) !important;
     color: #ffffff !important;
-    padding: 14px 16px;
+    padding: 16px 18px;
     font-size: 13px;
     font-weight: 600;
     white-space: nowrap;
     border: none;
     vertical-align: middle;
-    letter-spacing: 0.3px;
+    letter-spacing: 0.5px;
     text-transform: uppercase;
 }
 
-/* Header Curved Corners */
+/* Top Rounded Corners for Headers */
 .table thead tr th:first-child {
-    border-top-left-radius: 12px;
+    border-top-left-radius: 14px;
 }
 
 .table thead tr th:last-child {
-    border-top-right-radius: 12px;
+    border-top-right-radius: 14px;
 }
 
-/* =========================================================
-   TABLE BODY
-========================================================= */
-
+/* TABLE BODY */
 .table tbody td {
-    padding: 15px 16px;
+    padding: 16px 18px;
     vertical-align: middle;
     color: var(--text-dark);
-    border-bottom: 1px solid #f0f4f7;
+    border-bottom: 1px solid #F1F5F9;
     border-top: none;
     white-space: nowrap;
     background: #ffffff;
 }
 
+.table tbody tr:hover td {
+    background-color: #F8FAFC !important;
+}
+
 .table tbody tr:last-child td:first-child {
-    border-bottom-left-radius: 12px;
+    border-bottom-left-radius: 14px;
 }
 
 .table tbody tr:last-child td:last-child {
-    border-bottom-right-radius: 12px;
+    border-bottom-right-radius: 14px;
 }
 
-.table tbody tr {
-    transition: all 0.2s ease;
-}
-
-.table tbody tr:hover td {
-    background: #f0f7fb !important;
-}
-
-/* =========================================================
-   TABLE DARK HEADER
-========================================================= */
-
+/* DARK TABLE HEADER OVERRIDE */
 .table-dark {
     --bs-table-bg: var(--table-header-bg) !important;
     --bs-table-color: #ffffff !important;
 }
 
-/* =========================================================
-   OVERDUE TABLE HEADER
-========================================================= */
-
+/* OVERDUE TABLE HEADER (Muted Red) */
 .table-danger {
     --bs-table-bg: #E57373 !important;
     --bs-table-color: #ffffff !important;
 }
 
 .table-danger th {
-    background: #E57373 !important;
+    background-color: #E57373 !important;
     color: #ffffff !important;
     border: none !important;
 }
 
 /* =========================================================
-   LONG TEXT COLUMNS
-========================================================= */
-
-.table th:nth-child(8),
-.table td:nth-child(8) {
-    min-width: 220px;
-    max-width: 320px;
-    white-space: normal;
-}
-
-.table th:nth-child(11),
-.table td:nth-child(11) {
-    min-width: 150px;
-    white-space: normal;
-}
-
-/* =========================================================
-   TICKET ID
+   TEXT STYLES IN TABLE
 ========================================================= */
 
 .table tbody td strong {
     font-weight: 700;
+    color: #0F172A;
 }
 
 .table tbody td strong.text-primary {
@@ -606,11 +540,17 @@ body {
 }
 
 .table tbody td strong.text-danger {
-    color: #c94b4b !important;
+    color: #DC2626 !important;
+}
+
+/* Overdue Text Highlight in Table */
+.text-overdue {
+    color: #DC2626;
+    font-weight: 600;
 }
 
 /* =========================================================
-   FILTER INPUTS INSIDE TABLE HEADER
+   FILTER INPUTS & SELECTS IN TABLE HEADER
 ========================================================= */
 
 .table thead .form-control,
@@ -631,59 +571,36 @@ body {
 }
 
 /* =========================================================
-   BADGES (Pill Badges from Image)
+   PILL BADGES (Matching Image Style)
 ========================================================= */
 
 .badge {
-    padding: 6px 14px;
+    padding: 6px 16px;
     border-radius: 50px;
-    font-size: 12px;
-    font-weight: 600;
+    font-size: 13px;
+    font-weight: 500;
 }
 
-/* Stage & Progress Badges */
+/* Status: Pending (Soft Light Blue/Cyan Pill) */
+.badge.bg-pending,
+.badge-pending {
+    background-color: var(--badge-bg) !important;
+    color: var(--badge-text) !important;
+}
+
 .badge.bg-secondary {
-    background: #e2e8f0 !important;
+    background-color: #E2E8F0 !important;
     color: #475569 !important;
 }
 
 .badge.bg-success {
-    background: #d1fae5 !important;
-    color: #065f46 !important;
-}
-
-.badge.bg-primary {
-    background: #E0F2FE !important;
-    color: #0369A1 !important;
+    background-color: #D1FAE5 !important;
+    color: #065F46 !important;
 }
 
 .badge.bg-warning {
-    background: #FEF3C7 !important;
+    background-color: #FEF3C7 !important;
     color: #92400E !important;
-}
-
-/* =========================================================
-   REMAINING TIME
-========================================================= */
-
-.fw-bold.text-danger {
-    color: #d9534f !important;
-}
-
-.text-success {
-    color: #10B981 !important;
-}
-
-/* =========================================================
-   SMALL TEXT
-========================================================= */
-
-.table small {
-    font-size: 12px;
-    line-height: 1.5;
-    display: inline-block;
-    margin-top: 3px;
-    color: var(--text-muted) !important;
 }
 
 /* =========================================================
@@ -691,89 +608,42 @@ body {
 ========================================================= */
 
 .crm-table-image {
-    width: 42px;
-    height: 42px;
+    width: 40px;
+    height: 40px;
     object-fit: cover;
     border-radius: 8px;
-    border: 2px solid #e5eef0;
-    transition: all 0.2s ease;
+    border: 1px solid #E2E8F0;
+    transition: transform 0.2s ease;
 }
 
 .crm-table-image:hover {
-    transform: scale(1.08);
+    transform: scale(1.1);
 }
 
 /* =========================================================
-   IMAGE BUTTON
-========================================================= */
-
-.table .btn-sm {
-    border-radius: 7px;
-    font-size: 12px;
-    font-weight: 500;
-}
-
-/* =========================================================
-   EMPTY TABLE MESSAGE
-========================================================= */
-
-.table tbody td.text-center {
-    padding: 45px 20px;
-    background: #ffffff !important;
-}
-
-/* =========================================================
-   FOOTER
-========================================================= */
-
-.text-center.mt-4.mb-2 {
-    padding: 16px;
-    color: var(--text-muted);
-}
-
-/* =========================================================
-   SCROLLBAR
+   SCROLLBAR (Custom Styled Scrollbar as seen in image)
 ========================================================= */
 
 ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    width: 7px;
+    height: 7px;
 }
 
 ::-webkit-scrollbar-track {
-    background: #e8eef0;
+    background: #F1F5F9;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--table-header-bg);
-    border-radius: 20px;
+    background: #94A3B8;
+    border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--sidebar-active);
+    background: #64748B;
 }
 
 /* =========================================================
-   ANIMATION
-========================================================= */
-
-.card {
-    animation: fadeUp 0.45s ease;
-}
-
-@keyframes fadeUp {
-    from {
-        opacity: 0;
-        transform: translateY(12px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* =========================================================
-   TABLET RESPONSIVE
+   RESPONSIVE MEDIA QUERIES
 ========================================================= */
 
 @media (max-width: 992px) {
@@ -795,24 +665,7 @@ body {
         margin-left: 70px;
         width: calc(100% - 70px);
     }
-
-    .crm-header-image-wrapper {
-        margin-left: -20px;
-        width: calc(100% + 40px);
-    }
-
-    .crm-header-image-wrapper img {
-        height: 180px;
-    }
-
-    #dashboard h2 {
-        font-size: 25px;
-    }
 }
-
-/* =========================================================
-   MOBILE RESPONSIVE
-========================================================= */
 
 @media (max-width: 768px) {
     .dashboard-container {
@@ -821,57 +674,20 @@ body {
 
     .sidebar {
         position: relative;
-        top: auto;
-        left: auto;
-        bottom: auto;
         width: 100% !important;
         min-height: auto;
-        height: auto;
-        overflow: visible;
     }
 
     .sidebar-toggle-btn {
         display: none;
     }
 
-    .sidebar.collapsed {
-        width: 100% !important;
-    }
-
-    .sidebar.collapsed .sidebar-logo h3,
-    .sidebar.collapsed .sidebar-logo p,
-    .sidebar.collapsed .sidebar-menu li a span {
-        display: block;
-    }
-
-    .sidebar-logo {
-        padding: 20px 15px;
-    }
-
-    .sidebar-logo h3 {
-        font-size: 23px;
-    }
-
     .sidebar-menu {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
-        gap: 8px;
-        padding: 12px;
-    }
-
-    .sidebar-menu li {
-        margin: 0;
-    }
-
-    .sidebar-menu li a {
-        padding: 10px 13px;
-        font-size: 13px;
-        gap: 7px;
-    }
-
-    .sidebar-menu li a:hover {
-        transform: none;
+        gap: 6px;
+        padding: 10px;
     }
 
     .main-content,
@@ -885,115 +701,5 @@ body {
         margin-left: -15px;
         margin-right: -15px;
         width: calc(100% + 30px);
-        margin-bottom: 20px;
-    }
-
-    .crm-header-image-wrapper img {
-        height: 145px;
-        object-fit: cover;
-    }
-
-    #dashboard .row.align-items-center {
-        gap: 18px;
-    }
-
-    #dashboard h2 {
-        font-size: 22px;
-    }
-
-    .input-group {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        box-shadow: none;
-    }
-
-    .input-group .form-control {
-        width: 100% !important;
-        flex: none;
-        border-radius: 8px !important;
-    }
-
-    .input-group .btn {
-        border-radius: 8px !important;
-        flex: 1;
-    }
-
-    .card-body {
-        padding: 20px;
-    }
-
-    .card h2 {
-        font-size: 27px;
-    }
-
-    .table {
-        font-size: 13px;
-    }
-
-    #crm-pending-work .card-header,
-    #overdue-customers .card-header {
-        padding: 12px;
-    }
-
-    #crm-pending-work .card-header h5,
-    #overdue-customers .card-header h5 {
-        font-size: 16px;
-    }
-}
-
-/* =========================================================
-   SMALL MOBILE
-========================================================= */
-
-@media (max-width: 480px) {
-    .sidebar-logo h3 {
-        font-size: 20px;
-    }
-
-    .sidebar-logo p {
-        font-size: 11px;
-    }
-
-    .sidebar-menu {
-        flex-direction: column;
-        padding: 10px;
-    }
-
-    .sidebar-menu li {
-        width: 100%;
-    }
-
-    .sidebar-menu li a {
-        justify-content: flex-start;
-        width: 100%;
-    }
-
-    #dashboard {
-        padding-top: 15px !important;
-    }
-
-    #dashboard h2 {
-        font-size: 20px;
-    }
-
-    #dashboard p {
-        font-size: 12px;
-    }
-
-    .input-group .btn {
-        min-width: 30%;
-    }
-
-    .card h6 {
-        font-size: 13px;
-    }
-
-    .card h2 {
-        font-size: 24px;
-    }
-
-    .crm-header-image-wrapper img {
-        height: 110px;
     }
 }
