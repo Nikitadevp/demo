@@ -88,7 +88,7 @@
 
                     <i class="fa-solid fa-user-clock"></i>
 
-                    <span>Over All Queries</span>
+                    <span>Over All Queries in Progress</span>
 
                 </a>
 
@@ -418,7 +418,7 @@
 
                     <i class="fa-solid fa-user-clock"></i>
 
-                    Over All Queries
+                    Over All Queries in Progress
                 </h5>
 
                 <span class="badge bg-light text-dark">
@@ -529,7 +529,7 @@
 
                             <th>Pending With</th>
 
-                            <th>Progress</th> 
+                            
 
                             <th>Query Raised</th>
 
@@ -684,31 +684,7 @@
 
                         </td>
 
-                        <!-- Progress -->
-
-                        <td>
-
-                            {% if customer.progress == "Closed" %}
-
-                                <span class="badge bg-success">
-
-                                    {{ customer.progress }}
-
-                                </span>
-
-                            {% else %}
-
-                                <span class="badge bg-warning text-dark">
-
-                                    {{ customer.progress }}
-
-                                </span>
-
-                           
-
-                            {% endif %}
-
-                        </td>
+                    
 
                         <td>{{ customer.query_raised }}</td>
 
