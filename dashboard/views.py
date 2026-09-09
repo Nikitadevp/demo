@@ -5622,6 +5622,9 @@ def admin_dashboard(request):
         if current_stage in crm_stages:
             crm_pending_data.append(customer)  
 
+        if is_overdue:
+            overdue_customers.append(customer)
+
 
         # ==================================================
         # OVERDUE TABLE
