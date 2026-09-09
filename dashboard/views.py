@@ -5166,8 +5166,6 @@ def store_keeper_dashboard(request):
 
 
 
-
-
 def admin_dashboard(request):
 
     # ======================================================
@@ -5201,7 +5199,7 @@ def admin_dashboard(request):
 
     if search:
         queries = queries.filter(
-            
+
         Q(ticket_id__icontains=search) |
         Q(name__icontains=search) |
         Q(contact__icontains=search) |
@@ -5212,7 +5210,7 @@ def admin_dashboard(request):
         Q(other_area__icontains=search) |
         Q(issue__icontains=search) |
         Q(problem__icontains=search) |
-        Q(status__icontains=search) 
+        Q(status__icontains=search)
         )
 
 
@@ -5243,8 +5241,8 @@ def admin_dashboard(request):
             CustomerQuery.objects
             .values_list("tower", flat=True)
             .exclude(tower="")
-        )   
-    )    
+        )
+    )
 
     area_options = sorted(
         set(
@@ -5255,12 +5253,12 @@ def admin_dashboard(request):
     )
 
     issue_options = sorted(
-        
-        
+
+
         set(
             CustomerQuery.objects
             .values_list("issue", flat=True)
-            .exclude(issue="")        
+            .exclude(issue="")
         )
     )
 
@@ -5271,14 +5269,14 @@ def admin_dashboard(request):
 
     total_queries = queries.count()
 
-  
-    
+
+
     in_progress_count = 0
-   
+
     closed_count = 0
 
     overdue_count = 0
-    
+
 
     # ======================================================
     # TABLE DATA
@@ -5287,20 +5285,18 @@ def admin_dashboard(request):
     customer_data = []
     crm_pending_data = []
     overdue_customers = []
-    
+
 
     closed_customer_data = []
 
 
-    
+
 
     today = timezone.localdate()
 
     # ======================================================
     # CUSTOMER LOOP
     # ======================================================
-    
-    
 
 
 
@@ -5311,7 +5307,7 @@ def admin_dashboard(request):
         # ==============================================
         # RELATED OBJECTS
         # ==============================================
-      
+
         scope = safe_related(query, "scope_form")
 
         inspection = SiteInspection.objects.filter(
@@ -5404,9 +5400,9 @@ def admin_dashboard(request):
         if feedback:
             current_stage = "Completed"
             stage_start = feedback.created_at
-            
+
         if current_stage == "Completed":
-            
+
             closed_customer_data.append({
                 "ticket": query.ticket_id,
                 "customer": query.name,
@@ -5465,7 +5461,7 @@ def admin_dashboard(request):
         stage_name = get_stage_name(current_stage)
         pending_with = get_pending_with(current_stage)
         progress = get_progress(current_stage)
-       
+
 
         # ==============================================
         # DUE TIME
@@ -5475,7 +5471,7 @@ def admin_dashboard(request):
             current_stage,
             stage_start
         )
-        
+
         # ==================================================
         # DUE TIME DISPLAY
         # ==================================================
@@ -5503,25 +5499,12 @@ def admin_dashboard(request):
         ).strftime("%d-%m-%Y %I:%M %p")
 
 
-        
-        closed_date = "-" 
+
+        closed_date = "-"
         if feedback:
             closed_date = timezone.localtime(
                 feedback.created_at
-            ).strftime("%d-%m-%Y %I:%M %p")                      
-
-        # ==================================================
-        # DUE TODAY
-        # ==================================================
-
-        is_due_today = False
-
-        if due_time and current_stage != "Completed":
-
-            if timezone.localtime(due_time).date() == today:
-
-                is_due_today = True
-                due_today_count += 1
+            ).strftime("%d-%m-%Y %I:%M %p")
 
         # ==================================================
         # OVERDUE
@@ -5535,7 +5518,7 @@ def admin_dashboard(request):
         # STATUS COUNT
         # ==================================================
 
-      
+
 
         if current_stage == "Completed":
 
@@ -5557,9 +5540,8 @@ def admin_dashboard(request):
 
             progress = "In Progress"
 
-  
-               
-                
+
+
         # ==================================================
         # CUSTOMER DATA
         # ==================================================
@@ -5594,7 +5576,7 @@ def admin_dashboard(request):
 
             "stage_name": stage_name,
 
-           
+
 
             "pending_with": pending_with,
 
@@ -5617,13 +5599,10 @@ def admin_dashboard(request):
         customer_data.append(customer)
 
 
-        crm_stages = ["S1", "S3", "S4", "S5", "S11"]   # ya S0 agar tumhare project me wahi use hota hai
+        crm_stages = ["S1", "S3", "S4", "S5", "S11"]
 
         if current_stage in crm_stages:
-            crm_pending_data.append(customer)  
-
-        if is_overdue:
-            overdue_customers.append(customer)
+            crm_pending_data.append(customer)
 
 
         # ==================================================
@@ -5634,15 +5613,20 @@ def admin_dashboard(request):
 
             overdue_customers.append(customer)
 
-        # ==================================================
-        # DUE TODAY TABLE
-        # ==================================================
-
-
     customer_data.sort(
         key=lambda x: x["query_created_at"],
         reverse=True
     )
+
+    # ======================================================
+    # "OVER ALL QUERIES" TABLE — sirf In Progress wale
+    # customers dikhane hain, Closed queries yahan se
+    # exclude kar rahe hain (woh "Closed Queries" page pe
+    # already dikhti hain).
+    # ======================================================
+    active_customer_data = [
+        c for c in customer_data if c["progress"] != "Closed"
+    ]
 
     crm_pending_data.sort(
         key=lambda x: x["query_created_at"]
@@ -5651,13 +5635,6 @@ def admin_dashboard(request):
     overdue_customers.sort(
         key=lambda x: x["query_created_at"]
     )
-
-    
-
-
-
-
-
 
     customer_feedback_data = CustomerFeedback.objects.all().order_by("-id")
 
@@ -5687,32 +5664,29 @@ def admin_dashboard(request):
 
         # Dashboard Counts
         "total_queries": total_queries,
-       
-        
+
+
         "in_progress_count": in_progress_count,
-        
+
         "closed_count": closed_count,
         "overdue_count": overdue_count,
-        
 
-        # Main Table
+
+        # Main Table (poori list — dusre pages ke liye)
         "customer_data": customer_data,
+
+        # "Over All Queries" table isi ko use karegi
+        "active_customer_data": active_customer_data,
+
         "crm_pending_data": crm_pending_data,
 
         # Overdue Table
         "overdue_customers": overdue_customers,
 
-        # Due Today Table
-       
-
-   
-
         "feedback_data": feedback_list,
-        "crm_pending_data": crm_pending_data,
-        "total_queries": total_queries,
-        "closed_customer_data": closed_customer_data, 
+        "closed_customer_data": closed_customer_data,
 
-        
+
 
         "tower_options": tower_options,
         "area_options": area_options,
@@ -5744,17 +5718,12 @@ def admin_dashboard(request):
         )
 
     if request.GET.get("page") == "customer_feedback":
-        
+
         return render(
             request,
             "crm_feedback.html",
             context
         )
-
-
-
-    
-
 
     if request.GET.get("page") == "issue_category":
 
@@ -5764,7 +5733,6 @@ def admin_dashboard(request):
             context
         )
 
-
     if request.GET.get("page") == "closed_queries":
 
         return render(
@@ -5773,10 +5741,8 @@ def admin_dashboard(request):
             context
         )
 
-
-
     # =========================================================
-    # NORMAL CRM DASHBOARD
+    # NORMAL ADMIN DASHBOARD
     # =========================================================
 
     return render(
