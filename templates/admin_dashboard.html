@@ -88,7 +88,7 @@
 
                     <i class="fa-solid fa-user-clock"></i>
 
-                    <span>Over All Queries in Progress</span>
+                    <span>Over All Queries</span>
 
                 </a>
 
@@ -418,7 +418,7 @@
 
                     <i class="fa-solid fa-user-clock"></i>
 
-                    Over All Queries in Progress
+                    Over All Queries
                 </h5>
 
                 <span class="badge bg-light text-dark">
@@ -520,6 +520,8 @@
 
                             <th>Issue Description</th>
 
+                            <th>Category</th>
+
                             <th>Photo</th>
 
 
@@ -529,7 +531,7 @@
 
                             <th>Pending With</th>
 
-                            
+                            <th>Progress</th> 
 
                             <th>Query Raised</th>
 
@@ -601,6 +603,17 @@
 
                         <!-- Status -->
                         <td>{{ customer.issue_description }}</td>
+
+                        <!-- Category -->
+                        <td>
+                            {% if customer.category == "Chargeable" %}
+                                <span class="badge bg-warning text-dark">Chargeable</span>
+                            {% elif customer.category == "Non Chargeable" %}
+                                <span class="badge bg-success">Non Chargeable</span>
+                            {% else %}
+                                <span class="text-muted">-</span>
+                            {% endif %}
+                        </td>
                         
                         <td class="text-center">
                             {% if customer.all_files %}
@@ -684,7 +697,31 @@
 
                         </td>
 
-                    
+                        <!-- Progress -->
+
+                        <td>
+
+                            {% if customer.progress == "Closed" %}
+
+                                <span class="badge bg-success">
+
+                                    {{ customer.progress }}
+
+                                </span>
+
+                            {% else %}
+
+                                <span class="badge bg-warning text-dark">
+
+                                    {{ customer.progress }}
+
+                                </span>
+
+                           
+
+                            {% endif %}
+
+                        </td>
 
                         <td>{{ customer.query_raised }}</td>
 
@@ -726,7 +763,7 @@
 
                     <tr>
 
-                        <td colspan="13" class="text-center py-5">
+                        <td colspan="14" class="text-center py-5">
 
                             <h5 class="text-muted">
 

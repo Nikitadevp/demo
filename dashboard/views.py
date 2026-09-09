@@ -5164,8 +5164,6 @@ def store_keeper_dashboard(request):
     return render(request, "store_keeper_dashboard.html", context)
 
 
-
-
 def admin_dashboard(request):
 
     # ======================================================
@@ -5462,6 +5460,10 @@ def admin_dashboard(request):
         pending_with = get_pending_with(current_stage)
         progress = get_progress(current_stage)
 
+        # Category (Chargeable / Non Chargeable) — Site Inspection
+        # form se aata hai (S2 stage)
+        category = inspection.category if inspection else "-"
+
 
         # ==============================================
         # DUE TIME
@@ -5576,6 +5578,7 @@ def admin_dashboard(request):
 
             "stage_name": stage_name,
 
+            "category": category,
 
 
             "pending_with": pending_with,
