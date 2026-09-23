@@ -5754,78 +5754,249 @@ def admin_dashboard(request):
         context
     )
 
+import json
 from django.shortcuts import render, redirect, get_object_or_404
-from django.utils import timezone
-from .models import (
-    ChecklistInstance, ChecklistItemResult, 
-    QCIssue, QCProject, QCSite, AdminUser
+from django.http import JsonResponse
+from django.db import transaction
+
+from django.db.models import Q
+
+from .qc_serializers import (
+    QCProjectSerializer, QCSiteSerializer, ChecklistTemplateSerializer,
+    ChecklistInstanceSerializer, QCIssueSerializer
 )
 
+from .models import (
+    QCProject, QCSite, ChecklistTemplate, 
+    ChecklistInstance, ChecklistItemResult, QCIssue, AdminUser, QCAuditLog
+)
+
+
 # ======================================================
-# 1. L1 INSPECTOR VIEW (Checklist Fill Page)
+# HELPER: AUDIT LOGGING FUNCTION
 # ======================================================
-def qc_inspector_view(request):
+def log_action(user, action, obj, old_value="", new_value=""):
+    """Call inside the same transaction.atomic() block as the state change."""
+    QCAuditLog.objects.create(
+        user=user,
+        action=action,
+        object_type=obj.__class__.__name__,
+        object_id=str(obj.pk),
+        old_value=str(old_value),
+        new_value=str(new_value)
+    )
+
+
+# ======================================================
+# 1. L1 INSPECTOR DASHBOARD VIEW
+# ======================================================
+def qc_inspector_fill_view(request):
+
+    # ======================================================
+    # LOGIN CHECK (Exact same pattern)
+    # ======================================================
+
     if "admin_id" not in request.session:
         return redirect("login")
 
-    role = request.session.get("admin_role")
-    if role not in ["L1 Inspector", "Admin"]:
+    if request.session.get("admin_role") != "L1 Inspector":
         return redirect("login")
 
-    current_user_id = request.session.get("admin_id")
+    # ======================================================
+    # DATA FETCHING
+    # ======================================================
+
     projects = QCProject.objects.filter(is_active=True)
-    
+    templates = ChecklistTemplate.objects.filter(is_active=True)
+
     context = {
         "projects": projects,
-        "admin_role": role,
+        "templates": templates,
+        "admin_role": request.session.get("admin_role"),
+        "admin_id": request.session.get("admin_id"),
     }
     return render(request, "qc_checklist_fill.html", context)
 
 
 # ======================================================
-# 2. L2 VERIFIER DASHBOARD (Verification Queue)
+# 2. L2 VERIFIER DASHBOARD VIEW
 # ======================================================
 def qc_verify_dashboard(request):
+
+    # ======================================================
+    # LOGIN CHECK (Exact same pattern)
+    # ======================================================
+
     if "admin_id" not in request.session:
         return redirect("login")
 
-    role = request.session.get("admin_role")
-    if role not in ["L2 Verifier", "Admin"]:
+    if request.session.get("admin_role") != "L2 Verifier":
         return redirect("login")
 
-    # Pending verification list
-    pending_checklists = ChecklistInstance.objects.filter(
-        status="Submitted"
-    ).order_by("-created_at")
+    # ======================================================
+    # DATA FETCHING
+    # ======================================================
+
+    pending_checklists = ChecklistInstance.objects.filter(status="Submitted").order_by("-created_at")
 
     context = {
         "pending_checklists": pending_checklists,
-        "admin_role": role,
+        "admin_role": request.session.get("admin_role"),
     }
     return render(request, "qc_verify_dashboard.html", context)
 
 
 # ======================================================
-# 3. L3 MANAGER DASHBOARD (QC Audit & Issues Kanban)
+# 3. L3 MANAGER / ISSUE TRACKER DASHBOARD VIEW
 # ======================================================
-def qc_audit_dashboard(request):
+def qc_issue_tracker_view(request):
+
+    # ======================================================
+    # LOGIN CHECK (Exact same pattern)
+    # ======================================================
+
     if "admin_id" not in request.session:
         return redirect("login")
 
-    role = request.session.get("admin_role")
-    if role not in ["L3 PM", "Admin"]:
+    if request.session.get("admin_role") != "L3 PM":
         return redirect("login")
 
+    # ======================================================
+    # DATA FETCHING
+    # ======================================================
+
     open_issues = QCIssue.objects.filter(status="Open").order_by("-created_at")
-    in_correction = QCIssue.objects.filter(status="In Correction")
-    closed_issues = QCIssue.objects.filter(status="Closed")
+    in_correction = QCIssue.objects.filter(status="In Correction").order_by("-created_at")
+    closed_issues = QCIssue.objects.filter(status="Closed").order_by("-created_at")
 
     context = {
         "open_issues": open_issues,
         "in_correction": in_correction,
         "closed_issues": closed_issues,
-        "total_issues": QCIssue.objects.count(),
-        "admin_role": role,
+        "admin_role": request.session.get("admin_role"),
     }
     return render(request, "qc_issue_tracker.html", context)
 
+
+# ======================================================
+# 4. ONLINE / OFFLINE SYNC SUBMIT API
+# ======================================================
+def qc_submit_sync_api(request):
+
+    if "admin_id" not in request.session:
+        return JsonResponse({"error": "Unauthorized"}, status=401)
+
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            checklists_data = data.get("checklists", [])
+            admin_user = AdminUser.objects.get(id=request.session["admin_id"])
+
+            synced_uuids = []
+
+            with transaction.atomic():
+                for inst in checklists_data:
+                    client_uuid = inst.get("client_uuid")
+
+                    instance, created = ChecklistInstance.objects.get_or_create(
+                        instance_id=client_uuid,
+                        defaults={
+                            "template_id": inst.get("template_id"),
+                            "site_id": inst.get("site_id"),
+                            "activity_type_id": inst.get("activity_type_id"),
+                            "created_by": admin_user,
+                            "status": "Submitted"
+                        }
+                    )
+
+                    for item in inst.get("items", []):
+                        ChecklistItemResult.objects.get_or_create(
+                            checklist_instance=instance,
+                            item_id=item.get("item_id"),
+                            defaults={
+                                "status": item.get("status", "Pending"),
+                                "notes": item.get("notes", ""),
+                                "filled_by": admin_user,
+                                "filled_at": timezone.now()
+                            }
+                        )
+
+                    synced_uuids.append(client_uuid)
+                    log_action(admin_user, "SUBMIT_CHECKLIST", instance, new_value=client_uuid)
+
+            return JsonResponse({"status": "success", "synced_uuids": synced_uuids})
+
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=400)
+
+    return JsonResponse({"error": "Invalid method"}, status=405)
+
+
+# ======================================================
+# 5. L2 ITEM VERIFY & AUTO ISSUE CREATION API
+# ======================================================
+def qc_verify_item_api(request, item_result_id):
+
+    if "admin_id" not in request.session:
+        return JsonResponse({"error": "Unauthorized"}, status=401)
+
+    if request.session.get("admin_role") != "L2 Verifier":
+        return JsonResponse({"error": "Permission Denied"}, status=403)
+
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            new_status = data.get("status")
+            verifier_notes = data.get("notes", "")
+            assigned_to_id = data.get("assigned_to_id")
+            due_date = data.get("due_date")
+
+            item = get_object_or_404(ChecklistItemResult, id=item_result_id)
+            verifier_user = AdminUser.objects.get(id=request.session["admin_id"])
+
+            with transaction.atomic():
+                old_status = item.status
+                item.status = new_status
+                item.verified_by = verifier_user
+                item.verified_at = timezone.now()
+                if verifier_notes:
+                    item.notes = f"{item.notes or ''}\n[L2 Review]: {verifier_notes}"
+                item.save()
+
+                instance = item.checklist_instance
+                if new_status == "Passed":
+                    instance.status = "Verified"
+                elif new_status == "Failed":
+                    instance.status = "Rejected"
+                instance.save()
+
+                issue_id = None
+                if new_status == "Failed":
+                    assigned_user = None
+                    if assigned_to_id:
+                        assigned_user = AdminUser.objects.filter(id=assigned_to_id).first()
+
+                    issue = QCIssue.objects.create(
+                        checklist_item_result=item,
+                        raised_by=verifier_user,
+                        assigned_to=assigned_user,
+                        source="verification",
+                        status="Open",
+                        description=verifier_notes or "Rejected by L2 Verifier during inspection.",
+                        due_date=due_date if due_date else None
+                    )
+                    issue_id = issue.issue_id
+
+                log_action(verifier_user, "VERIFY_ITEM", item, old_value=old_status, new_value=new_status)
+
+            return JsonResponse({
+                "status": "success", 
+                "item_status": item.status, 
+                "issue_raised": True if issue_id else False,
+                "issue_id": issue_id
+            })
+
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=400)
+
+    return JsonResponse({"error": "Invalid method"}, status=405)

@@ -91,6 +91,16 @@ urlpatterns = [
     path("api/qc/instances/<int:instance_id>/audit/",
          AuditRandomCheckView.as_view(), name="qc-instance-audit"),
 
+    path('qc/verify/item/<int:item_result_id>/', views.qc_verify_item_api, name='qc_verify_item_api'),
+    # QC Module Routes
+    path('qc/fill/', views.qc_inspector_fill_view, name='qc_inspector_fill'),
+    path('qc/verify/', views.qc_verify_dashboard, name='qc_verify_dashboard'),
+    path('qc/issues/', views.qc_issue_tracker_view, name='qc_issue_tracker'),
+    
+    # API Routes for Actions and Offline Sync
+    path('qc/api/submit-sync/', views.qc_submit_sync_api, name='qc_submit_sync_api'),
+    
+
 
 
 
