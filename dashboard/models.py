@@ -1265,6 +1265,10 @@ class AdminUser(models.Model):
         ("Site Engineer", "Site Engineer"),
         ("Store Keeper", "Store Keeper"),
         ("Maintenance", "Maintenance"),
+        ("L1 Inspector", "L1 Inspector"),
+        ("L2 Verifier", "L2 Verifier"),
+        ("L3 PM", "L3 PM"),
+        ("Viewer", "Viewer"),
     )
 
     username = models.CharField(
