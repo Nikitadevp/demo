@@ -3,6 +3,22 @@
 from django.urls import path
 from . import views
 from .views import export_leave_csv
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from . import views
+from .views import (
+    export_leave_csv,
+    QCProjectViewSet, QCSiteViewSet, ChecklistTemplateViewSet,
+    ChecklistInstanceViewSet, QCIssueViewSet,
+    ChecklistItemVerifyView, ChecklistItemReconfirmView, AuditRandomCheckView,
+)
+
+router = DefaultRouter()
+router.register(r"projects", QCProjectViewSet, basename="qc-project")
+router.register(r"sites", QCSiteViewSet, basename="qc-site")
+router.register(r"templates", ChecklistTemplateViewSet, basename="qc-template")
+router.register(r"instances", ChecklistInstanceViewSet, basename="qc-instance")
+router.register(r"issues", QCIssueViewSet, basename="qc-issue")
 
 
 
@@ -65,29 +81,7 @@ urlpatterns = [
     path("site-engineer/dashboard/",views.site_engineer_dashboard,name="site_engineer_dashboard"),
     path("crm-dashboard/", views.crm_dashboard, name="crm_dashboard"),
     path("store-keeper/dashboard/", views.store_keeper_dashboard, name="store_keeper_dashboard" ),
-
-
-
-  
-]
     
-from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-
-from .views import (
-    QCProjectViewSet, QCSiteViewSet, ChecklistTemplateViewSet,
-    ChecklistInstanceViewSet, QCIssueViewSet,
-    ChecklistItemVerifyView, ChecklistItemReconfirmView, AuditRandomCheckView,
-)
-
-router = DefaultRouter()
-router.register(r"projects", QCProjectViewSet, basename="qc-project")
-router.register(r"sites", QCSiteViewSet, basename="qc-site")
-router.register(r"templates", ChecklistTemplateViewSet, basename="qc-template")
-router.register(r"instances", ChecklistInstanceViewSet, basename="qc-instance")
-router.register(r"issues", QCIssueViewSet, basename="qc-issue")
-
-urlpatterns = [
     path("api/qc/", include(router.urls)),
 
     path("api/qc/checklist-items/<int:item_id>/verify/",
@@ -96,7 +90,13 @@ urlpatterns = [
          ChecklistItemReconfirmView.as_view(), name="qc-item-reconfirm"),
     path("api/qc/instances/<int:instance_id>/audit/",
          AuditRandomCheckView.as_view(), name="qc-instance-audit"),
+
+
+
+
+  
 ]
+
 
 # In your project-level demo/urls.py, add:
 #   from django.urls import include
