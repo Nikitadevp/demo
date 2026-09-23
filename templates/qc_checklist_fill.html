@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QC Checklist Fill - L1 Inspector</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-dark bg-primary mb-4 shadow-sm">
+        <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1">📋 QC Management System</span>
+            <span id="net-badge" class="badge bg-success fs-6">🌐 Online</span>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-white border-bottom py-3">
+                <h4 class="mb-0 text-primary">QC Field Checklist (L1 Inspector)</h4>
+            </div>
+            
+            <div class="card-body p-4">
+                <form id="qcFillForm">
+                    <!-- Project Selection -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Select Project</label>
+                        <select id="project_select" class="form-select" required>
+                            <option value="">-- Choose Project --</option>
+                            {% for p in projects %}
+                                <option value="{{ p.id }}">{{ p.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- Template Selection -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Checklist Template</label>
+                        <select id="template_select" class="form-select" required>
+                            <option value="">-- Choose Template --</option>
+                            {% for t in templates %}
+                                <option value="{{ t.id }}">{{ t.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- Observations / Inspection Item Notes -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Inspection Findings / Notes</label>
+                        <textarea id="item_notes" class="form-control" rows="3" placeholder="Enter site observation details..." required></textarea>
+                    </div>
+
+                    <!-- Initial Status -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Status</label>
+                        <select id="item_status" class="form-select">
+                            <option value="Passed">Passed ✅</option>
+                            <option value="Failed">Failed ❌</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100 py-2 fs-5 mt-3">
+                        Submit Checklist
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+<script>
+let db;
+const request = indexedDB.open("QCOfflineDB", 1);
+
+request.onupgradeneeded = function(e) {
+    db = e.target.result;
+    if (!db.objectStoreNames.contains("checklists")) {
+        db.createObjectStore("checklists", { keyPath: "client_uuid" });
+    }
+};
+
+request.onsuccess = function(e) { db = e.target.result; };
+
+function updateOnlineStatus() {
+    const badge = document.getElementById("net-badge");
+    if (navigator.onLine) {
+        badge.className = "badge bg-success fs-6";
+        badge.innerHTML = "🌐 Online";
+        syncOfflineChecklists();
+    } else {
+        badge.className = "badge bg-warning text-dark fs-6";
+        badge.innerHTML = "📡 Offline (Local Saved)";
+    }
+}
+
+window.addEventListener('online', updateOnlineStatus);
+window.addEventListener('offline', updateOnlineStatus);
+
+document.getElementById("qcFillForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const payload = {
+        client_uuid: "CHK-" + Date.now(),
+        site_id: 1,
+        template_id: document.getElementById("template_select").value,
+        items: [{
+            item_id: "ITEM-1",
+            status: document.getElementById("item_status").value,
+            notes: document.getElementById("item_notes").value
+        }]
+    };
+
+    if (navigator.onLine) {
+        try {
+            let response = await fetch("/qc/api/submit-sync/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": "{{ csrf_token }}"
+                },
+                body: JSON.stringify({ checklists: [payload] })
+            });
+
+            if (response.ok) {
+                alert("✓ Saved online successfully!");
+                document.getElementById("qcFillForm").reset();
+                return;
+            }
+        } catch (err) {
+            console.log("Network drop, storing locally.");
+        }
+    }
+
+    if (db) {
+        const tx = db.transaction("checklists", "readwrite");
+        tx.objectStore("checklists").put(payload);
+        alert("⏳ Network nahi hai! Local storage mein save ho gaya hai.");
+        document.getElementById("qcFillForm").reset();
+    }
+});
+
+async function syncOfflineChecklists() {
+    if (!db) return;
+    const tx = db.transaction("checklists", "readwrite");
+    const store = tx.objectStore("checklists");
+    const getAllReq = store.getAll();
+
+    getAllReq.onsuccess = async function() {
+        const items = getAllReq.result;
+        if (items.length === 0) return;
+
+        try {
+            let res = await fetch("/qc/api/submit-sync/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": "{{ csrf_token }}"
+                },
+                body: JSON.stringify({ checklists: items })
+            });
+
+            if (res.ok) {
+                const clearTx = db.transaction("checklists", "readwrite");
+                clearTx.objectStore("checklists").clear();
+                console.log("✓ Offline data synced!");
+            }
+        } catch (err) {
+            console.error("Sync failed", err);
+        }
+    };
+}
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
