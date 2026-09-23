@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework', 
     'dashboard',
     'cloudinary',
     'cloudinary_storage',
@@ -273,3 +274,9 @@ cloudinary.config(
 )
 
 # DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "dashboard.authentication.SessionAdminAuthentication",
+    ],
+}
