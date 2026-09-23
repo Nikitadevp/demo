@@ -1164,8 +1164,7 @@ class QueryCloser(models.Model):
     
 
 
-import random
-import string
+
 
 class CustomerFeedback(models.Model):
 
@@ -1316,6 +1315,337 @@ class AdminUser(models.Model):
 
     def __str__(self):
         return self.username
+
+
+
+
+"""
+================================================================
+QC CHECKLIST MODULE — add these classes to your demo/models.py
+================================================================
+Follows the same conventions already used in this file:
+  - unique_id generated via random letters+digits with a prefix
+  - save() override to auto-generate unique_id on first save
+  - AdminUser reused for who-did-what (filled_by, verified_by, etc.)
+  - ImageField(upload_to='inspection_photos/') — same folder you
+    already use for SiteInspection photos
+
+STEP 0 — first, add these 4 new choices to your existing
+AdminUser.ROLE_CHOICES (near the top of models.py):
+
+    ROLE_CHOICES = (
+        ("Admin", "Admin"),
+        ("CRM", "CRM"),
+        ("Site Engineer", "Site Engineer"),
+        ("Store Keeper", "Store Keeper"),
+        ("Maintenance", "Maintenance"),
+        ("L1 Inspector", "L1 Inspector"),
+        ("L2 Verifier", "L2 Verifier"),
+        ("L3 PM", "L3 PM"),
+        ("Viewer", "Viewer"),
+    )
+
+Then run: python manage.py makemigrations && python manage.py migrate
+
+ALSO NEEDED (separate files, given alongside this one):
+  - authentication.py — bridges request.session["admin_id"] into
+    request.user for DRF, without touching login_view/AdminUser
+  - permissions.py — DRF permission classes using request.user.role
+    (now that authentication.py populates it)
+  - settings.py — add REST_FRAMEWORK["DEFAULT_AUTHENTICATION_CLASSES"]
+    pointing at demo.authentication.SessionAdminAuthentication
+"""
+
+
+
+
+
+
+
+
+# ---------------------------------------------------------------------------
+# PROJECT / SITE HIERARCHY
+# ---------------------------------------------------------------------------
+class QCProject(models.Model):
+    unique_id = models.CharField(max_length=20, unique=True, blank=True)
+    name = models.CharField(max_length=200)
+    location = models.CharField(max_length=255, blank=True, null=True)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def generate_unique_id(self):
+        while True:
+            code = "PRJ" + "".join(
+                random.choices(string.ascii_letters + string.digits, k=8)
+            )
+            if not QCProject.objects.filter(unique_id=code).exists():
+                return code
+
+    def save(self, *args, **kwargs):
+        if not self.unique_id:
+            self.unique_id = self.generate_unique_id()
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.unique_id} - {self.name}"
+
+
+class QCSite(models.Model):
+    """A tower/block/site within a project — e.g. Tower A, Tower B."""
+    unique_id = models.CharField(max_length=20, unique=True, blank=True)
+    project = models.ForeignKey(
+        QCProject, on_delete=models.CASCADE, related_name="sites"
+    )
+    name = models.CharField(max_length=100)  # "Tower A"
+
+    def generate_unique_id(self):
+        while True:
+            code = "SITE" + "".join(
+                random.choices(string.ascii_letters + string.digits, k=8)
+            )
+            if not QCSite.objects.filter(unique_id=code).exists():
+                return code
+
+    def save(self, *args, **kwargs):
+        if not self.unique_id:
+            self.unique_id = self.generate_unique_id()
+        super().save(*args, **kwargs)
+
+    class Meta:
+        unique_together = ("project", "name")
+
+    def __str__(self):
+        return f"{self.project.name} - {self.name}"
+
+
+# ---------------------------------------------------------------------------
+# CHECKLIST TEMPLATES (master data, admin-configurable)
+# ---------------------------------------------------------------------------
+class ChecklistTemplate(models.Model):
+    ACTIVITY_CHOICES = [
+        ("Structural", "Structural / Concrete Work"),
+        ("Plastering", "Plastering"),
+        ("Waterproofing", "Waterproofing"),
+        ("Tiling", "Tiling"),
+        ("Electrical", "Electrical"),
+        ("Plumbing", "Plumbing"),
+        ("Painting", "Painting"),
+        ("Finishing", "Other Finishing"),
+    ]
+
+    unique_id = models.CharField(max_length=20, unique=True, blank=True)
+    name = models.CharField(max_length=150)
+    activity_type = models.CharField(max_length=20, choices=ACTIVITY_CHOICES)
+    version = models.PositiveIntegerField(default=1)
+    is_active = models.BooleanField(default=True)
+    created_by = models.ForeignKey(
+        "AdminUser", on_delete=models.SET_NULL, null=True, blank=True
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def generate_unique_id(self):
+        while True:
+            code = "QCT" + "".join(
+                random.choices(string.ascii_letters + string.digits, k=8)
+            )
+            if not ChecklistTemplate.objects.filter(unique_id=code).exists():
+                return code
+
+    def save(self, *args, **kwargs):
+        if not self.unique_id:
+            self.unique_id = self.generate_unique_id()
+        super().save(*args, **kwargs)
+
+    class Meta:
+        unique_together = ("name", "version")
+
+    def __str__(self):
+        return f"{self.name} v{self.version}"
+
+
+class ChecklistTemplateItem(models.Model):
+    STAGE_CHOICES = [
+        ("General", "General Inspection"),
+        ("In-Process", "In-Process Inspection"),
+        ("Post-Install", "After Installation Inspection"),
+    ]
+
+    template = models.ForeignKey(
+        ChecklistTemplate, on_delete=models.CASCADE, related_name="items"
+    )
+    sequence = models.PositiveIntegerField(default=0)
+    stage = models.CharField(max_length=20, choices=STAGE_CHOICES, default="General")
+    question = models.CharField(max_length=300)
+    requires_photo = models.BooleanField(default=True)
+    requires_note = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ["sequence"]
+
+    def __str__(self):
+        return self.question
+
+
+# ---------------------------------------------------------------------------
+# CHECKLIST INSTANCES (filled on-site by L1)
+# ---------------------------------------------------------------------------
+class ChecklistInstance(models.Model):
+    STATUS_CHOICES = [
+        ("Pending", "Pending"),
+        ("In Process", "In Process"),
+        ("Passed", "Passed"),
+        ("Failed", "Failed"),
+        ("Re-confirmation Required", "Re-confirmation Required"),
+        ("Re-confirmed", "Re-confirmed & Approved"),
+    ]
+
+    unique_id = models.CharField(max_length=20, unique=True, blank=True)
+    # client_uuid: generated on the phone/browser at creation time — lets the
+    # offline-sync JS retry a failed upload without ever creating a duplicate
+    client_uuid = models.CharField(max_length=64, unique=True, null=True, blank=True)
+
+    template = models.ForeignKey(ChecklistTemplate, on_delete=models.PROTECT)
+    template_version = models.PositiveIntegerField()  # snapshot, so a later
+    # template edit never changes the meaning of an already-filled checklist
+    project = models.ForeignKey(QCProject, on_delete=models.PROTECT)
+    site = models.ForeignKey(QCSite, on_delete=models.PROTECT)
+
+    filled_by = models.ForeignKey(
+        "AdminUser", on_delete=models.PROTECT, related_name="qc_filled"
+    )
+    verified_by = models.ForeignKey(
+        "AdminUser", on_delete=models.SET_NULL, null=True, blank=True,
+        related_name="qc_verified"
+    )
+    audited_by = models.ForeignKey(
+        "AdminUser", on_delete=models.SET_NULL, null=True, blank=True,
+        related_name="qc_audited"
+    )
+
+    status = models.CharField(max_length=30, choices=STATUS_CHOICES, default="Pending")
+    filled_at_device_time = models.DateTimeField(default=timezone.now)
+    created_at = models.DateTimeField(auto_now_add=True)
+    verified_at = models.DateTimeField(null=True, blank=True)
+
+    def generate_unique_id(self):
+        while True:
+            code = "QCI" + "".join(
+                random.choices(string.ascii_letters + string.digits, k=8)
+            )
+            if not ChecklistInstance.objects.filter(unique_id=code).exists():
+                return code
+
+    def save(self, *args, **kwargs):
+        if not self.unique_id:
+            self.unique_id = self.generate_unique_id()
+        if not self.template_version and self.template_id:
+            self.template_version = self.template.version
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.unique_id} - {self.template.name} [{self.status}]"
+
+
+class ChecklistItemResult(models.Model):
+    STATUS_CHOICES = [
+        ("Pending", "Pending"),
+        ("Passed", "Passed"),
+        ("Failed", "Failed"),
+        ("NA", "Not Applicable"),
+    ]
+
+    instance = models.ForeignKey(
+        ChecklistInstance, on_delete=models.CASCADE, related_name="item_results"
+    )
+    template_item = models.ForeignKey(ChecklistTemplateItem, on_delete=models.PROTECT)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="Pending")
+    note = models.TextField(blank=True, null=True)
+
+    # same convention as SiteInspection — two photo slots, same media folder
+    photo1 = models.ImageField(upload_to="inspection_photos/", blank=True, null=True)
+    photo2 = models.ImageField(upload_to="inspection_photos/", blank=True, null=True)
+
+    verified_by = models.ForeignKey(
+        "AdminUser", on_delete=models.SET_NULL, null=True, blank=True
+    )
+    verified_at = models.DateTimeField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ("instance", "template_item")
+
+    def __str__(self):
+        return f"{self.template_item.question} - {self.status}"
+
+
+# ---------------------------------------------------------------------------
+# ISSUES (raised only by L2 during verify, or L3 during audit — never L1)
+# ---------------------------------------------------------------------------
+class QCIssue(models.Model):
+    SOURCE_CHOICES = [
+        ("verification", "Raised during L2 verification"),
+        ("audit", "Raised during L3 audit"),
+    ]
+    STATUS_CHOICES = [
+        ("Open", "Open"),
+        ("In Correction", "Correction In Progress"),
+        ("Re-inspection", "Resolved - Pending Re-check"),
+        ("Closed", "Closed"),
+    ]
+
+    unique_id = models.CharField(max_length=20, unique=True, blank=True)
+    checklist_item_result = models.ForeignKey(
+        ChecklistItemResult, on_delete=models.CASCADE, related_name="issues"
+    )
+    raised_by = models.ForeignKey(
+        "AdminUser", on_delete=models.PROTECT, related_name="qc_issues_raised"
+    )
+    assigned_to = models.ForeignKey(
+        "AdminUser", on_delete=models.SET_NULL, null=True, blank=True,
+        related_name="qc_issues_assigned"
+    )
+    source = models.CharField(max_length=15, choices=SOURCE_CHOICES)
+    description = models.TextField(blank=True, null=True)
+    status = models.CharField(max_length=15, choices=STATUS_CHOICES, default="Open")
+    due_date = models.DateField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    closed_at = models.DateTimeField(null=True, blank=True)
+
+    def generate_unique_id(self):
+        while True:
+            code = "ISS" + "".join(
+                random.choices(string.ascii_letters + string.digits, k=8)
+            )
+            if not QCIssue.objects.filter(unique_id=code).exists():
+                return code
+
+    def save(self, *args, **kwargs):
+        if not self.unique_id:
+            self.unique_id = self.generate_unique_id()
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.unique_id} - {self.status}"
+
+
+# ---------------------------------------------------------------------------
+# AUDIT LOG (every verify/reconfirm/audit action, for L3 compliance)
+# ---------------------------------------------------------------------------
+class QCAuditLog(models.Model):
+    user = models.ForeignKey("AdminUser", on_delete=models.SET_NULL, null=True)
+    action = models.CharField(max_length=50)
+    object_type = models.CharField(max_length=50)
+    object_id = models.PositiveIntegerField()
+    old_value = models.CharField(max_length=100, blank=True)
+    new_value = models.CharField(max_length=100, blank=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-timestamp"]
+        indexes = [models.Index(fields=["object_type", "object_id"])]
+
+    def __str__(self):
+        return f"{self.action} on {self.object_type}#{self.object_id}"
     
 
 
