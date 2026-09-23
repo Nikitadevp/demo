@@ -1,10 +1,21 @@
 from rest_framework import serializers
 from .models import (
-    Project, Tower, Floor, Unit,
+    QCProject, QCSite,
     ChecklistTemplate, ChecklistTemplateItem,
-    ChecklistSubmission, ChecklistItemResult, ChecklistItemPhoto,
-    Issue,
+    ChecklistInstance, ChecklistItemResult, QCIssue,
 )
+
+
+class QCProjectSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = QCProject
+        fields = ["id", "unique_id", "name", "location", "is_active"]
+
+
+class QCSiteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = QCSite
+        fields = ["id", "unique_id", "project", "name"]
 
 
 class ChecklistTemplateItemSerializer(serializers.ModelSerializer):
@@ -18,93 +29,68 @@ class ChecklistTemplateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ChecklistTemplate
-        fields = ["id", "name", "activity_type", "version", "is_active", "items"]
-
-
-class ChecklistItemPhotoSerializer(serializers.ModelSerializer):
-    s3_url = serializers.ReadOnlyField()
-
-    class Meta:
-        model = ChecklistItemPhoto
-        fields = [
-            "id", "client_uuid", "s3_key", "s3_url", "caption",
-            "device_id", "taken_at", "uploaded_at",
-        ]
+        fields = ["id", "unique_id", "name", "activity_type", "version", "is_active", "items"]
 
 
 class ChecklistItemResultSerializer(serializers.ModelSerializer):
-    photos = ChecklistItemPhotoSerializer(many=True, read_only=True)
-
     class Meta:
         model = ChecklistItemResult
         fields = [
-            "id", "template_item", "status", "note",
-            "verified_by", "verified_at", "photos",
+            "id", "template_item", "status", "note", "photo1", "photo2",
+            "verified_by", "verified_at",
         ]
         read_only_fields = ["verified_by", "verified_at"]
 
 
-class ChecklistSubmissionSerializer(serializers.ModelSerializer):
+class ChecklistInstanceSerializer(serializers.ModelSerializer):
     """
-    Used for L1's offline-sync payload: submission header + all item results
-    in one shot, so a half-synced checklist can never exist server-side.
+    Used both for a normal online submit AND for offline-sync replay — the
+    JS layer hits this same endpoint either way (see qc_sync.js discussed
+    earlier). client_uuid makes a retried sync safe: DB unique constraint
+    stops a duplicate ChecklistInstance being created if the same offline
+    entry gets POSTed twice.
     """
     item_results = ChecklistItemResultSerializer(many=True, required=False)
 
     class Meta:
-        model = ChecklistSubmission
+        model = ChecklistInstance
         fields = [
-            "id", "client_uuid", "template", "project", "tower", "floor", "unit",
+            "id", "unique_id", "client_uuid",
+            "template", "template_version", "project", "site",
             "filled_by", "verified_by", "audited_by", "status",
-            "filled_at_device_time", "synced_at", "verified_at",
+            "filled_at_device_time", "created_at", "verified_at",
             "item_results",
         ]
-        read_only_fields = ["filled_by", "verified_by", "audited_by", "synced_at"]
+        read_only_fields = ["filled_by", "verified_by", "audited_by", "created_at"]
 
     def create(self, validated_data):
         item_results_data = validated_data.pop("item_results", [])
         request = self.context["request"]
         validated_data["filled_by"] = request.user
-        submission = ChecklistSubmission.objects.create(**validated_data)
+
+        # idempotent: if this client_uuid already synced, return the
+        # existing instance instead of erroring or duplicating
+        client_uuid = validated_data.get("client_uuid")
+        if client_uuid:
+            existing = ChecklistInstance.objects.filter(client_uuid=client_uuid).first()
+            if existing:
+                return existing
+
+        instance = ChecklistInstance.objects.create(**validated_data)
         for item_data in item_results_data:
-            ChecklistItemResult.objects.create(submission=submission, **item_data)
-        return submission
+            ChecklistItemResult.objects.create(instance=instance, **item_data)
+        return instance
 
 
-class IssueSerializer(serializers.ModelSerializer):
+class QCIssueSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Issue
+        model = QCIssue
         fields = [
-            "id", "checklist_item_result", "raised_by", "assigned_to",
-            "source", "description", "status", "due_date",
-            "created_at", "resolved_at", "closed_at",
+            "id", "unique_id", "checklist_item_result", "raised_by", "assigned_to",
+            "source", "description", "status", "due_date", "created_at", "closed_at",
         ]
-        read_only_fields = ["raised_by", "created_at", "resolved_at", "closed_at"]
+        read_only_fields = ["raised_by", "created_at", "closed_at"]
 
     def create(self, validated_data):
         validated_data["raised_by"] = self.context["request"].user
-        return Issue.objects.create(**validated_data)
-
-
-class ProjectSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Project
-        fields = ["id", "name", "code", "location", "is_active"]
-
-
-class TowerSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Tower
-        fields = ["id", "project", "name"]
-
-
-class FloorSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Floor
-        fields = ["id", "tower", "number", "label"]
-
-
-class UnitSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Unit
-        fields = ["id", "floor", "identifier"]
+        return QCIssue.objects.create(**validated_data)
