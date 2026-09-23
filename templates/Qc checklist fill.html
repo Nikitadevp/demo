@@ -1,0 +1,255 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Fill Checklist{% endblock %}
+
+{% block content %}
+<div class="qc-container">
+  <h2>Fill Quality Checklist</h2>
+
+  <!-- Step 1: choose project, site, activity template -->
+  <div class="qc-card" id="qc-setup">
+    <label>Project</label>
+    <select id="qc-project"><option value="">Loading projects...</option></select>
+
+    <label>Site / Tower</label>
+    <select id="qc-site" disabled><option value="">Select project first</option></select>
+
+    <label>Activity Type</label>
+    <select id="qc-template"><option value="">Loading templates...</option></select>
+
+    <button id="qc-start-btn" disabled>Start Checklist</button>
+  </div>
+
+  <!-- Step 2: filled once a template is picked -->
+  <div class="qc-card" id="qc-items" style="display:none;">
+    <h3 id="qc-template-name"></h3>
+    <div id="qc-items-list"></div>
+    <button id="qc-submit-btn">Save Checklist</button>
+    <p id="qc-status-msg"></p>
+  </div>
+</div>
+
+<style>
+  .qc-container { max-width: 640px; margin: 20px auto; font-family: "Poppins", sans-serif; }
+  .qc-card { background: #fff; border-radius: 8px; padding: 16px; margin-bottom: 16px;
+             box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
+  .qc-card label { display: block; margin-top: 10px; font-weight: 600; color: #1B2A4A; }
+  .qc-card select, .qc-card textarea, .qc-card input[type=file] {
+    width: 100%; padding: 8px; margin-top: 4px; border: 1px solid #ccc; border-radius: 6px;
+  }
+  .qc-item { border-top: 1px solid #eee; padding: 12px 0; }
+  .qc-item .qc-question { font-weight: 600; margin-bottom: 6px; }
+  .qc-item .qc-status-btns button {
+    padding: 6px 14px; margin-right: 8px; border-radius: 6px; border: 1px solid #ccc;
+    background: #f5f5f5; cursor: pointer;
+  }
+  .qc-item .qc-status-btns button.active.pass { background: #14b8a6; color: #fff; }
+  .qc-item .qc-status-btns button.active.fail { background: #dc2626; color: #fff; }
+  #qc-start-btn, #qc-submit-btn {
+    margin-top: 16px; padding: 10px 20px; background: #1B2A4A; color: #fff;
+    border: none; border-radius: 6px; cursor: pointer;
+  }
+  #qc-start-btn:disabled { background: #999; cursor: not-allowed; }
+  #qc-status-msg { margin-top: 10px; font-weight: 600; }
+</style>
+
+<script>
+(function () {
+  // ---- CSRF helper (Django requires this on every POST) ----
+  function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+  }
+  const csrftoken = getCookie('csrftoken');
+
+  const projectSelect = document.getElementById('qc-project');
+  const siteSelect = document.getElementById('qc-site');
+  const templateSelect = document.getElementById('qc-template');
+  const startBtn = document.getElementById('qc-start-btn');
+  const itemsCard = document.getElementById('qc-items');
+  const itemsList = document.getElementById('qc-items-list');
+  const templateNameEl = document.getElementById('qc-template-name');
+  const submitBtn = document.getElementById('qc-submit-btn');
+  const statusMsg = document.getElementById('qc-status-msg');
+
+  let selectedTemplate = null;
+  let itemResults = {}; // template_item_id -> { status, note, photo1, photo2 }
+
+  // ---- Load projects ----
+  fetch('/api/qc/projects/')
+    .then(r => r.json())
+    .then(data => {
+      projectSelect.innerHTML = '<option value="">Select project</option>';
+      data.forEach(p => {
+        const opt = document.createElement('option');
+        opt.value = p.id;
+        opt.textContent = p.name;
+        projectSelect.appendChild(opt);
+      });
+    })
+    .catch(() => { projectSelect.innerHTML = '<option value="">Could not load — check connection</option>'; });
+
+  // ---- Load sites when a project is chosen ----
+  projectSelect.addEventListener('change', function () {
+    siteSelect.innerHTML = '<option value="">Loading...</option>';
+    siteSelect.disabled = true;
+    if (!this.value) return;
+    fetch(`/api/qc/sites/?project=${this.value}`)
+      .then(r => r.json())
+      .then(data => {
+        siteSelect.innerHTML = '<option value="">Select site</option>';
+        data.forEach(s => {
+          const opt = document.createElement('option');
+          opt.value = s.id;
+          opt.textContent = s.name;
+          siteSelect.appendChild(opt);
+        });
+        siteSelect.disabled = false;
+        checkReady();
+      });
+  });
+
+  // ---- Load activity templates ----
+  fetch('/api/qc/templates/')
+    .then(r => r.json())
+    .then(data => {
+      templateSelect.innerHTML = '<option value="">Select activity</option>';
+      data.forEach(t => {
+        const opt = document.createElement('option');
+        opt.value = t.id;
+        opt.textContent = `${t.name} (v${t.version})`;
+        opt.dataset.template = JSON.stringify(t);
+        templateSelect.appendChild(opt);
+      });
+    });
+
+  templateSelect.addEventListener('change', checkReady);
+  siteSelect.addEventListener('change', checkReady);
+  projectSelect.addEventListener('change', checkReady);
+
+  function checkReady() {
+    startBtn.disabled = !(projectSelect.value && siteSelect.value && templateSelect.value);
+  }
+
+  // ---- Step 2: render checklist items for the chosen template ----
+  startBtn.addEventListener('click', function () {
+    const opt = templateSelect.selectedOptions[0];
+    selectedTemplate = JSON.parse(opt.dataset.template);
+    templateNameEl.textContent = selectedTemplate.name;
+    itemsList.innerHTML = '';
+    itemResults = {};
+
+    selectedTemplate.items.forEach(item => {
+      itemResults[item.id] = { status: 'Pending', note: '' };
+
+      const div = document.createElement('div');
+      div.className = 'qc-item';
+      div.innerHTML = `
+        <div class="qc-question">${item.question}</div>
+        <div class="qc-status-btns">
+          <button type="button" data-status="Passed" class="pass-btn">Pass</button>
+          <button type="button" data-status="Failed" class="fail-btn">Fail</button>
+        </div>
+        ${item.requires_note ? `<textarea placeholder="Note" data-item="${item.id}" class="note-input"></textarea>` : ''}
+        ${item.requires_photo ? `<input type="file" accept="image/*" capture="environment" data-item="${item.id}" class="photo-input">` : ''}
+      `;
+      itemsList.appendChild(div);
+
+      div.querySelectorAll('.qc-status-btns button').forEach(btn => {
+        btn.addEventListener('click', function () {
+          div.querySelectorAll('.qc-status-btns button').forEach(b => b.classList.remove('active', 'pass', 'fail'));
+          this.classList.add('active', this.dataset.status === 'Passed' ? 'pass' : 'fail');
+          itemResults[item.id].status = this.dataset.status;
+        });
+      });
+
+      const noteEl = div.querySelector('.note-input');
+      if (noteEl) noteEl.addEventListener('input', e => { itemResults[item.id].note = e.target.value; });
+    });
+
+    itemsCard.style.display = 'block';
+  });
+
+  // ---- Submit (online or offline — decided here) ----
+  submitBtn.addEventListener('click', function () {
+    const payload = {
+      client_uuid: crypto.randomUUID(),
+      template: selectedTemplate.id,
+      template_version: selectedTemplate.version,
+      project: projectSelect.value,
+      site: siteSelect.value,
+      filled_at_device_time: new Date().toISOString(),
+      item_results: Object.entries(itemResults).map(([template_item, r]) => ({
+        template_item: parseInt(template_item),
+        status: r.status,
+        note: r.note,
+      })),
+    };
+
+    if (navigator.onLine) {
+      submitOnline(payload);
+    } else {
+      saveOffline(payload);
+      statusMsg.textContent = '⏳ Saved locally — will sync when online.';
+    }
+  });
+
+  function submitOnline(payload) {
+    fetch('/api/qc/instances/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrftoken },
+      body: JSON.stringify(payload),
+    })
+      .then(r => {
+        if (!r.ok) throw new Error('save failed');
+        return r.json();
+      })
+      .then(() => { statusMsg.textContent = '✓ Checklist saved.'; })
+      .catch(() => {
+        // network dropped mid-submit — fall back to offline queue instead of losing the data
+        saveOffline(payload);
+        statusMsg.textContent = '⏳ Could not reach server — saved locally, will retry.';
+      });
+  }
+
+  // ---- Offline queue (IndexedDB) — minimal version; expand as discussed ----
+  function saveOffline(payload) {
+    const req = indexedDB.open('qc_offline_db', 1);
+    req.onupgradeneeded = e => {
+      e.target.result.createObjectStore('pending_checklists', { keyPath: 'client_uuid' });
+    };
+    req.onsuccess = e => {
+      const db = e.target.result;
+      db.transaction('pending_checklists', 'readwrite')
+        .objectStore('pending_checklists').put(payload);
+    };
+  }
+
+  function syncPendingData() {
+    const req = indexedDB.open('qc_offline_db', 1);
+    req.onsuccess = e => {
+      const db = e.target.result;
+      const store = db.transaction('pending_checklists', 'readwrite').objectStore('pending_checklists');
+      store.getAll().onsuccess = ev => {
+        ev.target.result.forEach(payload => {
+          fetch('/api/qc/instances/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrftoken },
+            body: JSON.stringify(payload),
+          }).then(r => {
+            if (r.ok) {
+              db.transaction('pending_checklists', 'readwrite')
+                .objectStore('pending_checklists').delete(payload.client_uuid);
+            }
+          });
+        });
+      };
+    };
+  }
+
+  window.addEventListener('online', syncPendingData);
+})();
+</script>
+{% endblock %}
