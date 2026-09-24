@@ -1,5 +1,6 @@
 
 #aap url
+from django.db import router
 from django.urls import path
 from . import views
 from .views import export_leave_csv
@@ -14,12 +15,12 @@ from .views import (
     ChecklistInstanceViewSet,
     QCIssueViewSet
 )
-# router = DefaultRouter()
-# router.register(r"projects", QCProjectViewSet, basename="qc-project")
-# router.register(r"sites", QCSiteViewSet, basename="qc-site")
-# router.register(r"templates", ChecklistTemplateViewSet, basename="qc-template")
-# router.register(r"instances", ChecklistInstanceViewSet, basename="qc-instance")
-# router.register(r"issues", QCIssueViewSet, basename="qc-issue")
+from .views import (
+    export_leave_csv,
+    QCProjectViewSet, QCSiteViewSet, ChecklistTemplateViewSet,
+    ChecklistInstanceViewSet, QCIssueViewSet,
+    ChecklistItemVerifyView, ChecklistItemReconfirmView, AuditRandomCheckView,
+)
 
 
 
@@ -83,18 +84,18 @@ urlpatterns = [
     path("crm-dashboard/", views.crm_dashboard, name="crm_dashboard"),
     path("store-keeper/dashboard/", views.store_keeper_dashboard, name="store_keeper_dashboard" ),
     
-    # path("api/qc/", include(router.urls)),
+    path("api/qc/", include(router.urls)),
+    path("api/qc/checklist-items/<int:item_id>/verify/", ChecklistItemVerifyView.as_view(), name="qc-item-verify"),
+    path("api/qc/checklist-items/<int:item_id>/reconfirm/", ChecklistItemReconfirmView.as_view(), name="qc-item-reconfirm"),
+    path("api/qc/instances/<int:instance_id>/audit/", AuditRandomCheckView.as_view(), name="qc-instance-audit"),
+    path('qc/fill/', views.qc_checklist_fill, name='qc_checklist_fill'),
 
    
 
-    path('qc/verify/item/<int:item_result_id>/', views.qc_verify_item_api, name='qc_verify_item_api'),
-    # QC Module Routes
-    path('qc/fill/', views.qc_inspector_fill_view, name='qc_inspector_fill'),
-    path('qc/verify/', views.qc_verify_dashboard, name='qc_verify_dashboard'),
-    path('qc/issues/', views.qc_issue_tracker_view, name='qc_issue_tracker'),
+
+
     
-    # API Routes for Actions and Offline Sync
-    path('qc/api/submit-sync/', views.qc_submit_sync_api, name='qc_submit_sync_api'),
+
     
 
 
