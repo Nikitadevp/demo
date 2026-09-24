@@ -2715,14 +2715,16 @@ def customer_feedback_form(request, query_id):
 
 
 
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .models import AdminUser
 
 
 def login_view(request):
 
     # ==========================================
-    # ALREADY LOGIN
+    # ALREADY LOGGED IN CHECK
     # ==========================================
-
     if request.session.get("admin_id"):
 
         role = request.session.get("admin_role")
@@ -2742,40 +2744,43 @@ def login_view(request):
         elif role == "Maintenance":
             return redirect("maintenance_dashboard")
 
-    # ==========================================
-    # LOGIN
-    # ==========================================
+        # QC System Roles Redirection
+        elif role in ["QC Inspector", "Inspector", "L1"]:
+            return redirect("qc_fill")
 
+        elif role in ["QC Verifier", "Verifier", "L2"]:
+            return redirect("qc_verify")
+
+        elif role in ["QC Manager", "Manager", "L3"]:
+            return redirect("qc_issues")
+
+    # ==========================================
+    # LOGIN PROCESS (POST REQUEST)
+    # ==========================================
     if request.method == "POST":
 
         username = request.POST.get("username")
         password = request.POST.get("password")
 
         if not username or not password:
-
             messages.error(
                 request,
                 "Please enter Username and Password."
             )
-
             return render(request, "login.html")
 
         try:
-
             admin = AdminUser.objects.get(
-
                 username=username,
                 is_active=True
-
             )
 
-            # Password Verify
+            # Password Verification
             if admin.verify_password(password):
 
                 # =============================
                 # CREATE SESSION
                 # =============================
-
                 request.session["admin_id"] = admin.id
                 request.session["admin_name"] = admin.full_name
                 request.session["admin_role"] = admin.role
@@ -2783,7 +2788,6 @@ def login_view(request):
                 # =============================
                 # ROLE WISE REDIRECT
                 # =============================
-
                 if admin.role == "Admin":
                     return redirect("admin_dashboard")
 
@@ -2791,7 +2795,7 @@ def login_view(request):
                     return redirect("crm_dashboard")
 
                 elif admin.role == "Site Engineer":
-                     return redirect("site_engineer_dashboard")
+                    return redirect("site_engineer_dashboard")
 
                 elif admin.role == "Store Keeper":
                     return redirect("store_keeper_dashboard")
@@ -2799,24 +2803,30 @@ def login_view(request):
                 elif admin.role == "Maintenance":
                     return redirect("maintenance_dashboard")
 
-                else:
+                # --- QC Management Roles ---
+                elif admin.role in ["QC Inspector", "Inspector", "L1"]:
+                    return redirect("qc_fill")
 
+                elif admin.role in ["QC Verifier", "Verifier", "L2"]:
+                    return redirect("qc_verify")
+
+                elif admin.role in ["QC Manager", "Manager", "L3"]:
+                    return redirect("qc_issues")
+
+                else:
                     messages.error(
                         request,
                         "Role is not assigned."
                     )
-
                     return redirect("login")
 
             else:
-
                 messages.error(
                     request,
                     "Invalid Password."
                 )
 
         except AdminUser.DoesNotExist:
-
             messages.error(
                 request,
                 "Invalid Username."
@@ -2827,10 +2837,10 @@ def login_view(request):
         "login.html"
     )
 
-# ==========================
-# LOGOUT
-# ==========================
 
+# ==========================
+# LOGOUT VIEW
+# ==========================
 def logout_view(request):
 
     request.session.flush()
