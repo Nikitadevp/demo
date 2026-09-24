@@ -6,21 +6,14 @@ from . import views
 from .views import export_leave_csv
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from . import views
-from .views import (
-    export_leave_csv,
-    QCProjectViewSet,
-    QCSiteViewSet,
-    ChecklistTemplateViewSet,
-    ChecklistInstanceViewSet,
-    QCIssueViewSet
-)
-from .views import (
-    export_leave_csv,
-    QCProjectViewSet, QCSiteViewSet, ChecklistTemplateViewSet,
-    ChecklistInstanceViewSet, QCIssueViewSet,
-    ChecklistItemVerifyView, ChecklistItemReconfirmView, AuditRandomCheckView,
-)
+
+# DRF Router Setup
+qc_router = DefaultRouter()
+qc_router.register(r'projects', views.QCProjectViewSet, basename='qc-project')
+qc_router.register(r'sites', views.QCSiteViewSet, basename='qc-site')
+qc_router.register(r'templates', views.ChecklistTemplateViewSet, basename='qc-template')
+qc_router.register(r'instances', views.ChecklistInstanceViewSet, basename='qc-instance')
+qc_router.register(r'issues', views.QCIssueViewSet, basename='qc-issue')
 
 
 
@@ -84,11 +77,14 @@ urlpatterns = [
     path("crm-dashboard/", views.crm_dashboard, name="crm_dashboard"),
     path("store-keeper/dashboard/", views.store_keeper_dashboard, name="store_keeper_dashboard" ),
     
-    path("api/qc/", include(router.urls)),
-    path("api/qc/checklist-items/<int:item_id>/verify/", ChecklistItemVerifyView.as_view(), name="qc-item-verify"),
-    path("api/qc/checklist-items/<int:item_id>/reconfirm/", ChecklistItemReconfirmView.as_view(), name="qc-item-reconfirm"),
-    path("api/qc/instances/<int:instance_id>/audit/", AuditRandomCheckView.as_view(), name="qc-instance-audit"),
-    path('qc/fill/', views.qc_checklist_fill, name='qc_checklist_fill'),
+    # ---------------------------------------------
+    # QC API Endpoints (DRF)
+    # ---------------------------------------------
+    path("api/qc/", include(qc_router.urls)),  # Fixed router reference
+    path("api/qc/checklist-items/<int:item_id>/verify/", views.ChecklistItemVerifyView.as_view(), name="qc-item-verify"),
+    path("api/qc/checklist-items/<int:item_id>/reconfirm/", views.ChecklistItemReconfirmView.as_view(), name="qc-item-reconfirm"),
+    path("api/qc/instances/<int:instance_id>/audit/", views.AuditRandomCheckView.as_view(), name="qc-instance-audit"),
+   
 
    
 

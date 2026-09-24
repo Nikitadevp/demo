@@ -1,5 +1,9 @@
 from django.contrib import admin
 from .models import Ticket
+from .models import (
+    QCProject, QCSite, ChecklistTemplate, ChecklistTemplateItem,
+    ChecklistInstance, ChecklistItemResult, QCIssue, QCAuditLog,
+)
 
 @admin.register(Ticket)
 class TicketAdmin(admin.ModelAdmin):
@@ -7,10 +11,7 @@ class TicketAdmin(admin.ModelAdmin):
     
 
 # ---- QC Checklist models ----
-from .models import (
-    QCProject, QCSite, ChecklistTemplate, ChecklistTemplateItem,
-    ChecklistInstance, ChecklistItemResult, QCIssue, QCAuditLog,
-)
+
 
 admin.site.register(QCProject)
 admin.site.register(QCSite)

@@ -277,6 +277,12 @@ cloudinary.config(
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        "dashboard.authentication.SessionAdminAuthentication",
+        "dashboard.authentication.SessionAdminAuthentication"
     ],
+
+    'DEFAULT_PERMISSION_CLASSES': [
+        'demo.permissions.IsQCLoggedIn',
+    ]
+
+
 }
