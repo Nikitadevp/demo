@@ -5764,249 +5764,229 @@ def admin_dashboard(request):
         context
     )
 
-import json
-from django.shortcuts import render, redirect, get_object_or_404
-from django.http import JsonResponse
+
+
+
+
 from django.db import transaction
-
-from django.db.models import Q
-
-from .qc_serializers import (
-    QCProjectSerializer, QCSiteSerializer, ChecklistTemplateSerializer,
-    ChecklistInstanceSerializer, QCIssueSerializer
-)
+from django.shortcuts import get_object_or_404
+from django.utils import timezone
+from rest_framework import viewsets
+from rest_framework.views import APIView
+from rest_framework.response import Response
 
 from .models import (
-    QCProject, QCSite, ChecklistTemplate, 
-    ChecklistInstance, ChecklistItemResult, QCIssue, AdminUser, QCAuditLog
+    QCProject, QCSite, ChecklistTemplate,
+    ChecklistInstance, ChecklistItemResult, QCIssue, QCAuditLog,
+)
+from .qc_serializers import (
+    QCProjectSerializer, QCSiteSerializer, ChecklistTemplateSerializer,
+    ChecklistInstanceSerializer, QCIssueSerializer,
+)
+from .permissions import (
+    IsQCLoggedIn, IsProjectMember, CanFillChecklist,
+    CanVerifyChecklist, CanRaiseIssue, CanAudit, ReadOnly,
 )
 
 
-# ======================================================
-# HELPER: AUDIT LOGGING FUNCTION
-# ======================================================
 def log_action(user, action, obj, old_value="", new_value=""):
     """Call inside the same transaction.atomic() block as the state change."""
     QCAuditLog.objects.create(
         user=user,
         action=action,
         object_type=obj.__class__.__name__,
-        object_id=str(obj.pk),
+        object_id=obj.pk,
         old_value=str(old_value),
-        new_value=str(new_value)
+        new_value=str(new_value),
     )
 
 
-# ======================================================
-# 1. L1 INSPECTOR DASHBOARD VIEW
-# ======================================================
-def qc_inspector_fill_view(request):
-
-    # ======================================================
-    # LOGIN CHECK (Exact same pattern)
-    # ======================================================
-
-    if "admin_id" not in request.session:
-        return redirect("login")
-
-    if request.session.get("admin_role") != "L1 Inspector":
-        return redirect("login")
-
-    # ======================================================
-    # DATA FETCHING
-    # ======================================================
-
-    projects = QCProject.objects.filter(is_active=True)
-    templates = ChecklistTemplate.objects.filter(is_active=True)
-
-    context = {
-        "projects": projects,
-        "templates": templates,
-        "admin_role": request.session.get("admin_role"),
-        "admin_id": request.session.get("admin_id"),
-    }
-    return render(request, "qc_checklist_fill.html", context)
+# ---------------------------------------------------------------------------
+# Master data — read-only, populated by Admin via Django admin
+# ---------------------------------------------------------------------------
+class QCProjectViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = QCProject.objects.filter(is_active=True)
+    serializer_class = QCProjectSerializer
+    permission_classes = [IsQCLoggedIn]
 
 
-# ======================================================
-# 2. L2 VERIFIER DASHBOARD VIEW
-# ======================================================
-def qc_verify_dashboard(request):
-
-    # ======================================================
-    # LOGIN CHECK (Exact same pattern)
-    # ======================================================
-
-    if "admin_id" not in request.session:
-        return redirect("login")
-
-    if request.session.get("admin_role") != "L2 Verifier":
-        return redirect("login")
-
-    # ======================================================
-    # DATA FETCHING
-    # ======================================================
-
-    pending_checklists = ChecklistInstance.objects.filter(status="Submitted").order_by("-created_at")
-
-    context = {
-        "pending_checklists": pending_checklists,
-        "admin_role": request.session.get("admin_role"),
-    }
-    return render(request, "qc_verify_dashboard.html", context)
+class QCSiteViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = QCSite.objects.all()
+    serializer_class = QCSiteSerializer
+    permission_classes = [IsQCLoggedIn]
 
 
-# ======================================================
-# 3. L3 MANAGER / ISSUE TRACKER DASHBOARD VIEW
-# ======================================================
-def qc_issue_tracker_view(request):
-
-    # ======================================================
-    # LOGIN CHECK (Exact same pattern)
-    # ======================================================
-
-    if "admin_id" not in request.session:
-        return redirect("login")
-
-    if request.session.get("admin_role") != "L3 PM":
-        return redirect("login")
-
-    # ======================================================
-    # DATA FETCHING
-    # ======================================================
-
-    open_issues = QCIssue.objects.filter(status="Open").order_by("-created_at")
-    in_correction = QCIssue.objects.filter(status="In Correction").order_by("-created_at")
-    closed_issues = QCIssue.objects.filter(status="Closed").order_by("-created_at")
-
-    context = {
-        "open_issues": open_issues,
-        "in_correction": in_correction,
-        "closed_issues": closed_issues,
-        "admin_role": request.session.get("admin_role"),
-    }
-    return render(request, "qc_issue_tracker.html", context)
+class ChecklistTemplateViewSet(viewsets.ReadOnlyModelViewSet):
+    """L1 picks a template here when starting a new checklist (per activity type)."""
+    queryset = ChecklistTemplate.objects.filter(is_active=True)
+    serializer_class = ChecklistTemplateSerializer
+    permission_classes = [IsQCLoggedIn]
+    filterset_fields = ["activity_type"]
 
 
-# ======================================================
-# 4. ONLINE / OFFLINE SYNC SUBMIT API
-# ======================================================
-def qc_submit_sync_api(request):
+# ---------------------------------------------------------------------------
+# Checklist instances — SAME endpoint for a normal online submit and for
+# offline-sync replay (JS decides when to call it; server doesn't need to
+# know which case it is — client_uuid handles the duplicate-safety part).
+# ---------------------------------------------------------------------------
+class ChecklistInstanceViewSet(viewsets.ModelViewSet):
+    serializer_class = ChecklistInstanceSerializer
+    permission_classes = [IsQCLoggedIn, IsProjectMember, CanFillChecklist | ReadOnly]
 
-    if "admin_id" not in request.session:
-        return JsonResponse({"error": "Unauthorized"}, status=401)
-
-    if request.method == "POST":
-        try:
-            data = json.loads(request.body)
-            checklists_data = data.get("checklists", [])
-            admin_user = AdminUser.objects.get(id=request.session["admin_id"])
-
-            synced_uuids = []
-
-            with transaction.atomic():
-                for inst in checklists_data:
-                    client_uuid = inst.get("client_uuid")
-
-                    instance, created = ChecklistInstance.objects.get_or_create(
-                        instance_id=client_uuid,
-                        defaults={
-                            "template_id": inst.get("template_id"),
-                            "site_id": inst.get("site_id"),
-                            "activity_type_id": inst.get("activity_type_id"),
-                            "created_by": admin_user,
-                            "status": "Submitted"
-                        }
-                    )
-
-                    for item in inst.get("items", []):
-                        ChecklistItemResult.objects.get_or_create(
-                            checklist_instance=instance,
-                            item_id=item.get("item_id"),
-                            defaults={
-                                "status": item.get("status", "Pending"),
-                                "notes": item.get("notes", ""),
-                                "filled_by": admin_user,
-                                "filled_at": timezone.now()
-                            }
-                        )
-
-                    synced_uuids.append(client_uuid)
-                    log_action(admin_user, "SUBMIT_CHECKLIST", instance, new_value=client_uuid)
-
-            return JsonResponse({"status": "success", "synced_uuids": synced_uuids})
-
-        except Exception as e:
-            return JsonResponse({"error": str(e)}, status=400)
-
-    return JsonResponse({"error": "Invalid method"}, status=405)
+    def get_queryset(self):
+        return ChecklistInstance.objects.all().order_by("-created_at")
 
 
-# ======================================================
-# 5. L2 ITEM VERIFY & AUTO ISSUE CREATION API
-# ======================================================
-def qc_verify_item_api(request, item_result_id):
+# ---------------------------------------------------------------------------
+# Verification (L2) — status change + Issue + AuditLog, one transaction
+# ---------------------------------------------------------------------------
+class ChecklistItemVerifyView(APIView):
+    """
+    POST /api/checklist-items/<id>/verify/
+    body: { "status": "Passed" | "Failed", "note": "...", "assigned_to": <id>, "due_date": "YYYY-MM-DD" }
+    """
+    permission_classes = [IsQCLoggedIn, IsProjectMember, CanVerifyChecklist]
 
-    if "admin_id" not in request.session:
-        return JsonResponse({"error": "Unauthorized"}, status=401)
+    def post(self, request, item_id):
+        item = get_object_or_404(ChecklistItemResult, id=item_id)
+        self.check_object_permissions(request, item.instance)
 
-    if request.session.get("admin_role") != "L2 Verifier":
-        return JsonResponse({"error": "Permission Denied"}, status=403)
+        new_status = request.data.get("status")
+        if new_status not in ("Passed", "Failed"):
+            return Response({"detail": "status must be Passed or Failed"}, status=400)
 
-    if request.method == "POST":
-        try:
-            data = json.loads(request.body)
-            new_status = data.get("status")
-            verifier_notes = data.get("notes", "")
-            assigned_to_id = data.get("assigned_to_id")
-            due_date = data.get("due_date")
+        with transaction.atomic():
+            old_status = item.status
+            item.status = new_status
+            item.note = request.data.get("note", item.note)
+            item.verified_by = request.user
+            item.verified_at = timezone.now()
+            item.save()
+            log_action(request.user, "item_verified", item, old_status, new_status)
 
-            item = get_object_or_404(ChecklistItemResult, id=item_result_id)
-            verifier_user = AdminUser.objects.get(id=request.session["admin_id"])
+            if new_status == "Failed":
+                QCIssue.objects.create(
+                    checklist_item_result=item,
+                    raised_by=request.user,
+                    source="verification",
+                    description=request.data.get("note", ""),
+                    assigned_to_id=request.data.get("assigned_to"),
+                    due_date=request.data.get("due_date"),
+                )
 
-            with transaction.atomic():
-                old_status = item.status
-                item.status = new_status
-                item.verified_by = verifier_user
-                item.verified_at = timezone.now()
-                if verifier_notes:
-                    item.notes = f"{item.notes or ''}\n[L2 Review]: {verifier_notes}"
-                item.save()
+            self._refresh_instance_status(item.instance)
 
-                instance = item.checklist_instance
-                if new_status == "Passed":
-                    instance.status = "Verified"
-                elif new_status == "Failed":
-                    instance.status = "Rejected"
-                instance.save()
+        return Response({"item_id": item.id, "status": item.status}, status=200)
 
-                issue_id = None
-                if new_status == "Failed":
-                    assigned_user = None
-                    if assigned_to_id:
-                        assigned_user = AdminUser.objects.filter(id=assigned_to_id).first()
+    @staticmethod
+    def _refresh_instance_status(instance):
+        statuses = list(instance.item_results.values_list("status", flat=True))
+        if any(s == "Failed" for s in statuses):
+            instance.status = "Failed"
+        elif statuses and all(s == "Passed" for s in statuses):
+            instance.status = "Passed"
+        else:
+            instance.status = "In Process"
+        instance.verified_at = timezone.now()
+        instance.save(update_fields=["status", "verified_at"])
 
-                    issue = QCIssue.objects.create(
-                        checklist_item_result=item,
-                        raised_by=verifier_user,
-                        assigned_to=assigned_user,
-                        source="verification",
-                        status="Open",
-                        description=verifier_notes or "Rejected by L2 Verifier during inspection.",
-                        due_date=due_date if due_date else None
-                    )
-                    issue_id = issue.issue_id
 
-                log_action(verifier_user, "VERIFY_ITEM", item, old_value=old_status, new_value=new_status)
+# ---------------------------------------------------------------------------
+# Re-inspection (L2 re-checks after L1's correction)
+# ---------------------------------------------------------------------------
+class ChecklistItemReconfirmView(APIView):
+    """
+    POST /api/checklist-items/<id>/reconfirm/
+    body: { "corrected": true|false, "note": "..." }
+    """
+    permission_classes = [IsQCLoggedIn, IsProjectMember, CanVerifyChecklist]
 
-            return JsonResponse({
-                "status": "success", 
-                "item_status": item.status, 
-                "issue_raised": True if issue_id else False,
-                "issue_id": issue_id
-            })
+    def post(self, request, item_id):
+        item = get_object_or_404(ChecklistItemResult, id=item_id)
+        self.check_object_permissions(request, item.instance)
 
-        except Exception as e:
-            return JsonResponse({"error": str(e)}, status=400)
+        open_issue = item.issues.exclude(status="Closed").order_by("-created_at").first()
+        if open_issue is None:
+            return Response({"detail": "No open issue to reconfirm against."}, status=400)
 
-    return JsonResponse({"error": "Invalid method"}, status=405)
+        corrected = bool(request.data.get("corrected"))
+        with transaction.atomic():
+            log_action(
+                request.user, "item_reconfirmed", item,
+                old_value=item.status,
+                new_value="Passed" if corrected else "Re-confirmation Required",
+            )
+            if corrected:
+                item.status = "Passed"
+                item.instance.status = "Re-confirmed"
+                open_issue.status = "Closed"
+                open_issue.closed_at = timezone.now()
+            else:
+                item.instance.status = "Re-confirmation Required"
+                open_issue.status = "In Correction"
+
+            item.note = request.data.get("note", item.note)
+            item.verified_by = request.user
+            item.verified_at = timezone.now()
+            item.save()
+            item.instance.save(update_fields=["status"])
+            open_issue.save()
+
+        return Response(
+            {"item_id": item.id, "status": item.status, "instance_status": item.instance.status},
+            status=200,
+        )
+
+
+# ---------------------------------------------------------------------------
+# Audit (L3) — random independent check, can flag + raise Issue directly
+# ---------------------------------------------------------------------------
+class AuditRandomCheckView(APIView):
+    """
+    POST /api/instances/<id>/audit/
+    body: { "note": "...", "flag": true|false, "assigned_to": <id>, "due_date": "YYYY-MM-DD" }
+    """
+    permission_classes = [IsQCLoggedIn, IsProjectMember, CanAudit]
+
+    def post(self, request, instance_id):
+        instance = get_object_or_404(ChecklistInstance, id=instance_id)
+        self.check_object_permissions(request, instance)
+
+        with transaction.atomic():
+            instance.audited_by = request.user
+            instance.save(update_fields=["audited_by"])
+            log_action(
+                request.user,
+                "audit_flagged" if request.data.get("flag") else "audit_reviewed",
+                instance,
+                new_value=request.data.get("note", ""),
+            )
+
+            if request.data.get("flag"):
+                target_item = instance.item_results.first()
+                QCIssue.objects.create(
+                    checklist_item_result=target_item,
+                    raised_by=request.user,
+                    source="audit",
+                    description=request.data.get("note", ""),
+                    assigned_to_id=request.data.get("assigned_to"),
+                    due_date=request.data.get("due_date"),
+                )
+
+        return Response({"instance_id": instance.id, "audited": True}, status=200)
+
+
+# ---------------------------------------------------------------------------
+# Issues
+# ---------------------------------------------------------------------------
+class QCIssueViewSet(viewsets.ModelViewSet):
+    serializer_class = QCIssueSerializer
+    permission_classes = [IsQCLoggedIn, IsProjectMember]
+
+    def get_queryset(self):
+        return QCIssue.objects.all().order_by("-created_at")
+
+    def get_permissions(self):
+        if self.request.method == "POST":
+            return [IsQCLoggedIn(), IsProjectMember(), CanRaiseIssue()]
+        return [IsQCLoggedIn(), IsProjectMember()]
