@@ -281,7 +281,7 @@ REST_FRAMEWORK = {
     ],
 
     'DEFAULT_PERMISSION_CLASSES': [
-        'demo.permissions.IsQCLoggedIn',
+        'dashboard.permissions.IsQCLoggedIn',
     ]
 
 
