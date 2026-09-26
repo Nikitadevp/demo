@@ -55,3 +55,4 @@ class QCIssueSerializer(serializers.ModelSerializer):
     class Meta:
         model = QCIssue
         fields = '__all__'
+        
