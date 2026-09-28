@@ -1514,6 +1514,65 @@ class ChecklistInstance(models.Model):
     project = models.ForeignKey(QCProject, on_delete=models.PROTECT)
     site = models.ForeignKey(QCSite, on_delete=models.PROTECT)
 
+        # ==========================================================
+    # QC FORM LOCATION DETAILS
+    # ==========================================================
+
+    level = models.CharField(
+        max_length=50,
+        blank=True,
+        null=True
+    )
+
+    location = models.CharField(
+        max_length=150,
+        blank=True,
+        null=True
+    )
+
+    # ==========================================================
+    # ASSIGNMENT
+    # ==========================================================
+
+    assigned_to = models.ForeignKey(
+        "AdminUser",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="qc_assigned_checklists"
+    )
+
+    # ==========================================================
+    # SIGNATURE
+    # ==========================================================
+
+    signature = models.ImageField(
+        upload_to="qc_signatures/",
+        blank=True,
+        null=True
+    )
+
+    # ==========================================================
+    # L3 FINAL SUBMISSION
+    # ==========================================================
+
+    l3_submitted = models.BooleanField(
+        default=False
+    )
+
+    l3_submitted_by = models.ForeignKey(
+        "AdminUser",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="qc_l3_submissions"
+    )
+
+    l3_submitted_at = models.DateTimeField(
+        null=True,
+        blank=True
+    )
+
     filled_by = models.ForeignKey(
         "AdminUser", on_delete=models.PROTECT, related_name="qc_filled"
     )
