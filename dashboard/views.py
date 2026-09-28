@@ -5851,3 +5851,370 @@ class AuditRandomCheckView(APIView):
     def post(self, request, instance_id):
         # Audit logic for L3 PM
         return Response({"message": "Audit recorded successfully"})
+
+
+
+# ==========================================================
+# QC INSPECTOR CHECKLIST FORM
+# ==========================================================
+
+def qc_inspector_fill_view(request, template_id):
+
+    # ------------------------------------------------------
+    # LOGIN CHECK
+    # ------------------------------------------------------
+
+    if "admin_id" not in request.session:
+        return redirect("login")
+
+    admin_user = get_object_or_404(
+        AdminUser,
+        id=request.session["admin_id"]
+    )
+
+    # ------------------------------------------------------
+    # ROLE CHECK
+    # ------------------------------------------------------
+
+    if admin_user.role not in [
+        "L1 Inspector",
+        "Admin"
+    ]:
+        return redirect("login")
+
+    # ------------------------------------------------------
+    # GET CHECKLIST TEMPLATE
+    # ------------------------------------------------------
+
+    template = get_object_or_404(
+        ChecklistTemplate,
+        id=template_id,
+        is_active=True
+    )
+
+    # ------------------------------------------------------
+    # CHECKLIST QUESTIONS
+    # ------------------------------------------------------
+
+    items = template.items.all().order_by(
+        "sequence"
+    )
+
+    # ------------------------------------------------------
+    # PROJECTS
+    # ------------------------------------------------------
+
+    projects = QCProject.objects.filter(
+        is_active=True
+    ).order_by("name")
+
+    # ------------------------------------------------------
+    # POST
+    # ------------------------------------------------------
+
+    if request.method == "POST":
+
+        project_id = request.POST.get("project")
+        site_id = request.POST.get("site")
+        level = request.POST.get("level")
+        location = request.POST.get("location")
+        assigned_to_id = request.POST.get("assigned_to")
+
+        project = get_object_or_404(
+            QCProject,
+            id=project_id,
+            is_active=True
+        )
+
+        site = get_object_or_404(
+            QCSite,
+            id=site_id,
+            project=project
+        )
+
+        assigned_to = None
+
+        if assigned_to_id:
+            assigned_to = get_object_or_404(
+                AdminUser,
+                id=assigned_to_id
+            )
+
+        # --------------------------------------------------
+        # CREATE OR UPDATE INSTANCE
+        # --------------------------------------------------
+
+        instance_id = request.POST.get(
+            "instance_id"
+        )
+
+        if instance_id:
+
+            instance = get_object_or_404(
+                ChecklistInstance,
+                id=instance_id
+            )
+
+            # L3 submitted checklist cannot be edited
+            if instance.l3_submitted:
+                messages.error(
+                    request,
+                    "This checklist has already been submitted by L3."
+                )
+                return redirect(
+                    "qc_inspector_fill",
+                    template_id=template.id
+                )
+
+        else:
+
+            instance = ChecklistInstance(
+                template=template,
+                template_version=template.version,
+                project=project,
+                site=site,
+                filled_by=admin_user
+            )
+
+        # --------------------------------------------------
+        # UPDATE BASIC DETAILS
+        # --------------------------------------------------
+
+        instance.project = project
+        instance.site = site
+        instance.level = level
+        instance.location = location
+        instance.assigned_to = assigned_to
+        instance.filled_at_device_time = timezone.now()
+
+        instance.save()
+
+        # --------------------------------------------------
+        # SAVE EACH CHECKLIST ITEM
+        # --------------------------------------------------
+
+        for item in items:
+
+            status_value = request.POST.get(
+                f"status_{item.id}"
+            )
+
+            note_value = request.POST.get(
+                f"note_{item.id}",
+                ""
+            )
+
+            # ----------------------------------------------
+            # GET / CREATE RESULT
+            # ----------------------------------------------
+
+            result, created = ChecklistItemResult.objects.get_or_create(
+                instance=instance,
+                template_item=item,
+                defaults={
+                    "status": "Pending"
+                }
+            )
+
+            # ----------------------------------------------
+            # STATUS
+            # ----------------------------------------------
+
+            if status_value:
+                result.status = status_value
+            else:
+                result.status = "Pending"
+
+            # ----------------------------------------------
+            # NOTE
+            # ----------------------------------------------
+
+            result.note = note_value
+
+            # ----------------------------------------------
+            # PHOTO 1
+            # ----------------------------------------------
+
+            photo1 = request.FILES.get(
+                f"photo1_{item.id}"
+            )
+
+            if photo1:
+                result.photo1 = photo1
+
+            # ----------------------------------------------
+            # PHOTO 2
+            # ----------------------------------------------
+
+            photo2 = request.FILES.get(
+                f"photo2_{item.id}"
+            )
+
+            if photo2:
+                result.photo2 = photo2
+
+            # ----------------------------------------------
+            # PHOTO 3
+            # ----------------------------------------------
+
+            photo3 = request.FILES.get(
+                f"photo3_{item.id}"
+            )
+
+            if photo3:
+                result.photo3 = photo3
+
+            result.save()
+
+        # --------------------------------------------------
+        # SIGNATURE
+        # --------------------------------------------------
+
+        signature = request.FILES.get("signature")
+
+        if signature:
+            instance.signature = signature
+            instance.save()
+
+        # --------------------------------------------------
+        # SAVE ONLY
+        # --------------------------------------------------
+
+        instance.status = "In Process"
+        instance.save()
+
+        messages.success(
+            request,
+            f"Checklist {instance.unique_id} saved successfully."
+        )
+
+        return redirect(
+            "qc_inspector_fill",
+            template_id=template.id
+        )
+
+    # ------------------------------------------------------
+    # ASSIGN USERS
+    # ------------------------------------------------------
+
+    assign_users = AdminUser.objects.filter(
+        role__in=[
+            "L1 Inspector",
+            "L2 Verifier",
+            "L3 PM"
+        ]
+    ).order_by("name")
+
+    # ------------------------------------------------------
+    # RENDER
+    # ------------------------------------------------------
+
+    return render(
+        request,
+        "qc_inspector_fill.html",
+        {
+            "template": template,
+            "items": items,
+            "projects": projects,
+            "assign_users": assign_users,
+        }
+    )
+
+
+
+
+
+# ==========================================================
+# QC L3 FINAL SUBMIT
+# ==========================================================
+
+def qc_l3_submit_view(request, instance_id):
+
+    if "admin_id" not in request.session:
+        return redirect("login")
+
+    admin_user = get_object_or_404(
+        AdminUser,
+        id=request.session["admin_id"]
+    )
+
+    if admin_user.role != "L3 PM":
+        return redirect("login")
+
+    instance = get_object_or_404(
+        ChecklistInstance,
+        id=instance_id
+    )
+
+    # Already submitted
+    if instance.l3_submitted:
+        messages.info(
+            request,
+            "This checklist has already been submitted."
+        )
+        return redirect(
+            "qc_verify_dashboard"
+        )
+
+    # ------------------------------------------------------
+    # CHECK ALL ITEMS
+    # ------------------------------------------------------
+
+    results = instance.item_results.all()
+
+    incomplete_items = results.filter(
+        status="Pending"
+    ).count()
+
+    if incomplete_items > 0:
+
+        messages.error(
+            request,
+            "All checklist items must be completed before L3 submission."
+        )
+
+        return redirect(
+            "qc_verify_dashboard"
+        )
+
+    # ------------------------------------------------------
+    # CHECK FAILED ITEMS
+    # ------------------------------------------------------
+
+    failed_items = results.filter(
+        status="Failed"
+    ).count()
+
+    if failed_items > 0:
+
+        messages.error(
+            request,
+            "Failed checklist items must be corrected and re-inspected before L3 submission."
+        )
+
+        return redirect(
+            "qc_verify_dashboard"
+        )
+
+    # ------------------------------------------------------
+    # FINAL SUBMIT
+    # ------------------------------------------------------
+
+    instance.l3_submitted = True
+    instance.l3_submitted_by = admin_user
+    instance.l3_submitted_at = timezone.now()
+
+    instance.status = "Passed"
+
+    instance.audited_by = admin_user
+
+    instance.save()
+
+    messages.success(
+        request,
+        f"{instance.unique_id} submitted successfully by L3."
+    )
+
+    return redirect(
+        "qc_verify_dashboard"
+    )
