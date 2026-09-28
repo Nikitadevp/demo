@@ -5872,7 +5872,7 @@ def qc_inspector_fill_view(request):
 
     projects = QCProject.objects.filter(
         is_active=True
-    ).order_by("name")
+    ).order_by("full_name")
 
     # ------------------------------------------------------
     # POST
