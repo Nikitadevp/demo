@@ -1,0 +1,1189 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>QC Checklist</title>
+
+    <link rel="stylesheet"
+          href="{% static 'css/qc_inspector_fill.css' %}">
+
+</head>
+
+
+<body>
+
+
+<!-- ======================================================
+     MAIN PAGE
+====================================================== -->
+
+<div class="qc-page">
+
+
+    <!-- ==================================================
+         HEADER
+    =================================================== -->
+
+    <div class="qc-header">
+
+        <div>
+
+            <h1>Quality Control Checklist</h1>
+
+            <p>
+                {{ template.name }}
+            </p>
+
+        </div>
+
+        <div class="template-info">
+
+            <span>
+                {{ template.activity_type }}
+            </span>
+
+            <span>
+                Version {{ template.version }}
+            </span>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ==================================================
+         FORM
+    =================================================== -->
+
+    <form method="POST"
+          enctype="multipart/form-data"
+          id="qcForm">
+
+        {% csrf_token %}
+
+
+        <!-- ==================================================
+             BASIC INFORMATION
+        =================================================== -->
+
+        <div class="qc-card">
+
+            <div class="section-title">
+
+                <h2>Inspection Details</h2>
+
+            </div>
+
+
+            <!-- PROJECT -->
+
+            <div class="form-group">
+
+                <label>
+                    Project <span>*</span>
+                </label>
+
+                <div class="button-group project-buttons">
+
+                    {% for project in projects %}
+
+                    <button type="button"
+                            class="choice-btn project-btn"
+                            data-project="{{ project.id }}"
+                            onclick="selectProject(this)">
+
+                        {{ project.name }}
+
+                    </button>
+
+                    {% endfor %}
+
+                </div>
+
+                <input type="hidden"
+                       name="project"
+                       id="projectInput"
+                       required>
+
+            </div>
+
+
+
+            <!-- SITE -->
+
+            <div class="form-group">
+
+                <label>
+                    Tower / Block <span>*</span>
+                </label>
+
+                <div id="siteButtons"
+                     class="button-group">
+
+                    <p class="helper-text">
+                        Please select project first.
+                    </p>
+
+                </div>
+
+                <input type="hidden"
+                       name="site"
+                       id="siteInput"
+                       required>
+
+            </div>
+
+
+
+            <!-- LEVEL -->
+
+            <div class="form-group">
+
+                <label for="level">
+                    Level <span>*</span>
+                </label>
+
+                <select name="level"
+                        id="level"
+                        required>
+
+                    <option value="">
+                        Select Level
+                    </option>
+
+                    <option value="Basement">
+                        Basement
+                    </option>
+
+                    <option value="Ground Floor">
+                        Ground Floor
+                    </option>
+
+                    <option value="1st Floor">
+                        1st Floor
+                    </option>
+
+                    <option value="2nd Floor">
+                        2nd Floor
+                    </option>
+
+                    <option value="3rd Floor">
+                        3rd Floor
+                    </option>
+
+                    <option value="4th Floor">
+                        4th Floor
+                    </option>
+
+                    <option value="5th Floor">
+                        5th Floor
+                    </option>
+
+                    <option value="6th Floor">
+                        6th Floor
+                    </option>
+
+                    <option value="7th Floor">
+                        7th Floor
+                    </option>
+
+                    <option value="8th Floor">
+                        8th Floor
+                    </option>
+
+                    <option value="9th Floor">
+                        9th Floor
+                    </option>
+
+                    <option value="10th Floor">
+                        10th Floor
+                    </option>
+
+                    <option value="11th Floor">
+                        11th Floor
+                    </option>
+
+                    <option value="12th Floor">
+                        12th Floor
+                    </option>
+
+                    <option value="13th Floor">
+                        13th Floor
+                    </option>
+
+                    <option value="14th Floor">
+                        14th Floor
+                    </option>
+
+                    <option value="15th Floor">
+                        15th Floor
+                    </option>
+
+                    <option value="Terrace">
+                        Terrace
+                    </option>
+
+                </select>
+
+            </div>
+
+
+
+            <!-- LOCATION -->
+
+            <div class="form-group">
+
+                <label for="location">
+                    Location
+                </label>
+
+                <input type="text"
+                       name="location"
+                       id="location"
+                       placeholder="Enter location">
+
+            </div>
+
+
+
+            <!-- ASSIGN TO -->
+
+            <div class="form-group">
+
+                <label for="assigned_to">
+                    Assign To <span>*</span>
+                </label>
+
+                <select name="assigned_to"
+                        id="assigned_to"
+                        required>
+
+                    <option value="">
+                        Select Person
+                    </option>
+
+                    {% for user in assign_users %}
+
+                    <option value="{{ user.id }}">
+
+                        {{ user.name }}
+
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ==================================================
+             CHECKLIST
+        =================================================== -->
+
+        <div class="qc-card checklist-card">
+
+
+            {% regroup items by stage as stage_list %}
+
+
+            {% for stage in stage_list %}
+
+
+            <!-- ==================================================
+                 STAGE TITLE
+            =================================================== -->
+
+            <div class="stage-section">
+
+                <div class="stage-title">
+
+                    <h2>
+
+                        {% if stage.grouper == "General" %}
+
+                            General Inspection
+
+                        {% elif stage.grouper == "In-Process" %}
+
+                            In Process
+
+                        {% elif stage.grouper == "Post-Install" %}
+
+                            After Installation
+
+                        {% else %}
+
+                            {{ stage.grouper }}
+
+                        {% endif %}
+
+                    </h2>
+
+                </div>
+
+
+
+                <!-- ==================================================
+                     QUESTIONS
+                =================================================== -->
+
+                {% for item in stage.list %}
+
+
+                <div class="checklist-item">
+
+
+                    <!-- QUESTION -->
+
+                    <div class="question-text">
+
+                        {{ item.question }}
+
+                        {% if item.requires_photo %}
+                            <span class="required-star">*</span>
+                        {% endif %}
+
+                    </div>
+
+
+
+                    <!-- YES / NO / NA -->
+
+                    <div class="answer-buttons">
+
+                        <button type="button"
+                                class="answer-btn yes-btn"
+                                data-item="{{ item.id }}"
+                                onclick="selectAnswer(this, '{{ item.id }}', 'Y')">
+
+                            Y
+
+                        </button>
+
+
+                        <button type="button"
+                                class="answer-btn no-btn"
+                                data-item="{{ item.id }}"
+                                onclick="selectAnswer(this, '{{ item.id }}', 'N')">
+
+                            N
+
+                        </button>
+
+
+                        <button type="button"
+                                class="answer-btn na-btn"
+                                data-item="{{ item.id }}"
+                                onclick="selectAnswer(this, '{{ item.id }}', 'NA')">
+
+                            NA
+
+                        </button>
+
+                    </div>
+
+
+                    <!-- HIDDEN STATUS -->
+
+                    <input type="hidden"
+                           name="status_{{ item.id }}"
+                           id="status_{{ item.id }}">
+
+
+
+                    <!-- ==================================================
+                         PHOTO AREA
+                    =================================================== -->
+
+                    <div class="photo-area"
+                         id="photoArea_{{ item.id }}"
+                         style="display:none;">
+
+
+                        <div class="photo-title">
+
+                            Upload Photos
+
+                            {% if item.requires_photo %}
+                                <span>*</span>
+                            {% endif %}
+
+                        </div>
+
+
+                        <div class="photo-grid">
+
+
+                            <!-- PHOTO 1 -->
+
+                            <div class="photo-box">
+
+                                <label for="photo1_{{ item.id }}">
+
+                                    <div class="camera-icon">
+                                        📷
+                                    </div>
+
+                                    <span>
+                                        1. Upload Photo
+                                    </span>
+
+                                </label>
+
+                                <input type="file"
+                                       name="photo1_{{ item.id }}"
+                                       id="photo1_{{ item.id }}"
+                                       accept="image/*"
+                                       capture="environment"
+                                       {% if item.requires_photo %}required{% endif %}>
+
+                            </div>
+
+
+
+                            <!-- PHOTO 2 -->
+
+                            <div class="photo-box">
+
+                                <label for="photo2_{{ item.id }}">
+
+                                    <div class="camera-icon">
+                                        📷
+                                    </div>
+
+                                    <span>
+                                        2. Upload Photo
+                                    </span>
+
+                                </label>
+
+                                <input type="file"
+                                       name="photo2_{{ item.id }}"
+                                       id="photo2_{{ item.id }}"
+                                       accept="image/*"
+                                       capture="environment">
+
+                            </div>
+
+
+
+                            <!-- PHOTO 3 -->
+
+                            <div class="photo-box">
+
+                                <label for="photo3_{{ item.id }}">
+
+                                    <div class="camera-icon">
+                                        📷
+                                    </div>
+
+                                    <span>
+                                        3. Upload Photo
+                                    </span>
+
+                                </label>
+
+                                <input type="file"
+                                       name="photo3_{{ item.id }}"
+                                       id="photo3_{{ item.id }}"
+                                       accept="image/*"
+                                       capture="environment">
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- ==================================================
+                         NOTE
+                    =================================================== -->
+
+                    <div class="note-area">
+
+                        <label for="note_{{ item.id }}">
+                            Note
+                        </label>
+
+                        <textarea
+                            name="note_{{ item.id }}"
+                            id="note_{{ item.id }}"
+                            rows="3"
+                            placeholder="Enter inspection note..."></textarea>
+
+                    </div>
+
+
+                </div>
+
+
+                {% endfor %}
+
+            </div>
+
+
+            {% endfor %}
+
+
+        </div>
+
+
+
+        <!-- ==================================================
+             SIGNATURE
+        =================================================== -->
+
+        <div class="qc-card">
+
+            <div class="section-title">
+
+                <h2>Signature</h2>
+
+            </div>
+
+
+            <div class="signature-box">
+
+                <canvas id="signatureCanvas"></canvas>
+
+                <div class="signature-actions">
+
+                    <button type="button"
+                            onclick="clearSignature()">
+
+                        Clear
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            <input type="hidden"
+                   name="signature"
+                   id="signatureInput">
+
+        </div>
+
+
+
+        <!-- ==================================================
+             STATUS
+        =================================================== -->
+
+        <div class="qc-card">
+
+            <div class="form-group">
+
+                <label>
+                    Status
+                </label>
+
+                <input type="text"
+                       value="Pending"
+                       readonly
+                       class="readonly-input">
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ==================================================
+             SAVE BUTTON
+        =================================================== -->
+
+        <div class="bottom-actions">
+
+            <button type="button"
+                    class="cancel-btn"
+                    onclick="history.back()">
+
+                Cancel
+
+            </button>
+
+
+            <button type="submit"
+                    class="save-btn">
+
+                Save
+
+            </button>
+
+        </div>
+
+
+    </form>
+
+</div>
+
+
+
+<!-- ======================================================
+     JAVASCRIPT
+====================================================== -->
+
+<script>
+
+
+/* =========================================================
+   PROJECT → SITE DATA
+========================================================= */
+
+const projectSites = {
+
+    "Highpark": [
+        "Tower 1",
+        "Tower 2",
+        "Tower 3",
+        "Tower 4",
+        "Tower 5",
+        "Tower 6",
+        "Tower 7",
+        "Non Tower"
+    ],
+
+    "Sampoorna": [
+        "Block A",
+        "Block B",
+        "Block C",
+        "Block D"
+    ]
+
+};
+
+
+
+/* =========================================================
+   PROJECT SELECTION
+========================================================= */
+
+function selectProject(button) {
+
+    document
+        .querySelectorAll(".project-btn")
+        .forEach(btn => {
+
+            btn.classList.remove("selected");
+
+        });
+
+
+    button.classList.add("selected");
+
+
+    const projectId =
+        button.dataset.project;
+
+
+    document.getElementById(
+        "projectInput"
+    ).value = projectId;
+
+
+    const projectName =
+        button.innerText.trim();
+
+
+    const siteContainer =
+        document.getElementById(
+            "siteButtons"
+        );
+
+
+    const siteInput =
+        document.getElementById(
+            "siteInput"
+        );
+
+
+    siteInput.value = "";
+
+
+    siteContainer.innerHTML = "";
+
+
+    const sites =
+        projectSites[projectName] || [];
+
+
+    sites.forEach((siteName, index) => {
+
+
+        const btn =
+            document.createElement("button");
+
+
+        btn.type = "button";
+
+        btn.className =
+            "choice-btn site-btn";
+
+
+        btn.innerText =
+            siteName;
+
+
+        btn.dataset.siteName =
+            siteName;
+
+
+        /*
+         * IMPORTANT:
+         * We currently need database site ID.
+         * This will be connected with Django
+         * properly after testing the project/site data.
+         */
+
+
+        btn.onclick = function() {
+
+            document
+                .querySelectorAll(".site-btn")
+                .forEach(b => {
+
+                    b.classList.remove(
+                        "selected"
+                    );
+
+                });
+
+
+            this.classList.add(
+                "selected"
+            );
+
+
+            /*
+             * Temporary site value.
+             * We will replace this with
+             * actual QCSite ID mapping.
+             */
+
+            siteInput.value =
+                this.dataset.siteName;
+
+        };
+
+
+        siteContainer.appendChild(btn);
+
+    });
+
+}
+
+
+
+/* =========================================================
+   Y / N / NA SELECTION
+========================================================= */
+
+function selectAnswer(
+    button,
+    itemId,
+    value
+) {
+
+
+    const parent =
+        button.closest(
+            ".checklist-item"
+        );
+
+
+    parent
+        .querySelectorAll(
+            ".answer-btn"
+        )
+        .forEach(btn => {
+
+            btn.classList.remove(
+                "selected"
+            );
+
+        });
+
+
+    button.classList.add(
+        "selected"
+    );
+
+
+    document.getElementById(
+        "status_" + itemId
+    ).value = value;
+
+
+
+    /*
+     * PHOTO LOGIC
+     *
+     * Y → show photos
+     * N → hide photos
+     * NA → hide photos
+     */
+
+    const photoArea =
+        document.getElementById(
+            "photoArea_" + itemId
+        );
+
+
+    if (value === "Y") {
+
+        photoArea.style.display =
+            "block";
+
+    }
+
+    else {
+
+        photoArea.style.display =
+            "none";
+
+
+        photoArea
+            .querySelectorAll(
+                "input[type='file']"
+            )
+            .forEach(input => {
+
+                input.value = "";
+
+            });
+
+    }
+
+}
+
+
+
+/* =========================================================
+   SIGNATURE PAD
+========================================================= */
+
+const canvas =
+    document.getElementById(
+        "signatureCanvas"
+    );
+
+const ctx =
+    canvas.getContext("2d");
+
+
+let drawing = false;
+
+
+
+function resizeCanvas() {
+
+    const rect =
+        canvas.getBoundingClientRect();
+
+
+    canvas.width =
+        rect.width;
+
+    canvas.height =
+        220;
+
+}
+
+
+resizeCanvas();
+
+
+
+canvas.addEventListener(
+    "mousedown",
+    startDrawing
+);
+
+canvas.addEventListener(
+    "mousemove",
+    draw
+);
+
+canvas.addEventListener(
+    "mouseup",
+    stopDrawing
+);
+
+canvas.addEventListener(
+    "mouseleave",
+    stopDrawing
+);
+
+
+
+canvas.addEventListener(
+    "touchstart",
+    startDrawing
+);
+
+canvas.addEventListener(
+    "touchmove",
+    draw
+);
+
+canvas.addEventListener(
+    "touchend",
+    stopDrawing
+);
+
+
+
+function getPosition(event) {
+
+    const rect =
+        canvas.getBoundingClientRect();
+
+
+    let clientX;
+    let clientY;
+
+
+    if (
+        event.touches &&
+        event.touches.length
+    ) {
+
+        clientX =
+            event.touches[0].clientX;
+
+        clientY =
+            event.touches[0].clientY;
+
+    }
+
+    else {
+
+        clientX =
+            event.clientX;
+
+        clientY =
+            event.clientY;
+
+    }
+
+
+    return {
+
+        x: clientX - rect.left,
+
+        y: clientY - rect.top
+
+    };
+
+}
+
+
+
+function startDrawing(event) {
+
+    event.preventDefault();
+
+    drawing = true;
+
+    const pos =
+        getPosition(event);
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        pos.x,
+        pos.y
+    );
+
+}
+
+
+
+function draw(event) {
+
+    if (!drawing) {
+        return;
+    }
+
+
+    event.preventDefault();
+
+
+    const pos =
+        getPosition(event);
+
+
+    ctx.lineWidth = 2;
+
+    ctx.lineCap = "round";
+
+
+    ctx.lineTo(
+        pos.x,
+        pos.y
+    );
+
+    ctx.stroke();
+
+}
+
+
+
+function stopDrawing() {
+
+    drawing = false;
+
+    saveSignature();
+
+}
+
+
+
+function saveSignature() {
+
+    const imageData =
+        canvas.toDataURL(
+            "image/png"
+        );
+
+
+    document.getElementById(
+        "signatureInput"
+    ).value = imageData;
+
+}
+
+
+
+function clearSignature() {
+
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+
+    document.getElementById(
+        "signatureInput"
+    ).value = "";
+
+}
+
+
+
+/* =========================================================
+   FORM SUBMIT
+========================================================= */
+
+document
+    .getElementById("qcForm")
+    .addEventListener(
+        "submit",
+        function(event) {
+
+
+            /*
+             * Check Project
+             */
+
+            if (
+                !document.getElementById(
+                    "projectInput"
+                ).value
+            ) {
+
+                event.preventDefault();
+
+                alert(
+                    "Please select Project."
+                );
+
+                return;
+
+            }
+
+
+
+            /*
+             * Check Site
+             */
+
+            if (
+                !document.getElementById(
+                    "siteInput"
+                ).value
+            ) {
+
+                event.preventDefault();
+
+                alert(
+                    "Please select Tower / Block."
+                );
+
+                return;
+
+            }
+
+
+
+            /*
+             * Check all questions
+             */
+
+            const statuses =
+                document.querySelectorAll(
+                    "[id^='status_']"
+                );
+
+
+            for (
+                let status of statuses
+            ) {
+
+                if (!status.value) {
+
+                    event.preventDefault();
+
+                    alert(
+                        "Please complete all checklist items."
+                    );
+
+                    return;
+
+                }
+
+            }
+
+
+            saveSignature();
+
+        }
+    );
+
+
+</script>
+
+
+</body>
+
+</html>

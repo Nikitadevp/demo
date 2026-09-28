@@ -1,0 +1,808 @@
+/* =========================================================
+   QC INSPECTOR CHECKLIST
+   ========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #f4f6f8;
+    color: #263238;
+    min-height: 100vh;
+}
+
+
+/* =========================================================
+   MAIN PAGE
+   ========================================================= */
+
+.qc-page {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px 22px 50px;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.qc-header {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 24px 28px;
+    margin-bottom: 22px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+
+    border: 1px solid #e2e7eb;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.qc-header h1 {
+    font-size: 25px;
+    font-weight: 700;
+    color: #173b4d;
+    margin-bottom: 6px;
+}
+
+.qc-header p {
+    font-size: 14px;
+    color: #687780;
+}
+
+.template-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.template-info span {
+    background: #eef7fa;
+    color: #11718b;
+    border: 1px solid #cde8ee;
+
+    padding: 7px 12px;
+    border-radius: 20px;
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   CARD
+   ========================================================= */
+
+.qc-card {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 25px;
+    margin-bottom: 22px;
+
+    border: 1px solid #e1e6ea;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04);
+}
+
+
+/* =========================================================
+   SECTION TITLE
+   ========================================================= */
+
+.section-title {
+    border-bottom: 1px solid #e7ebee;
+    padding-bottom: 14px;
+    margin-bottom: 22px;
+}
+
+.section-title h2 {
+    font-size: 18px;
+    color: #173b4d;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   FORM GROUP
+   ========================================================= */
+
+.form-group {
+    margin-bottom: 22px;
+}
+
+.form-group:last-child {
+    margin-bottom: 0;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 9px;
+
+    font-size: 14px;
+    font-weight: 600;
+    color: #344850;
+}
+
+.form-group label span {
+    color: #d64545;
+}
+
+
+/* =========================================================
+   INPUT / SELECT
+   ========================================================= */
+
+.form-group input[type="text"],
+.form-group select,
+.form-group textarea,
+.readonly-input {
+    width: 100%;
+    min-height: 45px;
+
+    border: 1px solid #d4dce1;
+    border-radius: 8px;
+
+    padding: 11px 13px;
+
+    background: #ffffff;
+    color: #263238;
+
+    font-size: 14px;
+    outline: none;
+
+    transition: 0.2s ease;
+}
+
+.form-group input[type="text"]:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: #1597b8;
+    box-shadow: 0 0 0 3px rgba(21, 151, 184, 0.10);
+}
+
+.readonly-input {
+    background: #f5f7f8;
+    color: #65747c;
+    cursor: not-allowed;
+}
+
+
+/* =========================================================
+   BUTTON GROUP
+   ========================================================= */
+
+.button-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.choice-btn {
+    border: 1px solid #ccd6db;
+    background: #ffffff;
+
+    color: #42545c;
+
+    min-height: 42px;
+    padding: 9px 18px;
+
+    border-radius: 8px;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+.choice-btn:hover {
+    border-color: #1597b8;
+    color: #1597b8;
+    background: #f1fafc;
+}
+
+.choice-btn.selected {
+    background: #1597b8;
+    color: #ffffff;
+    border-color: #1597b8;
+
+    box-shadow: 0 3px 8px rgba(21, 151, 184, 0.20);
+}
+
+
+/* =========================================================
+   HELPER TEXT
+   ========================================================= */
+
+.helper-text {
+    color: #89959b;
+    font-size: 13px;
+    padding: 8px 0;
+}
+
+
+/* =========================================================
+   CHECKLIST CARD
+   ========================================================= */
+
+.checklist-card {
+    padding: 0;
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   STAGE SECTION
+   ========================================================= */
+
+.stage-section {
+    border-bottom: 1px solid #e3e8eb;
+}
+
+.stage-section:last-child {
+    border-bottom: none;
+}
+
+.stage-title {
+    background: #173b4d;
+    padding: 16px 22px;
+}
+
+.stage-title h2 {
+    color: #ffffff;
+    font-size: 17px;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   CHECKLIST ITEM
+   ========================================================= */
+
+.checklist-item {
+    padding: 20px 22px;
+    border-bottom: 1px solid #edf0f2;
+
+    background: #ffffff;
+
+    transition: background 0.2s ease;
+}
+
+.checklist-item:last-child {
+    border-bottom: none;
+}
+
+.checklist-item:hover {
+    background: #fbfcfd;
+}
+
+
+/* =========================================================
+   QUESTION
+   ========================================================= */
+
+.question-text {
+    color: #263b43;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    line-height: 1.55;
+
+    margin-bottom: 15px;
+}
+
+.required-star {
+    color: #d64545;
+    margin-left: 3px;
+}
+
+
+/* =========================================================
+   ANSWER BUTTONS
+   ========================================================= */
+
+.answer-buttons {
+    display: flex;
+    gap: 9px;
+    margin-bottom: 14px;
+}
+
+.answer-btn {
+    width: 48px;
+    height: 38px;
+
+    border-radius: 7px;
+
+    border: 1px solid #ccd6db;
+
+    background: #ffffff;
+    color: #53636b;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+.answer-btn:hover {
+    transform: translateY(-1px);
+}
+
+
+/* YES */
+
+.yes-btn.selected {
+    background: #218838;
+    border-color: #218838;
+    color: #ffffff;
+
+    box-shadow: 0 3px 8px rgba(33, 136, 56, 0.20);
+}
+
+
+/* NO */
+
+.no-btn.selected {
+    background: #d64545;
+    border-color: #d64545;
+    color: #ffffff;
+
+    box-shadow: 0 3px 8px rgba(214, 69, 69, 0.20);
+}
+
+
+/* NA */
+
+.na-btn.selected {
+    background: #687780;
+    border-color: #687780;
+    color: #ffffff;
+
+    box-shadow: 0 3px 8px rgba(104, 119, 128, 0.20);
+}
+
+
+/* =========================================================
+   PHOTO AREA
+   ========================================================= */
+
+.photo-area {
+    margin-top: 16px;
+    padding: 16px;
+
+    background: #f8fafb;
+
+    border: 1px dashed #ccd7dc;
+    border-radius: 10px;
+}
+
+.photo-title {
+    font-size: 13px;
+    font-weight: 700;
+
+    color: #40535c;
+
+    margin-bottom: 13px;
+}
+
+.photo-title span {
+    color: #d64545;
+}
+
+
+/* =========================================================
+   PHOTO GRID
+   ========================================================= */
+
+.photo-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 12px;
+}
+
+
+/* =========================================================
+   PHOTO BOX
+   ========================================================= */
+
+.photo-box {
+    position: relative;
+}
+
+.photo-box label {
+    min-height: 105px;
+
+    border: 1px dashed #b9c7cd;
+    border-radius: 9px;
+
+    background: #ffffff;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    color: #687780;
+
+    cursor: pointer;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    transition: all 0.2s ease;
+}
+
+.photo-box label:hover {
+    border-color: #1597b8;
+    background: #f2fafc;
+    color: #1597b8;
+}
+
+.camera-icon {
+    font-size: 26px;
+}
+
+.photo-box input[type="file"] {
+    display: none;
+}
+
+
+/* =========================================================
+   NOTE
+   ========================================================= */
+
+.note-area {
+    margin-top: 15px;
+}
+
+.note-area label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #4a5d65;
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.note-area textarea {
+    width: 100%;
+
+    border: 1px solid #d4dce1;
+    border-radius: 8px;
+
+    padding: 11px 13px;
+
+    resize: vertical;
+
+    min-height: 75px;
+
+    font-family: inherit;
+    font-size: 13px;
+
+    outline: none;
+
+    color: #263238;
+}
+
+.note-area textarea:focus {
+    border-color: #1597b8;
+    box-shadow: 0 0 0 3px rgba(21, 151, 184, 0.10);
+}
+
+
+/* =========================================================
+   SIGNATURE
+   ========================================================= */
+
+.signature-box {
+    border: 1px solid #d4dce1;
+    border-radius: 10px;
+    overflow: hidden;
+
+    background: #fafbfc;
+}
+
+#signatureCanvas {
+    width: 100%;
+    height: 220px;
+
+    display: block;
+
+    background: #ffffff;
+
+    cursor: crosshair;
+
+    touch-action: none;
+}
+
+.signature-actions {
+    padding: 9px 12px;
+
+    border-top: 1px solid #e0e5e8;
+
+    display: flex;
+    justify-content: flex-end;
+}
+
+.signature-actions button {
+    border: 1px solid #ccd6db;
+    background: #ffffff;
+
+    color: #52636b;
+
+    border-radius: 6px;
+
+    padding: 7px 14px;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.signature-actions button:hover {
+    border-color: #1597b8;
+    color: #1597b8;
+}
+
+
+/* =========================================================
+   BOTTOM ACTIONS
+   ========================================================= */
+
+.bottom-actions {
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 12px;
+
+    padding-top: 3px;
+}
+
+
+.cancel-btn,
+.save-btn {
+    min-width: 120px;
+    height: 45px;
+
+    border-radius: 8px;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+
+/* CANCEL */
+
+.cancel-btn {
+    background: #ffffff;
+
+    border: 1px solid #cbd5da;
+
+    color: #52636b;
+}
+
+.cancel-btn:hover {
+    background: #f4f6f7;
+}
+
+
+/* SAVE */
+
+.save-btn {
+    background: #1597b8;
+
+    border: 1px solid #1597b8;
+
+    color: #ffffff;
+
+    box-shadow: 0 4px 10px rgba(21, 151, 184, 0.20);
+}
+
+.save-btn:hover {
+    background: #117f9d;
+    border-color: #117f9d;
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   VALIDATION
+   ========================================================= */
+
+input:invalid,
+select:invalid {
+    box-shadow: none;
+}
+
+
+/* =========================================================
+   RESPONSIVE - TABLET
+   ========================================================= */
+
+@media (max-width: 800px) {
+
+    .qc-page {
+        padding: 18px 14px 40px;
+    }
+
+    .qc-header {
+        padding: 20px;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .qc-card {
+        padding: 20px;
+    }
+
+    .photo-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE - MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    .qc-page {
+        padding: 10px 8px 30px;
+    }
+
+
+    .qc-header {
+        border-radius: 10px;
+        padding: 17px;
+
+        margin-bottom: 14px;
+    }
+
+    .qc-header h1 {
+        font-size: 20px;
+    }
+
+    .qc-header p {
+        font-size: 12px;
+    }
+
+
+    .qc-card {
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 14px;
+    }
+
+
+    .section-title h2 {
+        font-size: 16px;
+    }
+
+
+    .stage-title {
+        padding: 14px 15px;
+    }
+
+    .stage-title h2 {
+        font-size: 15px;
+    }
+
+
+    .checklist-item {
+        padding: 16px 14px;
+    }
+
+
+    .question-text {
+        font-size: 13px;
+        line-height: 1.55;
+    }
+
+
+    .button-group {
+        gap: 7px;
+    }
+
+
+    .choice-btn {
+        padding: 8px 13px;
+        min-height: 40px;
+
+        font-size: 12px;
+    }
+
+
+    .answer-buttons {
+        gap: 7px;
+    }
+
+
+    .answer-btn {
+        width: 44px;
+        height: 36px;
+    }
+
+
+    .photo-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .photo-box label {
+        min-height: 90px;
+    }
+
+
+    #signatureCanvas {
+        height: 180px;
+    }
+
+
+    .bottom-actions {
+        flex-direction: column-reverse;
+    }
+
+
+    .cancel-btn,
+    .save-btn {
+        width: 100%;
+    }
+
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 380px) {
+
+    .qc-page {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
+    .qc-card {
+        padding: 12px;
+    }
+
+    .checklist-item {
+        padding: 14px 11px;
+    }
+
+    .answer-btn {
+        width: 42px;
+    }
+
+}
