@@ -84,7 +84,9 @@ urlpatterns = [
     path("api/qc/checklist-items/<int:item_id>/verify/", views.ChecklistItemVerifyView.as_view(), name="qc-item-verify"),
     path("api/qc/checklist-items/<int:item_id>/reconfirm/", views.ChecklistItemReconfirmView.as_view(), name="qc-item-reconfirm"),
     path("api/qc/instances/<int:instance_id>/audit/", views.AuditRandomCheckView.as_view(), name="qc-instance-audit"),
-   
+    # path("qc/inspector/<int:template_id>/",views.qc_inspector_fill_view,name="qc_inspector_fill"),
+    path("qc/inspector/",views.qc_inspector_fill_view,name="qc_inspector_fill"),
+
 
    
 
