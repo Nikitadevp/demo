@@ -5853,270 +5853,215 @@ class AuditRandomCheckView(APIView):
         return Response({"message": "Audit recorded successfully"})
 
 
+# ============================================================
+# QC INSPECTOR FILL FORM
+# ============================================================
 
-# # ==========================================================
-# QC INSPECTOR CHECKLIST FORM
-# ==========================================================
 def qc_inspector_fill_view(request):
 
-    # ------------------------------------------------------
-    # NO TEMPLATE REQUIRED FOR EMPTY FORM
-    # ------------------------------------------------------
-
-    template = None
-    items = []
-
-    # ------------------------------------------------------
-    # PROJECTS
-    # ------------------------------------------------------
-
-    projects = QCProject.objects.filter(
-        is_active=True
-    ).order_by("full_name")
-
-    # ------------------------------------------------------
-    # POST
-    # ------------------------------------------------------
-
+    # --------------------------------------------------------
+    # POST - SAVE QC INSPECTION
+    # --------------------------------------------------------
     if request.method == "POST":
 
+        # Basic form fields
         project_id = request.POST.get("project")
         site_id = request.POST.get("site")
         level = request.POST.get("level")
         location = request.POST.get("location")
         assigned_to_id = request.POST.get("assigned_to")
 
-        # --------------------------------------------------
-        # PROJECT
-        # --------------------------------------------------
-
+        # ----------------------------------------------------
+        # GET PROJECT
+        # ----------------------------------------------------
         project = get_object_or_404(
             QCProject,
             id=project_id,
             is_active=True
         )
 
-        # --------------------------------------------------
-        # SITE
-        # --------------------------------------------------
-
+        # ----------------------------------------------------
+        # GET SITE
+        # ----------------------------------------------------
         site = get_object_or_404(
             QCSite,
             id=site_id,
             project=project
         )
 
-        # --------------------------------------------------
-        # ASSIGNED USER
-        # --------------------------------------------------
-
+        # ----------------------------------------------------
+        # GET ASSIGNED USER
+        # ----------------------------------------------------
         assigned_to = None
 
         if assigned_to_id:
-
             assigned_to = get_object_or_404(
                 AdminUser,
                 id=assigned_to_id
             )
 
-        # --------------------------------------------------
-        # CREATE / UPDATE INSTANCE
-        # --------------------------------------------------
-
-        instance_id = request.POST.get(
-            "instance_id"
+        # ----------------------------------------------------
+        # CREATE QC INSTANCE
+        # ----------------------------------------------------
+        instance = ChecklistInstance.objects.create(
+            project=project,
+            site=site,
+            level=level,
+            location=location,
+            assigned_to=assigned_to,
+            status="In Process"
         )
 
-        if instance_id:
+        # ----------------------------------------------------
+        # SAVE SIGNATURE
+        # ----------------------------------------------------
+        signature_file = request.FILES.get("signature")
 
-            instance = get_object_or_404(
-                ChecklistInstance,
-                id=instance_id
-            )
+        if signature_file:
+            instance.signature = signature_file
+            instance.save()
 
-            # L3 submitted checklist cannot be edited
-            if instance.l3_submitted:
+        # ----------------------------------------------------
+        # SAVE CHECKLIST RESPONSES
+        # ----------------------------------------------------
+        #
+        # Expected HTML field names:
+        #
+        # question_1_status
+        # question_1_note
+        # question_1_photo1
+        # question_1_photo2
+        # question_1_photo3
+        #
+        # question_2_status
+        # question_2_note
+        # etc.
+        #
+        # ----------------------------------------------------
 
-                messages.error(
-                    request,
-                    "This checklist has already been submitted by L3."
+        question_numbers = set()
+
+        for key in request.POST.keys():
+
+            if key.startswith("question_") and key.endswith("_status"):
+
+                question_number = key.replace(
+                    "question_",
+                    ""
+                ).replace(
+                    "_status",
+                    ""
                 )
 
-                return redirect(
-                    "qc_inspector_fill"
-                )
+                question_numbers.add(question_number)
 
-        else:
+        # ----------------------------------------------------
+        # SAVE EACH QUESTION
+        # ----------------------------------------------------
+        for question_number in question_numbers:
 
-            # --------------------------------------------------
-            # IMPORTANT:
-            # Currently ChecklistTemplate is required by the
-            # ChecklistInstance model.
-            # Therefore an empty form cannot be saved until
-            # a template exists.
-            # --------------------------------------------------
-
-            messages.error(
-                request,
-                "QC Checklist Template is not created yet."
+            status = request.POST.get(
+                f"question_{question_number}_status"
             )
 
-            return redirect(
-                "qc_inspector_fill"
-            )
-
-        # --------------------------------------------------
-        # UPDATE BASIC DETAILS
-        # --------------------------------------------------
-
-        instance.project = project
-        instance.site = site
-        instance.level = level
-        instance.location = location
-        instance.assigned_to = assigned_to
-        instance.filled_at_device_time = timezone.now()
-
-        instance.save()
-
-        # --------------------------------------------------
-        # SAVE CHECKLIST ITEMS
-        # --------------------------------------------------
-
-        for item in items:
-
-            status_value = request.POST.get(
-                f"status_{item.id}"
-            )
-
-            note_value = request.POST.get(
-                f"note_{item.id}",
+            note = request.POST.get(
+                f"question_{question_number}_note",
                 ""
             )
 
-            result, created = ChecklistItemResult.objects.get_or_create(
-                instance=instance,
-                template_item=item,
-                defaults={
-                    "status": "Pending"
-                }
-            )
-
-            # --------------------------------------------------
-            # STATUS
-            # --------------------------------------------------
-
-            if status_value == "Y":
-
-                result.status = "Passed"
-
-            elif status_value == "N":
-
-                result.status = "Failed"
-
-            elif status_value == "NA":
-
-                result.status = "NA"
-
-            else:
-
-                result.status = "Pending"
-
-            # --------------------------------------------------
-            # NOTE
-            # --------------------------------------------------
-
-            result.note = note_value
-
-            # --------------------------------------------------
-            # PHOTO 1
-            # --------------------------------------------------
-
             photo1 = request.FILES.get(
-                f"photo1_{item.id}"
+                f"question_{question_number}_photo1"
             )
-
-            if photo1:
-                result.photo1 = photo1
-
-            # --------------------------------------------------
-            # PHOTO 2
-            # --------------------------------------------------
 
             photo2 = request.FILES.get(
-                f"photo2_{item.id}"
+                f"question_{question_number}_photo2"
             )
-
-            if photo2:
-                result.photo2 = photo2
-
-            # --------------------------------------------------
-            # PHOTO 3
-            # --------------------------------------------------
 
             photo3 = request.FILES.get(
-                f"photo3_{item.id}"
+                f"question_{question_number}_photo3"
             )
 
-            if photo3:
-                result.photo3 = photo3
+            print(
+                "QC QUESTION:",
+                question_number
+            )
 
-            result.save()
+            print(
+                "STATUS:",
+                status
+            )
 
-        # --------------------------------------------------
-        # SIGNATURE
-        # --------------------------------------------------
+            print(
+                "NOTE:",
+                note
+            )
 
-        signature = request.FILES.get(
-            "signature"
-        )
+            print(
+                "PHOTO 1:",
+                photo1
+            )
 
-        if signature:
+            print(
+                "PHOTO 2:",
+                photo2
+            )
 
-            instance.signature = signature
-            instance.save()
+            print(
+                "PHOTO 3:",
+                photo3
+            )
 
-        # --------------------------------------------------
-        # SAVE
-        # --------------------------------------------------
+            # ------------------------------------------------
+            # NOTE:
+            # ChecklistItemResult needs a template_item.
+            #
+            # Since we are currently making the simple form
+            # without ChecklistTemplate, we don't create
+            # ChecklistItemResult here yet.
+            #
+            # ------------------------------------------------
 
-        instance.status = "In Process"
-        instance.save()
-
+        # ----------------------------------------------------
+        # SUCCESS
+        # ----------------------------------------------------
         messages.success(
             request,
-            f"Checklist {instance.unique_id} saved successfully."
+            f"QC Inspection {instance.unique_id} saved successfully."
         )
 
         return redirect(
             "qc_inspector_fill"
         )
 
-    # ------------------------------------------------------
-    # ASSIGN USERS
-    # ------------------------------------------------------
+    # --------------------------------------------------------
+    # GET - OPEN EMPTY FORM
+    # --------------------------------------------------------
+
+    projects = QCProject.objects.filter(
+        is_active=True
+    ).order_by("name")
 
     assign_users = AdminUser.objects.filter(
         role__in=[
             "L1 Inspector",
             "L2 Verifier",
             "L3 PM"
+            
         ]
-    ).order_by("name")
+    ).order_by("full_name")
 
-    # ------------------------------------------------------
-    # RENDER
-    # ------------------------------------------------------
+    context = {
+        "projects": projects,
+        "assign_users": assign_users,
+    }
 
     return render(
         request,
         "qc_inspector_fill.html",
-        {
-            "template": template,
-            "items": items,
-            "projects": projects,
-            "assign_users": assign_users,
-        }
+        context
     )
+
+
 
 
 
