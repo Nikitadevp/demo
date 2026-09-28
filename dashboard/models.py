@@ -1627,6 +1627,7 @@ class ChecklistItemResult(models.Model):
     # same convention as SiteInspection — two photo slots, same media folder
     photo1 = models.ImageField(upload_to="inspection_photos/", blank=True, null=True)
     photo2 = models.ImageField(upload_to="inspection_photos/", blank=True, null=True)
+    photo3 = models.ImageField(upload_to="inspection_photos/",blank=True,null=True)
 
     verified_by = models.ForeignKey(
         "AdminUser", on_delete=models.SET_NULL, null=True, blank=True
