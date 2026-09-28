@@ -5857,30 +5857,7 @@ class AuditRandomCheckView(APIView):
 # ==========================================================
 # QC INSPECTOR CHECKLIST FORM
 # ==========================================================
-
 def qc_inspector_fill_view(request):
-
-    # ------------------------------------------------------
-    # LOGIN CHECK
-    # ------------------------------------------------------
-
-    if "admin_id" not in request.session:
-        return redirect("login")
-
-    admin_user = get_object_or_404(
-        AdminUser,
-        id=request.session["admin_id"]
-    )
-
-    # ------------------------------------------------------
-    # ROLE CHECK
-    # ------------------------------------------------------
-
-    if admin_user.role not in [
-        "L1 Inspector",
-        "Admin"
-    ]:
-        return redirect("login")
 
     # ------------------------------------------------------
     # GET CHECKLIST TEMPLATE
@@ -5888,7 +5865,6 @@ def qc_inspector_fill_view(request):
 
     template = get_object_or_404(
         ChecklistTemplate,
-        
         is_active=True
     )
 
@@ -5957,13 +5933,14 @@ def qc_inspector_fill_view(request):
 
             # L3 submitted checklist cannot be edited
             if instance.l3_submitted:
+
                 messages.error(
                     request,
                     "This checklist has already been submitted by L3."
                 )
+
                 return redirect(
-                    "qc_inspector_fill",
-                    template_id=template.id
+                    "qc_inspector_fill"
                 )
 
         else:
@@ -5973,7 +5950,7 @@ def qc_inspector_fill_view(request):
                 template_version=template.version,
                 project=project,
                 site=site,
-                filled_by=admin_user
+                filled_by=None
             )
 
         # --------------------------------------------------
@@ -6022,10 +5999,13 @@ def qc_inspector_fill_view(request):
 
             if status_value == "Y":
                 result.status = "Passed"
+
             elif status_value == "N":
                 result.status = "Failed"
+
             elif status_value == "NA":
                 result.status = "NA"
+
             else:
                 result.status = "Pending"
 
@@ -6093,8 +6073,7 @@ def qc_inspector_fill_view(request):
         )
 
         return redirect(
-            "qc_inspector_fill",
-            template_id=template.id
+            "qc_inspector_fill"
         )
 
     # ------------------------------------------------------
@@ -6123,8 +6102,6 @@ def qc_inspector_fill_view(request):
             "assign_users": assign_users,
         }
     )
-
-
 
 
 
