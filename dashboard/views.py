@@ -6020,8 +6020,12 @@ def qc_inspector_fill_view(request, template_id):
             # STATUS
             # ----------------------------------------------
 
-            if status_value:
-                result.status = status_value
+            if status_value == "Y":
+                result.status = "Passed"
+            elif status_value == "N":
+                result.status = "Failed"
+            elif status_value == "NA":
+                result.status = "NA"
             else:
                 result.status = "Pending"
 
