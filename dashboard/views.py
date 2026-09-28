@@ -5858,7 +5858,7 @@ class AuditRandomCheckView(APIView):
 # QC INSPECTOR CHECKLIST FORM
 # ==========================================================
 
-def qc_inspector_fill_view(request, template_id):
+def qc_inspector_fill_view(request):
 
     # ------------------------------------------------------
     # LOGIN CHECK
@@ -5888,7 +5888,7 @@ def qc_inspector_fill_view(request, template_id):
 
     template = get_object_or_404(
         ChecklistTemplate,
-        id=template_id,
+        
         is_active=True
     )
 
