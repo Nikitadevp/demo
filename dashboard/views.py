@@ -5872,9 +5872,8 @@ def qc_inspector_fill_view(request):
     # CHECKLIST QUESTIONS
     # ------------------------------------------------------
 
-    items = template.items.all().order_by(
-        "sequence"
-    )
+    template = None
+    items = []
 
     # ------------------------------------------------------
     # PROJECTS
