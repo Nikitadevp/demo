@@ -5854,22 +5854,13 @@ class AuditRandomCheckView(APIView):
 
 
 
-# ==========================================================
+# # ==========================================================
 # QC INSPECTOR CHECKLIST FORM
 # ==========================================================
 def qc_inspector_fill_view(request):
 
     # ------------------------------------------------------
-    # GET CHECKLIST TEMPLATE
-    # ------------------------------------------------------
-
-    template = get_object_or_404(
-        ChecklistTemplate,
-        is_active=True
-    )
-
-    # ------------------------------------------------------
-    # CHECKLIST QUESTIONS
+    # NO TEMPLATE REQUIRED FOR EMPTY FORM
     # ------------------------------------------------------
 
     template = None
@@ -5895,11 +5886,19 @@ def qc_inspector_fill_view(request):
         location = request.POST.get("location")
         assigned_to_id = request.POST.get("assigned_to")
 
+        # --------------------------------------------------
+        # PROJECT
+        # --------------------------------------------------
+
         project = get_object_or_404(
             QCProject,
             id=project_id,
             is_active=True
         )
+
+        # --------------------------------------------------
+        # SITE
+        # --------------------------------------------------
 
         site = get_object_or_404(
             QCSite,
@@ -5907,16 +5906,21 @@ def qc_inspector_fill_view(request):
             project=project
         )
 
+        # --------------------------------------------------
+        # ASSIGNED USER
+        # --------------------------------------------------
+
         assigned_to = None
 
         if assigned_to_id:
+
             assigned_to = get_object_or_404(
                 AdminUser,
                 id=assigned_to_id
             )
 
         # --------------------------------------------------
-        # CREATE OR UPDATE INSTANCE
+        # CREATE / UPDATE INSTANCE
         # --------------------------------------------------
 
         instance_id = request.POST.get(
@@ -5944,12 +5948,21 @@ def qc_inspector_fill_view(request):
 
         else:
 
-            instance = ChecklistInstance(
-                template=template,
-                template_version=template.version,
-                project=project,
-                site=site,
-                filled_by=None
+            # --------------------------------------------------
+            # IMPORTANT:
+            # Currently ChecklistTemplate is required by the
+            # ChecklistInstance model.
+            # Therefore an empty form cannot be saved until
+            # a template exists.
+            # --------------------------------------------------
+
+            messages.error(
+                request,
+                "QC Checklist Template is not created yet."
+            )
+
+            return redirect(
+                "qc_inspector_fill"
             )
 
         # --------------------------------------------------
@@ -5966,7 +5979,7 @@ def qc_inspector_fill_view(request):
         instance.save()
 
         # --------------------------------------------------
-        # SAVE EACH CHECKLIST ITEM
+        # SAVE CHECKLIST ITEMS
         # --------------------------------------------------
 
         for item in items:
@@ -5980,10 +5993,6 @@ def qc_inspector_fill_view(request):
                 ""
             )
 
-            # ----------------------------------------------
-            # GET / CREATE RESULT
-            # ----------------------------------------------
-
             result, created = ChecklistItemResult.objects.get_or_create(
                 instance=instance,
                 template_item=item,
@@ -5992,31 +6001,35 @@ def qc_inspector_fill_view(request):
                 }
             )
 
-            # ----------------------------------------------
+            # --------------------------------------------------
             # STATUS
-            # ----------------------------------------------
+            # --------------------------------------------------
 
             if status_value == "Y":
+
                 result.status = "Passed"
 
             elif status_value == "N":
+
                 result.status = "Failed"
 
             elif status_value == "NA":
+
                 result.status = "NA"
 
             else:
+
                 result.status = "Pending"
 
-            # ----------------------------------------------
+            # --------------------------------------------------
             # NOTE
-            # ----------------------------------------------
+            # --------------------------------------------------
 
             result.note = note_value
 
-            # ----------------------------------------------
+            # --------------------------------------------------
             # PHOTO 1
-            # ----------------------------------------------
+            # --------------------------------------------------
 
             photo1 = request.FILES.get(
                 f"photo1_{item.id}"
@@ -6025,9 +6038,9 @@ def qc_inspector_fill_view(request):
             if photo1:
                 result.photo1 = photo1
 
-            # ----------------------------------------------
+            # --------------------------------------------------
             # PHOTO 2
-            # ----------------------------------------------
+            # --------------------------------------------------
 
             photo2 = request.FILES.get(
                 f"photo2_{item.id}"
@@ -6036,9 +6049,9 @@ def qc_inspector_fill_view(request):
             if photo2:
                 result.photo2 = photo2
 
-            # ----------------------------------------------
+            # --------------------------------------------------
             # PHOTO 3
-            # ----------------------------------------------
+            # --------------------------------------------------
 
             photo3 = request.FILES.get(
                 f"photo3_{item.id}"
@@ -6053,14 +6066,17 @@ def qc_inspector_fill_view(request):
         # SIGNATURE
         # --------------------------------------------------
 
-        signature = request.FILES.get("signature")
+        signature = request.FILES.get(
+            "signature"
+        )
 
         if signature:
+
             instance.signature = signature
             instance.save()
 
         # --------------------------------------------------
-        # SAVE ONLY
+        # SAVE
         # --------------------------------------------------
 
         instance.status = "In Process"
