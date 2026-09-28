@@ -10,7 +10,7 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
-    <title>QC Checklist</title>
+    <title>QC Inspector Checklist</title>
 
     <link rel="stylesheet"
           href="{% static 'css/qc_inspector_fill.css' %}">
@@ -21,16 +21,12 @@
 <body>
 
 
-<!-- ======================================================
-     MAIN PAGE
-====================================================== -->
-
 <div class="qc-page">
 
 
-    <!-- ==================================================
+    <!-- =====================================================
          HEADER
-    =================================================== -->
+    ====================================================== -->
 
     <div class="qc-header">
 
@@ -39,7 +35,7 @@
             <h1>Quality Control Checklist</h1>
 
             <p>
-                {{ template.name }}
+                QC Inspector Inspection Form
             </p>
 
         </div>
@@ -47,11 +43,11 @@
         <div class="template-info">
 
             <span>
-                {{ template.activity_type }}
+                QC Inspection
             </span>
 
             <span>
-                Version {{ template.version }}
+                L1 Inspector
             </span>
 
         </div>
@@ -60,9 +56,31 @@
 
 
 
-    <!-- ==================================================
-         FORM
-    =================================================== -->
+    <!-- =====================================================
+         MESSAGES
+    ====================================================== -->
+
+    {% if messages %}
+
+        <div class="messages">
+
+            {% for message in messages %}
+
+                <div class="message {{ message.tags }}">
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% endif %}
+
+
+
+    <!-- =====================================================
+         MAIN FORM
+    ====================================================== -->
 
     <form method="POST"
           enctype="multipart/form-data"
@@ -71,9 +89,9 @@
         {% csrf_token %}
 
 
-        <!-- ==================================================
-             BASIC INFORMATION
-        =================================================== -->
+        <!-- =================================================
+             INSPECTION DETAILS
+        ================================================== -->
 
         <div class="qc-card">
 
@@ -82,6 +100,7 @@
                 <h2>Inspection Details</h2>
 
             </div>
+
 
 
             <!-- PROJECT -->
@@ -96,18 +115,26 @@
 
                     {% for project in projects %}
 
-                    <button type="button"
-                            class="choice-btn project-btn"
-                            data-project="{{ project.id }}"
-                            onclick="selectProject(this)">
+                        <button type="button"
+                                class="choice-btn project-btn"
+                                data-project="{{ project.id }}"
+                                data-project-name="{{ project.name }}"
+                                onclick="selectProject(this)">
 
-                        {{ project.name }}
+                            {{ project.name }}
 
-                    </button>
+                        </button>
+
+                    {% empty %}
+
+                        <p class="helper-text">
+                            No active project available.
+                        </p>
 
                     {% endfor %}
 
                 </div>
+
 
                 <input type="hidden"
                        name="project"
@@ -118,13 +145,16 @@
 
 
 
-            <!-- SITE -->
+            <!-- =================================================
+                 SITE / TOWER
+            ================================================== -->
 
             <div class="form-group">
 
                 <label>
                     Tower / Block <span>*</span>
                 </label>
+
 
                 <div id="siteButtons"
                      class="button-group">
@@ -135,6 +165,7 @@
 
                 </div>
 
+
                 <input type="hidden"
                        name="site"
                        id="siteInput"
@@ -144,13 +175,16 @@
 
 
 
-            <!-- LEVEL -->
+            <!-- =================================================
+                 LEVEL
+            ================================================== -->
 
             <div class="form-group">
 
                 <label for="level">
                     Level <span>*</span>
                 </label>
+
 
                 <select name="level"
                         id="level"
@@ -238,7 +272,9 @@
 
 
 
-            <!-- LOCATION -->
+            <!-- =================================================
+                 LOCATION
+            ================================================== -->
 
             <div class="form-group">
 
@@ -249,19 +285,22 @@
                 <input type="text"
                        name="location"
                        id="location"
-                       placeholder="Enter location">
+                       placeholder="Enter flat / room / work location">
 
             </div>
 
 
 
-            <!-- ASSIGN TO -->
+            <!-- =================================================
+                 ASSIGN TO
+            ================================================== -->
 
             <div class="form-group">
 
                 <label for="assigned_to">
                     Assign To <span>*</span>
                 </label>
+
 
                 <select name="assigned_to"
                         id="assigned_to"
@@ -271,13 +310,20 @@
                         Select Person
                     </option>
 
+
                     {% for user in assign_users %}
 
-                    <option value="{{ user.id }}">
+                        <option value="{{ user.id }}">
 
-                        {{ user.name }}
+                            {{ user.full_name }}
 
-                    </option>
+                        </option>
+
+                    {% empty %}
+
+                        <option value="">
+                            No QC users available
+                        </option>
 
                     {% endfor %}
 
@@ -289,85 +335,50 @@
 
 
 
-        <!-- ==================================================
+        <!-- =====================================================
              CHECKLIST
-        =================================================== -->
+        ====================================================== -->
 
         <div class="qc-card checklist-card">
 
 
-            {% regroup items by stage as stage_list %}
-
-
-            {% for stage in stage_list %}
-
-
-            <!-- ==================================================
-                 STAGE TITLE
-            =================================================== -->
+            <!-- =================================================
+                 GENERAL INSPECTION
+            ================================================== -->
 
             <div class="stage-section">
 
                 <div class="stage-title">
 
                     <h2>
-
-                        {% if stage.grouper == "General" %}
-
-                            General Inspection
-
-                        {% elif stage.grouper == "In-Process" %}
-
-                            In Process
-
-                        {% elif stage.grouper == "Post-Install" %}
-
-                            After Installation
-
-                        {% else %}
-
-                            {{ stage.grouper }}
-
-                        {% endif %}
-
+                        General Inspection
                     </h2>
 
                 </div>
 
 
 
-                <!-- ==================================================
-                     QUESTIONS
-                =================================================== -->
-
-                {% for item in stage.list %}
-
+                <!-- QUESTION 1 -->
 
                 <div class="checklist-item">
 
-
-                    <!-- QUESTION -->
-
                     <div class="question-text">
 
-                        {{ item.question }}
+                        1. Approved drawing and specification are available
+                        and being followed.
 
-                        {% if item.requires_photo %}
-                            <span class="required-star">*</span>
-                        {% endif %}
+                        <span class="required-star">
+                            *
+                        </span>
 
                     </div>
 
-
-
-                    <!-- YES / NO / NA -->
 
                     <div class="answer-buttons">
 
                         <button type="button"
                                 class="answer-btn yes-btn"
-                                data-item="{{ item.id }}"
-                                onclick="selectAnswer(this, '{{ item.id }}', 'Y')">
+                                onclick="selectAnswer(this, 1, 'Y')">
 
                             Y
 
@@ -376,8 +387,7 @@
 
                         <button type="button"
                                 class="answer-btn no-btn"
-                                data-item="{{ item.id }}"
-                                onclick="selectAnswer(this, '{{ item.id }}', 'N')">
+                                onclick="selectAnswer(this, 1, 'N')">
 
                             N
 
@@ -386,8 +396,7 @@
 
                         <button type="button"
                                 class="answer-btn na-btn"
-                                data-item="{{ item.id }}"
-                                onclick="selectAnswer(this, '{{ item.id }}', 'NA')">
+                                onclick="selectAnswer(this, 1, 'NA')">
 
                             NA
 
@@ -396,83 +405,42 @@
                     </div>
 
 
-                    <!-- HIDDEN STATUS -->
-
                     <input type="hidden"
-                           name="status_{{ item.id }}"
-                           id="status_{{ item.id }}">
+                           name="status_1"
+                           id="status_1">
 
-
-
-                    <!-- ==================================================
-                         PHOTO AREA
-                    =================================================== -->
 
                     <div class="photo-area"
-                         id="photoArea_{{ item.id }}"
+                         id="photoArea_1"
                          style="display:none;">
-
 
                         <div class="photo-title">
 
-                            Upload Photos
-
-                            {% if item.requires_photo %}
-                                <span>*</span>
-                            {% endif %}
+                            Upload 3 Inspection Photos
+                            <span>*</span>
 
                         </div>
 
 
                         <div class="photo-grid">
 
-
-                            <!-- PHOTO 1 -->
-
                             <div class="photo-box">
 
-                                <label for="photo1_{{ item.id }}">
+                                <label for="photo1_1">
 
                                     <div class="camera-icon">
                                         📷
                                     </div>
 
                                     <span>
-                                        1. Upload Photo
+                                        Photo 1
                                     </span>
 
                                 </label>
 
                                 <input type="file"
-                                       name="photo1_{{ item.id }}"
-                                       id="photo1_{{ item.id }}"
-                                       accept="image/*"
-                                       capture="environment"
-                                       {% if item.requires_photo %}required{% endif %}>
-
-                            </div>
-
-
-
-                            <!-- PHOTO 2 -->
-
-                            <div class="photo-box">
-
-                                <label for="photo2_{{ item.id }}">
-
-                                    <div class="camera-icon">
-                                        📷
-                                    </div>
-
-                                    <span>
-                                        2. Upload Photo
-                                    </span>
-
-                                </label>
-
-                                <input type="file"
-                                       name="photo2_{{ item.id }}"
-                                       id="photo2_{{ item.id }}"
+                                       name="photo1_1"
+                                       id="photo1_1"
                                        accept="image/*"
                                        capture="environment">
 
@@ -480,80 +448,1111 @@
 
 
 
-                            <!-- PHOTO 3 -->
-
                             <div class="photo-box">
 
-                                <label for="photo3_{{ item.id }}">
+                                <label for="photo2_1">
 
                                     <div class="camera-icon">
                                         📷
                                     </div>
 
                                     <span>
-                                        3. Upload Photo
+                                        Photo 2
                                     </span>
 
                                 </label>
 
                                 <input type="file"
-                                       name="photo3_{{ item.id }}"
-                                       id="photo3_{{ item.id }}"
+                                       name="photo2_1"
+                                       id="photo2_1"
                                        accept="image/*"
                                        capture="environment">
 
                             </div>
 
+
+
+                            <div class="photo-box">
+
+                                <label for="photo3_1">
+
+                                    <div class="camera-icon">
+                                        📷
+                                    </div>
+
+                                    <span>
+                                        Photo 3
+                                    </span>
+
+                                </label>
+
+                                <input type="file"
+                                       name="photo3_1"
+                                       id="photo3_1"
+                                       accept="image/*"
+                                       capture="environment">
+
+                            </div>
 
                         </div>
 
                     </div>
 
 
-
-                    <!-- ==================================================
-                         NOTE
-                    =================================================== -->
-
                     <div class="note-area">
 
-                        <label for="note_{{ item.id }}">
-                            Note
+                        <label for="note_1">
+                            Inspection Note
                         </label>
 
-                        <textarea
-                            name="note_{{ item.id }}"
-                            id="note_{{ item.id }}"
-                            rows="3"
-                            placeholder="Enter inspection note..."></textarea>
+                        <textarea name="note_1"
+                                  id="note_1"
+                                  rows="3"
+                                  placeholder="Enter inspection note..."></textarea>
 
                     </div>
-
 
                 </div>
 
 
-                {% endfor %}
+
+                <!-- QUESTION 2 -->
+
+                <div class="checklist-item">
+
+                    <div class="question-text">
+
+                        2. Approved construction material is being used
+                        at site.
+
+                        <span class="required-star">
+                            *
+                        </span>
+
+                    </div>
+
+
+                    <div class="answer-buttons">
+
+                        <button type="button"
+                                class="answer-btn yes-btn"
+                                onclick="selectAnswer(this, 2, 'Y')">
+                            Y
+                        </button>
+
+                        <button type="button"
+                                class="answer-btn no-btn"
+                                onclick="selectAnswer(this, 2, 'N')">
+                            N
+                        </button>
+
+                        <button type="button"
+                                class="answer-btn na-btn"
+                                onclick="selectAnswer(this, 2, 'NA')">
+                            NA
+                        </button>
+
+                    </div>
+
+
+                    <input type="hidden"
+                           name="status_2"
+                           id="status_2">
+
+
+                    <div class="photo-area"
+                         id="photoArea_2"
+                         style="display:none;">
+
+                        <div class="photo-title">
+                            Upload 3 Inspection Photos
+                            <span>*</span>
+                        </div>
+
+
+                        <div class="photo-grid">
+
+                            <div class="photo-box">
+
+                                <label for="photo1_2">
+
+                                    <div class="camera-icon">
+                                        📷
+                                    </div>
+
+                                    <span>
+                                        Photo 1
+                                    </span>
+
+                                </label>
+
+                                <input type="file"
+                                       name="photo1_2"
+                                       id="photo1_2"
+                                       accept="image/*"
+                                       capture="environment">
+
+                            </div>
+
+
+                            <div class="photo-box">
+
+                                <label for="photo2_2">
+
+                                    <div class="camera-icon">
+                                        📷
+                                    </div>
+
+                                    <span>
+                                        Photo 2
+                                    </span>
+
+                                </label>
+
+                                <input type="file"
+                                       name="photo2_2"
+                                       id="photo2_2"
+                                       accept="image/*"
+                                       capture="environment">
+
+                            </div>
+
+
+                            <div class="photo-box">
+
+                                <label for="photo3_2">
+
+                                    <div class="camera-icon">
+                                        📷
+                                    </div>
+
+                                    <span>
+                                        Photo 3
+                                    </span>
+
+                                </label>
+
+                                <input type="file"
+                                       name="photo3_2"
+                                       id="photo3_2"
+                                       accept="image/*"
+                                       capture="environment">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="note-area">
+
+                        <label for="note_2">
+                            Inspection Note
+                        </label>
+
+                        <textarea name="note_2"
+                                  id="note_2"
+                                  rows="3"
+                                  placeholder="Enter inspection note..."></textarea>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- QUESTION 3 -->
+
+                <div class="checklist-item">
+
+                    <div class="question-text">
+
+                        3. Work area is properly prepared before starting
+                        the work.
+
+                        <span class="required-star">
+                            *
+                        </span>
+
+                    </div>
+
+
+                    <div class="answer-buttons">
+
+                        <button type="button"
+                                class="answer-btn yes-btn"
+                                onclick="selectAnswer(this, 3, 'Y')">
+                            Y
+                        </button>
+
+                        <button type="button"
+                                class="answer-btn no-btn"
+                                onclick="selectAnswer(this, 3, 'N')">
+                            N
+                        </button>
+
+                        <button type="button"
+                                class="answer-btn na-btn"
+                                onclick="selectAnswer(this, 3, 'NA')">
+                            NA
+                        </button>
+
+                    </div>
+
+
+                    <input type="hidden"
+                           name="status_3"
+                           id="status_3">
+
+
+                    <div class="photo-area"
+                         id="photoArea_3"
+                         style="display:none;">
+
+                        <div class="photo-title">
+                            Upload 3 Inspection Photos
+                            <span>*</span>
+                        </div>
+
+
+                        <div class="photo-grid">
+
+                            <div class="photo-box">
+
+                                <label for="photo1_3">
+                                    <div class="camera-icon">
+                                        📷
+                                    </div>
+
+                                    <span>
+                                        Photo 1
+                                    </span>
+                                </label>
+
+                                <input type="file"
+                                       name="photo1_3"
+                                       id="photo1_3"
+                                       accept="image/*"
+                                       capture="environment">
+
+                            </div>
+
+
+                            <div class="photo-box">
+
+                                <label for="photo2_3">
+                                    <div class="camera-icon">
+                                        📷
+                                    </div>
+
+                                    <span>
+                                        Photo 2
+                                    </span>
+                                </label>
+
+                                <input type="file"
+                                       name="photo2_3"
+                                       id="photo2_3"
+                                       accept="image/*"
+                                       capture="environment">
+
+                            </div>
+
+
+                            <div class="photo-box">
+
+                                <label for="photo3_3">
+                                    <div class="camera-icon">
+                                        📷
+                                    </div>
+
+                                    <span>
+                                        Photo 3
+                                    </span>
+                                </label>
+
+                                <input type="file"
+                                       name="photo3_3"
+                                       id="photo3_3"
+                                       accept="image/*"
+                                       capture="environment">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="note-area">
+
+                        <label for="note_3">
+                            Inspection Note
+                        </label>
+
+                        <textarea name="note_3"
+                                  id="note_3"
+                                  rows="3"
+                                  placeholder="Enter inspection note..."></textarea>
+
+                    </div>
+
+                </div>
 
             </div>
 
 
-            {% endfor %}
 
+            <!-- =================================================
+                 IN-PROCESS INSPECTION
+            ================================================== -->
+
+            <div class="stage-section">
+
+                <div class="stage-title">
+
+                    <h2>
+                        In-Process Inspection
+                    </h2>
+
+                </div>
+
+
+
+                <!-- QUESTION 4 -->
+
+                <div class="checklist-item">
+
+                    <div class="question-text">
+
+                        4. Workmanship is being carried out according
+                        to the approved method and specification.
+
+                        <span class="required-star">
+                            *
+                        </span>
+
+                    </div>
+
+
+                    <div class="answer-buttons">
+
+                        <button type="button"
+                                class="answer-btn yes-btn"
+                                onclick="selectAnswer(this, 4, 'Y')">
+                            Y
+                        </button>
+
+                        <button type="button"
+                                class="answer-btn no-btn"
+                                onclick="selectAnswer(this, 4, 'N')">
+                            N
+                        </button>
+
+                        <button type="button"
+                                class="answer-btn na-btn"
+                                onclick="selectAnswer(this, 4, 'NA')">
+                            NA
+                        </button>
+
+                    </div>
+
+
+                    <input type="hidden"
+                           name="status_4"
+                           id="status_4">
+
+
+                    <div class="photo-area"
+                         id="photoArea_4"
+                         style="display:none;">
+
+                        <div class="photo-title">
+                            Upload 3 Inspection Photos
+                            <span>*</span>
+                        </div>
+
+
+                        <div class="photo-grid">
+
+                            <div class="photo-box">
+
+                                <label for="photo1_4">
+                                    <div class="camera-icon">
+                                        📷
+                                    </div>
+
+                                    <span>
+                                        Photo 1
+                                    </span>
+                                </label>
+
+                                <input type="file"
+                                       name="photo1_4"
+                                       id="photo1_4"
+                                       accept="image/*"
+                                       capture="environment">
+
+                            </div>
+
+
+                            <div class="photo-box">
+
+                                <label for="photo2_4">
+                                    <div class="camera-icon">
+                                        📷
+                                    </div>
+
+                                    <span>
+                                        Photo 2
+                                    </span>
+                                </label>
+
+                                <input type="file"
+                                       name="photo2_4"
+                                       id="photo2_4"
+                                       accept="image/*"
+                                       capture="environment">
+
+                            </div>
+
+
+                            <div class="photo-box">
+
+                                <label for="photo3_4">
+                                    <div class="camera-icon">
+                                        📷
+                                    </div>
+
+                                    <span>
+                                        Photo 3
+                                    </span>
+                                </label>
+
+                                <input type="file"
+                                       name="photo3_4"
+                                       id="photo3_4"
+                                       accept="image/*"
+                                       capture="environment">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="note-area">
+
+                        <label for="note_4">
+                            Inspection Note
+                        </label>
+
+                        <textarea name="note_4"
+                                  id="note_4"
+                                  rows="3"
+                                  placeholder="Enter inspection note..."></textarea>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- QUESTION 5 -->
+
+                <div class="checklist-item">
+
+                    <div class="question-text">
+
+                        5. Required dimensions, level, alignment and
+                        workmanship are within approved requirements.
+
+                        <span class="required-star">
+                            *
+                        </span>
+
+                    </div>
+
+
+                    <div class="answer-buttons">
+
+                        <button type="button"
+                                class="answer-btn yes-btn"
+                                onclick="selectAnswer(this, 5, 'Y')">
+                            Y
+                        </button>
+
+                        <button type="button"
+                                class="answer-btn no-btn"
+                                onclick="selectAnswer(this, 5, 'N')">
+                            N
+                        </button>
+
+                        <button type="button"
+                                class="answer-btn na-btn"
+                                onclick="selectAnswer(this, 5, 'NA')">
+                            NA
+                        </button>
+
+                    </div>
+
+
+                    <input type="hidden"
+                           name="status_5"
+                           id="status_5">
+
+
+                    <div class="photo-area"
+                         id="photoArea_5"
+                         style="display:none;">
+
+                        <div class="photo-title">
+                            Upload 3 Inspection Photos
+                            <span>*</span>
+                        </div>
+
+
+                        <div class="photo-grid">
+
+                            <div class="photo-box">
+
+                                <label for="photo1_5">
+                                    <div class="camera-icon">
+                                        📷
+                                    </div>
+
+                                    <span>
+                                        Photo 1
+                                    </span>
+                                </label>
+
+                                <input type="file"
+                                       name="photo1_5"
+                                       id="photo1_5"
+                                       accept="image/*"
+                                       capture="environment">
+
+                            </div>
+
+
+                            <div class="photo-box">
+
+                                <label for="photo2_5">
+                                    <div class="camera-icon">
+                                        📷
+                                    </div>
+
+                                    <span>
+                                        Photo 2
+                                    </span>
+                                </label>
+
+                                <input type="file"
+                                       name="photo2_5"
+                                       id="photo2_5"
+                                       accept="image/*"
+                                       capture="environment">
+
+                            </div>
+
+
+                            <div class="photo-box">
+
+                                <label for="photo3_5">
+                                    <div class="camera-icon">
+                                        📷
+                                    </div>
+
+                                    <span>
+                                        Photo 3
+                                    </span>
+                                </label>
+
+                                <input type="file"
+                                       name="photo3_5"
+                                       id="photo3_5"
+                                       accept="image/*"
+                                       capture="environment">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="note-area">
+
+                        <label for="note_5">
+                            Inspection Note
+                        </label>
+
+                        <textarea name="note_5"
+                                  id="note_5"
+                                  rows="3"
+                                  placeholder="Enter inspection note..."></textarea>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- QUESTION 6 -->
+
+                <div class="checklist-item">
+
+                    <div class="question-text">
+
+                        6. No visible defect, damage, improper installation
+                        or quality issue is observed.
+
+                        <span class="required-star">
+                            *
+                        </span>
+
+                    </div>
+
+
+                    <div class="answer-buttons">
+
+                        <button type="button"
+                                class="answer-btn yes-btn"
+                                onclick="selectAnswer(this, 6, 'Y')">
+                            Y
+                        </button>
+
+                        <button type="button"
+                                class="answer-btn no-btn"
+                                onclick="selectAnswer(this, 6, 'N')">
+                            N
+                        </button>
+
+                        <button type="button"
+                                class="answer-btn na-btn"
+                                onclick="selectAnswer(this, 6, 'NA')">
+                            NA
+                        </button>
+
+                    </div>
+
+
+                    <input type="hidden"
+                           name="status_6"
+                           id="status_6">
+
+
+                    <div class="photo-area"
+                         id="photoArea_6"
+                         style="display:none;">
+
+                        <div class="photo-title">
+                            Upload 3 Inspection Photos
+                            <span>*</span>
+                        </div>
+
+
+                        <div class="photo-grid">
+
+                            <div class="photo-box">
+
+                                <label for="photo1_6">
+                                    <div class="camera-icon">
+                                        📷
+                                    </div>
+
+                                    <span>
+                                        Photo 1
+                                    </span>
+                                </label>
+
+                                <input type="file"
+                                       name="photo1_6"
+                                       id="photo1_6"
+                                       accept="image/*"
+                                       capture="environment">
+
+                            </div>
+
+
+                            <div class="photo-box">
+
+                                <label for="photo2_6">
+                                    <div class="camera-icon">
+                                        📷
+                                    </div>
+
+                                    <span>
+                                        Photo 2
+                                    </span>
+                                </label>
+
+                                <input type="file"
+                                       name="photo2_6"
+                                       id="photo2_6"
+                                       accept="image/*"
+                                       capture="environment">
+
+                            </div>
+
+
+                            <div class="photo-box">
+
+                                <label for="photo3_6">
+                                    <div class="camera-icon">
+                                        📷
+                                    </div>
+
+                                    <span>
+                                        Photo 3
+                                    </span>
+                                </label>
+
+                                <input type="file"
+                                       name="photo3_6"
+                                       id="photo3_6"
+                                       accept="image/*"
+                                       capture="environment">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="note-area">
+
+                        <label for="note_6">
+                            Inspection Note
+                        </label>
+
+                        <textarea name="note_6"
+                                  id="note_6"
+                                  rows="3"
+                                  placeholder="Enter inspection note..."></textarea>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 POST INSTALLATION
+            ================================================== -->
+
+            <div class="stage-section">
+
+                <div class="stage-title">
+
+                    <h2>
+                        After Installation
+                    </h2>
+
+                </div>
+
+
+
+                <!-- QUESTION 7 -->
+
+                <div class="checklist-item">
+
+                    <div class="question-text">
+
+                        7. Completed work matches the approved drawing
+                        and project specification.
+
+                        <span class="required-star">
+                            *
+                        </span>
+
+                    </div>
+
+
+                    <div class="answer-buttons">
+
+                        <button type="button"
+                                class="answer-btn yes-btn"
+                                onclick="selectAnswer(this, 7, 'Y')">
+                            Y
+                        </button>
+
+                        <button type="button"
+                                class="answer-btn no-btn"
+                                onclick="selectAnswer(this, 7, 'N')">
+                            N
+                        </button>
+
+                        <button type="button"
+                                class="answer-btn na-btn"
+                                onclick="selectAnswer(this, 7, 'NA')">
+                            NA
+                        </button>
+
+                    </div>
+
+
+                    <input type="hidden"
+                           name="status_7"
+                           id="status_7">
+
+
+                    <div class="photo-area"
+                         id="photoArea_7"
+                         style="display:none;">
+
+                        <div class="photo-title">
+                            Upload 3 Inspection Photos
+                            <span>*</span>
+                        </div>
+
+
+                        <div class="photo-grid">
+
+                            <div class="photo-box">
+
+                                <label for="photo1_7">
+                                    <div class="camera-icon">
+                                        📷
+                                    </div>
+
+                                    <span>
+                                        Photo 1
+                                    </span>
+                                </label>
+
+                                <input type="file"
+                                       name="photo1_7"
+                                       id="photo1_7"
+                                       accept="image/*"
+                                       capture="environment">
+
+                            </div>
+
+
+                            <div class="photo-box">
+
+                                <label for="photo2_7">
+                                    <div class="camera-icon">
+                                        📷
+                                    </div>
+
+                                    <span>
+                                        Photo 2
+                                    </span>
+                                </label>
+
+                                <input type="file"
+                                       name="photo2_7"
+                                       id="photo2_7"
+                                       accept="image/*"
+                                       capture="environment">
+
+                            </div>
+
+
+                            <div class="photo-box">
+
+                                <label for="photo3_7">
+                                    <div class="camera-icon">
+                                        📷
+                                    </div>
+
+                                    <span>
+                                        Photo 3
+                                    </span>
+                                </label>
+
+                                <input type="file"
+                                       name="photo3_7"
+                                       id="photo3_7"
+                                       accept="image/*"
+                                       capture="environment">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="note-area">
+
+                        <label for="note_7">
+                            Inspection Note
+                        </label>
+
+                        <textarea name="note_7"
+                                  id="note_7"
+                                  rows="3"
+                                  placeholder="Enter inspection note..."></textarea>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- QUESTION 8 -->
+
+                <div class="checklist-item">
+
+                    <div class="question-text">
+
+                        8. Final work is free from visible defects and
+                        is ready for inspection approval.
+
+                        <span class="required-star">
+                            *
+                        </span>
+
+                    </div>
+
+
+                    <div class="answer-buttons">
+
+                        <button type="button"
+                                class="answer-btn yes-btn"
+                                onclick="selectAnswer(this, 8, 'Y')">
+                            Y
+                        </button>
+
+                        <button type="button"
+                                class="answer-btn no-btn"
+                                onclick="selectAnswer(this, 8, 'N')">
+                            N
+                        </button>
+
+                        <button type="button"
+                                class="answer-btn na-btn"
+                                onclick="selectAnswer(this, 8, 'NA')">
+                            NA
+                        </button>
+
+                    </div>
+
+
+                    <input type="hidden"
+                           name="status_8"
+                           id="status_8">
+
+
+                    <div class="photo-area"
+                         id="photoArea_8"
+                         style="display:none;">
+
+                        <div class="photo-title">
+                            Upload 3 Inspection Photos
+                            <span>*</span>
+                        </div>
+
+
+                        <div class="photo-grid">
+
+                            <div class="photo-box">
+
+                                <label for="photo1_8">
+                                    <div class="camera-icon">
+                                        📷
+                                    </div>
+
+                                    <span>
+                                        Photo 1
+                                    </span>
+                                </label>
+
+                                <input type="file"
+                                       name="photo1_8"
+                                       id="photo1_8"
+                                       accept="image/*"
+                                       capture="environment">
+
+                            </div>
+
+
+                            <div class="photo-box">
+
+                                <label for="photo2_8">
+                                    <div class="camera-icon">
+                                        📷
+                                    </div>
+
+                                    <span>
+                                        Photo 2
+                                    </span>
+                                </label>
+
+                                <input type="file"
+                                       name="photo2_8"
+                                       id="photo2_8"
+                                       accept="image/*"
+                                       capture="environment">
+
+                            </div>
+
+
+                            <div class="photo-box">
+
+                                <label for="photo3_8">
+                                    <div class="camera-icon">
+                                        📷
+                                    </div>
+
+                                    <span>
+                                        Photo 3
+                                    </span>
+                                </label>
+
+                                <input type="file"
+                                       name="photo3_8"
+                                       id="photo3_8"
+                                       accept="image/*"
+                                       capture="environment">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="note-area">
+
+                        <label for="note_8">
+                            Inspection Note
+                        </label>
+
+                        <textarea name="note_8"
+                                  id="note_8"
+                                  rows="3"
+                                  placeholder="Enter inspection note..."></textarea>
+
+                    </div>
+
+                </div>
+
+            </div>
 
         </div>
 
 
 
-        <!-- ==================================================
+        <!-- =====================================================
              SIGNATURE
-        =================================================== -->
+        ====================================================== -->
 
         <div class="qc-card">
 
             <div class="section-title">
 
-                <h2>Signature</h2>
+                <h2>
+                    Inspector Signature
+                </h2>
 
             </div>
 
@@ -562,18 +1561,20 @@
 
                 <canvas id="signatureCanvas"></canvas>
 
+
                 <div class="signature-actions">
 
                     <button type="button"
                             onclick="clearSignature()">
 
-                        Clear
+                        Clear Signature
 
                     </button>
 
                 </div>
 
             </div>
+
 
             <input type="hidden"
                    name="signature"
@@ -583,17 +1584,18 @@
 
 
 
-        <!-- ==================================================
+        <!-- =====================================================
              STATUS
-        =================================================== -->
+        ====================================================== -->
 
         <div class="qc-card">
 
             <div class="form-group">
 
                 <label>
-                    Status
+                    Current Status
                 </label>
+
 
                 <input type="text"
                        value="Pending"
@@ -606,9 +1608,9 @@
 
 
 
-        <!-- ==================================================
-             SAVE BUTTON
-        =================================================== -->
+        <!-- =====================================================
+             BUTTONS
+        ====================================================== -->
 
         <div class="bottom-actions">
 
@@ -624,7 +1626,7 @@
             <button type="submit"
                     class="save-btn">
 
-                Save
+                Save Inspection
 
             </button>
 
@@ -637,15 +1639,15 @@
 
 
 
-<!-- ======================================================
+<!-- =========================================================
      JAVASCRIPT
-====================================================== -->
+========================================================== -->
 
 <script>
 
 
 /* =========================================================
-   PROJECT → SITE DATA
+   PROJECT → SITE
 ========================================================= */
 
 const projectSites = {
@@ -673,14 +1675,14 @@ const projectSites = {
 
 
 /* =========================================================
-   PROJECT SELECTION
+   SELECT PROJECT
 ========================================================= */
 
 function selectProject(button) {
 
     document
         .querySelectorAll(".project-btn")
-        .forEach(btn => {
+        .forEach(function(btn) {
 
             btn.classList.remove("selected");
 
@@ -700,7 +1702,7 @@ function selectProject(button) {
 
 
     const projectName =
-        button.innerText.trim();
+        button.dataset.projectName;
 
 
     const siteContainer =
@@ -725,66 +1727,77 @@ function selectProject(button) {
         projectSites[projectName] || [];
 
 
-    sites.forEach((siteName, index) => {
+    if (sites.length === 0) {
+
+        siteContainer.innerHTML =
+            "<p class='helper-text'>No site available.</p>";
+
+        return;
+
+    }
 
 
-        const btn =
+    sites.forEach(function(siteName) {
+
+        const button =
             document.createElement("button");
 
 
-        btn.type = "button";
+        button.type = "button";
 
-        btn.className =
+
+        button.className =
             "choice-btn site-btn";
 
 
-        btn.innerText =
+        button.innerText =
             siteName;
 
 
-        btn.dataset.siteName =
+        button.dataset.siteName =
             siteName;
 
 
-        /*
-         * IMPORTANT:
-         * We currently need database site ID.
-         * This will be connected with Django
-         * properly after testing the project/site data.
-         */
+        button.onclick =
+            function() {
+
+                document
+                    .querySelectorAll(".site-btn")
+                    .forEach(function(btn) {
+
+                        btn.classList.remove(
+                            "selected"
+                        );
+
+                    });
 
 
-        btn.onclick = function() {
-
-            document
-                .querySelectorAll(".site-btn")
-                .forEach(b => {
-
-                    b.classList.remove(
-                        "selected"
-                    );
-
-                });
+                this.classList.add(
+                    "selected"
+                );
 
 
-            this.classList.add(
-                "selected"
-            );
+                /*
+                 * IMPORTANT:
+                 *
+                 * Currently this stores the site name.
+                 *
+                 * Your Django view currently expects
+                 * QCSite.id.
+                 *
+                 * So this part will need to be connected
+                 * to actual QCSite IDs.
+                 */
+
+                siteInput.value =
+                    this.dataset.siteName;
+
+            };
 
 
-            /*
-             * Temporary site value.
-             * We will replace this with
-             * actual QCSite ID mapping.
-             */
-
-            siteInput.value =
-                this.dataset.siteName;
-
-        };
-
-
-        siteContainer.appendChild(btn);
+        siteContainer.appendChild(
+            button
+        );
 
     });
 
@@ -793,7 +1806,7 @@ function selectProject(button) {
 
 
 /* =========================================================
-   Y / N / NA SELECTION
+   SELECT Y / N / NA
 ========================================================= */
 
 function selectAnswer(
@@ -802,18 +1815,17 @@ function selectAnswer(
     value
 ) {
 
-
-    const parent =
+    const item =
         button.closest(
             ".checklist-item"
         );
 
 
-    parent
+    item
         .querySelectorAll(
             ".answer-btn"
         )
-        .forEach(btn => {
+        .forEach(function(btn) {
 
             btn.classList.remove(
                 "selected"
@@ -832,27 +1844,48 @@ function selectAnswer(
     ).value = value;
 
 
-
-    /*
-     * PHOTO LOGIC
-     *
-     * Y → show photos
-     * N → hide photos
-     * NA → hide photos
-     */
-
     const photoArea =
         document.getElementById(
             "photoArea_" + itemId
         );
 
 
+    const photoInputs =
+        photoArea.querySelectorAll(
+            "input[type='file']"
+        );
+
+
+    /*
+     * YES
+     * Show photo section
+     */
+
     if (value === "Y") {
 
         photoArea.style.display =
             "block";
 
+
+        /*
+         * Y requires 3 photos
+         */
+
+        photoInputs.forEach(
+            function(input) {
+
+                input.required = true;
+
+            }
+        );
+
     }
+
+
+    /*
+     * NO
+     * Hide photo section
+     */
 
     else {
 
@@ -860,15 +1893,15 @@ function selectAnswer(
             "none";
 
 
-        photoArea
-            .querySelectorAll(
-                "input[type='file']"
-            )
-            .forEach(input => {
+        photoInputs.forEach(
+            function(input) {
+
+                input.required = false;
 
                 input.value = "";
 
-            });
+            }
+        );
 
     }
 
@@ -885,6 +1918,7 @@ const canvas =
         "signatureCanvas"
     );
 
+
 const ctx =
     canvas.getContext("2d");
 
@@ -892,6 +1926,10 @@ const ctx =
 let drawing = false;
 
 
+
+/* =========================================================
+   CANVAS SIZE
+========================================================= */
 
 function resizeCanvas() {
 
@@ -901,6 +1939,7 @@ function resizeCanvas() {
 
     canvas.width =
         rect.width;
+
 
     canvas.height =
         220;
@@ -912,20 +1951,34 @@ resizeCanvas();
 
 
 
+window.addEventListener(
+    "resize",
+    resizeCanvas
+);
+
+
+
+/* =========================================================
+   MOUSE EVENTS
+========================================================= */
+
 canvas.addEventListener(
     "mousedown",
     startDrawing
 );
+
 
 canvas.addEventListener(
     "mousemove",
     draw
 );
 
+
 canvas.addEventListener(
     "mouseup",
     stopDrawing
 );
+
 
 canvas.addEventListener(
     "mouseleave",
@@ -934,15 +1987,27 @@ canvas.addEventListener(
 
 
 
+/* =========================================================
+   TOUCH EVENTS
+========================================================= */
+
 canvas.addEventListener(
     "touchstart",
-    startDrawing
+    startDrawing,
+    {
+        passive: false
+    }
 );
+
 
 canvas.addEventListener(
     "touchmove",
-    draw
+    draw,
+    {
+        passive: false
+    }
 );
+
 
 canvas.addEventListener(
     "touchend",
@@ -950,6 +2015,10 @@ canvas.addEventListener(
 );
 
 
+
+/* =========================================================
+   GET POSITION
+========================================================= */
 
 function getPosition(event) {
 
@@ -963,11 +2032,12 @@ function getPosition(event) {
 
     if (
         event.touches &&
-        event.touches.length
+        event.touches.length > 0
     ) {
 
         clientX =
             event.touches[0].clientX;
+
 
         clientY =
             event.touches[0].clientY;
@@ -979,6 +2049,7 @@ function getPosition(event) {
         clientX =
             event.clientX;
 
+
         clientY =
             event.clientY;
 
@@ -987,9 +2058,11 @@ function getPosition(event) {
 
     return {
 
-        x: clientX - rect.left,
+        x:
+            clientX - rect.left,
 
-        y: clientY - rect.top
+        y:
+            clientY - rect.top
 
     };
 
@@ -997,49 +2070,70 @@ function getPosition(event) {
 
 
 
+/* =========================================================
+   START DRAWING
+========================================================= */
+
 function startDrawing(event) {
 
     event.preventDefault();
 
+
     drawing = true;
 
-    const pos =
+
+    const position =
         getPosition(event);
+
 
     ctx.beginPath();
 
+
     ctx.moveTo(
-        pos.x,
-        pos.y
+        position.x,
+        position.y
     );
 
 }
 
 
 
+/* =========================================================
+   DRAW
+========================================================= */
+
 function draw(event) {
 
     if (!drawing) {
+
         return;
+
     }
 
 
     event.preventDefault();
 
 
-    const pos =
+    const position =
         getPosition(event);
 
 
     ctx.lineWidth = 2;
 
-    ctx.lineCap = "round";
+
+    ctx.lineCap =
+        "round";
+
+
+    ctx.lineJoin =
+        "round";
 
 
     ctx.lineTo(
-        pos.x,
-        pos.y
+        position.x,
+        position.y
     );
+
 
     ctx.stroke();
 
@@ -1047,15 +2141,31 @@ function draw(event) {
 
 
 
+/* =========================================================
+   STOP DRAWING
+========================================================= */
+
 function stopDrawing() {
 
+    if (!drawing) {
+
+        return;
+
+    }
+
+
     drawing = false;
+
 
     saveSignature();
 
 }
 
 
+
+/* =========================================================
+   SAVE SIGNATURE
+========================================================= */
 
 function saveSignature() {
 
@@ -1067,11 +2177,16 @@ function saveSignature() {
 
     document.getElementById(
         "signatureInput"
-    ).value = imageData;
+    ).value =
+        imageData;
 
 }
 
 
+
+/* =========================================================
+   CLEAR SIGNATURE
+========================================================= */
 
 function clearSignature() {
 
@@ -1092,7 +2207,7 @@ function clearSignature() {
 
 
 /* =========================================================
-   FORM SUBMIT
+   FORM VALIDATION
 ========================================================= */
 
 document
@@ -1102,20 +2217,22 @@ document
         function(event) {
 
 
-            /*
-             * Check Project
-             */
+            /* ---------------------------------------------
+               PROJECT
+            --------------------------------------------- */
 
-            if (
-                !document.getElementById(
+            const project =
+                document.getElementById(
                     "projectInput"
-                ).value
-            ) {
+                ).value;
+
+
+            if (!project) {
 
                 event.preventDefault();
 
                 alert(
-                    "Please select Project."
+                    "Please select a Project."
                 );
 
                 return;
@@ -1124,15 +2241,17 @@ document
 
 
 
-            /*
-             * Check Site
-             */
+            /* ---------------------------------------------
+               SITE
+            --------------------------------------------- */
 
-            if (
-                !document.getElementById(
+            const site =
+                document.getElementById(
                     "siteInput"
-                ).value
-            ) {
+                ).value;
+
+
+            if (!site) {
 
                 event.preventDefault();
 
@@ -1146,40 +2265,154 @@ document
 
 
 
-            /*
-             * Check all questions
-             */
+            /* ---------------------------------------------
+               LEVEL
+            --------------------------------------------- */
 
-            const statuses =
-                document.querySelectorAll(
-                    "[id^='status_']"
+            const level =
+                document.getElementById(
+                    "level"
+                ).value;
+
+
+            if (!level) {
+
+                event.preventDefault();
+
+                alert(
+                    "Please select Level."
                 );
+
+                return;
+
+            }
+
+
+
+            /* ---------------------------------------------
+               ASSIGNED USER
+            --------------------------------------------- */
+
+            const assignedTo =
+                document.getElementById(
+                    "assigned_to"
+                ).value;
+
+
+            if (!assignedTo) {
+
+                event.preventDefault();
+
+                alert(
+                    "Please select Assign To."
+                );
+
+                return;
+
+            }
+
+
+
+            /* ---------------------------------------------
+               CHECKLIST ANSWERS
+            --------------------------------------------- */
+
+            const questionIds = [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+            ];
 
 
             for (
-                let status of statuses
+                let i = 0;
+                i < questionIds.length;
+                i++
             ) {
 
-                if (!status.value) {
+                const id =
+                    questionIds[i];
+
+
+                const status =
+                    document.getElementById(
+                        "status_" + id
+                    ).value;
+
+
+                if (!status) {
 
                     event.preventDefault();
 
+
                     alert(
-                        "Please complete all checklist items."
+                        "Please select Y, N or NA for Question " +
+                        id
                     );
 
+
                     return;
+
+                }
+
+
+                /*
+                 * If Y:
+                 * 3 photos required
+                 */
+
+                if (status === "Y") {
+
+                    const photo1 =
+                        document.getElementById(
+                            "photo1_" + id
+                        ).files.length;
+
+
+                    const photo2 =
+                        document.getElementById(
+                            "photo2_" + id
+                        ).files.length;
+
+
+                    const photo3 =
+                        document.getElementById(
+                            "photo3_" + id
+                        ).files.length;
+
+
+                    if (
+                        photo1 === 0 ||
+                        photo2 === 0 ||
+                        photo3 === 0
+                    ) {
+
+                        event.preventDefault();
+
+
+                        alert(
+                            "Question " +
+                            id +
+                            " is marked Y. Please upload all 3 photos."
+                        );
+
+
+                        return;
+
+                    }
 
                 }
 
             }
 
 
-            saveSignature();
-
         }
     );
-
 
 </script>
 
