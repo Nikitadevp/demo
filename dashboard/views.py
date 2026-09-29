@@ -5865,8 +5865,8 @@ def qc_inspector_fill_view(request):
     if request.method == "POST":
 
         # Basic form fields
-        project_id = request.POST.get("project")
-        site_id = request.POST.get("site")
+        
+       
         level = request.POST.get("level")
         location = request.POST.get("location")
         assigned_to_id = request.POST.get("assigned_to")
@@ -5874,18 +5874,22 @@ def qc_inspector_fill_view(request):
         # ----------------------------------------------------
         # GET PROJECT
         # ----------------------------------------------------
-        project = get_object_or_404(
-            QCProject,
-            id=project_id,
-            is_active=True
-        )
+        project_name = request.POST.get("project")
 
+        project = get_object_or_404(
+        QCProject,
+        name=project_name,
+        is_active=True
+        )
         # ----------------------------------------------------
         # GET SITE
         # ----------------------------------------------------
+        site_name = request.POST.get("site")
+
         site = get_object_or_404(
+            
             QCSite,
-            id=site_id,
+            name=site_name,
             project=project
         )
 
