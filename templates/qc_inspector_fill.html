@@ -113,26 +113,22 @@
 
                 <div class="button-group project-buttons">
 
-                    {% for project in projects %}
+                    <button type="button"
+                            class="choice-btn project-btn"
+                            id="highparkBtn"
+                            onclick="selectProject('Highpark', this)">
+                        Highpark
+                    </button>
+                    <!-- SAMPOORNA -->
 
-                        <button type="button"
-                                class="choice-btn project-btn"
-                                data-project="{{ project.id }}"
-                                data-project-name="{{ project.name }}"
-                                onclick="selectProject(this)">
+                    <button type="button"
+                            class="choice-btn project-btn"
+                            id="sampoornaBtn"
+                            onclick="selectProject('Sampoorna', this)">
+                        Sampoorna
+                    </button>
 
-                            {{ project.name }}
-
-                        </button>
-
-                    {% empty %}
-
-                        <p class="helper-text">
-                            No active project available.
-                        </p>
-
-                    {% endfor %}
-
+                    
                 </div>
 
 
@@ -152,12 +148,12 @@
             <div class="form-group">
 
                 <label>
-                    Tower / Block <span>*</span>
+                    Tower <span>*</span>
                 </label>
 
 
                 <div id="siteButtons"
-                     class="button-group">
+                     class="button-group tower-buttons">
 
                     <p class="helper-text">
                         Please select project first.
@@ -1649,10 +1645,13 @@
 /* =========================================================
    PROJECT → SITE
 ========================================================= */
+/* =========================================================
+   PROJECT + TOWER DATA
+========================================================= */
 
 const projectSites = {
 
-    "Highpark": [
+    Highpark: [
         "Tower 1",
         "Tower 2",
         "Tower 3",
@@ -1663,7 +1662,7 @@ const projectSites = {
         "Non Tower"
     ],
 
-    "Sampoorna": [
+    Sampoorna: [
         "Block A",
         "Block B",
         "Block C",
@@ -1678,7 +1677,11 @@ const projectSites = {
    SELECT PROJECT
 ========================================================= */
 
-function selectProject(button) {
+function selectProject(projectName, button) {
+
+    /* ---------------------------------------------
+       Remove previous project selection
+    --------------------------------------------- */
 
     document
         .querySelectorAll(".project-btn")
@@ -1689,21 +1692,34 @@ function selectProject(button) {
         });
 
 
+    /* ---------------------------------------------
+       Select clicked project
+    --------------------------------------------- */
+
     button.classList.add("selected");
 
 
-    const projectId =
-        button.dataset.project;
-
+    /* ---------------------------------------------
+       Store project
+    --------------------------------------------- */
 
     document.getElementById(
         "projectInput"
-    ).value = projectId;
+    ).value = projectName;
 
 
-    const projectName =
-        button.dataset.projectName;
+    /* ---------------------------------------------
+       Clear previous tower
+    --------------------------------------------- */
 
+    document.getElementById(
+        "siteInput"
+    ).value = "";
+
+
+    /* ---------------------------------------------
+       Get tower container
+    --------------------------------------------- */
 
     const siteContainer =
         document.getElementById(
@@ -1711,95 +1727,110 @@ function selectProject(button) {
         );
 
 
-    const siteInput =
-        document.getElementById(
-            "siteInput"
-        );
-
-
-    siteInput.value = "";
-
-
     siteContainer.innerHTML = "";
 
 
+    /* ---------------------------------------------
+       Get towers for selected project
+    --------------------------------------------- */
+
     const sites =
-        projectSites[projectName] || [];
+        projectSites[projectName];
 
 
-    if (sites.length === 0) {
+    if (!sites || sites.length === 0) {
 
         siteContainer.innerHTML =
-            "<p class='helper-text'>No site available.</p>";
+            "<p class='helper-text'>No Tower / Block available.</p>";
 
         return;
 
     }
 
 
+    /* ---------------------------------------------
+       Create Tower / Block buttons
+    --------------------------------------------- */
+
     sites.forEach(function(siteName) {
 
-        const button =
+        const siteButton =
             document.createElement("button");
 
 
-        button.type = "button";
+        siteButton.type = "button";
 
 
-        button.className =
+        siteButton.className =
             "choice-btn site-btn";
 
 
-        button.innerText =
+        siteButton.innerText =
             siteName;
 
 
-        button.dataset.siteName =
+        siteButton.dataset.site =
             siteName;
 
 
-        button.onclick =
+        siteButton.onclick =
             function() {
 
-                document
-                    .querySelectorAll(".site-btn")
-                    .forEach(function(btn) {
-
-                        btn.classList.remove(
-                            "selected"
-                        );
-
-                    });
-
-
-                this.classList.add(
-                    "selected"
+                selectSite(
+                    siteName,
+                    this
                 );
-
-
-                /*
-                 * IMPORTANT:
-                 *
-                 * Currently this stores the site name.
-                 *
-                 * Your Django view currently expects
-                 * QCSite.id.
-                 *
-                 * So this part will need to be connected
-                 * to actual QCSite IDs.
-                 */
-
-                siteInput.value =
-                    this.dataset.siteName;
 
             };
 
 
         siteContainer.appendChild(
-            button
+            siteButton
         );
 
     });
+
+}
+
+
+
+/* =========================================================
+   SELECT TOWER / BLOCK
+========================================================= */
+
+function selectSite(siteName, button) {
+
+    /* ---------------------------------------------
+       Remove previous selection
+    --------------------------------------------- */
+
+    document
+        .querySelectorAll(".site-btn")
+        .forEach(function(btn) {
+
+            btn.classList.remove(
+                "selected"
+            );
+
+        });
+
+
+    /* ---------------------------------------------
+       Select clicked tower
+    --------------------------------------------- */
+
+    button.classList.add(
+        "selected"
+    );
+
+
+    /* ---------------------------------------------
+       Store selected tower/block
+    --------------------------------------------- */
+
+    document.getElementById(
+        "siteInput"
+    ).value = siteName;
 
 }
 
