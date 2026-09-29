@@ -107,11 +107,10 @@
                     Date & Time
                 </label>
 
-                <input type="date"
+                <input type="text"
                        id="currentDateTime"
-                       value="{% now 'd-m-Y H:i:s' %}"
-                       readonly
-                       class="readonly-input">
+                       class="readonly-input"
+                       readonly>
             </div>
 
 
@@ -2495,18 +2494,17 @@ function updateCurrentDateTime() {
 }
 
 
-/* Form open hote hi current time */
+/* Form open hote hi current date & time */
 updateCurrentDateTime();
 
 
-/* Har 1 second mein time update */
+/* Time automatically update hota rahe */
 setInterval(
     updateCurrentDateTime,
     1000
 );
 
 </script>
-
 
 </body>
 
