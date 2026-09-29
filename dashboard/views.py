@@ -5870,6 +5870,7 @@ def qc_inspector_fill_view(request):
         level = request.POST.get("level")
         location = request.POST.get("location")
         assigned_to_id = request.POST.get("assigned_to")
+        filled_at_device_time = request.POST.get("currentDateTime")
 
         # ----------------------------------------------------
         # GET PROJECT
@@ -5913,7 +5914,8 @@ def qc_inspector_fill_view(request):
             level=level,
             location=location,
             assigned_to=assigned_to,
-            status="In Process"
+            status="In Process",
+            filled_at_device_time=timezone.now()
         )
 
         # ----------------------------------------------------
